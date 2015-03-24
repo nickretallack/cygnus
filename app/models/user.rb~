@@ -1,0 +1,5 @@
+class User < ActiveRecord::Base
+attr_accessor :user, :email
+
+ has_secure_password
+end

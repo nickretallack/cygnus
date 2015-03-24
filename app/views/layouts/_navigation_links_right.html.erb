@@ -1,0 +1,31 @@
+<%# add navigation links to this file %>
+<% if logged_in? %>
+  <li class="dropdown">
+    <a class="dropdown-toggle" aria-expanded="false" role="button" data-toggle="dropdown" href="#">
+      <%= @current_user.name %>
+      <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu pull-right">
+      <li><%= link_to "Profile", user_path(current_user.name) %></li>
+      <li><%= link_to "Settings", edit_user_path(current_user.name) %></li>
+      <li class="divider"></li>
+      <li>
+         <%= link_to "Log out", logout_path, method: "delete" %>
+      </li>
+    </ul>
+  </li>
+<% else %>
+<li><%= link_to 'Register', new_user_path() %></li>
+<div class="navbar-form navbar-right">
+	<%= form_for(:session, url: login_path, class: "navbar-form navbar-right") do |f| %>
+	  <div class="form-group">
+	      <%= f.email_field :email, class: 'form-control', placeholder: 'Username' %>
+	  </div>
+	  <div class="form-group">
+	      <%= f.password_field :password, class: 'form-control', placeholder: 'Password' %>
+	  </div>
+	  <%= f.submit "Log in", class: "btn btn-primary" %>
+	<% end %>
+</div>
+<% end %>
+

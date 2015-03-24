@@ -1,0 +1,44 @@
+      <%= render 'shared/error_messages' %>
+
+  <div class="form-group">
+      <%= f.label :name %>
+      <%= f.text_field :name, :class => 'form-control' %>
+  </div>
+
+  <div class="form-group">
+      <%= f.label :email %>
+      <%= f.email_field :email, :class => 'form-control'  %>
+  </div>
+  <div class="form-group">
+      <%= f.label :password %>
+      <%= f.password_field :password, :class => 'form-control'  %>
+  </div>
+  <div class="form-group">
+      <%= f.label :password_confirmation, "Confirmation" %>
+      <%= f.password_field :password_confirmation, :class => 'form-control'  %>
+  </div>
+  <div class="form-group">
+      <%= f.label :gallery %>
+      <%= f.text_field :gallery, :class => 'form-control'  %>
+  </div>
+
+  <div class="form-group">
+      <%= f.label :prices, "Price Range of Products" %>
+      <%= f.text_field :prices, :class => 'form-control'  %>
+  </div>
+  <div class="form-group">
+      <%= f.label :details, "About" %>
+      <%= f.text_area :details, :class => 'form-control'  %>
+  </div>
+  <div class="checkbox">
+    <label>
+      <%= f.check_box :commissions %> Commissions
+    </label>
+    <label>
+      <%= f.check_box :trades %> Trades
+    </label>
+    <label>
+      <%= f.check_box :requests %> Requests
+    </label>
+  </div>
+ 

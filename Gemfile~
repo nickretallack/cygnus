@@ -14,9 +14,6 @@ group :development, :test do
   gem 'web-console', '~> 2.0'
   gem 'spring'
 end
-
-gem 'will_paginate',           '3.0.7'
-gem 'bootstrap-will_paginate', '0.0.10'
 gem 'bootstrap-sass'
 gem 'high_voltage'
 gem 'passenger'
