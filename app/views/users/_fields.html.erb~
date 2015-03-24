@@ -23,8 +23,8 @@
   </div>
 
   <div class="form-group">
-      <%= f.label :prices, "Price Range of Products" %>
-      <%= f.text_field :prices, :class => 'form-control'  %>
+      <%= f.label :price, "Price Range of Products" %>
+      <%= f.text_field :price, :class => 'form-control'  %>
   </div>
   <div class="form-group">
       <%= f.label :details, "About" %>

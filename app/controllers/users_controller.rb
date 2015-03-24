@@ -11,7 +11,16 @@ class UsersController < ApplicationController
 	[:password_digest, :ip_Address]}
     end
   end
-
+  def search
+    @users = User.search(params[:search][:search]).paginate(page: params[:page])
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render xml: @users, :except =>
+	[:password_digest, :ip_Address]}
+      format.json { render json: @users, :except =>
+	[:password_digest, :ip_Address]}
+    end
+  end
   def show
     @user = User.find_by name: params[:id]
     if @user.nil?
@@ -28,7 +37,7 @@ class UsersController < ApplicationController
 
   def destroy
     User.find(params[:id]).destroy
-    flash[:success] = "User deleted"
+    flash[:warning] = "User deleted"
     redirect_to users_url
   end
 
@@ -80,7 +89,7 @@ class UsersController < ApplicationController
 
   def logout
     destroysession
-    flash[:notice] = "You have successfully logged out."
+    flash[:info] = "You have successfully logged out."
     redirect_to :root
   end
 
@@ -88,7 +97,7 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:name, :email, :password,
-                                   :password_confirmation, :commissions,
+                                   :password_confirmation, :commissions, :tags,
                                    :trades, :requests, :prices, :details, :gallery)
   end
 

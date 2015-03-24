@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
-  root to: 'visitors#index'
-  resources :users
+  root to: 'users#index'
   post   'login'   => 'users#logon'
   delete 'logout'  => 'users#logout'
-  post   'search'  => 'users#search'
+
+  get    '/users/search'  => 'users#search', as: 'search_users'
+  post   '/users/search'  => 'users#search'
+  resources :users
+
 end

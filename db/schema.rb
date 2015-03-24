@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150323012833) do
+ActiveRecord::Schema.define(version: 20150324025205) do
 
   create_table "users", force: :cascade do |t|
     t.string   "name"
@@ -27,6 +27,10 @@ ActiveRecord::Schema.define(version: 20150323012833) do
     t.boolean  "commissions"
     t.boolean  "trades"
     t.boolean  "requests"
+    t.string   "tags"
+    t.tsvector "tags_tsvector"
   end
+
+  add_index "users", ["tags_tsvector"], name: "users_tags_search_idx", using: :gin
 
 end

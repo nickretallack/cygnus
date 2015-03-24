@@ -1,6 +1,4 @@
-<p id="notice"><%= notice %></p>
-
-<h1>All Artists</h1>
+<h1>Results</h1>
    <div class="input-group">
 	<%= form_for(:search, url: search_user_path, class: "navbar-form navbar") do |f| %>
 	  <div class="form-group">
@@ -12,6 +10,7 @@
 	<% end %>
    </div>
 
-<%= render 'results', users: @users %>
+
+
 <%= will_paginate %>
 <br>
