@@ -23,9 +23,12 @@ class UsersController < ApplicationController
   end
   def show
     @user = User.find_by name: params[:id]
+
     if @user.nil?
 	 raise ActionController::RoutingError.new('Not Found')
+
     end
+
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render xml: @user, :except =>

@@ -18,6 +18,7 @@ end
 gem 'will_paginate',           '3.0.7'
 gem 'bootstrap-will_paginate', '0.0.10'
 gem 'bootstrap-sass'
+gem 'redcarpet'
 gem 'high_voltage'
 gem 'passenger'
 gem 'pg'
