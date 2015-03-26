@@ -44,3 +44,9 @@ section {
   @extend .row;
   margin-top: 20px;
   }
+table{
+  @extend .table;
+}
+blockquote {
+	border-left: 3px solid #bbb;
+}

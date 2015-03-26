@@ -1,3 +1,34 @@
 <h1><%= @user.name %></h1>
-<p><%= @user.name %>, <%= @user.email %></p>
-<div><%= render_markdown(@user.details) %></div>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-3">
+			<div class="row">
+				<div class="col-xs-12">
+					(ICON PLACE HOLDER)
+				</div>
+				<div class="col-xs-12">
+					<%= link_to @user.gallery, url_with_protocol(@user.gallery) %>
+				</div>
+				<div class="col-xs-12">
+					<%= comm_statuses_verbose(@user) %>
+				</div>
+				<div class="col-xs-12">
+					<%if !@user.price.blank?%>
+					  <h5>Price Range:</h5>
+					  <h6>  <%=@user.price%></h6>
+					<%end%>
+				</div>
+				<div class="col-xs-12">
+				  <h5>Member Since</h5>
+				  <h6><%=Date.parse(@user.created_at.to_s() ) %></h6>
+				</div>
+			    <%if current_user.is_mod_or_higher?%>
+				<div class="col-xs-12">
+				  <h5>Last Login</h5>
+				  <h6><%=Date.parse(@user.created_at.to_s() ) %></h6>
+				</div>
+			    <%end%>
+			</div>
+		</div>
+		<div class="col-sm-9"><%= render_markdown(@user.details) %></div>
+</div>

@@ -15,4 +15,23 @@ class User < ActiveRecord::Base
 	terms.gsub(/\s/,"+")])
     User.where("tags_tsvector @@ #{sanitized}")
   end
+
+  def is_anonymous?
+	false
+  end
+
+  CONFIG["user_levels"].each do |name, value|
+      normalized_name = name.downcase.gsub(/ /, "_")
+      define_method("is_#{normalized_name}?") do
+        self.level == value
+      end
+
+      define_method("is_#{normalized_name}_or_higher?") do
+        self.level >= value
+      end
+
+      define_method("is_#{normalized_name}_or_lower?") do
+        self.level <= value
+      end
+  end
 end

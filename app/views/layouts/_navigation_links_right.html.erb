@@ -1,8 +1,8 @@
 <%# add navigation links to this file %>
-<% if logged_in? %>
+<% if !current_user.is_anonymous? %>
   <li class="dropdown">
     <a class="dropdown-toggle" aria-expanded="false" role="button" data-toggle="dropdown" href="#">
-      <%= @current_user.name %>
+      <%= current_user.name %>
       <span class="caret"></span>
     </a>
     <ul class="dropdown-menu pull-right">
