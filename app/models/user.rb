@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+ belongs_to :upload, foreign_key: :avatar
+
  before_save { self.email = email.downcase }
   validates :name, presence: true, length: { maximum: 50 }, uniqueness: { case_sensitive: false }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i

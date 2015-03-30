@@ -53,6 +53,9 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find_by(name: params[:id])
+    if(params[:user][:avatar_check] != '0') #checkboxes are hard to validate
+    	@user.avatar = Upload.render(params[:user][:picture])
+    end
     if @user.update_attributes(user_params)
       flash[:success] = "Profile updated"
       redirect_to action: "show", id: @user.name
@@ -68,6 +71,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     @user.ip_Address = request.remote_ip
+    @user.avatar = Upload.render(params[:user][:picture])
     if @user.save
       log_in @user
       flash[:success] = "Welcome to Bleatr!"

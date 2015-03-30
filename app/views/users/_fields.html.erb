@@ -6,6 +6,15 @@
   </div>
 
   <div class="form-group">
+      <%= f.label :file %>
+      <%= f.file_field :picture, :class => 'form-control' %>
+      <% if !@user.upload.nil? %>      
+        <%= f.check_box("avatar_check", :checked => false) %> Check if you want to change your avatar from: 
+        <%= image_tag(image_thumb_path(@user.upload.id)) %>
+      <% end %>
+  </div>
+
+  <div class="form-group">
       <%= f.label :email %>
       <%= f.email_field :email, :class => 'form-control'  %>
   </div>

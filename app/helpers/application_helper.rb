@@ -9,6 +9,7 @@ module ApplicationHelper
   def logged_in?
     !current_user.nil?
   end
+
   def url_with_protocol(url)
     /^http/i.match(url) ? url : "http://#{url}"
   end

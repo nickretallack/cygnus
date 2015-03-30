@@ -3,7 +3,7 @@
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <%= form_for @user, method: :patch, url: user_path do |f| %>
+    <%= form_for @user, method: :patch, url: user_path, multipart: true do |f| %>
       <%= render 'fields', f: f %>
       <%= f.submit "Save Changes", class: "btn btn-primary" %>
     <% end %>

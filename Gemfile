@@ -22,6 +22,8 @@ gem 'redcarpet'
 gem 'high_voltage'
 gem 'passenger'
 gem 'pg'
+gem 'mini_magick'
+gem 'carrierwave'
 group :development do
   gem 'better_errors'
   gem 'quiet_assets'
