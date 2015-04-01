@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150329225550) do
+ActiveRecord::Schema.define(version: 20150401033005) do
 
   create_table "uploads", force: :cascade do |t|
     t.string   "file"
@@ -26,10 +26,10 @@ ActiveRecord::Schema.define(version: 20150329225550) do
     t.string   "name"
     t.string   "password_digest"
     t.string   "email"
-    t.integer  "level",           default: 0
+    t.integer  "level",             default: 0
     t.inet     "ip_Address"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.string   "gallery"
     t.string   "price"
     t.text     "details"
@@ -39,7 +39,11 @@ ActiveRecord::Schema.define(version: 20150329225550) do
     t.string   "tags"
     t.tsvector "tags_tsvector"
     t.integer  "avatar"
-    t.boolean  "view_adult",      default: false
+    t.boolean  "view_adult",        default: false
+    t.string   "activation_digest"
+    t.boolean  "activated",         default: false
+    t.datetime "activated_at"
+    t.datetime "reset_sent_at"
   end
 
   add_index "users", ["tags_tsvector"], name: "users_tags_search_idx", using: :gin
