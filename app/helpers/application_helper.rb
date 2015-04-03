@@ -22,4 +22,8 @@ module ApplicationHelper
 	escape: true, hard_wrap: true, prettify:true), autolink: true, tables: true)
     markdown.render(content).html_safe
   end
+
+  def has_column?(column_name)
+    controller_name.singularize.capitalize.constantize.column_names.include?(column_name)
+  end
 end

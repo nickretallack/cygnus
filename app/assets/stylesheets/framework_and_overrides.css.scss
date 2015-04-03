@@ -15,6 +15,9 @@ img {
 // THESE ARE EXAMPLES YOU CAN MODIFY
 // create your own classes
 // to make views framework-neutral
+.row {
+  margin: 15px;
+}
 .column {
   @extend .col-md-6;
   @extend .text-center;
@@ -31,13 +34,19 @@ img {
   @extend .btn-primary;
   @extend .btn-lg;
   }
+.closer {
+  margin-left: -20px;
+}
+
 // apply styles to HTML elements
 // to make views framework-neutral
 main {
   @extend .container;
-  background-color: #eee;
+  //background-color: #eee;
   padding-bottom: 80px;
   width: 100%;
+  margin: 0;
+  padding: 0;
   margin-top: 51px; // accommodate the navbar
   }
 section {

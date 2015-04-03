@@ -15,3 +15,37 @@
 //= require turbolinks
 //= require bootstrap-sprockets
 //= require_tree .
+
+function ready(){
+	header = $(".navbar-fixed-top");
+	main = $("main");
+	adjustForHeader();
+	adjustForScrollBar();
+}
+
+$(document).ready(ready);
+$(document).on('page:load', ready);
+
+$(window).resize(function(){
+	adjustForHeader();
+	adjustForScrollBar();
+});
+
+function adjustForHeader(){
+	height = header.css("height");
+	main.css("margin-top", height);
+}
+
+function adjustForScrollBar(){
+	if($("body").hasScrollBar()){
+		$(".navbar-right").css("margin-right", "2px");
+	}else{
+		$(".navbar-right").css("margin-right", "0");
+	}
+}
+
+(function($) {
+    $.fn.hasScrollBar = function() {
+        return $(document).height() > $(window).height();
+    }
+})(jQuery);

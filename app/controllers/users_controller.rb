@@ -148,6 +148,27 @@ class UsersController < ApplicationController
     redirect_to :root
   end
 
+  def fields
+    {
+      name: {},
+      email: {field: "email_field"},
+      password: {field: "password_field"},
+      password_confirmation: {label: "confirmation", field: "password_field"},
+      gallery: {label: "offsite galleries"},
+      details: {label: "profile description", field: "text_area"},
+      tags: {label: "tags my profile may be searched by"},
+      #picture: {}
+    }
+  end
+
+  def checkboxes
+    {
+      commissions: {"prices" => true},
+      trades: {},
+      requests: {}
+    }
+  end
+
   private
 
   def user_params

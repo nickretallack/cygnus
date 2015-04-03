@@ -1,57 +1,42 @@
-      <%= render 'shared/error_messages' %>
+<%= render 'shared/error_messages' %>
 
-  <div class="form-group">
-      <%= f.label :name %>
-      <%= f.text_field :name, :class => 'form-control' %>
-  </div>
-
-  <div class="form-group">
-      <%= f.label :file %>
-      <%= f.file_field :picture, :class => 'form-control' %>
-      <% if !@user.upload.nil? %>      
-        <%= f.check_box("avatar_check", :checked => false) %> Check if you want to change your avatar from: 
-        <%= image_tag(image_thumb_path(@user.upload.id)) %>
+<div id="flexbox">
+  <div id="left">
+    <% controller.fields.each do |key, value| %>
+      <%= content_tag :div, class: value[:div_class] || "form-group" do %>
+        <%= f.label value[:label] || key %>
+        <%= f.send value[:field] || "text_field", key, class: "form-control" %>
       <% end %>
+    <% end %>
+
+    <label>I am currently taking:</label>
+    <% controller.checkboxes.each do |key, value| %>
+      <%= content_tag :div, class: value[:div_class] || "button-group" do %>
+        <%= f.send value[:button] || "check_box", key, class: "button-control" %>
+        <%= f.label value[:label] || key %>
+        <% if value["prices"] %>
+          <br />
+          <span id = "prices">
+            <%= f.label :price, "Prices" %>
+            <%= f.text_area :price, class: "form-control" %>
+          </span>
+        <% end %>
+      <% end %>
+    <% end %>
   </div>
 
-  <div class="form-group">
-      <%= f.label :email %>
-      <%= f.email_field :email, :class => 'form-control'  %>
+  <div id="right">
+    <div class="form-group">
+        <%= f.label :file, "Avatar" %>
+        <div id="hide_avatar"></div>
+        <%= f.file_field :picture, class: "uploader" %>
+        <% if !@user.upload.nil? %>      
+          <%= f.check_box("avatar_check", :checked => false) %> Check if you want to change your avatar from: 
+          <%= image_tag(image_thumb_path(@user.upload.id)) %>
+        <% end %>
+    </div>
+    <div id="avatar">
+      <img id="avatar_img" />
+    </div>
   </div>
-  <div class="form-group">
-      <%= f.label :password %>
-      <%= f.password_field :password, :class => 'form-control'  %>
-  </div>
-  <div class="form-group">
-      <%= f.label :password_confirmation, "Confirmation" %>
-      <%= f.password_field :password_confirmation, :class => 'form-control'  %>
-  </div>
-  <div class="form-group">
-      <%= f.label :gallery %>
-      <%= f.text_field :gallery, :class => 'form-control'  %>
-  </div>
-
-  <div class="form-group">
-      <%= f.label :price, "Price Range of Products" %>
-      <%= f.text_field :price, :class => 'form-control'  %>
-  </div>
-  <div class="form-group">
-      <%= f.label :details, "About" %>
-      <%= f.text_area :details, :class => 'form-control'  %>
-  </div>
-  <div class="form-group">
-      <%= f.label :tags, "Specialties, tags to be searched by" %>
-      <%= f.text_field :tags, :class => 'form-control'  %>
-  </div>
-  <div class="checkbox">
-    <label>
-      <%= f.check_box :commissions %> Commissions
-    </label>
-    <label>
-      <%= f.check_box :trades %> Trades
-    </label>
-    <label>
-      <%= f.check_box :requests %> Requests
-    </label>
-  </div>
- 
+</div>

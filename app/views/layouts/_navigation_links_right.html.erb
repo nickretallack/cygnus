@@ -16,11 +16,11 @@
   </li>
 <% else %>
 <li><%= link_to "Reset Password", password_reset_path %></li>
-<li><%= link_to 'Register', new_user_path() %></li>
+<li class="closer"><%= link_to 'Register', new_user_path() %></li>
 
 <div class="navbar-form navbar-right">
 	<%= form_for(:session, url: login_path, class: "navbar-form navbar-right") do |f| %>
-	  <div class="form-group">
+	  <div class="form-group closer">
 	      <%= f.email_field :email, class: 'form-control', placeholder: 'Username' %><br>
 	  </div>
 	  <div class="form-group">
