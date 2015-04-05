@@ -1,11 +1,11 @@
 <% provide(:title, 'Sign up') %>
 <h1>Sign up</h1>
 
-<div class="row">
-  <div class="col-md-6 col-md-offset-3">
-    <%= form_for(@user, multipart: true) do |f| %>
+<div class="row" id="attach-point">
+  <div class="col-md-6 col-md-offset-3" id="detach-point">
+    <%= form_for @user, multipart: true, html: {id: "detach"} do |f| %>
       <%= render 'fields', f: f %>
-      <%= f.submit "Create my account", class: "btn btn-primary spaced" %>
+      <%= f.submit "Create my account", class: "btn btn-primary spaced", id: "save-button" %>
     <% end %>
   </div>
 </div>

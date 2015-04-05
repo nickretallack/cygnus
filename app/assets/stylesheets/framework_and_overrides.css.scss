@@ -37,6 +37,14 @@ img {
 .closer {
   margin-left: -20px;
 }
+h1 {
+  border: 4px outset aquamarine;
+  border-right-style: none;
+  border-left-style: none;
+}
+.thumbnail {
+  border: 5px dashed cornflowerblue;
+}
 
 // apply styles to HTML elements
 // to make views framework-neutral

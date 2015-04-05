@@ -1,21 +1,21 @@
 function ready(){
-	showPrices = function(){
-		if(checkbox.prop("checked")) prices.show();
-		else prices.hide();
+	if(!Modernizr.flexbox) return;
+
+	commissions = $("#commissions");
+	commissionsCheckbox = commissions.children(":checkbox");
+	console.log(commissionsCheckbox);
+	commissionsLabel = commissions.children("label");
+	price = $("#price");
+	price.insertAfter(commissionsLabel);
+
+	showPrice = function(){
+		if(commissionsCheckbox.prop("checked")) price.show();
+		else price.hide();
 	};
-	checkbox = $("#user_commissions");
-	prices = $("#prices");
-	showPrices();
-	$("#user_commissions").change(function(){
-		showPrices();
-	});
 
-	$(".col-md-6").detach().children("form").appendTo($(".row"));
-
-	$("#flexbox").css({
-		"display": "flex",
-		"justify-content": "space-around",
-		"margin": "2% 5%"
+	showPrice();
+	commissionsCheckbox.change(function(){
+		showPrice();
 	});
 
 	$("#left").css({
@@ -27,12 +27,13 @@ function ready(){
 		reader.onload = function(event){
 			avatar = $("#avatar_img");
 			avatar.attr("src", event.target.result);
+
 			$("#hide_avatar").html($("<input />", {
 		        type: "button",
 		        id: "hide_avatar_button",
 		        value: "Hide Avatar"
-		    }));
-		    $("#hide_avatar_button").click(function(){
+		    })
+		    .click(function(){
 		    	if(avatar.is(":visible")){
 		    		$("#hide_avatar_button").attr("value", "Show Avatar");
 		    		avatar.hide();
@@ -40,7 +41,7 @@ function ready(){
 		    		$("#hide_avatar_button").attr("value", "Hide Avatar");
 		    		avatar.show();
 		    	}
-		    });
+		    }));
 		}
 		reader.readAsDataURL(file.files[0]);
 	}

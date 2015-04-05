@@ -1,12 +1,11 @@
 <h1><%= @user.name %></h1>
 <div class="container">
 	<div class="row">
+		<div class="col-sm-9">	
+		    <%= image_tag(image_thumb_path(@user.upload.id), class: "thumbnail") if !@user.upload.nil? %>
+		</div>
 		<div class="col-sm-3">
 			<div class="row">
-				<div class="col-xs-12">
-					
-				    <%= image_tag(image_thumb_path(@user.upload.id)) if !@user.upload.nil? %>
-				</div>
 				<div class="col-xs-12">
 					<%= link_to @user.gallery, url_with_protocol(@user.gallery) %>
 				</div>
@@ -31,5 +30,10 @@
 			    <%end%>
 			</div>
 		</div>
-		<div class="col-sm-9"><%= render_markdown(@user.details) %></div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<%= render_markdown(@user.details) %>
+		</div>
+	</div>
 </div>

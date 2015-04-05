@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require bootstrap-sprockets
+//= require prefixfree-rails/prefixfree
 //= require_tree .
 
 function ready(){
@@ -21,6 +22,18 @@ function ready(){
 	main = $("main");
 	adjustForHeader();
 	adjustForScrollBar();
+
+	attachPoint = $("#attach-point");
+	if(typeof attachPoint !== "undefined"){
+		attachPoint
+		.append($("#detach").css({
+			"display": "flex",
+			"justify-content": "space-around",
+			"margin": "2% 0"
+		}))
+		.append($("#save-button"));
+		$("#detach-point").detach();
+	}
 }
 
 $(document).ready(ready);
@@ -49,3 +62,7 @@ function adjustForScrollBar(){
         return $(document).height() > $(window).height();
     }
 })(jQuery);
+
+function flexWorks(){
+	browser = $
+}
