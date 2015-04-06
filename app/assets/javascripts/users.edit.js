@@ -3,7 +3,6 @@ function ready(){
 
 	commissions = $("#commissions");
 	commissionsCheckbox = commissions.children(":checkbox");
-	console.log(commissionsCheckbox);
 	commissionsLabel = commissions.children("label");
 	price = $("#price");
 	price.insertAfter(commissionsLabel);

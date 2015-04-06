@@ -18,22 +18,56 @@
 //= require_tree .
 
 function ready(){
-	header = $(".navbar-fixed-top");
+	header = $("#top-nav");
 	main = $("main");
 	adjustForHeader();
 	adjustForScrollBar();
 
-	attachPoint = $("#attach-point");
-	if(typeof attachPoint !== "undefined"){
-		attachPoint
-		.append($("#detach").css({
-			"display": "flex",
-			"justify-content": "space-around",
-			"margin": "2% 0"
-		}))
-		.append($("#save-button"));
-		$("#detach-point").detach();
-	}
+	ex = function(obj){
+		return typeof obj !== "undefined";
+	};
+
+	detachPoint = $("#detach-point");
+
+	make = function me(hash, attachPoint){
+		if(!ex(attachPoint)) return;
+		$.each(hash, function(key, value){
+			tag = ex(value.tag)? "<"+value.tag+" />" : "<div />";
+			klass = ex(value.klass)? value.klass : "";
+			text = ex(value.text)? value.text : "";
+			css = ex(value.css)? value.css : {};
+			children = ex(hash[key].children)? hash[key].children : {}
+			element = $("#"+key);
+			element = ex(element[0])? element :
+				$(tag, {
+					class: klass,
+					id: key,
+					text: text
+				});
+
+			me(children,
+			element
+			.css("display", "flex")
+			.css(css)
+			.appendTo(attachPoint)
+			);
+		});
+	};
+
+	make(layout, $("#attach-point"));
+	detachPoint.remove();
+
+	// attachPoint = $("#attach-point");
+	// if(typeof attachPoint !== "undefined"){
+	// 	attachPoint
+	// 	.append($("#detach").css({
+	// 		"display": "flex",
+	// 		"justify-content": "space-around",
+	// 		"margin": "2% 0"
+	// 	}))
+	// 	.append($("#save-button"));
+	// 	$("#detach-point").detach();
+	// }
 }
 
 $(document).ready(ready);
@@ -62,7 +96,3 @@ function adjustForScrollBar(){
         return $(document).height() > $(window).height();
     }
 })(jQuery);
-
-function flexWorks(){
-	browser = $
-}

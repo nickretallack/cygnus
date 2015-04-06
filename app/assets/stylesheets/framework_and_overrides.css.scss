@@ -44,6 +44,21 @@ h1 {
 }
 .thumbnail {
   border: 5px dashed cornflowerblue;
+  margin: 0;
+}
+#attach-point {
+  //border: 4px solid red;
+  display: flex;
+  flex-direction: column;
+  div {
+    //border: 4px outset blue;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    align-self:center;
+    margin: .5%;
+    }
 }
 
 // apply styles to HTML elements
@@ -66,4 +81,8 @@ table{
 }
 blockquote {
 	border-left: 3px solid #bbb;
+}
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 10px;
+  margin-bottom: 15px;
 }
