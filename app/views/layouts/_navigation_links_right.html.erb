@@ -6,6 +6,8 @@
       <span class="caret"></span>
     </a>
     <ul class="dropdown-menu pull-right">
+      <li><%= link_to "New Gallery", new_user_pool_path(current_user.name) %></li>
+      <li class="divider"></li>
       <li><%= link_to "Profile", user_path(current_user.name) %></li>
       <li><%= link_to "Settings", edit_user_path(current_user.name) %></li>
       <li class="divider"></li>

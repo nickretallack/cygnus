@@ -14,6 +14,7 @@ class PoolsController < ApplicationController
 
   # GET /pools/new
   def new
+    @user = User.find_by(name: params[:user_id])
     @pool = Pool.new
   end
 

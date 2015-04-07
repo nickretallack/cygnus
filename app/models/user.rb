@@ -1,9 +1,11 @@
 class User < ActiveRecord::Base
- attr_accessor  :activation_token, :reset_token
- belongs_to :upload, foreign_key: :avatar
- before_create :create_activation_digest
+  attr_accessor  :activation_token, :reset_token
+  has_many :pools, dependent: :destroy
+  belongs_to :upload, foreign_key: :avatar
+  before_create :create_activation_digest
 
- before_save { self.email = email.downcase }
+  before_save { self.email = email.downcase }
+  validate :name_is_not_route
   validates :name, presence: true, length: { maximum: 50 }, uniqueness: { case_sensitive: false }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence: true, length: { maximum: 255 },
@@ -11,8 +13,7 @@ class User < ActiveRecord::Base
                     uniqueness: { case_sensitive: false }
   has_secure_password
   validates :password, length: { minimum: 6 }, allow_blank: true
-
-
+  
 
   def self.search(terms = "")
     sanitized = sanitize_sql_array(["to_tsquery('english', ?)",
@@ -62,5 +63,11 @@ private
   def create_activation_digest  
       self.activation_token  = SecureRandom.urlsafe_base64
       self.activation_digest = User.digest(activation_token)
+  end
+
+  def name_is_not_route
+    if RouteRecognizer.new.initial_path_segments.include?(name)
+      errors.add(:name, "is already taken")
+    end
   end
 end
