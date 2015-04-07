@@ -22,21 +22,6 @@ function ready(){
 		reader.onload = function(event){
 			avatar = $("#avatar_img");
 			avatar.attr("src", event.target.result);
-
-			$("#hide_avatar").html($("<input />", {
-		        type: "button",
-		        id: "hide_avatar_button",
-		        value: "Hide Avatar"
-		    })
-		    .click(function(){
-		    	if(avatar.is(":visible")){
-		    		$("#hide_avatar_button").attr("value", "Show Avatar");
-		    		avatar.hide();
-		    	}else{
-		    		$("#hide_avatar_button").attr("value", "Hide Avatar");
-		    		avatar.show();
-		    	}
-		    }));
 		}
 		reader.readAsDataURL(file.files[0]);
 	}
@@ -50,16 +35,25 @@ $(document).on('page:load', ready);
 layout = {
 	form: {
 		children: {
-			left: {
-				before: "#right",
-				css: {
-					flex: "1 0 auto"
-				}
-			},
-			right: {
+			box: {
 				before: "#save-button",
 				css: {
-					maxWidth: $(window).width()/4
+					display: "flex"
+				},
+				children: {
+					left: {
+						css: {
+							flex: "3 0 auto",
+							flexDirection: "column"
+						}
+					},
+					right: {
+						css: {
+							flex: "1 1 auto",
+							flexDirection: "column",
+							maxWidth: "30%"
+						}
+					}
 				}
 			}
 		}

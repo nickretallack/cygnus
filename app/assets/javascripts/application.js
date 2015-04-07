@@ -44,15 +44,17 @@ function ready(){
 					id: key,
 					text: text
 				});
-			console.log(key, value.section);
+			console.log(key, value.before);
+
+			if(ex(value.before)) element.insertBefore($(value.before));
+			else element.appendTo(attachPoint);
 
 			me(children,
 				element
 				.css("display", "flex")
 				.css(css)
-				.appendTo(attachPoint)
 			);
-			if(ex(value.before)) element.insertBefore($(value.before));
+			
 			
 		});
 	};

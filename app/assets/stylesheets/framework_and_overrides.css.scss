@@ -51,14 +51,13 @@ h1 {
   display: flex;
   flex-direction: column;
   div {
-    //border: 4px outset blue;
+    //border: 4px outset cornflowerblue;
     flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-    align-self:center;
     margin: .5%;
     }
+  .full-width{
+    width: 100%;
+  }
 }
 
 // apply styles to HTML elements
@@ -72,6 +71,9 @@ main {
   padding: 0;
   margin-top: 51px; // accommodate the navbar
   }
+footer {
+  border-top: 4px outset darkslategray;
+}
 section {
   @extend .row;
   margin-top: 20px;

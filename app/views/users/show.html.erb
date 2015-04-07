@@ -1,4 +1,5 @@
 <% provide(:header, @user.name) %>
+
 <div class="container" id="detach-point">
 	<div class="row">
 		<div class="col-sm-9">
@@ -21,19 +22,19 @@
 				<div class="col-xs-12">
 					<div id="prices">
 						<%if !@user.price.blank?%>
-							<h6><%=@user.price%></h6>
+							I charge:<br />&nbsp;<%=@user.price%>
 						<%end%>
 					</div>
 				</div>
 				<div class="col-xs-12">
 					<div id="since">
-						<h6>Member Since: <%=Date.parse(@user.created_at.to_s) %></h6>
+						Member Since: <%=Date.parse(@user.created_at.to_s) %>
 					</div>
 				</div>
 			    <%if current_user.is_mod_or_higher?%>
 				<div class="col-xs-12">
 					<div id="last">
-						<h6>Last Login: <%=Date.parse(@user.created_at.to_s) %></h6>
+						Last Login: <%=Date.parse(@user.created_at.to_s) %>
 					</div>
 				</div>
 			    <%end%>

@@ -2,12 +2,11 @@ layout = {
 	topRow: {
 		children: {
 			avatar: {
-				css: {
-					flex: "1 0 auto"
-				}
 			},
 			description: {
-				
+				css: {
+					alignSelf: "center"
+				}
 			}
 		}
 	},
