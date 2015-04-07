@@ -17,10 +17,6 @@ function ready(){
 		showPrice();
 	});
 
-	$("#left").css({
-		"flex": "1 0 auto"
-	});
-
 	showPicture = function(file){
 		reader = new FileReader();
 		reader.onload = function(event){
@@ -50,3 +46,22 @@ function ready(){
 
 $(document).ready(ready);
 $(document).on('page:load', ready);
+
+layout = {
+	form: {
+		children: {
+			left: {
+				before: "#right",
+				css: {
+					flex: "1 0 auto"
+				}
+			},
+			right: {
+				before: "#save-button",
+				css: {
+					maxWidth: $(window).width()/4
+				}
+			}
+		}
+	}
+};

@@ -5,14 +5,14 @@ html {
 body {
   background-color: #eee;
   color: #333;
-  font-family: 'od', verdana, arial, helvetica, sans-serif;
+  font-family: 'blogger', verdana, arial, helvetica, sans-serif;
   font-size: 13px;
   line-height: 18px;
   margin: 2%
 }
 
 p, ol, ul, td {
-  font-family: 'od', verdana, arial, helvetica, sans-serif;
+  font-family: 'blogger', verdana, arial, helvetica, sans-serif;
   font-size: 13px;
   line-height: 18px;
 }
@@ -74,6 +74,6 @@ div {
 }
 
 @font-face {
-  font-family: 'od'; 
-  src: url(/assets/od.ttf) format('truetype');
+  font-family: 'blogger'; 
+  src: url(/assets/Blogger_Sans-Medium.otf) format('opentype');
 }
