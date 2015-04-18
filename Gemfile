@@ -24,7 +24,6 @@ gem 'passenger'
 gem 'pg'
 gem 'mini_magick'
 gem 'carrierwave'
-gem 'therubyracer'
 gem 'prefixfree-rails'
 gem 'modernizr-rails'
 

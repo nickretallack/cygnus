@@ -13,9 +13,6 @@
 
 ActiveRecord::Schema.define(version: 20150407100657) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
   create_table "pools", force: :cascade do |t|
     t.string   "title"
     t.integer  "user_id"
@@ -34,9 +31,10 @@ ActiveRecord::Schema.define(version: 20150407100657) do
 
   create_table "uploads", force: :cascade do |t|
     t.string   "file"
-    t.boolean  "enabled",    default: true
+    t.string   "ext"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
+    t.boolean  "enabled",    default: true
     t.boolean  "explicit",   default: false
   end
 
@@ -59,9 +57,9 @@ ActiveRecord::Schema.define(version: 20150407100657) do
     t.integer  "avatar"
     t.boolean  "view_adult",        default: false
     t.string   "activation_digest"
+    t.boolean  "activated",         default: false
     t.datetime "activated_at"
     t.datetime "reset_sent_at"
-    t.integer  "submissions",       default: [],                 array: true
   end
 
   add_index "users", ["tags_tsvector"], name: "users_tags_search_idx", using: :gin

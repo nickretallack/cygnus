@@ -4,4 +4,9 @@ module UsersHelper
 	   <h3><span class='label label-#{user.trades ? "success" : "danger"}'><span class='glyphicon #{user.trades ? "glyphicon-transfer" : "glyphicon-ban-circle"}'></span> Trades</span></h3>
 	   <h3><span class='label label-#{user.requests ? "success" : "danger"}'><span class='glyphicon #{user.requests ? "glyphicon-list-alt" : "glyphicon-ban-circle"}'></span> Requests</span></h3>".html_safe
 	end
+	def comm_statuses_condensed(user)
+	  "#{user.commissions ? "<span class='text-success'>$</span>" : "<span class='text-success'>$</span>"}
+	   <span class='glyphicon #{user.trades ? "glyphicon-transfer" : "glyphicon-transfer text-success"}'></span>
+	   <span class='glyphicon #{user.requests ? "glyphicon-list-alt" : "glyphicon-list-alt text-success"}'></span>".html_safe
+	end
 end

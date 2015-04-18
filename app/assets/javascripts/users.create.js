@@ -1,1 +1,0 @@
-/home/twi/Desktop/project-cygnus-code/app/assets/javascripts/users.new.js

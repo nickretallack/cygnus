@@ -1,16 +1,20 @@
 <table>
-  <thead>
-    <tr>
-      <th>User Name</th>
-      <th>User Email</th>
-      <th colspan="1"></th>
-    </tr>
-  </thead>
     <% @users.each do |user| %>
       <tr>
-        
-        <td><%= link_to user.name, user_path(user.name) %></td>
-        <td><%= user.email %></td>
+	<td>
+        <div class="media">
+  		<div class="media-left">
+		<%= !user.upload.nil? ? link_to(image_tag(image_thumb_path(user.upload.id), class: "thumbnail thumbnail-mini", ), user_path(user.name)) : "blank" %>
+		</div>
+		  <div class="media-body">
+		    <h4 class="media-heading"><%= link_to user.name, user_path(user.name) %><%=comm_statuses_condensed(user)%></h4>
+		   <%= link_to user.gallery, url_with_protocol(user.gallery) %>
+		   <%if !user.price.blank?%> <br>
+   			<%=user.price%>
+		   <% end %>
+		  </div>
+	</div>
+	</td>
         <% if current_user.is_admin? %>
 		<td><%= link_to 'Destroy', user_path(user.name), method: :delete, data: { confirm: 'Are you sure?' } %></td>
 	<% else %>
