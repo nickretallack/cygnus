@@ -13,6 +13,9 @@ Rails.application.routes.draw do
 
   get    'users/search'  => 'users#search', as: 'search_user'
   post   'users/search'  => 'users#search'
-  resources :users
-
+  resources :users, path: "" do
+    resources :pools do
+      resources :submissions
+    end
+  end
 end

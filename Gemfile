@@ -24,6 +24,10 @@ gem 'passenger'
 gem 'pg'
 gem 'mini_magick'
 gem 'carrierwave'
+gem 'therubyracer'
+gem 'prefixfree-rails'
+gem 'modernizr-rails'
+
 group :development do
   gem 'better_errors'
   gem 'quiet_assets'

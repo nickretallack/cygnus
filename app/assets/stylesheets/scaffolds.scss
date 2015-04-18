@@ -1,15 +1,20 @@
+html {
+  background-color: #eee;
+}
+
 body {
-  background-color: #fff;
+  background-color: #eee;
   color: #333;
-  font-family: verdana, arial, helvetica, sans-serif;
-  font-size: 13px;
-  line-height: 18px;
+  font-family: 'blogger', verdana, arial, helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 20px;
+  margin: 2%
 }
 
 p, ol, ul, td {
-  font-family: verdana, arial, helvetica, sans-serif;
-  font-size: 13px;
-  line-height: 18px;
+  font-family: 'blogger', verdana, arial, helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 20px;
 }
 
 pre {
@@ -66,4 +71,9 @@ div {
     font-size: 12px;
     list-style: square;
   }
+}
+
+@font-face {
+  font-family: 'blogger'; 
+  src: url(/assets/Blogger_Sans-Medium.otf) format('opentype');
 }

@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require bootstrap-sprockets
+//= require prefixfree-rails/prefixfree
 //= require_tree .
 
 function ready(){
