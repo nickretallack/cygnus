@@ -3,19 +3,7 @@ layout = {
 		children: {
 			avatar: {
 			},
-			description: {
-				css: {
-					alignSelf: "center"
-				}
-			}
-		}
-	},
-	bottomRow: {
-		css: {
-			width: "100%",
-			justifyContent: "flex-start"
-		},
-		children: {
+
 			statuses: {
 				css: {
 					flexDirection: "column"
@@ -42,6 +30,21 @@ layout = {
 					last: {
 
 					}
+				}
+			}
+		}
+	},
+	bottomRow: {
+		css: {
+			width: "100%",
+			justifyContent: "flex-start"
+		},
+		children: {
+			description: {
+				css: {
+					flexDirection: "column",
+					justifyContent: "flex-start",
+					flex: "0 1 auto",
 				}
 			}
 		}
