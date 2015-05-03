@@ -1,0 +1,31 @@
+<%= javascript_include_tag 'form-common', 'data-turbolinks-track' => true %>
+<%= javascript_include_tag 'form-dnd', 'data-turbolinks-track' => true %>
+<%= javascript_include_tag 'form-gen', 'data-turbolinks-track' => true %>
+<div id="body" onMouseUp="dndEnd()" onMouseMove="dndMove(event)">
+    <fieldset>
+      <legend>Add components</legend>
+      <input type="button" onClick="addComponent(0)" value="Text" />
+      <input type="button" onClick="addComponent(1)" value="Button" />
+      <input type="button" onClick="addComponent(2)" value="Single option list" />
+      <input type="button" onClick="addComponent(3)" value="Multiple option list" />
+      <input type="button" onClick="addComponent(4)" value="Image" /> |
+      <input type="button" onClick="saveForm()" value="Save" />
+      <input type="button" onClick="window.location.assign('formsee.html')" value="View" />
+    </fieldset>
+
+      <!-- Template --
+      <div class="item">
+        <div class="handle"></div>
+        <div class="title" title="Click to edit" contentEditable>Item Contents</div>
+        <div class="content">
+          
+        </div>
+      </div-->
+    <div id="form"></div>
+
+    <div id="output">
+      <div class="close" title="Close" onClick="this.parentNode.style.display='none'">&#10006;</div>
+      <span>JSON Representation of the form. Saved in the localStorage as "formData"</span>
+      <textarea id="formdata"></textarea>
+    </div>
+  </div>

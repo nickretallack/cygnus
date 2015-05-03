@@ -6,7 +6,6 @@ CONFIG["Email_Required"] = true
 
 #domain, minus http
 CONFIG["Host"] = "bleatr.com"
-
 #names of things
 CONFIG["Name"] = "Bleatr"
 

@@ -21,7 +21,8 @@ db/*.sqlite3
 /log/*
 /tmp/*
 /app/assets/images/uploads/*
-
+bin/*.pid
+/bin/*.pid
 # various artifacts
 **.war
 *.rbc

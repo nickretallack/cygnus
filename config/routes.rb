@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+
+  default_url_options  :host => CONFIG["Host"]
   root to: 'users#index'
   post   'login'   => 'users#logon'
   delete 'logout'  => 'users#logout'
