@@ -34,8 +34,8 @@ img {
   @extend .btn-primary;
   @extend .btn-lg;
   }
-.closer {
-  margin-left: -20px;
+.closer > a{
+  padding-left: 5px !important;
 }
 h1 {
   border: 4px outset aquamarine;

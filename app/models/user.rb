@@ -5,8 +5,8 @@ class User < ActiveRecord::Base
   before_create :create_activation_digest
 
   before_save { self.email = email.downcase }
-  validate :name_is_not_route
-  validates :name, presence: true, length: { maximum: 50 }, uniqueness: { case_sensitive: false }
+  validates :name, presence: true, length: { maximum: 50 }, uniqueness: { case_sensitive: false, message: "name is already taken" }
+
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence: true, length: { maximum: 255 },
                     format: { with: VALID_EMAIL_REGEX },
@@ -63,11 +63,5 @@ private
   def create_activation_digest  
       self.activation_token  = SecureRandom.urlsafe_base64
       self.activation_digest = User.digest(activation_token)
-  end
-
-  def name_is_not_route
-    if RouteRecognizer.new.initial_path_segments.include?(name)
-      errors.add(:name, "is already taken")
-    end
   end
 end
