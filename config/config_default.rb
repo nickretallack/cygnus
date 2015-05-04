@@ -1,14 +1,17 @@
 CONFIG = {}
 
+#please change these in config.rb
+
 #true or false ONLY
 
 CONFIG["Email_Required"] = true
 
 #domain, minus http
-CONFIG["Host"] = "bleatr.com"
+CONFIG["Host"] = "localhost"
 #names of things
-CONFIG["Name"] = "Bleatr"
+CONFIG["Name"] = "Cygnus"
 
+CONFIG["Copyright"] = "&copy;2015"
 
 #user levels, unactivated, member and admin in use
 CONFIG["user_levels"] = {
@@ -26,3 +29,6 @@ CONFIG["Image_Adult"] = "";
 CONFIG["Image_Adult_Thumb"] = "";
 CONFIG["Image_Disabled"] = "";
 CONFIG["Image_Disabled_Thumb"] = "";
+
+
+CONFIG["about-text"] = "Fill me witht things! (in html)"

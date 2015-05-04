@@ -30,6 +30,7 @@ bin/*.pid
 .redcar/
 .sass-cache
 /config/config.yml
+/config/config.rb
 /config/database.yml
 /coverage.data
 /coverage/
