@@ -1,5 +1,7 @@
 <% provide(:header, @user.name) %>
 
+<% provide(:extrascript, javascript_include_tag(controller_name+".show")) %>
+
 <div class="container" id="detach-point">
 	<div class="row">
 		<div class="col-sm-9">

@@ -1,6 +1,10 @@
-<%= javascript_include_tag 'form-common', 'data-turbolinks-track' => true %>
-<%= javascript_include_tag 'form-dnd', 'data-turbolinks-track' => true %>
-<%= javascript_include_tag 'form-gen', 'data-turbolinks-track' => true %>
+
+<% provide(:extrascript, 
+javascript_include_tag('form-common', 'data-turbolinks-track' => true)+
+javascript_include_tag('form-dnd', 'data-turbolinks-track' => true)+
+javascript_include_tag('form-gen', 'data-turbolinks-track' => true)
+																	) %>
+<% provide(:header, 'Create Form') %>
 <div id="body" onMouseUp="dndEnd()" onMouseMove="dndMove(event)">
     <fieldset>
       <legend>Add components</legend>
@@ -10,7 +14,6 @@
       <input type="button" onClick="addComponent(3)" value="Multiple option list" />
       <input type="button" onClick="addComponent(4)" value="Image" /> |
       <input type="button" onClick="saveForm()" value="Save" />
-      <input type="button" onClick="window.location.assign('formsee.html')" value="View" />
     </fieldset>
 
       <!-- Template --
@@ -26,6 +29,8 @@
     <div id="output">
       <div class="close" title="Close" onClick="this.parentNode.style.display='none'">&#10006;</div>
       <span>JSON Representation of the form. Saved in the localStorage as "formData"</span>
-      <textarea id="formdata"></textarea>
+	  <%= form_for "TEST",  :html => { :id => "saveform" } do |f| %>
+		<%= f.text_area :formdata, :id => "formdata" %>
+	  <% end %>
     </div>
   </div>

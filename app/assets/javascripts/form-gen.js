@@ -113,9 +113,9 @@ function saveForm() {
     o.push({"title":title, "type":type, "contents":contents});
   }
 
-  elements.output.style.display = "block";
   elements.formdata.value = JSON.stringify(o, null, 2);
   lsSetValue("formData", JSON.stringify(o));
+  document.getElementById("saveform").submit();
 }
 
 function checkDrop(event) {

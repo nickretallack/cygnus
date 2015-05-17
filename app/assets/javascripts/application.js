@@ -15,7 +15,6 @@
 //= require turbolinks
 //= require bootstrap-sprockets
 //= require prefixfree-rails/prefixfree
-//= require_tree .
 
 function ready(){
 	header = $("#top-nav");
@@ -58,9 +57,11 @@ function ready(){
 			
 		});
 	};
-
+	if(typeof layout !== 'undefined'){
 	make(layout, $("#attach-point"));
 	detachPoint.remove();
+
+	};
 
 	// attachPoint = $("#attach-point");
 	// if(typeof attachPoint !== "undefined"){
