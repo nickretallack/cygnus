@@ -5,6 +5,8 @@ javascript_include_tag('form-dnd', 'data-turbolinks-track' => true)+
 javascript_include_tag('form-gen', 'data-turbolinks-track' => true)
 																	) %>
 <% provide(:header, 'Create Form') %>
+
+<%= render 'shared/error_messages', error: @order_form %>
 <div id="body" onMouseUp="dndEnd()" onMouseMove="dndMove(event)">
     <fieldset>
       <legend>Add components</legend>

@@ -1,18 +1,6 @@
-<% provide(:header, "All Artists") %>
-<p id="notice"><%= notice %></p>
+<% provide(:header, "All Artists") %>	
 
-   <div class="input-group col-xs-3">
-	<%= form_for(:search, url: search_user_path, class: "navbar-form navbar") do |f| %>
-	  <div class="input-group">
-	      <%= f.text_field :search, class: 'form-control', placeholder: 'Artists who do...' %>
-              <span class="input-group-btn">
-	        <%= f.submit "Search", class: "btn btn-primary" %>
-              </span>
-	  </div>
-	<% end %>
-	
-
-
+<%= render 'search', query: @query%>
 <%= render 'results', users: @users %>
 <%= will_paginate %>
 <br>

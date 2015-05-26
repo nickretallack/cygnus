@@ -1,27 +1,23 @@
-<table>
-    <% @users.each do |user| %>
-      <tr>
-	<td>
-        <div class="media">
+
+<% @users.each do |user| %>
+	<div class="row">
+        <div class="media  	col-xs-10">
   		<div class="media-left">
 		<%= !user.upload.nil? ? link_to(image_tag(image_thumb_path(user.upload.id), class: "thumbnail thumbnail-mini", ), user_path(user.name)) : "blank" %>
 		</div>
 		  <div class="media-body">
-		    <h4 class="media-heading"><%= link_to user.name, user_path(user.name) %><%=comm_statuses_condensed(user)%></h4>
+		    <h4 class="media-heading"><%= link_to user.name, user_path(user.name) %> <%=comm_statuses_condensed(user)%></h4>
 		   <%= link_to user.gallery, url_with_protocol(user.gallery) %>
 		   <%if !user.price.blank?%> <br>
    			<%=user.price%>
 		   <% end %>
 		  </div>
 	</div>
-	</td>
         <% if current_user.is_admin? %>
-		<td><%= link_to 'Destroy', user_path(user.name), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+		<div class="col-xs-1"<%= link_to 'Destroy', user_path(user.name), method: :delete, data: { confirm: 'Are you sure?' } %></div>
 	<% else %>
-		<td></td>
+		
 	<% end %>
-      </tr>
-    <% end %>
-  <tbody>
-  </tbody>
-</table>
+    </div>
+	<hr>
+ <% end %>

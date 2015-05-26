@@ -18,10 +18,10 @@ class OrderFormsController < ApplicationController
   end
 
   # GET /order_forms/1/edit
+  #We don't want users to edit order forms.
   def edit
 	
-    @order_form = OrderForm.find(params[:id])
-	@order_form.content = @order_form.content.to_json
+	raise ActionController::RoutingError.new('Not Found')
 	
   end
 
@@ -41,19 +41,6 @@ class OrderFormsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /order_forms/1
-  # PATCH/PUT /order_forms/1.json
-  def update
-    respond_to do |format|
-      if @order_form.update(order_form_params)
-        format.html { redirect_to @order_form, notice: 'Order form was successfully updated.' }
-        format.json { render :show, status: :ok, location: @order_form }
-      else
-        format.html { render :edit }
-        format.json { render json: @order_form.errors, status: :unprocessable_entity }
-      end
-    end
-  end
 
   # DELETE /order_forms/1
   # DELETE /order_forms/1.json

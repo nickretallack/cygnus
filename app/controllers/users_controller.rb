@@ -1,9 +1,9 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, only: [:edit, :update, :destroy]
+  before_action :logged_in_user, only: [:edit, :update, :destroy] 
   before_action :correct_user_or_admin,   only: [:edit, :update, :destroy]
   before_action :check_expiration, only: [:reset_return, :reset_return_confirm]
   def index
-    @users = User.paginate(page: params[:page])
+    @users = User.paginate(page: params[:page]).includes(:upload)
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render xml: @users, :except =>
@@ -14,8 +14,8 @@ class UsersController < ApplicationController
   end
   def activate
     user = User.find_by(id: params[:id])
-    if user && user.level == 0 && user.authenticated?(:activation, params[:activation])
-      user.update_attribute(:level,    20)
+    if user && user.level == CONFIG["user_levels"]["Unactivated"] && user.authenticated?(:activation, params[:activation])
+      user.update_attribute(:level, CONFIG["user_levels"]["Member"])
       user.update_attribute(:activated_at, Time.zone.now)
       log_in user
       flash[:success] = "Account activated!"
@@ -26,7 +26,9 @@ class UsersController < ApplicationController
     end
   end
   def search
-    @users = User.search(params[:search][:search]).paginate(page: params[:page])
+  
+	@query = params[:search]? params[:search][:search] : ""
+    @users = User.search(@query).paginate(page: params[:page]).includes(:upload)
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render xml: @users, :except =>
@@ -86,7 +88,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     @user.ip_Address = request.remote_ip
     @user.avatar = Upload.render(params[:user][:picture])
-    @user.level = 20 if !CONFIG["Email_Required"]
+    @user.level = CONFIG["user_levels"]["Unactivated"] if !CONFIG["Email_Required"]
     if @user.save
      if CONFIG["Email_Required"]
       UserMailer.account_activation(@user).deliver_now
@@ -175,7 +177,7 @@ class UsersController < ApplicationController
   end
   def check_expiration
     @user = User.find(params[:id])
-    unless (@user && @user.level > 20 &&
+    unless (@user && @user.level > CONFIG["user_levels"]["Member"] &&
               @user.authenticated?(:activation, params[:activation]))
         redirect_to root_url
     end

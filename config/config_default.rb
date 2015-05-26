@@ -31,4 +31,4 @@ CONFIG["Image_Disabled"] = "";
 CONFIG["Image_Disabled_Thumb"] = "";
 
 
-CONFIG["about-text"] = "Fill me witht things! (in html)"
+CONFIG["about-text"] = "Fill me with things! (in html)"
