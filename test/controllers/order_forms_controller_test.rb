@@ -27,6 +27,7 @@ class OrderFormsControllerTest < ActionController::TestCase
 
   test "should show order_form" do
     get :show, id: @order_form
+	assert_select "label", "Text"
     assert_response :success
   end
 

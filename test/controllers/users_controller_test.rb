@@ -24,6 +24,7 @@ class UsersControllerTest < ActionController::TestCase
   test "should get show" do
     get :show, id: @user.name
     assert_response :success
+	assert_select "h1", @user.name
   end
 
   test "should create user" do

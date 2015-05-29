@@ -1,7 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 orderone:
-  content: '[{"test":"test"}]'
+  content: "[\r\n  {\r\n    \"id\": 0,\r\n    \"title\": \"Text\",\r\n    \"type\": \"text\",\r\n    \"contents\": \"\"\r\n  }\r\n]"
   user: :two
 
 ordertwo:
