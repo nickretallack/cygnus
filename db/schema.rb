@@ -11,13 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150516193215) do
+ActiveRecord::Schema.define(version: 20150527152959) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "order_forms", force: :cascade do |t|
-    t.json     "content", null: false
+    t.json     "content",    null: false
     t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 20150516193215) do
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
     t.boolean  "explicit",   default: false
+    t.string   "md5"
   end
 
   create_table "users", force: :cascade do |t|

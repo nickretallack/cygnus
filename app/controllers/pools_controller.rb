@@ -1,5 +1,4 @@
 class PoolsController < ApplicationController
-  before_action :set_pool, only: [:show, :edit, :update, :destroy]
 
   # GET /pools
   # GET /pools.json
@@ -10,17 +9,19 @@ class PoolsController < ApplicationController
   # GET /pools/1
   # GET /pools/1.json
   def show
+	@pool = Pool.find(params[:id])
   end
 
   # GET /pools/new
   def new
     @pool = Pool.new
-	
-    @user = current_user
+    @pool.user = current_user
   end
 
   # GET /pools/1/edit
   def edit
+	@pool = Pool.find(params[:id])
+	@user = @pool.user
   end
 
   # POST /pools
@@ -42,6 +43,8 @@ class PoolsController < ApplicationController
   # PATCH/PUT /pools/1
   # PATCH/PUT /pools/1.json
   def update
+  
+	@pool = Pool.find(params[:id])
     respond_to do |format|
       if @pool.update(pool_params)
         format.html { redirect_to @pool, notice: 'Pool was successfully updated.' }
@@ -56,6 +59,7 @@ class PoolsController < ApplicationController
   # DELETE /pools/1
   # DELETE /pools/1.json
   def destroy
+	@pool = Pool.find(params[:id])
     @pool.destroy
     respond_to do |format|
       format.html { redirect_to pools_url, notice: 'Pool was successfully destroyed.' }

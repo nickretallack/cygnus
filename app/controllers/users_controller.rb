@@ -74,9 +74,17 @@ class UsersController < ApplicationController
     end
     if @user.update_attributes(user_params)
       flash[:success] = "Profile updated"
-      redirect_to action: "show", id: @user.name
+	  if request.xhr?
+			render :text=> user_path(@user.name)
+	  else  
+			redirect_to user_path(@user.name)
+	  end	
     else
-      render 'edit'
+		if request.xhr?
+			render 'edit', layout: false, status: 406
+		else  
+			render 'edit'
+		end	
     end
   end
 
@@ -93,14 +101,26 @@ class UsersController < ApplicationController
      if CONFIG["Email_Required"]
       UserMailer.account_activation(@user).deliver_now
       flash[:info] = "Please check your email to activate your account."
-      redirect_to root_url
+	  if request.xhr?
+			render :text=> root_url
+	  else  
+			redirect_to root_url
+	  end
      else
       log_in @user
       flash[:success] = "Welcome to Bleatr!"
-      redirect_to action: "show", id: @user.name
-     end
+	  if request.xhr?
+			render :text=> user_path(@user.name)
+	  else  
+			redirect_to user_path(@user.name)
+	  end
+	 end
     else
-      render 'new'
+		if request.xhr?
+			render 'new', layout: false, status: 406
+		else  
+			render 'new'
+		end	
     end
   end
   def reset_confirm

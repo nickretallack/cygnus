@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   attr_accessor  :activation_token, :reset_token
-  has_many :pools, dependent: :destroy
+  #has_many :pools, dependent: :destroy
   belongs_to :upload, foreign_key: :avatar
   before_create :create_activation_digest
 

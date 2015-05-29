@@ -1,13 +1,15 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-  pass: MyString
-  email: MyString
-  level: 1
+  name: "number1"
+  password_digest: <%= User.digest('password') %>
+  email: "23@gmail.nom"
+  details: "details"
+
 
 two:
-  name: MyString
-  pass: MyString
-  email: MyString
-  level: 1
+  name: "some guy!"
+  password_digest: <%= User.digest('password') %>
+  email: "232@gmail.nom"
+  details: "details"
+

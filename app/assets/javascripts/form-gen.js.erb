@@ -24,8 +24,9 @@ function addComponent(type) {
     }
 
     case 1: {
-      title.innerHTML = "Button";
+      title.innerHTML = "Hotlink Button";
       createElement("input", {type:"text", value:"Button"}, contents);
+      createElement("input", {type:"link", value:"Link"}, contents);
       break;
     }
 
@@ -50,8 +51,8 @@ function addComponent(type) {
     }
 
     case 4: {
-      title.innerHTML = "Image";
-      createElement("img", {src:"images/nu.png", style:{cursor:"pointer"}, title:"Click to change", onclick:function(){this.nextElementSibling.click()}, onerror:function(){this.src="images/nu.png"}}, contents);
+      title.innerHTML = "Example Image";
+      createElement("img", {src:"<%= asset_path('upload_icon.png')%>", style:{cursor:"pointer", height:"80px"}, title:"Click to change", onclick:function(){this.nextElementSibling.click()}, onerror:function(){this.src="<%= asset_path('upload_icon.png')%>"}}, contents);
       createElement("input", {style:{visibility:"hidden"}, type:"file", accept:"image/*"}, contents).onchange = function() {
         var file = this.files[0], fr = new FileReader(), img = this.previousElementSibling;
         fr.onloadend = function() {
@@ -79,14 +80,16 @@ function saveForm() {
     var title = item.children[0].innerHTML;
     var type = item.dataset.kind;
     var contents;
-
+	
     switch(type) {
       case "text": // Text
         contents = data[0].value;
         break;
 
       case "button": // Button
-        contents = data[0].value;
+	  
+        contents = [];
+        contents.push(data[0].value, data[1].value);
         break;
 
       case "radio": // Radio
@@ -106,11 +109,12 @@ function saveForm() {
         break;
 
       case "image": // Image
-        contents = data[0].src;
+		data[1].name = "order_form[file]["+i+"]";
+		$("#saveform").append(data[1]);
         break;
     }
 
-    o.push({"title":title, "type":type, "contents":contents});
+    o.push({"id":i,"title":title, "type":type, "contents":contents});
   }
 
   elements.formdata.value = JSON.stringify(o, null, 2);

@@ -2,7 +2,7 @@ require 'test_helper'
 
 class SubmissionsControllerTest < ActionController::TestCase
   setup do
-    @submission = submissions(:one)
+    @submission = submissions(:postone)
   end
 
   test "should get index" do

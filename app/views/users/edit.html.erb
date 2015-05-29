@@ -1,5 +1,7 @@
 <% provide(:header, 'Edit Profile') %>
-<% provide(:extrascript, javascript_include_tag(controller_name+".new")) %>
+<% provide(:extrascript, javascript_include_tag(controller_name+".new")+
+			javascript_include_tag("form-upload", 'data-turbolinks-track' => true))
+ %>
 
 <div class="row" id="detach-point">
   <div class="col-md-6 col-md-offset-3">

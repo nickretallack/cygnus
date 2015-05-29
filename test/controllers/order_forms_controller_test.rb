@@ -2,7 +2,7 @@ require 'test_helper'
 
 class OrderFormsControllerTest < ActionController::TestCase
   setup do
-    @order_form = order_forms(:one)
+    @order_form = order_forms(:orderone)
   end
 
   test "should get index" do
@@ -18,7 +18,8 @@ class OrderFormsControllerTest < ActionController::TestCase
 
   test "should create order_form" do
     assert_difference('OrderForm.count') do
-      post :create, order_form: { data: @order_form.data, user_id: @order_form.user_id }
+      post :create, order_form: { content: 
+			"[\r\n  {\r\n    \"id\": 0,\r\n    \"title\": \"Text\",\r\n    \"type\": \"text\",\r\n    \"contents\": \"\"\r\n  }\r\n]"	  }
     end
 
     assert_redirected_to order_form_path(assigns(:order_form))
@@ -30,14 +31,12 @@ class OrderFormsControllerTest < ActionController::TestCase
   end
 
   test "should get edit" do
-    get :edit, id: @order_form
-    assert_response :success
+    assert_raises(ActionController::RoutingError) do
+		assert_recogizes({}, get(:edit, id: @order_form))
+	end
+    
   end
 
-  test "should update order_form" do
-    patch :update, id: @order_form, order_form: { data: @order_form.data, user_id: @order_form.user_id }
-    assert_redirected_to order_form_path(assigns(:order_form))
-  end
 
   test "should destroy order_form" do
     assert_difference('OrderForm.count', -1) do

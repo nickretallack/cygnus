@@ -2,7 +2,7 @@ require 'test_helper'
 
 class PoolsControllerTest < ActionController::TestCase
   setup do
-    @pool = pools(:one)
+    @pool = pools(:poolone)
   end
 
   test "should get index" do
@@ -12,6 +12,7 @@ class PoolsControllerTest < ActionController::TestCase
   end
 
   test "should get new" do
+    @controller.log_in(@pool.user)
     get :new
     assert_response :success
   end
