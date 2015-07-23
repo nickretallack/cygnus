@@ -31,7 +31,7 @@ javascript_include_tag('form-gen', 'data-turbolinks-track' => true)
     <div id="output">
       <div class="close" title="Close" onClick="this.parentNode.style.display='none'">&#10006;</div>
       <span>JSON Representation of the form. Saved in the localStorage as "formData"</span>
-	  <%= form_for @order_form,  :html => { :id => "saveform" } do |f| %>
+	  <%= form_for @order_form, :html => { :id => "saveform", :multipart => true } do |f| %>
 		<%= f.text_area :content, :id => "formdata" %>
 	  <% end %>
     </div>

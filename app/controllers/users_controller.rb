@@ -19,7 +19,7 @@ class UsersController < ApplicationController
       user.update_attribute(:activated_at, Time.zone.now)
       log_in user
       flash[:success] = "Account activated!"
-      redirect_to action: "show", id: user.name
+      redirect_to action: "show", name: user
     else
       flash[:danger] = "Invalid activation link"
       redirect_to root_url
@@ -38,7 +38,7 @@ class UsersController < ApplicationController
     end
   end
   def show
-    @user = User.find_by name: params[:id]
+    @user = User.find_by name: params[:name]
 
     if @user.nil?
 	 raise ActionController::RoutingError.new('Not Found')
@@ -55,41 +55,55 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    User.find_by(name: params[:id]).destroy
-    flash[:warning] = "User deleted"
-    redirect_to users_url
+    User.find_by(name: params[:name]).destroy
+	respond_to do |format|
+      format.html { redirect_to users_url, notice: params[:name] + 'has deactivated their account' }
+      format.json { head :no_content }
+	  format.xml { head :no_content }
+    end
   end
 
   def edit
-    @user = User.find_by name: params[:id]
+    @user = User.find_by name: params[:name]
     if @user.nil?
 	 raise ActionController::RoutingError.new('Not Found')
     end
   end
 
   def update
-    @user = User.find_by(name: params[:id])
+    @user = User.find_by(name: params[:name])
     if(params[:user][:avatar_check] != '0') #checkboxes are hard to validate
     	@user.avatar = Upload.render(params[:user][:picture])
     end
     if @user.update_attributes(user_params)
       flash[:success] = "Profile updated"
 	  if request.xhr?
-			render :text=> user_path(@user.name)
+			render :text=> user_path(@user)
 	  else  
-			redirect_to user_path(@user.name)
+		respond_to do |format|
+			format.html { redirect_to user_path(@user), notice: 'User Updated' }
+			format.json { render xml: @user, :except =>
+			[:password_digest, :ip_Address], status: :ok, location: @user }
+			format.xml { render json: @user, :except =>
+			[:password_digest, :ip_Address], status: :ok, location: @user }
+		end
 	  end	
     else
 		if request.xhr?
 			render 'edit', layout: false, status: 406
 		else  
-			render 'edit'
+			respond_to do |format|
+			    format.html { render :edit }
+				format.json { render json: @user.errors, status: :unprocessable_entity }
+				format.xml { render json: @user.errors, status: :unprocessable_entity }
+			end
 		end	
     end
   end
 
   def new
   @user = User.new
+  
   end
 
   def create
@@ -103,16 +117,31 @@ class UsersController < ApplicationController
       flash[:info] = "Please check your email to activate your account."
 	  if request.xhr?
 			render :text=> root_url
-	  else  
-			redirect_to root_url
+	  else
+		respond_to do |format|
+			format.html { redirect_to root_url }
+			format.json { render xml: @user, :except =>
+			[:password_digest, :ip_Address], status: :check_email, location: @user }
+			format.xml { render json: @user, :except =>
+			[:password_digest, :ip_Address], status: :check_email, location: @user }	  
+
+		end
+			
 	  end
      else
       log_in @user
       flash[:success] = "Welcome to Bleatr!"
 	  if request.xhr?
-			render :text=> user_path(@user.name)
-	  else  
-			redirect_to user_path(@user.name)
+			render :text=> user_path(@user)
+	  else
+		respond_to do |format|
+			format.html { redirect_to user_path(@user) }
+			format.json { render xml: @user, :except =>
+			[:password_digest, :ip_Address], status: :created, location: @user }
+			format.xml { render json: @user, :except =>
+			[:password_digest, :ip_Address], status: :created, location: @user }	  
+
+		end
 	  end
 	 end
     else
@@ -146,7 +175,7 @@ class UsersController < ApplicationController
     elsif @user.update_attributes(reset_params)
       log_in @user
       flash[:success] = "Password has been reset."
-      redirect_to controller: "users", action: "show", id: @user.name
+      redirect_to controller: "users", action: "show", name: @user
     else
       redirect_to :back
     end
@@ -174,22 +203,13 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:name, :email, :password,
-                                   :password_confirmation, :commissions, :tags,
-                                   :trades, :requests, :price, :details, :gallery)
-  end
-
-  def logged_in_user
-   #render :text => @current_user.name
-    unless logged_in?
-      flash[:danger] = "Please log in."
-      redirect_to :root
-    end
+                :password_confirmation, :commissions, :tags,:trades, :requests, :price, :details, :gallery)
   end
   def reset_params
     params.require(:user).permit(:password, :password_confirmation)
   end
   def correct_user_or_admin
-    @user = User.find_by(name: params[:id])
+    @user = User.find_by(name: params[:name])
     unless current_user_or_admin?(@user)
       flash[:danger] = "Access Denied"
       redirect_to(root_url)
@@ -197,8 +217,7 @@ class UsersController < ApplicationController
   end
   def check_expiration
     @user = User.find(params[:id])
-    unless (@user && @user.level > CONFIG["user_levels"]["Member"] &&
-              @user.authenticated?(:activation, params[:activation]))
+    unless (@user && @user.level > CONFIG["user_levels"]["Member"] && @user.authenticated?(:activation, params[:activation]))
         redirect_to root_url
     end
     if @user.password_reset_expired?

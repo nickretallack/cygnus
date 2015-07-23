@@ -3,11 +3,11 @@
 postone:
   title: MyString
   adult: false
-  file_id: 1
+  file: :fileone
   pool_id: 1
 
 posttwo:
   title: MyString
   adult: false
-  file_id: 1
+  file: :filetwo
   pool_id: 1

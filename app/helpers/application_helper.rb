@@ -7,7 +7,7 @@ module ApplicationHelper
     @current_user
   end
   def logged_in?
-    !current_user.nil?
+    !current_user.id.nil?
   end
 
   def url_with_protocol(url)
@@ -31,7 +31,7 @@ module ApplicationHelper
   
 
   
-    def logged_in_user
+   def logged_in_user
    #render :text => @current_user.name
     unless logged_in?
       flash[:danger] = "Please log in."

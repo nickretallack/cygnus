@@ -2,12 +2,14 @@ class Upload < ActiveRecord::Base
   mount_uploader :file, ImagesUploader	
   validates :md5, presence: true
   
-  def self.render(upload_data)
+  #builds an upload file and pushes certain params to DB for later calling. 
+  def self.render(upload_data, explicit = false)
 	
 	@this = Upload.new(file: upload_data)
-	@this.md5 = @this.file.md5
-	@that = Upload.find_by(md5: @this.md5)
+	@that = Upload.find_by(md5: @this.file.md5)
 	if @that.nil?
+		@this.md5 = @this.file.md5
+		@this.explicit = explicit
 		if !upload_data.blank? && @this.save
 		  @this.id
 		else
