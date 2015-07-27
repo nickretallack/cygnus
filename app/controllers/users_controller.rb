@@ -38,7 +38,7 @@ class UsersController < ApplicationController
     end
   end
   def show
-    @user = User.find_by name: params[:name]
+    @user = User.find_by id: params[:name]
 
     if @user.nil?
 	 raise ActionController::RoutingError.new('Not Found')
@@ -112,46 +112,45 @@ class UsersController < ApplicationController
     @user.avatar = Upload.render(params[:user][:picture])
     @user.level = CONFIG["user_levels"]["Unactivated"] if !CONFIG["Email_Required"]
     if @user.save
-     if CONFIG["Email_Required"]
-      UserMailer.account_activation(@user).deliver_now
-      flash[:info] = "Please check your email to activate your account."
-	  if request.xhr?
-			render :text=> root_url
-	  else
-		respond_to do |format|
-			format.html { redirect_to root_url }
-			format.json { render xml: @user, :except =>
-			[:password_digest, :ip_Address], status: :check_email, location: @user }
-			format.xml { render json: @user, :except =>
-			[:password_digest, :ip_Address], status: :check_email, location: @user }	  
-
-		end
-			
-	  end
-     else
-      log_in @user
-      flash[:success] = "Welcome to Bleatr!"
-	  if request.xhr?
-			render :text=> user_path(@user)
-	  else
-		respond_to do |format|
-			format.html { redirect_to user_path(@user) }
-			format.json { render xml: @user, :except =>
-			[:password_digest, :ip_Address], status: :created, location: @user }
-			format.xml { render json: @user, :except =>
-			[:password_digest, :ip_Address], status: :created, location: @user }	  
-
-		end
-	  end
-	 end
+      if CONFIG["Email_Required"]
+        UserMailer.account_activation(@user).deliver_now
+        flash[:info] = "Please check your email to activate your account."
+    	  if request.xhr?
+    			render :text=> root_url
+    	  else
+      		respond_to do |format|
+      			format.html { redirect_to root_url }
+      			format.json { render xml: @user, :except =>
+      			[:password_digest, :ip_Address], status: :check_email, location: @user }
+      			format.xml { render json: @user, :except =>
+      			[:password_digest, :ip_Address], status: :check_email, location: @user }	  
+      		end
+    	  end
+      else
+        Pool.new(title: "Gallery", user_id: @user.id).save!
+        log_in @user
+        flash[:success] = "Welcome to Bleatr!"
+    	  if request.xhr?
+    			render :text=> user_path(@user)
+    	  else
+      		respond_to do |format|
+      			format.html { redirect_to user_path(@user) }
+      			format.json { render xml: @user, :except =>
+      			[:password_digest, :ip_Address], status: :created, location: @user }
+      			format.xml { render json: @user, :except =>
+      			[:password_digest, :ip_Address], status: :created, location: @user }	  
+      		end
+    	  end
+      end
     else
-		if request.xhr?
-			render 'new', layout: false, status: 406
-		else  
-			render 'new'
-		end	
+  		if request.xhr?
+  			render 'new', layout: false, status: 406
+  		else  
+  			render 'new'
+  		end
     end
   end
+
   def reset_confirm
     @user = User.find_by(email: params[:password_reset][:email].downcase)
     if @user
@@ -203,7 +202,7 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:name, :email, :password,
-                :password_confirmation, :commissions, :tags,:trades, :requests, :price, :details, :gallery)
+                :password_confirmation, :commissions, :tags, :trades, :requests, :price, :details, :gallery)
   end
   def reset_params
     params.require(:user).permit(:password, :password_confirmation)

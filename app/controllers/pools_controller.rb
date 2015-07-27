@@ -1,31 +1,23 @@
 class PoolsController < ApplicationController
 
-  # GET /pools
-  # GET /pools.json
   def index
     @pools = Pool.all
   end
 
-  # GET /pools/1
-  # GET /pools/1.json
   def show
-	@pool = Pool.find(params[:id])
+    @pool = Pool.find(params[:id])
   end
 
-  # GET /pools/new
   def new
     @pool = Pool.new
     @pool.user = current_user
   end
 
-  # GET /pools/1/edit
   def edit
-	@pool = Pool.find(params[:id])
-	@user = @pool.user
+  	@pool = Pool.find(params[:id])
+  	@user = @pool.user
   end
 
-  # POST /pools
-  # POST /pools.json
   def create
     @pool = Pool.new(pool_params)
 
@@ -40,8 +32,6 @@ class PoolsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /pools/1
-  # PATCH/PUT /pools/1.json
   def update
   
 	@pool = Pool.find(params[:id])

@@ -35,7 +35,9 @@ Rails.application.configure do
   # Checks for improperly declared sprockets dependencies.
   # Raises helpful error messages.
   config.assets.raise_runtime_errors = true
-  config.web_console.whitelisted_ips = "75.71.127.130"
+  #config.web_console.whitelisted_ips = "75.71.127.130"
+  config.web_console.whitelisted_ips = "10.0.2.2"
+  BetterErrors::Middleware.allow_ip! "10.0.2.2"
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true

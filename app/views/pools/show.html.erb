@@ -1,14 +1,17 @@
+<% provide(:header, @pool.user.name+"'s "+@pool.title) unless User.where(id: @pool.user_id).empty? %>
+
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Title:</strong>
-  <%= @pool.title %>
-</p>
-
-<p>
-  <strong>User:</strong>
-  <%= @pool.user_id %>
-</p>
+<% if @pool.user == current_user %>
+  <%= form_for Submission.new do |f| %>
+    <div class="form-group">
+      <%= f.label :file, "Upload New Submission" %> <%= f.file_field :picture, class: "uploader" %>
+      <%= f.check_box :adult %> <%= f.label :adult %> <br />
+      <%= hidden_field_tag "submission[pool_id]", @pool.id %>
+      <%= f.submit "Save Submission", class: "btn btn-primary spaced", id: "save-button" %>
+    </div>
+  <% end %>
+<% end %>
 
 <%= link_to 'Edit', edit_pool_path(@pool) %> |
 <%= link_to 'Back', pools_path %>

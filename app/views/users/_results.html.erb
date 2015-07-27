@@ -7,8 +7,9 @@
 		</div>
 		  <div class="media-body">
 		    <h4 class="media-heading"><%= link_to user.name, user_path(user) %> <%=comm_statuses_condensed(user)%></h4>
-		   <%= link_to user.gallery, url_with_protocol(user.gallery) %>
-		   <%if !user.price.blank?%> <br>
+        <%= link_to "Gallery", pool_path(Pool.find_by(user_id: user.id)) %>
+		    <%= link_to user.gallery, url_with_protocol(user.gallery) %>
+		    <%if !user.price.blank?%> <br>
    			<%=user.price%>
 		   <% end %>
 		  </div>
