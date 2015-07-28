@@ -1,11 +1,12 @@
 class PoolsController < ApplicationController
 
   def index
-    @pools = Pool.all
+    @pools = Pool.where(user_id: current_user.id)
   end
 
   def show
     @pool = Pool.find(params[:id])
+    @submissions = Submission.where(pool_id: @pool.id)
   end
 
   def new

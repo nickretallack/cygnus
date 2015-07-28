@@ -9,12 +9,6 @@ gem 'coffee-rails', '~> 4.1.0'
 gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
-group :development, :test do
-  gem 'byebug'
-  gem 'web-console', '~> 2.0'
-  gem 'spring'
-end
-
 gem 'will_paginate',           '3.0.7'
 gem 'bootstrap-will_paginate', '0.0.10'
 gem 'bootstrap-sass'
@@ -22,10 +16,17 @@ gem 'redcarpet'
 gem 'high_voltage'
 gem 'passenger'
 gem 'pg'
+gem 'image'
 gem 'mini_magick'
 gem 'carrierwave'
 gem 'prefixfree-rails'
 gem 'modernizr-rails'
+
+group :development, :test do
+  gem 'byebug'
+  gem 'web-console', '~> 2.0'
+  gem 'spring'
+end
 
 group :development do
   gem 'better_errors'

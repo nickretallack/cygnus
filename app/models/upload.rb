@@ -12,7 +12,6 @@ class Upload < ActiveRecord::Base
   		if !upload_data.blank? && @this.save
   		  @this.id
   		else
-        raise "error"
         nil
   		end
   	else

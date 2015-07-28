@@ -37,20 +37,18 @@ class UsersController < ApplicationController
 	[:password_digest, :ip_Address]}
     end
   end
+
   def show
     @user = User.find_by id: params[:name]
 
     if @user.nil?
-	 raise ActionController::RoutingError.new('Not Found')
-
+      raise ActionController::RoutingError.new('Not Found')
     end
 
     respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render xml: @user, :except =>
-	[:password_digest, :ip_Address]}
-      format.json { render json: @user, :except =>
-	[:password_digest, :ip_Address]}
+      format.html
+      format.xml  { render xml: @user, :except => [:password_digest, :ip_Address]}
+      format.json { render json: @user, :except => [:password_digest, :ip_Address]}
     end
   end
 
