@@ -6,6 +6,7 @@ class SubmissionsController < ApplicationController
   end
 
   def show
+    @comments = Comment.where(submission_id: @submission.id)
   end
 
   def new

@@ -10,3 +10,24 @@
   <% end %>
   <%= link_to 'Pool', pool_path(@submission.pool.id) %>
 </div>
+
+<% @comments.each do |comment| %>
+  <%= content_tag :div, class: "row comment", id: comment.id do %>
+    <div class = "col-xs-2" style = "margin: 0 -15px;">
+      <%= image_tag(image_thumb_path(comment.user.upload.id)) %>
+    </div>
+    <div class = "col-xs-2" style = "margin: 0 -10px;">
+      <%= comment.user.name %>
+    </div>
+    <div class = "col-xs-8">
+      <%= comment.content %>
+    </div>
+  <% end %>
+<% end %>
+
+<%= form_for Comment.new do |f| %>
+  <%= f.text_area :content %><br />
+  <%= hidden_field_tag "comment[user_id]", current_user.id %>
+  <%= hidden_field_tag "comment[submission_id]", @submission.id %>
+  <%= f.submit "Post Comment", class: "btn btn-primary spaced" %>
+<% end %>

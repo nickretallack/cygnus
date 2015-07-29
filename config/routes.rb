@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :comments
   resources :order_forms
   default_url_options  :host => CONFIG["Host"]
   root to: 'users#index'

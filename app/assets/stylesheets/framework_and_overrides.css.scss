@@ -54,11 +54,12 @@ hr{
   border-top: 1px solid grey;
 }
 .separator{
-  height: 20px;
-  background-color: #eee;
+  position: fixed;
+  height: 50px;
   width: 100%;
   left: 0;
   top: 50px;
+  background: linear-gradient(to bottom, rgba(238,238,238,1), rgba(238,238,238,0));
 }
 .navbar{
   border: none;
@@ -100,5 +101,13 @@ h1, h2, h3, h4, h5, h6{
   padding-right: 0; 
 }
 .media-body{
+  width: 100%;
+}
+.comment{
+  height: 112px;
+  border: 4px outset aliceblue;
+  margin: 5px auto;
+}
+textarea{
   width: 100%;
 }
