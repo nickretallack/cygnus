@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_action :logged_in_user, only: [:edit, :update, :destroy] 
   before_action :correct_user_or_admin, only: [:edit, :update, :destroy]
   before_action :check_expiration, only: [:reset_return, :reset_return_confirm]
-  before_filter :set_user, only: [:activate, :show, :destroy, :edit, :update, :correct_user_or_admin, :check_expiration]
+  before_filter :set_user, only: [:activate, :show, :destroy, :edit, :update]
   
   def index
     @users = User.paginate(page: params[:page]).includes(:upload)
@@ -196,18 +196,19 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:name, :email, :password,
-                :password_confirmation, :commissions, :tags, :trades, :requests, :price, :details, :gallery)
+                :password_confirmation, :commissions, :tags, :trades, :requests, :price, :details, :gallery, :view_adult)
   end
   def reset_params
     params.require(:user).permit(:password, :password_confirmation)
   end
   def correct_user_or_admin
-    unless current_user_or_admin?(@user)
+    unless current_user_or_mod?(User.find params[:id])
       flash[:danger] = "Access Denied"
       redirect_to(root_url)
     end
   end
   def check_expiration
+    @user = User.find params[:id]
     unless (@user && @user.level > CONFIG["user_levels"]["Member"] && @user.authenticated?(:activation, params[:activation]))
         redirect_to root_url
     end

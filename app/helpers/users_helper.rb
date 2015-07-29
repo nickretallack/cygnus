@@ -9,26 +9,4 @@ module UsersHelper
 	   <span class='glyphicon #{user.trades ? "glyphicon-transfer" : "glyphicon-transfer text-danger"}'></span>
 	   <span class='glyphicon #{user.requests ? "glyphicon-list-alt" : "glyphicon-list-alt text-danger"}'></span>".html_safe
 	end
-
-  def new_edit_fields
-    {
-      name: {},
-      email: {field: "email_field"},
-      password: {field: "password_field"},
-      password_confirmation: {label: "confirmation", field: "password_field"},
-      gallery: {label: "offsite galleries"},
-      details: {label: "profile description", field: "text_area"},
-      price: {label: "what i charge", field: "text_area"},
-      tags: {label: "types of artwork i do (tags my profile may be searched by)"},
-      #picture: {}
-    }
-  end
-
-  def new_edit_checkboxes
-    {
-      commissions: {"prices" => true},
-      trades: {},
-      requests: {}
-    }
-  end
 end

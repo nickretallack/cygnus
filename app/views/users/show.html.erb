@@ -3,6 +3,7 @@
 
 <%= form_for @user, method: :patch, url: user_path, multipart: true, html: {class: "full-width"} do |f| %>
 	<% if edit %>
+		<span><%= f.check_box :view_adult %> <%= f.label "View Adult" %></span><br />
 		<span><%= f.label "Avatar" %> <%= f.file_field :picture, class: "uploader" %></span>
 	<% end %>
 	<div class="row">

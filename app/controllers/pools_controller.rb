@@ -7,7 +7,11 @@ class PoolsController < ApplicationController
 
   def show
     @pool = Pool.find(params[:id])
-    @submissions = Submission.where(pool_id: @pool.id)
+    if current_user.view_adult
+      @submissions = Submission.where(pool_id: @pool.id)
+    else
+      @submissions = Submission.where(pool_id: @pool.id, adult: false)
+    end
   end
 
   def new
