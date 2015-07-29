@@ -1,56 +1,57 @@
 <% provide(:header, @user.name) %>
+<% edit = params[:edit].nil?? @user == current_user : false %>
 
-<% provide(:extrascript, javascript_include_tag(controller_name+".show")) %>
-
-<div class="row">
-	<div class="col-sm-3" style="margin-top: 2%;">
-	  <%= image_tag(image_thumb_path(@user.upload.id), class: "thumbnail") unless @user.upload.nil? %>
+<%= form_for @user, method: :patch, url: user_path, multipart: true, html: {class: "full-width"} do |f| %>
+	<% if edit %>
+		<span><%= f.label "Avatar" %> <%= f.file_field :picture, class: "uploader" %></span>
+	<% end %>
+	<div class="row">
+		<div class="col-sm-3" style="margin-top: 2%;">
+		  <%= image_tag(image_thumb_path(@user.upload.id), class: "thumbnail") unless @user.upload.nil? %>
+		</div>
+		<div class="col-sm-9" style="margin-left: -5%;">
+			<div class="row">
+				<div class="col-xs-12">
+					<span><%= link_to "Gallery", pool_path(Pool.find_by(user_id: @user.id)) %><%= link_to "(ies)", pools_path(user_id: @user.id) %></span>
+				</div>
+				<div class="col-xs-12">
+						<%= comm_statuses_verbose(@user) %>
+						<span><%= f.check_box :commissions %> <%= f.label :commissions %> <%= f.check_box :trades %> <%= f.label :trades %> <%= f.check_box :requests %> <%= f.label :requests %></span>
+				</div>
+				<div class="col-xs-12">
+					<% if edit %>
+						<%= f.text_field :gallery, placeholder: "Offsite Gallery" %>
+					<% elsif !@user.gallery.blank? %>
+						<%= link_to @user.gallery, url_with_protocol(@user.gallery) %>
+					<% end %>
+				</div>
+				<div class="col-xs-12">
+					<% if edit %>
+						<span><%= f.label "I charge:" %> <%= f.text_field :price, placeholder: @user.price.blank?? "Set" : "Update" %></span>
+					<% elsif !@user.price.blank? %>
+						I charge:&nbsp;<%= @user.price %>
+					<% end %>
+				</div>
+				<div class="col-xs-12">
+						Member Since: <%= Date.parse(@user.created_at.to_s).to_formatted_s(:long_ordinal) %>
+				</div>
+			    <%if current_user.is_mod_or_higher?%>
+						<div class="col-xs-12">
+								Last Login: <%=Date.parse(@user.created_at.to_s).to_formatted_s(:long_ordinal) %>
+						</div>
+			    <%end%>
+			</div>
+		</div>
 	</div>
-	<div class="col-sm-9" style="margin-left: -5%;">
+	<p>
 		<div class="row">
-			<div class="col-xs-12">
-				<span><%= link_to "Gallery", pool_path(Pool.find_by(user_id: @user.id)) %><%= link_to "(ies)", pools_path(user_id: @user.id) %></span>
-			</div>
-			<div class="col-xs-12">
-				<div id="statuses">
-					<%= comm_statuses_verbose(@user) %>
-				</div>
-			</div>
-			<div class="col-xs-12">
-				<div id="offsiteGallery">
-					<%= link_to @user.gallery, url_with_protocol(@user.gallery) %>
-				</div>
-			</div>
-			<div class="col-xs-12">
-				<div id="prices">
-					<%if !@user.price.blank?%>
-						I charge:&nbsp;<%=@user.price%>
-					<%end%>
-				</div>
-			</div>
-			<div class="col-xs-12">
-				<div id="since">
-					Member Since: <%= Date.parse(@user.created_at.to_s).to_formatted_s(:long_ordinal) %>
-				</div>
-			</div>
-		    <%if current_user.is_mod_or_higher?%>
-			<div class="col-xs-12">
-				<div id="last">
-					Last Login: <%=Date.parse(@user.created_at.to_s) %>
-				</div>
-			</div>
-		    <%end%>
+			<% if edit %>
+				<%= f.text_area :details, placeholder: "Profile Text" %>
+			<% else %>
+				<%= render_markdown(@user.details || "") %>
+			<% end %>
 		</div>
-	</div>
-</div>
-<p>
-<div class="row">
-	<div class="col-sm-12">
-		<div id="description">
-			<%= render_markdown(@user.details) %>
-		</div>
-	</div>
-</div>
-</p>
-
-<div id="attach-point"></div>
+	</p>
+	<%= f.submit "Save Changes", class: "submit" if edit %>
+<% end %>
+<%= link_to "View live profile", url_for(params.merge({edit:false})) %>

@@ -3,7 +3,7 @@
 <p id="notice"><%= notice %></p>
 
 <% unless params[:user_id].nil? || params[:user_id].to_i != current_user.id %>
-  <%= form_for :pool do |f| %>
+  <%= form_for Pool.new do |f| %>
     <div class="form-group field">
       <%= f.label :title %>
       <%= f.text_field :title %>

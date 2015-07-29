@@ -23,10 +23,18 @@ img{
   @extend .col-md-6;
   @extend .text-center;
 }
+.centered{
+  @extend .text-center;
+}
 .submit{
   @extend .btn;
   @extend .btn-primary;
-  @extend .btn-lg;
+}
+.full-width{
+  min-width: 100%;
+}
+.wide{
+  width: 90%;
 }
 h1{
   border: 4px outset aquamarine;
@@ -60,9 +68,11 @@ hr{
   left: 0;
   top: 50px;
   background: linear-gradient(to bottom, rgba(238,238,238,1), rgba(238,238,238,0));
+  z-index: 100;
 }
 .navbar{
   border: none;
+  z-index: 1000;
 }
 
 // apply styles to HTML elements
@@ -71,7 +81,7 @@ main{
   @extend .container;
   //background-color: #eee;
   width: 100%;
-  margin-top: 60px;
+  margin-top: 50px;
   margin-bottom: 30px;
 }
 footer{
@@ -110,4 +120,7 @@ h1, h2, h3, h4, h5, h6{
 }
 textarea{
   width: 100%;
+}
+input[type="file"]{
+  display: inline;
 }

@@ -17,7 +17,7 @@ Rails.application.routes.draw do
 
   get    'users/search'  => 'users#search', as: 'search_user'
   post   'users/search'  => 'users#search'
-  resources :users, param: :name
+  resources :users
   resources :pools
   resources :submissions
 end

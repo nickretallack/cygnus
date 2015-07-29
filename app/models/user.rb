@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
   def self.search(terms = "")
     sanitized = sanitize_sql_array(["to_tsquery('english', ?)",
 	terms.gsub(/\s/,"+")])
-    User.where("tags_tsvector @@ #{sanitized}")
+    User.where("tags @@ #{sanitized}")
   end
 
   def is_anonymous?
