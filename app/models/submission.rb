@@ -5,4 +5,5 @@ class Submission < ActiveRecord::Base
   validate do |submission|
     errors.add(:pool_id, "does not exist") if submission.pool.nil? || submission.pool.user.nil?
   end
+  validates_presence_of :file_id
 end

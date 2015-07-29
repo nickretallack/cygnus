@@ -5,16 +5,44 @@
 <% if @pool.user == current_user %>
   <%= form_for Submission.new do |f| %>
     <div class="form-group">
-      <%= f.label :file, "Upload New Submission" %>
+      <%= f.label :title %>
+      <%= f.text_field :title %>
+    </div>
+    <div class="form-group">
       <%= f.file_field :picture, class: "uploader" %>
-      <%= f.check_box :adult %> <%= f.label :adult %>
-      <br />
+    </div>
+    <div class="form-group">
+      <%= f.check_box :adult %>
+      <%= f.label :adult %>
+    </div>
       <%= hidden_field_tag "submission[pool_id]", @pool.id %>
-      <%= f.submit "Save Submission", class: "btn btn-primary spaced" %>
+      <%= f.submit "New Submission", class: "btn btn-primary spaced" %>
     </div>
   <% end %>
+  <hr />
 <% end %>
 
-<% @submissions.each do |submission| %>
-  <%= image_tag(image_thumb_path(submission.upload.id), class: "thumbnail thumbnail-mini") %>
+<% if @submissions.empty? %>
+  <div class="form-centered">
+    <h2>No submissions here yet.</h2>
+  </div>
+<% else %>
+  <% @submissions.each do |submission| %>
+    <div class="" style="float: left; width: 110px;">
+      <div class="row">
+        <%= link_to image_tag(image_thumb_path(submission.upload.id), class: (submission.adult)? "thumbnail thumbnail-mini thumbnail-adult" : "thumbnail thumbnail-mini"), submission_path(submission.id) %>
+      </div>
+      <div class="row form-centered">
+        <%= link_to submission.title, submission_path(submission.id) %>
+      </div>
+      <div class="row form-centered">
+        Order print
+      </div>
+      <% if current_user.is_admin? || @pool.user == current_user %>
+        <div class="row form-centered">
+          <%= link_to :destroy, submission_path(submission), method: :delete, data: { confirm: "Are you sure?" } %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
 <% end %>

@@ -6,7 +6,7 @@
       <span class="caret"></span>
     </a>
     <ul class="dropdown-menu pull-right">
-      <li><%= link_to "Gallerys", pools_path() %></li>
+      <li><%= link_to "Galleries", pools_path(user_id: current_user.id) %></li>
       <li><%= link_to "Order Forms", order_forms_path() %></li>
       <li class="divider"></li>
       <li><%= link_to "Profile", user_path(current_user) %></li>

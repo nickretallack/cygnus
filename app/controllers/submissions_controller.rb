@@ -16,19 +16,17 @@ class SubmissionsController < ApplicationController
   end
 
   def create
-    console
     @submission = Submission.new(submission_params)
     @submission.file_id = Upload.render(params[:submission][:picture], @submission.adult)
+    @submission.title = "Untitled" if @submission.title.blank?
     if @submission.pool.user == current_user
-      if @submission.save
-        respond_to do |format|
-          format.html { redirect_to @submission, notice: 'Submission Built!' }
+      respond_to do |format|
+        if @submission.save
+          format.html { redirect_to :back, notice: 'Submission Built!' }
           format.json { render :show, status: :created, location: @submission }
   		    format.xml { render :show, status: :created, location: @submission }
-        end
-      else
-        respond_to do |format|
-          format.html { render :new }
+        else
+          format.html { redirect_to :back, notice: "Please choose a file." }
           format.json { render json: @submission.errors, status: :unprocessable_entity }
   		    format.xml { render json: @submission.errors, status: :unprocessable_entity }
         end
@@ -57,7 +55,7 @@ class SubmissionsController < ApplicationController
   def destroy
     @submission.destroy
     respond_to do |format|
-      format.html { redirect_to submissions_url, notice: 'Submission was successfully destroyed.' }
+      format.html { redirect_to :back, notice: 'Submission was successfully destroyed.' }
       format.json { head :no_content }
       format.xml { head :no_content }
     end

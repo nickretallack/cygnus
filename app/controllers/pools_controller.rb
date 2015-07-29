@@ -1,7 +1,8 @@
 class PoolsController < ApplicationController
 
   def index
-    @pools = Pool.where(user_id: current_user.id)
+    @pools = Pool.where(user_id: params[:user_id])
+    @pools = Pool.all if @pools.empty?
   end
 
   def show
@@ -22,14 +23,19 @@ class PoolsController < ApplicationController
   def create
     @pool = Pool.new(pool_params)
 
-    respond_to do |format|
-      if @pool.save
-        format.html { redirect_to @pool, notice: 'Pool was successfully created.' }
-        format.json { render :show, status: :created, location: @pool }
-      else
-        format.html { render :new }
-        format.json { render json: @pool.errors, status: :unprocessable_entity }
+    if @pool.user == current_user
+      respond_to do |format|
+        if @pool.save
+          format.html { redirect_to @pool, notice: 'Pool was successfully created.' }
+          format.json { render :show, status: :created, location: @pool }
+        else
+          format.html { render :new }
+          format.json { render json: @pool.errors, status: :unprocessable_entity }
+        end
       end
+    else
+      flash[:danger] = "You cannot make a pool for another user."
+      redirect_to :back
     end
   end
 

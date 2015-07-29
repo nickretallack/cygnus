@@ -62,14 +62,14 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = User.find_by name: params[:name]
+    @user = User.find_by id: params[:name]
     if @user.nil?
 	 raise ActionController::RoutingError.new('Not Found')
     end
   end
 
   def update
-    @user = User.find_by(name: params[:name])
+    @user = User.find_by(id: params[:name])
     if(params[:user][:avatar_check] != '0') #checkboxes are hard to validate
     	@user.avatar = Upload.render(params[:user][:picture])
     end
@@ -186,14 +186,14 @@ class UsersController < ApplicationController
     else
 	
       flash[:danger] = "Invalid email/password combination"
-      redirect_to :root
+      redirect_to :back
     end
   end
 
   def logout
     destroysession
     flash[:info] = "You have successfully logged out."
-    redirect_to :root
+    redirect_to :back
   end
 
   private
@@ -206,7 +206,7 @@ class UsersController < ApplicationController
     params.require(:user).permit(:password, :password_confirmation)
   end
   def correct_user_or_admin
-    @user = User.find_by(name: params[:name])
+    @user = User.find_by(id: params[:name])
     unless current_user_or_admin?(@user)
       flash[:danger] = "Access Denied"
       redirect_to(root_url)

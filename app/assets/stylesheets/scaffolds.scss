@@ -8,7 +8,7 @@ body {
   font-family: 'blogger', verdana, arial, helvetica, sans-serif;
   font-size: 16px;
   line-height: 20px;
-  margin: 2%;
+  margin: 1%;
 }
 
 p, ol, ul, td {
@@ -38,7 +38,7 @@ div {
   &.field, &.actions {
     margin-bottom: 10px;
   }
-  border: 3px solid red;
+  //border: 3px solid red;
 }
 
 #notice {

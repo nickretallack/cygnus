@@ -44,6 +44,9 @@ h1{
   margin-left: 5px;
   margin-right: 5px;
 }
+.thumbnail-adult{
+  border-color: indianred;
+}
 hr{
   width: 80%;
   margin: 10px auto;
@@ -53,6 +56,9 @@ hr{
 .separator{
   height: 20px;
   background-color: #eee;
+  width: 100%;
+  left: 0;
+  top: 50px;
 }
 .navbar{
   border: none;
@@ -64,7 +70,7 @@ main{
   @extend .container;
   //background-color: #eee;
   width: 100%;
-  margin-top: 72px;
+  margin-top: 60px;
   margin-bottom: 30px;
 }
 footer{
@@ -83,4 +89,16 @@ blockquote{
 h1, h2, h3, h4, h5, h6{
   margin-top: 10px;
   margin-bottom: 15px;
+}
+.row{
+  margin: 0 0 0 1%;
+}
+.media{
+  padding-left: 0;
+}
+.media-left{
+  padding-right: 0; 
+}
+.media-body{
+  width: 100%;
 }

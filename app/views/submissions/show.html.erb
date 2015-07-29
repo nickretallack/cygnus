@@ -1,24 +1,12 @@
+<% provide :header, @submission.title %>
+
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Title:</strong>
-  <%= @submission.title %>
-</p>
+<%= image_tag image_path(@submission.upload.id) %>
 
-<p>
-  <strong>Adult:</strong>
-  <%= @submission.adult %>
-</p>
-
-<p>
-  <strong>File:</strong>
-  <%= @submission.file_id %>
-</p>
-
-<p>
-  <strong>Pool:</strong>
-  <%= @submission.pool_id %>
-</p>
-
-<%= link_to 'Edit', edit_submission_path(@submission) %> |
-<%= link_to 'Back', submissions_path %>
+<div class = "form-centered">
+  <% if @submission.pool.user_id == current_user.id %>
+    <%= link_to 'Edit', edit_submission_path(@submission) %> |
+  <% end %>
+  <%= link_to 'Pool', pool_path(@submission.pool.id) %>
+</div>
