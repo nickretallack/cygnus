@@ -1,6 +1,5 @@
 <% provide(:header, "All Artists") %>	
 
-<%= render 'search', query: @query%>
+<%= render 'search', query: @query %>
 <%= render 'results', users: @users %>
 <%= will_paginate %>
-<br>

@@ -2,93 +2,125 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
-// make all images responsive by default
-img {
+img{
   @extend .img-responsive;
   margin: 0 auto;
-  }
-// override for the 'Home' navigation link
-.navbar-brand {
+}
+.navbar-brand{
   font-size: inherit;
-  }
-
-// THESE ARE EXAMPLES YOU CAN MODIFY
-// create your own classes
-// to make views framework-neutral
-.row {
+}
+.row{
   margin: 15px;
 }
-.column {
+.column{
   @extend .col-md-6;
   @extend .text-center;
-  }
-.form {
+}
+.form{
   @extend .col-md-6;
-  }
-.form-centered {
+}
+.form-centered{
   @extend .col-md-6;
   @extend .text-center;
-  }
-.submit {
+}
+.centered{
+  @extend .text-center;
+}
+.submit{
   @extend .btn;
   @extend .btn-primary;
-  @extend .btn-lg;
-  }
-.closer > a{
-  padding-left: 5px !important;
 }
-h1 {
+.full-width{
+  min-width: 100%;
+}
+.wide{
+  width: 90%;
+}
+h1{
   border: 4px outset aquamarine;
   border-right-style: none;
   border-left-style: none;
 }
-.thumbnail {
+.thumbnail{
   border: 5px dashed cornflowerblue;
   margin: 0;
 }
-.thumbnail-mini {
+.thumbnail-mini{
   max-width: 100px;
   border: 2px dashed cornflowerblue;
+  float: left;
+  margin-left: 5px;
+  margin-right: 5px;
 }
-#attach-point {
-  //border: 4px solid red;
-  display: flex;
-  flex-direction: column;
-  div {
-    //border: 4px outset cornflowerblue;
-    flex-direction: row;
-    margin: .5%;
-    }
-  .full-width{
-    width: 100%;
-  }
+.thumbnail-adult{
+  border-color: indianred;
+}
+hr{
+  width: 80%;
+  margin: 10px auto;
+  text-align: center;
+  border-top: 1px solid grey;
+}
+.separator{
+  position: fixed;
+  height: 50px;
+  width: 100%;
+  left: 0;
+  top: 50px;
+  background: linear-gradient(to bottom, rgba(238,238,238,1), rgba(238,238,238,0));
+  z-index: 100;
+}
+.navbar{
+  border: none;
+  z-index: 1000;
 }
 
 // apply styles to HTML elements
 // to make views framework-neutral
-main {
+main{
   @extend .container;
   //background-color: #eee;
-  padding-bottom: 80px;
   width: 100%;
-  margin: 0;
-  padding: 0;
-  margin-top: 51px; // accommodate the navbar
-  }
-footer {
+  margin-top: 50px;
+  margin-bottom: 30px;
+}
+footer{
   border-top: 4px outset darkslategray;
 }
-section {
+section{
   @extend .row;
   margin-top: 20px;
-  }
+}
 table{
   @extend .table;
 }
-blockquote {
+blockquote{
 	border-left: 3px solid #bbb;
 }
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6{
   margin-top: 10px;
   margin-bottom: 15px;
+}
+.row{
+  margin: 0 0 0 1%;
+}
+.media{
+  padding-left: 0;
+}
+.media-left{
+  padding-right: 0; 
+}
+.media-body{
+  width: 100%;
+}
+.comment{
+  height: 112px;
+  border: 4px outset aliceblue;
+  margin: 5px auto;
+}
+textarea{
+  width: 100%;
+}
+input[type="file"]{
+  display: inline;
 }

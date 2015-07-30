@@ -1,47 +1,52 @@
 class PoolsController < ApplicationController
 
-  # GET /pools
-  # GET /pools.json
   def index
-    @pools = Pool.all
+	if params[:user_id]
+		@user = User.find(params[:user_id])
+		@pools = Pool.where(user_id: @user) 
+    else
+		@pools = Pool.all
+	end
   end
 
-  # GET /pools/1
-  # GET /pools/1.json
   def show
-	@pool = Pool.find(params[:id])
+    @pool = Pool.find(params[:id])
+    if current_user.view_adult
+      @submissions = Submission.where(pool_id: @pool.id)
+    else
+      @submissions = Submission.where(pool_id: @pool.id, adult: false)
+    end
   end
 
-  # GET /pools/new
   def new
     @pool = Pool.new
     @pool.user = current_user
   end
 
-  # GET /pools/1/edit
   def edit
-	@pool = Pool.find(params[:id])
-	@user = @pool.user
+  	@pool = Pool.find(params[:id])
+  	@user = @pool.user
   end
 
-  # POST /pools
-  # POST /pools.json
   def create
     @pool = Pool.new(pool_params)
 
-    respond_to do |format|
-      if @pool.save
-        format.html { redirect_to @pool, notice: 'Pool was successfully created.' }
-        format.json { render :show, status: :created, location: @pool }
-      else
-        format.html { render :new }
-        format.json { render json: @pool.errors, status: :unprocessable_entity }
+    if @pool.user == current_user
+      respond_to do |format|
+        if @pool.save
+          format.html { redirect_to @pool, notice: 'Pool was successfully created.' }
+          format.json { render :show, status: :created, location: @pool }
+        else
+          format.html { render :new }
+          format.json { render json: @pool.errors, status: :unprocessable_entity }
+        end
       end
+    else
+      flash[:danger] = "You cannot make a pool for another user."
+      redirect_to :back
     end
   end
 
-  # PATCH/PUT /pools/1
-  # PATCH/PUT /pools/1.json
   def update
   
 	@pool = Pool.find(params[:id])

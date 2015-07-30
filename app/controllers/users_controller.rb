@@ -1,103 +1,92 @@
 class UsersController < ApplicationController
   before_action :logged_in_user, only: [:edit, :update, :destroy] 
-  before_action :correct_user_or_admin,   only: [:edit, :update, :destroy]
+  before_action :correct_user_or_admin, only: [:edit, :update, :destroy]
   before_action :check_expiration, only: [:reset_return, :reset_return_confirm]
+  before_filter :set_user, only: [:activate, :show, :destroy, :edit, :update]
+  
   def index
     @users = User.paginate(page: params[:page]).includes(:upload)
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render xml: @users, :except =>
-	[:password_digest, :ip_Address]}
-      format.json { render json: @users, :except =>
-	[:password_digest, :ip_Address]}
+      format.html
+      format.xml  { render xml: @users, :except => [:password_digest, :ip_Address] }
+      format.json { render json: @users, :except => [:password_digest, :ip_Address] }
     end
   end
   def activate
-    user = User.find_by(id: params[:id])
-    if user && user.level == CONFIG["user_levels"]["Unactivated"] && user.authenticated?(:activation, params[:activation])
-      user.update_attribute(:level, CONFIG["user_levels"]["Member"])
-      user.update_attribute(:activated_at, Time.zone.now)
-      log_in user
+    if @user && @user.level == CONFIG["user_levels"]["Unactivated"] && @user.authenticated?(:activation, params[:activation])
+      @user.update_attribute(:level, CONFIG["user_levels"]["Member"])
+      @user.update_attribute(:activated_at, Time.zone.now)
+      log_in @user
       flash[:success] = "Account activated!"
-      redirect_to action: "show", name: user
+      redirect_to action: "show", id: @user
     else
       flash[:danger] = "Invalid activation link"
       redirect_to root_url
     end
   end
+
   def search
-  
-	@query = params[:search]? params[:search][:search] : ""
+    @query = params[:search]? params[:search][:search] : ""
     @users = User.search(@query).paginate(page: params[:page]).includes(:upload)
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render xml: @users, :except =>
-	[:password_digest, :ip_Address]}
-      format.json { render json: @users, :except =>
-	[:password_digest, :ip_Address]}
+      format.html
+      format.xml  { render xml: @users, except: [:password_digest, :ip_Address]}
+      format.json { render json: @users, except: [:password_digest, :ip_Address]}
     end
   end
+
   def show
-    @user = User.find_by name: params[:name]
-
     if @user.nil?
-	 raise ActionController::RoutingError.new('Not Found')
-
+      raise ActionController::RoutingError.new('Not Found')
     end
 
     respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render xml: @user, :except =>
-	[:password_digest, :ip_Address]}
-      format.json { render json: @user, :except =>
-	[:password_digest, :ip_Address]}
+      format.html
+      format.xml  { render xml: @user, :except => [:password_digest, :ip_Address]}
+      format.json { render json: @user, :except => [:password_digest, :ip_Address]}
     end
   end
 
   def destroy
-    User.find_by(name: params[:name]).destroy
-	respond_to do |format|
+    @user.destroy
+    respond_to do |format|
       format.html { redirect_to users_url, notice: params[:name] + 'has deactivated their account' }
       format.json { head :no_content }
-	  format.xml { head :no_content }
+      format.xml { head :no_content }
     end
   end
 
   def edit
-    @user = User.find_by name: params[:name]
     if @user.nil?
-	 raise ActionController::RoutingError.new('Not Found')
+      raise ActionController::RoutingError.new('Not Found')
     end
   end
 
   def update
-    @user = User.find_by(name: params[:name])
-    if(params[:user][:avatar_check] != '0') #checkboxes are hard to validate
-    	@user.avatar = Upload.render(params[:user][:picture])
-    end
+    @user.avatar = Upload.render(params[:user][:picture]) unless params[:user][:picture].nil?
     if @user.update_attributes(user_params)
       flash[:success] = "Profile updated"
-	  if request.xhr?
-			render :text=> user_path(@user)
-	  else  
-		respond_to do |format|
-			format.html { redirect_to user_path(@user), notice: 'User Updated' }
-			format.json { render xml: @user, :except =>
-			[:password_digest, :ip_Address], status: :ok, location: @user }
-			format.xml { render json: @user, :except =>
-			[:password_digest, :ip_Address], status: :ok, location: @user }
-		end
-	  end	
+  	  if request.xhr?
+  			render :text=> user_path(@user)
+  	  else  
+    		respond_to do |format|
+    			format.html { redirect_to user_path(@user) }
+    			format.json { render xml: @user, :except =>
+    			[:password_digest, :ip_Address], status: :ok, location: @user }
+    			format.xml { render json: @user, :except =>
+    			[:password_digest, :ip_Address], status: :ok, location: @user }
+    		end
+      end	
     else
-		if request.xhr?
-			render 'edit', layout: false, status: 406
-		else  
-			respond_to do |format|
-			    format.html { render :edit }
-				format.json { render json: @user.errors, status: :unprocessable_entity }
-				format.xml { render json: @user.errors, status: :unprocessable_entity }
-			end
-		end	
+  		if request.xhr?
+  			render 'edit', layout: false, status: 406
+  		else  
+  			respond_to do |format|
+  			    format.html { render :edit }
+  				format.json { render json: @user.errors, status: :unprocessable_entity }
+  				format.xml { render json: @user.errors, status: :unprocessable_entity }
+  			end
+  		end	
     end
   end
 
@@ -112,46 +101,45 @@ class UsersController < ApplicationController
     @user.avatar = Upload.render(params[:user][:picture])
     @user.level = CONFIG["user_levels"]["Unactivated"] if !CONFIG["Email_Required"]
     if @user.save
-     if CONFIG["Email_Required"]
-      UserMailer.account_activation(@user).deliver_now
-      flash[:info] = "Please check your email to activate your account."
-	  if request.xhr?
-			render :text=> root_url
-	  else
-		respond_to do |format|
-			format.html { redirect_to root_url }
-			format.json { render xml: @user, :except =>
-			[:password_digest, :ip_Address], status: :check_email, location: @user }
-			format.xml { render json: @user, :except =>
-			[:password_digest, :ip_Address], status: :check_email, location: @user }	  
-
-		end
-			
-	  end
-     else
-      log_in @user
-      flash[:success] = "Welcome to Bleatr!"
-	  if request.xhr?
-			render :text=> user_path(@user)
-	  else
-		respond_to do |format|
-			format.html { redirect_to user_path(@user) }
-			format.json { render xml: @user, :except =>
-			[:password_digest, :ip_Address], status: :created, location: @user }
-			format.xml { render json: @user, :except =>
-			[:password_digest, :ip_Address], status: :created, location: @user }	  
-
-		end
-	  end
-	 end
+      if CONFIG["Email_Required"]
+        UserMailer.account_activation(@user).deliver_now
+        flash[:info] = "Please check your email to activate your account."
+    	  if request.xhr?
+    			render :text=> root_url
+    	  else
+      		respond_to do |format|
+      			format.html { redirect_to root_url }
+      			format.json { render xml: @user, :except =>
+      			[:password_digest, :ip_Address], status: :check_email, location: @user }
+      			format.xml { render json: @user, :except =>
+      			[:password_digest, :ip_Address], status: :check_email, location: @user }	  
+      		end
+    	  end
+      else
+        Pool.new(title: "Gallery", user_id: @user.id).save!
+        log_in @user
+        flash[:success] = "Welcome to Bleatr!"
+    	  if request.xhr?
+    			render :text=> user_path(@user)
+    	  else
+      		respond_to do |format|
+      			format.html { redirect_to user_path(@user) }
+      			format.json { render xml: @user, :except =>
+      			[:password_digest, :ip_Address], status: :created, location: @user }
+      			format.xml { render json: @user, :except =>
+      			[:password_digest, :ip_Address], status: :created, location: @user }	  
+      		end
+    	  end
+      end
     else
-		if request.xhr?
-			render 'new', layout: false, status: 406
-		else  
-			render 'new'
-		end	
+  		if request.xhr?
+  			render 'new', layout: false, status: 406
+  		else  
+  			render 'new'
+  		end
     end
   end
+
   def reset_confirm
     @user = User.find_by(email: params[:password_reset][:email].downcase)
     if @user
@@ -180,6 +168,7 @@ class UsersController < ApplicationController
       redirect_to :back
     end
   end
+
   def logon
     user = User.find_by(email: params[:session][:email].downcase)
     if user && user.authenticate(params[:session][:password])
@@ -189,34 +178,37 @@ class UsersController < ApplicationController
     else
 	
       flash[:danger] = "Invalid email/password combination"
-      redirect_to :root
+      redirect_to :back
     end
   end
 
   def logout
     destroysession
     flash[:info] = "You have successfully logged out."
-    redirect_to :root
+    redirect_to :back
   end
 
   private
 
+  def set_user
+    @user = User.find params[:id]
+  end
+
   def user_params
     params.require(:user).permit(:name, :email, :password,
-                :password_confirmation, :commissions, :tags,:trades, :requests, :price, :details, :gallery)
+                :password_confirmation, :commissions, :tags, :trades, :requests, :price, :details, :gallery, :view_adult)
   end
   def reset_params
     params.require(:user).permit(:password, :password_confirmation)
   end
   def correct_user_or_admin
-    @user = User.find_by(name: params[:name])
-    unless current_user_or_admin?(@user)
+    unless current_user_or_mod?(User.find params[:id])
       flash[:danger] = "Access Denied"
       redirect_to(root_url)
     end
   end
   def check_expiration
-    @user = User.find(params[:id])
+    @user = User.find params[:id]
     unless (@user && @user.level > CONFIG["user_levels"]["Member"] && @user.authenticated?(:activation, params[:activation]))
         redirect_to root_url
     end

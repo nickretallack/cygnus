@@ -15,14 +15,16 @@
     <header>
       <%= render 'layouts/navigation' %>
     </header>
+    <div class="separator"></div>
     <main role="main" id="main">
       <h1><%= yield :header %></h1>
       <%= render 'layouts/messages' %>
       <%= yield %>
     </main>
     <footer>
-      <p><%= CONFIG['Copyright'].html_safe %> </p>
-	<% console %>
+      <%= link_to "Back", request.referer.nil?? root_path : URI(request.referer).path %>
+      <p><%= CONFIG['Copyright'].html_safe %></p>
+      <%# console %>
     </footer>
   </body>
 </html>
