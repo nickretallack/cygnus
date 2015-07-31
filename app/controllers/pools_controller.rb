@@ -1,8 +1,12 @@
 class PoolsController < ApplicationController
 
   def index
-    @pools = Pool.where(user_id: params[:user_id])
-    @pools = Pool.all if @pools.empty?
+	if params[:user_id]
+		@user = User.find(params[:user_id])
+		@pools = Pool.where(user_id: @user) 
+    else
+		@pools = Pool.all
+	end
   end
 
   def show

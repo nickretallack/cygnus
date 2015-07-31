@@ -1,6 +1,5 @@
-<% provide :header, current_user.name+"'s pools" %>
-
-<p id="notice"><%= notice %></p>
+<% provide :header, @user.name+"'s pools" if @user %>
+<% provide :header, "all pools" unless @user %>
 
 <% unless params[:user_id].nil? || params[:user_id].to_i != current_user.id %>
   <%= form_for Pool.new do |f| %>

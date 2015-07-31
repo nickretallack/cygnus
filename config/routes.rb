@@ -6,19 +6,21 @@ Rails.application.routes.draw do
   root to: 'users#index'
   post   'login'   => 'users#logon'
   delete 'logout'  => 'users#logout'
-  get	 'reset' => 'users#reset', as: 'password_reset'
+  get	 'reset' => 'users#reset', as: :password_reset
   post	 'reset' => 'users#reset_confirm'
-  get    'reset/:id/:activation' => 'users#reset_return', as: 'send_password_reset'
+  get    'reset/:id/:activation' => 'users#reset_return', as: :send_password_reset
   patch   'reset/:id/:activation' => 'users#reset_return_confirm'
-  get	 'users/:id/activate/:activation' => 'users#activate', as: 'activate_user'
+  get	 'users/:id/activate/:activation' => 'users#activate', as: :activate_user
 
   get	 'images/:id' =>  'images#show'
-  get	 'images/:id/thumb/' =>  'images#thumb', as: 'image_thumb'
+  get	 'images/:id/thumb/' =>  'images#thumb', as: :image_thumb
 
-  get    'users/search'  => 'users#search', as: 'search_user'
+  get    'users/search'  => 'users#search', as: :search_user
   post   'users/search'  => 'users#search'
+
   resources :users
+  
+  get 'pools(/user/:user_id)' => 'pools#index' , as: :pools
   resources :pools, except: :index
-  get 'pools(/user/:user_id)' => 'pools#index', as: :pools
   resources :submissions
 end
