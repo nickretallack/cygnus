@@ -1,10 +1,6 @@
-  <div class="input-group col-xs-5">
-	<%= form_for(:search, url: search_user_path, class: "navbar-form navbar") do |f| %>
-	  <div class="input-group">
-	      <%= f.text_field :search, class: 'form-control', placeholder: 'Artists who do...', value: query %>
-              <span class="input-group-btn">
-	        <%= f.submit "Search", class: "btn btn-primary" %>
-              </span>
-	  </div>
-	</div>
-<% end %>
+<div class="wide-100">
+  <%= form_for(:search, url: search_user_path) do |f| %>
+    <%= f.text_field :search, class: 'form-control wide-40 fl', placeholder: 'Artists who do...', value: query %>
+    <%= f.submit "Search", class: "btn btn-primary fl" %>
+  <% end %>
+</div>

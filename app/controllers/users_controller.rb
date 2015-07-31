@@ -5,13 +5,14 @@ class UsersController < ApplicationController
   before_filter :set_user, only: [:activate, :show, :destroy, :edit, :update]
   
   def index
-    @users = User.paginate(page: params[:page]).includes(:upload)
+    @users = User.paginate(page: params[:page]).includes(:upload).order(:name)
     respond_to do |format|
       format.html
       format.xml  { render xml: @users, :except => [:password_digest, :ip_Address] }
       format.json { render json: @users, :except => [:password_digest, :ip_Address] }
     end
   end
+
   def activate
     if @user && @user.level == CONFIG["user_levels"]["Unactivated"] && @user.authenticated?(:activation, params[:activation])
       @user.update_attribute(:level, CONFIG["user_levels"]["Member"])
@@ -163,14 +164,14 @@ class UsersController < ApplicationController
     elsif @user.update_attributes(reset_params)
       log_in @user
       flash[:success] = "Password has been reset."
-      redirect_to controller: "users", action: "show", name: @user
+      redirect_to controller: "users", action: "show", name: @user.name
     else
       redirect_to :back
     end
   end
 
   def logon
-    user = User.find_by(email: params[:session][:email].downcase)
+    user = User.find_by(name: params[:session][:name].downcase)
     if user && user.authenticate(params[:session][:password])
       # Log the user in and redirect to the user's show page.
       log_in user
@@ -207,6 +208,7 @@ class UsersController < ApplicationController
       redirect_to(root_url)
     end
   end
+  
   def check_expiration
     @user = User.find params[:id]
     unless (@user && @user.level > CONFIG["user_levels"]["Member"] && @user.authenticated?(:activation, params[:activation]))

@@ -1,24 +1,26 @@
-
 <% @users.each do |user| %>
-  <hr />
-	<div class="row">
-    <div class="media col-xs-10">
-  		<div class="media-left">
-		    <%= link_to(image_tag(image_thumb_path(user.upload.id), class: "thumbnail thumbnail-mini"), user_path(user)) unless user.upload.nil? %>
-		  </div>
-		  <div class="media-body">
-		    <h4 class="media-heading"><%= link_to user.name, user_path(user) %> <%=comm_statuses_condensed(user)%></h4>
-                    <span>><%= link_to "Gallery", pool_path(Pool.find_by(user)) %><%= link_to "(ies)", pools_path(user) %></span><br />
-		    <%= link_to user.gallery, url_with_protocol(user.gallery) %>
-		    <%if !user.price.blank?%> <br>
-   			<%=user.price%>
-		   <% end %>
-		  </div>
-	  </div>
-    <div class="col-xs-2">
+  <div class="wide-100 list">
+    <hr />
+    <div class="wide-80 fl">
+      <div class="wide-px-110 high-px-110 fl">
+        <%= link_to(image_tag(image_thumb_path(user.upload.id), class: "thumbnail thumbnail-mini"), user_path(user)) unless user.upload.nil? %>
+      </div>
+      <div class="fl">
+        <h3><%= link_to user.name, user_path(user) %> <%=comm_statuses_condensed(user)%></h4>
+        <span><%= link_to "Gallery", pool_path(Pool.find_by(user_id: user)) %><%= link_to "(ies)", pools_path(user) %></span><br />
+        <%= link_to user.gallery, url_with_protocol(user.gallery) unless user.gallery.nil? %>
+        <%if !user.price.blank?%> <br />
+    			<%=user.price%>
+        <% end %>
+      </div>
+    </div>
+    <div class="wide-20 fl">
       <% if current_user.is_admin? %>
           <%= link_to 'Destroy', user_path(user), method: :delete, data: { confirm: 'Are you sure?' } %>
     	<% end %>
+    </div>
+    <div class="wide-100">
+      <%= user.tags || "(No tags)"%>
     </div>
   </div>
 <% end %>

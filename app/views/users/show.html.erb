@@ -1,58 +1,42 @@
 <% provide(:header, @user.name) %>
 <% edit = params[:edit].nil?? @user == current_user : false %>
 
-<%= form_for @user, method: :patch, url: user_path, multipart: true, html: {class: "full-width"} do |f| %>
+<%= form_for @user, method: :patch, url: user_path, multipart: true do |f| %>
 	<% if edit %>
 		<span><%= f.check_box :view_adult %> <%= f.label "View Adult" %></span><br />
 		<span><%= f.label "Avatar" %> <%= f.file_field :picture, class: "uploader" %></span>
 	<% end %>
-	<div class="row">
-		<div class="col-sm-3" style="margin-top: 2%;">
+	<div class="wide-100">
+		<div class="wide-px-160 fl" style="min-height: 160px; margin: 23px 10px 0px 23px;">
 		  <%= image_tag(image_thumb_path(@user.upload.id), class: "thumbnail") unless @user.upload.nil? %>
 		</div>
-		<div class="col-sm-9" style="margin-left: -5%;">
-			<div class="row">
-				<div class="col-xs-12">
-					<span><%= link_to "Gallery", pool_path(Pool.find_by(user_id: @user.id)) %><%= link_to "(ies)", pools_path(user_id: @user.id) %></span>
-				</div>
-				<div class="col-xs-12">
-						<%= comm_statuses_verbose(@user) %>
-						<span><%= f.check_box :commissions %> <%= f.label :commissions %> <%= f.check_box :trades %> <%= f.label :trades %> <%= f.check_box :requests %> <%= f.label :requests %></span>
-				</div>
-				<div class="col-xs-12">
-					<% if edit %>
-						<%= f.text_field :gallery, placeholder: "Offsite Gallery" %>
-					<% elsif !@user.gallery.blank? %>
-						<%= link_to @user.gallery, url_with_protocol(@user.gallery) %>
-					<% end %>
-				</div>
-				<div class="col-xs-12">
-					<% if edit %>
-						<span><%= f.label "I charge:" %> <%= f.text_field :price, placeholder: @user.price.blank?? "Set" : "Update" %></span>
-					<% elsif !@user.price.blank? %>
-						I charge:&nbsp;<%= @user.price %>
-					<% end %>
-				</div>
-				<div class="col-xs-12">
-						Member Since: <%= Date.parse(@user.created_at.to_s).to_formatted_s(:long_ordinal) %>
-				</div>
-			    <%if current_user.is_mod_or_higher?%>
-						<div class="col-xs-12">
-								Last Login: <%=Date.parse(@user.created_at.to_s).to_formatted_s(:long_ordinal) %>
-						</div>
-			    <%end%>
-			</div>
+		<div class="fl">
+			<span><%= link_to "Gallery", pool_path(Pool.find_by(user_id: @user.id)) %><%= link_to "(ies)", pools_path(user_id: @user.id) %></span><br />
+				<%= comm_statuses_verbose(@user) %>
+				<span><%= f.check_box :commissions %> <%= f.label :commissions %> <%= f.check_box :trades %> <%= f.label :trades %> <%= f.check_box :requests %> <%= f.label :requests %></span><br />
+			<% if edit %>
+				<%= f.text_field :gallery, placeholder: "Offsite Gallery" %><br />
+			<% elsif !@user.gallery.blank? %>
+				<%= link_to @user.gallery, url_with_protocol(@user.gallery) %><br />
+			<% end %>
+			<% if edit %>
+				<span><%= f.label "I charge:" %> <%= f.text_field :price, placeholder: @user.price.blank?? "Set" : "Update" %></span><br />
+			<% elsif !@user.price.blank? %>
+				I charge:&nbsp;<%= @user.price %><br />
+			<% end %>
+			Member Since: <%= Date.parse(@user.created_at.to_s).to_formatted_s(:long_ordinal) %><br />
+	    <%if current_user.is_mod_or_higher?%>
+				Last Login: <%=Date.parse(@user.created_at.to_s).to_formatted_s(:long_ordinal) %>
+	    <%end%>
 		</div>
 	</div>
-	<p>
-		<div class="row">
-			<% if edit %>
-				<%= f.text_area :details, placeholder: "Profile Text" %>
-			<% else %>
-				<%= render_markdown(@user.details || "") %>
-			<% end %>
-		</div>
-	</p>
+	<% if edit %>
+		<%= f.text_area :tags, placeholder: "Tags", class: "wide-100" %>
+		<%= f.text_area :details, placeholder: "Profile Text", class: "wide-100" %>
+	<% else %>
+		<%= @user.tags %>
+		<%= render_markdown(@user.details || "") %>
+	<% end %>
 	<%= f.submit "Save Changes", class: "submit" if edit %>
 <% end %>
-<%= link_to "View live profile", url_for(params.merge({edit:false})) %>
+<%= link_to "View live profile", url_for(params.merge({edit:false})) if edit %>

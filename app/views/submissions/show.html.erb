@@ -1,33 +1,30 @@
 <% provide :header, @submission.title %>
 
-<p id="notice"><%= notice %></p>
+<% unless !@submission.adult || current_user.view_adult %>
+  <div class="wide-100 centered">
+    <h2>You are not allowed to view this (adult) submission.</h2>
+  </div>
+<% else %>
+  <%= image_tag image_path(@submission.upload.id) %>
 
-<%= image_tag image_path(@submission.upload.id) %>
+  <div class = "wide-100 centered">
+    <%= link_to 'Pool', pool_path(@submission.pool.id) %>
+  </div>
 
-<div class = "form-centered">
-  <% if @submission.pool.user_id == current_user.id %>
-    <%= link_to 'Edit', edit_submission_path(@submission) %> |
+  <% @comments.each do |comment| %>
+    <%= content_tag :div, class: "wide-100 comment", id: comment.id do %>
+      <div class = "wide-px-100 fl">
+        <%= image_tag(image_thumb_path(comment.user.upload.id)) %>
+      </div>
+        <h4><%= comment.user.name %></h4>
+        <%= comment.content %>
+    <% end %>
   <% end %>
-  <%= link_to 'Pool', pool_path(@submission.pool.id) %>
-</div>
 
-<% @comments.each do |comment| %>
-  <%= content_tag :div, class: "row comment", id: comment.id do %>
-    <div class = "col-xs-2" style = "margin: 0 -15px;">
-      <%= image_tag(image_thumb_path(comment.user.upload.id)) %>
-    </div>
-    <div class = "col-xs-2" style = "margin: 0 -10px;">
-      <%= comment.user.name %>
-    </div>
-    <div class = "col-xs-8">
-      <%= comment.content %>
-    </div>
+  <%= form_for Comment.new do |f| %>
+    <%= f.text_area :content %><br />
+    <%= hidden_field_tag "comment[user_id]", current_user.id %>
+    <%= hidden_field_tag "comment[submission_id]", @submission.id %>
+    <%= f.submit "Post Comment", class: "btn btn-primary spaced" %>
   <% end %>
-<% end %>
-
-<%= form_for Comment.new do |f| %>
-  <%= f.text_area :content %><br />
-  <%= hidden_field_tag "comment[user_id]", current_user.id %>
-  <%= hidden_field_tag "comment[submission_id]", @submission.id %>
-  <%= f.submit "Post Comment", class: "btn btn-primary spaced" %>
 <% end %>

@@ -1,17 +1,17 @@
 class PoolsController < ApplicationController
 
   def index
-	if params[:user_id]
-		@user = User.find(params[:user_id])
-		@pools = Pool.where(user_id: @user) 
+    if params[:user_id]
+      @user = User.find(params[:user_id])
+      @pools = Pool.where(user_id: @user) 
     else
-		@pools = Pool.all
-	end
+      @pools = Pool.all
+    end
   end
 
   def show
     @pool = Pool.find(params[:id])
-    if current_user.view_adult
+    if !current_user.is_anonymous? && current_user.view_adult
       @submissions = Submission.where(pool_id: @pool.id)
     else
       @submissions = Submission.where(pool_id: @pool.id, adult: false)
@@ -24,8 +24,8 @@ class PoolsController < ApplicationController
   end
 
   def edit
-  	@pool = Pool.find(params[:id])
-  	@user = @pool.user
+    @pool = Pool.find(params[:id])
+    @user = @pool.user
   end
 
   def create
@@ -48,8 +48,7 @@ class PoolsController < ApplicationController
   end
 
   def update
-  
-	@pool = Pool.find(params[:id])
+    @pool = Pool.find(params[:id])
     respond_to do |format|
       if @pool.update(pool_params)
         format.html { redirect_to @pool, notice: 'Pool was successfully updated.' }
@@ -61,10 +60,8 @@ class PoolsController < ApplicationController
     end
   end
 
-  # DELETE /pools/1
-  # DELETE /pools/1.json
   def destroy
-	@pool = Pool.find(params[:id])
+    @pool = Pool.find(params[:id])
     @pool.destroy
     respond_to do |format|
       format.html { redirect_to pools_url, notice: 'Pool was successfully destroyed.' }
@@ -73,12 +70,10 @@ class PoolsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_pool
       @pool = Pool.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def pool_params
       params.require(:pool).permit(:title, :user_id)
     end

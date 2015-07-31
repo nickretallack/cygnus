@@ -1,5 +1,8 @@
-<% provide :header, @user.name+"'s pools" if @user %>
-<% provide :header, "all pools" unless @user %>
+<% if @user %>
+  <% provide :header, @user.name+"'s pools" %>
+<% else %>
+  <% provide :header, "All pools" %>
+<% end %>
 
 <% unless params[:user_id].nil? || params[:user_id].to_i != current_user.id %>
   <%= form_for Pool.new do |f| %>
@@ -24,7 +27,7 @@
     <% @pools.each do |pool| %>
       <tr>
         <td><%= link_to pool.title, pool %></td>
-        <td><%= pool.user_id %></td>
+        <td><%= pool.user.name %></td>
         <% if current_user.is_admin? || pool.user_id == current_user.id %>
           <td><%= link_to 'Destroy', pool, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>

@@ -30,12 +30,6 @@ img{
   @extend .btn;
   @extend .btn-primary;
 }
-.full-width{
-  min-width: 100%;
-}
-.wide{
-  width: 90%;
-}
 h1{
   border: 4px outset aquamarine;
   border-right-style: none;
@@ -48,33 +42,10 @@ h1{
 .thumbnail-mini{
   max-width: 100px;
   border: 2px dashed cornflowerblue;
-  float: left;
-  margin-left: 5px;
-  margin-right: 5px;
 }
 .thumbnail-adult{
   border-color: indianred;
 }
-hr{
-  width: 80%;
-  margin: 10px auto;
-  text-align: center;
-  border-top: 1px solid grey;
-}
-.separator{
-  position: fixed;
-  height: 50px;
-  width: 100%;
-  left: 0;
-  top: 50px;
-  background: linear-gradient(to bottom, rgba(238,238,238,1), rgba(238,238,238,0));
-  z-index: 100;
-}
-.navbar{
-  border: none;
-  z-index: 1000;
-}
-
 // apply styles to HTML elements
 // to make views framework-neutral
 main{
@@ -111,14 +82,6 @@ h1, h2, h3, h4, h5, h6{
   padding-right: 0; 
 }
 .media-body{
-  width: 100%;
-}
-.comment{
-  height: 112px;
-  border: 4px outset aliceblue;
-  margin: 5px auto;
-}
-textarea{
   width: 100%;
 }
 input[type="file"]{
