@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   get    'users/search'  => 'users#search', as: 'search_user'
   post   'users/search'  => 'users#search'
   resources :users
-  resources :pools
+  resources :pools, except: :index
+  get 'pools(/user/:user_id)' => 'pools#index', as: :pools
   resources :submissions
 end
