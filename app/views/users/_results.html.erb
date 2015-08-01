@@ -7,8 +7,11 @@
       </div>
       <div class="fl">
         <h3><%= link_to user.name, user_path(user) %> <%=comm_statuses_condensed(user)%></h4>
-        <span><%= link_to "Gallery", pool_path(Pool.find_by(user_id: user)) %><%= link_to "(ies)", pools_path(user) %></span><br />
-        <%= link_to user.gallery, url_with_protocol(user.gallery) unless user.gallery.nil? %>
+		<% if user.galleries.first %>
+        <span><%= link_to "Gallery", pool_path(user.galleries.order('id asc').first)%><%= link_to "(ies)", pools_path(user) %></span>
+		<% end %>
+		<br />
+
         <%if !user.price.blank?%> <br />
     			<%=user.price%>
         <% end %>

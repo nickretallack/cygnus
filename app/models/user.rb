@@ -1,8 +1,10 @@
 class User < ActiveRecord::Base
+  scope :ci_find, lambda { |attribute, value| where("lower(#{attribute}) = ?", value.downcase).first }
   attr_accessor  :activation_token, :reset_token
-  #has_many :pools, dependent: :destroy
+  has_many :galleries, class_name: :Pool, dependent: :destroy
   belongs_to :upload, foreign_key: :avatar
   before_create :create_activation_digest
+ 
 
   before_save { self.email = email.downcase }
   validates :name, presence: true, length: { maximum: 50 }, uniqueness: { case_sensitive: false, message: "name is already taken" }
