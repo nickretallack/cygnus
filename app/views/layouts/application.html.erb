@@ -13,9 +13,11 @@
   </head>
   <body>
     <header>
+      <%= image_tag File.join "internal", "top_banner.png" %>
       <%= render 'layouts/navigation' %>
+      <div class="separator"></div>
     </header>
-    <div class="separator"></div>
+    
     <main role="main" id="main">
       <h1><%= yield :header %></h1>
       <%= render 'layouts/messages' %>
