@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   before_filter :set_user, only: [:activate, :show, :destroy, :edit, :update]
   
   def index
-    @users = User.paginate(page: params[:page]).includes(:upload).order(:name)
+    @users = User.includes(:galleries).paginate(page: params[:page]).includes(:upload).order(:name)
     respond_to do |format|
       format.html
       format.xml  { render xml: @users, :except => [:password_digest, :ip_Address] }
@@ -28,7 +28,7 @@ class UsersController < ApplicationController
 
   def search
     @query = params[:search]? params[:search][:search] : ""
-    @users = User.search(@query).paginate(page: params[:page]).includes(:upload)
+    @users = User.search(@query).includes(:galleries).paginate(page: params[:page]).includes(:upload)
     respond_to do |format|
       format.html
       format.xml  { render xml: @users, except: [:password_digest, :ip_Address]}
@@ -178,7 +178,7 @@ class UsersController < ApplicationController
       redirect_to :back
     else
 	
-      flash[:danger] = "Invalid email/password combination"
+      flash[:danger] = "Invalid username/password combination"
       redirect_to :back
     end
   end
