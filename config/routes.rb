@@ -21,6 +21,10 @@ Rails.application.routes.draw do
   resources :users
   
   get 'pools(/user/:user_id)' => 'pools#index' , as: :pools
+  get "users/:id/workboard" => "kanban_lists#index", as: :workboard
+  post "users/:id/workboard" => "kanban_lists#create"
+  post "users/:id/workboard/:kanban_list_id" => "kanban_cards#create", as: :new_card
+  patch "users/:id/workboard/:kanban_list_id/cards/:kanban_card_id" => "kanban_cards#update", as: :card
   resources :pools, except: :index
   resources :submissions
 end

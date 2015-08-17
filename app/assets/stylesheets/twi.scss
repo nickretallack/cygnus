@@ -5,6 +5,7 @@ div{
 }
 .fl{
   float: left;
+  margin-right: 20px;
 }
 .fr{
   float: right;
@@ -61,6 +62,22 @@ input[type="checkbox"]{
   height: 112px;
   border: 4px outset aliceblue;
   margin: 5px auto;
+}
+.kanbanlist{
+  text-align: center;
+  width: 250px;
+  margin-top: 20px;
+  background-color: aliceblue;
+}
+.kanbancard{
+  text-align: center;
+  width: 100%;
+  min-height: 50px;
+  margin-top: 20px;
+  border: 3px dashed crimson;
+  input[type="number"]{
+    width: 16%;
+  }
 }
 @for $index from 1 through 10{
   .wide-#{$index * 10}{

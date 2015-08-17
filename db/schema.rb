@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150729150448) do
+ActiveRecord::Schema.define(version: 20150816220654) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,22 @@ ActiveRecord::Schema.define(version: 20150729150448) do
     t.text     "content"
     t.integer  "user_id"
     t.integer  "submission_id"
+  end
+
+  create_table "kanban_cards", force: :cascade do |t|
+    t.string   "title"
+    t.string   "description"
+    t.integer  "kanban_list_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  create_table "kanban_lists", force: :cascade do |t|
+    t.string   "title"
+    t.integer  "user_id"
+    t.integer  "cards",      default: [],              array: true
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   create_table "order_forms", force: :cascade do |t|

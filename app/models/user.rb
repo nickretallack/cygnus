@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   scope :ci_find, lambda { |attribute, value| where("lower(#{attribute}) = ?", value.downcase).first }
   attr_accessor  :activation_token, :reset_token
   has_many :galleries, class_name: :Pool, dependent: :destroy
+  has_many :kanban_lists
   belongs_to :upload, foreign_key: :avatar
   before_create :create_activation_digest
  
