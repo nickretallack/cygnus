@@ -16,11 +16,12 @@
 //= require bootstrap-sprockets
 //= require prefixfree-rails/prefixfree
 
-$(window).load(function(){
+$(window).ready(function(){
   var affixBanner = function(){
-    var navbar = $("header").children(".navbar"),
+    var banner = $("header").children("img"),
+        navbar = $("header").children(".navbar"),
         separator = $("header").children(".separator");
-    if($(window).scrollTop() !== 0){
+    if($(window).scrollTop() > banner.outerHeight()){
       navbar.css({
         "position": "fixed",
         "top": 0,
