@@ -12,7 +12,18 @@ class KanbanListsController < ApplicationController
     if @new_kanban_list.save
       redirect_to :back
     else
-      flash[:danger] = "Error making new list."
+      flash[:danger] = "Error saving list."
+      redirect_to :back
+    end
+  end
+
+  def update
+    @kanban_list = KanbanList.find(params[:kanban_list_id])
+
+    if @kanban_list.update_attributes(kanban_list_params)
+      redirect_to :back
+    else
+      flash[:danger] = "Error saving list."
       redirect_to :back
     end
   end

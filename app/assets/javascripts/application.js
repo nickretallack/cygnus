@@ -17,16 +17,32 @@
 //= require prefixfree-rails/prefixfree
 
 $(window).load(function(){
-  var navbar = $("header").children(".navbar"),
-      separator = $(".separator");
-
-  navbar.affix({
-    offset: {
-      top: 0
+  var affixBanner = function(){
+    var navbar = $("header").children(".navbar"),
+        separator = $("header").children(".separator");
+    if($(window).scrollTop() !== 0){
+      navbar.css({
+        "position": "fixed",
+        "top": 0,
+        "width": "100%"      
+      });
+      separator.css({
+        "position": "fixed",
+        "top": 50,
+        "width": "100%"      
+      });
+    }else{
+      navbar.css("position", "relative");
+      separator.css({
+        "position": "relative",
+        "top": "auto"
+      });
     }
-  });
+  }
+
+  affixBanner();
 
   $(window).scroll(function(){
-    
-  })
+    affixBanner();
+  });
 });

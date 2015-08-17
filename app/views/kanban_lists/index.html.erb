@@ -1,7 +1,7 @@
 <% provide :header, @user.name+"'s workboard" %>
 
 <% if current_user? @user %>
-  <%= form_for KanbanList.new, url: workboard_path do |f| %>
+  <%= form_for KanbanList.new, url: new_list_path do |f| %>
     <%= f.text_field :title, placeholder: "Title" %>
     <%= f.submit "New List", class: "submit" %>
   <% end %>
@@ -9,7 +9,13 @@
 
 <% @kanban_lists.each do |l| %>
   <div class="kanbanlist fl">
-    <%= l.title %>
+    <% if current_user? @user %>
+      <%= form_for l, url: list_path(kanban_list_id: l), method: :patch do |f| %>
+        <%= f.label :title %> <%= f.text_field :title %> <%= f.submit "Save", class: "submit" %>
+      <% end %>
+    <% else %>
+      <%= l.title %>
+    <% end %>
     <hr />
     <% if current_user? @user %>
       <%= form_for KanbanCard.new, url: new_card_path(kanban_list_id: l) do |f| %>
