@@ -1,29 +1,23 @@
 <% @users.each do |user| %>
-  <div class="wide-100 list">
+  <div class = "row">
     <hr />
-    <div class="wide-80 fl">
-      <div class="wide-px-110 high-px-110 fl">
-        <%= link_to(image_tag(image_thumb_path(user.upload.id), class: "thumbnail thumbnail-mini"), user_path(user)) unless user.upload.nil? %>
+    <div class = "row">
+      <div class = "col s12 hc">
+        <div class = "fl thumb-large">
+          <%= link_to(image_tag(image_thumb_path(user.upload.id)), user_path(user)) unless user.upload.nil? %>
+        </div>
+        <div class = "fl ">
+          <h4 class = "truncate"><%= link_to user.name, user_path(user) %></h4>
+          <h4><%= statuses user, verbosity: :condensed %></h4>
+    		  <% if user.galleries.first %>
+            <span><%= link_to "Gallery", pool_path(user.galleries.order('id asc').first)%><%= link_to "(ies)", pools_path(user) %></span>
+    		  <% end %>
+          <%if !user.price.blank?%> <br />
+      			<%=user.price%>
+          <% end %>
+        </div>
       </div>
-      <div class="fl">
-        <h3><%= link_to user.name, user_path(user) %> <%=comm_statuses_condensed(user)%></h4>
-		<% if user.galleries.first %>
-        <span><%= link_to "Gallery", pool_path(user.galleries.order('id asc').first)%><%= link_to "(ies)", pools_path(user) %></span>
-		<% end %>
-		<br />
-
-        <%if !user.price.blank?%> <br />
-    			<%=user.price%>
-        <% end %>
-      </div>
     </div>
-    <div class="wide-20 fl">
-      <% if current_user.is_admin? %>
-          <%= link_to 'Destroy', user_path(user), method: :delete, data: { confirm: 'Are you sure?' } %>
-    	<% end %>
-    </div>
-    <div class="wide-100">
-      Tags: <%= user.tags || "(None)"%>
-    </div>
+    Tags: <%= user.tags || "(None)"%>
   </div>
 <% end %>

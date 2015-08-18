@@ -1,31 +1,30 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= content_for?(:header)? CONFIG["Name"] +" - "+yield(:header) : CONFIG["Name"] %></title> 
-    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : CONFIG["Name"] %>">
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-	<%= yield(:extrascript) %>
-    <%= javascript_include_tag :modernizr %>
+    <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
+    <title><%= content_for?(:header)? CONFIG[:name] +" - "+yield(:header) : CONFIG[:name] %></title> 
+    <meta name = "description" content = "<%= content_for?(:description)? yield(:description) : CONFIG[:name] %>">
+    <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
+    <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
     <%= csrf_meta_tags %>
 
   </head>
   <body>
     <header>
       <%= image_tag "top_banner.png" %>
-      <%= render 'layouts/navigation' %>
-      <div class="separator"></div>
+      <%= render "layouts/navigation" %>
     </header>
-    
-    <main role="main" id="main">
-      <h1><%= yield :header %></h1>
-      <%= render 'layouts/messages' %>
-      <%= yield %>
-    </main>
+    <div class = "container">
+      <div id="main">
+        <h2 class = "header"><%= yield :header %></h2>
+        <%= render "layouts/messages" %>
+        <%= yield %>
+      </div>
+    </div>
     <footer>
       <%= link_to "Back", request.referer.nil?? root_path : URI(request.referer).path %>
-      <p><%= CONFIG['Copyright'].html_safe %></p>
+      <%= CONFIG[:copyright].html_safe %>
     </footer>
+    <% console %>
   </body>
 </html>

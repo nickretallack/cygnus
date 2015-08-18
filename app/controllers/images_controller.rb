@@ -10,12 +10,12 @@ class ImagesController < ApplicationController
 	  if(!@image.explicit? || current_user.view_adult?)
             send_file @image.file_url, :disposition => 'inline'
 	  else
-	    send_file CONFIG['Image_Adult'], :disposition => 'inline'
+	    send_file CONFIG[:image_adult], :disposition => 'inline'
 	  end
 
       end
     else
- 	  send_file CONFIG['Image_Disabled'], :disposition => 'inline'
+ 	  send_file CONFIG[:image_disabled], :disposition => 'inline'
     end
   end
   def thumb
@@ -28,11 +28,11 @@ class ImagesController < ApplicationController
 	  if(!@image.explicit? || current_user.view_adult?)
 	      send_file @image.file.thumb.url, :disposition => 'inline'
 	  else
-	    send_file CONFIG['Image_Adult_Thumb'], :disposition => 'inline'
+	    send_file CONFIG[:image_adult_thumb], :disposition => 'inline'
 	  end
       end
     else
- 	  send_file CONFIG['Image_Disabled_Thumb'], :disposition => 'inline'
+ 	  send_file CONFIG[:image_disabled_thumb], :disposition => 'inline'
     end
   end
 end

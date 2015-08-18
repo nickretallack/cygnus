@@ -17,6 +17,9 @@ class User < ActiveRecord::Base
   has_secure_password
   validates :password, length: { minimum: 6 }, allow_blank: true
   
+  def named_routes
+    Rails.application.routes.routes.collect{|route| route.path.spec.to_s}.collect{|route| route.gsub "/", ""}.collect{|route| route.gsub "(.:format)", ""}.reject{|route| route.include? ":"}.reject{|route| route.include? "rails"}.reject{|route| route.empty?}.concat ["rails", "/"]
+  end
 
   def self.search(terms = "")
     sanitized = sanitize_sql_array(["to_tsquery('english', ?)",
@@ -24,11 +27,7 @@ class User < ActiveRecord::Base
     User.where("tags @@ #{sanitized}")
   end
 
-  def is_anonymous?
-	false
-  end
-
-  CONFIG["user_levels"].each do |name, value|
+  CONFIG[:user_levels].each do |name, value|
       normalized_name = name.downcase.gsub(/ /, "_")
       define_method("is_#{normalized_name}?") do
         self.level == value

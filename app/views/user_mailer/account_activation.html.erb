@@ -1,9 +1,9 @@
-<h1><%=CONFIG["Name"]%>!</h1>
+<h1><%=CONFIG[:name]%>!</h1>
 
 <p>Hi <%= @user.name %>,</p>
 
 <p>
-Welcome to the <%=CONFIG["Name"]%>! Click on the link below to activate your account:
+Welcome to the <%=CONFIG[:name]%>! Click on the link below to activate your account:
 </p>
 
 <%= link_to "Activate", activate_user_url(@user.id, @user.activation_token) %>

@@ -1,0 +1,91 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+$separator-height: 50px
+$background-color-rgb: 247, 252, 242
+$background-color: rgba(nth($background-color-rgb, 1), nth($background-color-rgb, 2), nth($background-color-rgb, 3), 1)
+$background-color-transparent: rgba(nth($background-color-rgb, 1), nth($background-color-rgb, 2), nth($background-color-rgb, 3), 0)
+
+@import url(https://fonts.googleapis.com/icon?family=Material+Icons)
+
+@font-face
+  font-family: "Blogger"
+  src: url("Blogger_Sans-Medium.otf")
+
+html
+  font-family: "Blogger"
+  background-color: $background-color
+
+header
+  a
+    text-shadow: 0px 2px 0 black
+  a:hover
+    text-decoration: underline
+    cursor: pointer
+  nav
+    z-index: 1
+  .dropdown-content
+    a
+      text-shadow: none
+  .separator
+    height: $separator-height
+    background: linear-gradient(to bottom, $background-color, $background-color-transparent)
+
+@media screen and (min-width: 993px)
+  .brand-logo
+    margin-left: 2%
+
+@media screen and (max-width: 600px)
+  .row
+    .col.hc
+      padding: 0
+      margin: 0 auto
+      float: none
+      text-align: center
+      *
+        float: none
+        margin: 0 auto
+
+div.container
+  width: 85%
+
+div#main
+  .header
+    border: 3px outset aquamarine
+    border-left-style: none
+    border-right-style: none
+  div
+    border: 2px outset crimson
+    div
+      border-color: aquamarine
+      div
+        border-color: black
+  .row
+    margin-left: 0
+    margin-right: 0
+
+.fl
+  float: left
+  margin-right: 10px
+.fl:last-child
+  margin-right: 0
+.thumb-large
+  width: 150px
+  height: 150px
+
+img
+  display: block
+  width: 100%

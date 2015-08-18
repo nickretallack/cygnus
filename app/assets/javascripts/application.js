@@ -11,39 +11,20 @@
 // about supported directives.
 //
 //= require jquery
-//= require jquery_ujs
 //= require turbolinks
-//= require bootstrap-sprockets
-//= require prefixfree-rails/prefixfree
+//= require_tree .
+//= require_self
+
+$(window).load(function(){
+
+  $(".nojs").hide();
+  $(".js").show();
+
+});
 
 $(window).ready(function(){
-  var affixBanner = function(){
-    var banner = $("header").children("img"),
-        navbar = $("header").children(".navbar"),
-        separator = $("header").children(".separator");
-    if($(window).scrollTop() > banner.outerHeight()){
-      navbar.css({
-        "position": "fixed",
-        "top": 0,
-        "width": "100%"      
-      });
-      separator.css({
-        "position": "fixed",
-        "top": 50,
-        "width": "100%"      
-      });
-    }else{
-      navbar.css("position", "relative");
-      separator.css({
-        "position": "relative",
-        "top": "auto"
-      });
-    }
-  }
 
-  affixBanner();
+  $("header").children("nav").pushpin({ top: $("header").children("img").outerHeight() });
+  //$("header").children(".separator").pushpin({ top: $("header").children("nav").outerHeight() });
 
-  $(window).scroll(function(){
-    affixBanner();
-  });
 });

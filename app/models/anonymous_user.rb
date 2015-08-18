@@ -22,12 +22,8 @@ class AnonymousUser
   def pretty_name
     "Anonymous"
   end
-
-  def is_anonymous?
-    true
-  end
   
-  CONFIG["user_levels"].each do |name, value|
+  CONFIG[:user_levels].each do |name, value|
     normalized_name = name.downcase.gsub(/ /, "_")
 
     define_method("is_#{normalized_name}?") do

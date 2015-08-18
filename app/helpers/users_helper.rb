@@ -9,4 +9,13 @@ module UsersHelper
 	   <span class='glyphicon #{user.trades ? "glyphicon-transfer" : "glyphicon-transfer text-danger"}'></span>
 	   <span class='glyphicon #{user.requests ? "glyphicon-list-alt" : "glyphicon-list-alt text-danger"}'></span>".html_safe
 	end
+
+	def statuses(user, verbosity:)
+		case verbosity
+		when :verbose
+			"verbose"
+		when :condensed
+			"<i class = 'small material-icons'>perm_identity</i><i class = 'small material-icons'>loop</i><i class = 'small material-icons'>loyalty</i><i class = 'small material-icons'>supervisor_account</i>".html_safe
+		end
+	end
 end

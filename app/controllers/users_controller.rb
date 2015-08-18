@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   before_filter :set_user, only: [:activate, :show, :destroy, :edit, :update]
   
   def index
-    @users = User.includes(:galleries).paginate(page: params[:page]).includes(:upload).order(:name)
+    @users = User.all.order(:name)
     respond_to do |format|
       format.html
       format.xml  { render xml: @users, :except => [:password_digest, :ip_Address] }
@@ -14,8 +14,8 @@ class UsersController < ApplicationController
   end
 
   def activate
-    if @user && @user.level == CONFIG["user_levels"]["Unactivated"] && @user.authenticated?(:activation, params[:activation])
-      @user.update_attribute(:level, CONFIG["user_levels"]["Member"])
+    if @user && @user.level == CONFIG[:user_levels].index("unactivated") && @user.authenticated?(:activation, params[:activation])
+      @user.update_attribute(:level, CONFIG[:user_levels].index("member"))
       @user.update_attribute(:activated_at, Time.zone.now)
       log_in @user
       flash[:success] = "Account activated!"
@@ -28,7 +28,7 @@ class UsersController < ApplicationController
 
   def search
     @query = params[:search]? params[:search][:search] : ""
-    @users = User.search(@query).includes(:galleries).paginate(page: params[:page]).includes(:upload)
+    @users = User.search(@query)
     respond_to do |format|
       format.html
       format.xml  { render xml: @users, except: [:password_digest, :ip_Address]}
@@ -100,9 +100,9 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     @user.ip_Address = request.remote_ip
     @user.avatar = Upload.render(params[:user][:picture])
-    @user.level = CONFIG["user_levels"]["Unactivated"] if !CONFIG["Email_Required"]
+    @user.level = CONFIG[:user_levels].index("unactivated") unless CONFIG[:email_required]
     if @user.save
-      if CONFIG["Email_Required"]
+      if CONFIG[:email_required]
         UserMailer.account_activation(@user).deliver_now
         flash[:info] = "Please check your email to activate your account."
     	  if request.xhr?
@@ -118,7 +118,7 @@ class UsersController < ApplicationController
     	  end
       else
         Pool.new(title: "Gallery", user_id: @user.id).save!
-        log_in @user
+        activate_session @user
         flash[:success] = "Welcome to Bleatr!"
     	  if request.xhr?
     			render :text=> user_path(@user)
@@ -170,10 +170,9 @@ class UsersController < ApplicationController
     end
   end
 
-  def logon
+  def log_in
     user = User.find_by(name: params[:session][:name].downcase)
     if user && user.authenticate(params[:session][:password])
-      # Log the user in and redirect to the user's show page.
       log_in user
       redirect_to :back
     else
@@ -183,8 +182,8 @@ class UsersController < ApplicationController
     end
   end
 
-  def logout
-    destroysession
+  def log_out
+    deactivate_session
     flash[:info] = "You have successfully logged out."
     redirect_to :back
   end
@@ -195,23 +194,17 @@ class UsersController < ApplicationController
     @user = User.find params[:id]
   end
 
-  def user_params
-    params.require(:user).permit(:name, :email, :password,
-                :password_confirmation, :commissions, :tags, :trades, :requests, :price, :details, :gallery, :view_adult)
+  def user_params_permitted
+    [:name, :email, :password, :password_confirmation, :commissions, :tags, :trades, :requests, :price, :details, :gallery, :view_adult]
   end
+
   def reset_params
     params.require(:user).permit(:password, :password_confirmation)
-  end
-  def correct_user_or_admin
-    unless current_user_or_mod?(User.find params[:id])
-      flash[:danger] = "Access Denied"
-      redirect_to(root_url)
-    end
   end
   
   def check_expiration
     @user = User.find params[:id]
-    unless (@user && @user.level > CONFIG["user_levels"]["Member"] && @user.authenticated?(:activation, params[:activation]))
+    unless @user and @user.level > CONFIG[:user_levels].index("member") and @user.authenticated?(:activation, params[:activation])
         redirect_to root_url
     end
     if @user.password_reset_expired?
