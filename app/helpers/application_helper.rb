@@ -41,6 +41,13 @@ module ApplicationHelper
     markdown ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML.new(escape: true, hard_wrap: true, prettify:true), autolink: true, tables: true)
     markdown.render(content).html_safe
   end
+
+  def image_for(user: nil)
+    case false
+    when user.nil?
+      user.upload.nil?? -1 : user.upload.id
+    end
+  end
   
   # def logged_in_user
   #   #render :text => @current_user.name

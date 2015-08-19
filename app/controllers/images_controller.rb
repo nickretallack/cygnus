@@ -1,38 +1,30 @@
 class ImagesController < ApplicationController
 
   def show
-    @image = Upload.find(params[:id])
+    logo = params[:type] == "logo"
+    thumb = params[:type] == "thumb"
+    suffix = (thumb)? "_thumb" : ""
 
-    expires_in 5.hours, :public => true
-
-    if(!@image.nil? || @image.enabled?)
-      if stale?(etag: @image, last_modified: @image.updated_at)
-	  if(!@image.explicit? || current_user.view_adult?)
-            send_file @image.file_url, :disposition => 'inline'
-	  else
-	    send_file CONFIG[:image_adult], :disposition => 'inline'
-	  end
-
-      end
-    else
- 	  send_file CONFIG[:image_disabled], :disposition => 'inline'
+    begin
+      @image = Upload.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      @image = Upload.new
     end
-  end
-  def thumb
-    @image = Upload.find(params[:id])
 
-    expires_in 5.hours, :public => true
+    expires_in CONFIG[:image_shelf_life], public: true
 
-    if(!@image.nil? || @image.enabled?)
-      if stale?(etag: @image, last_modified: @image.updated_at)
-	  if(!@image.explicit? || current_user.view_adult?)
-	      send_file @image.file.thumb.url, :disposition => 'inline'
-	  else
-	    send_file CONFIG[:image_adult_thumb], :disposition => 'inline'
-	  end
+    #raise "break"
+
+    if @image.enabled?
+      if stale? etag: @image, last_modified: @image.updated_at
+    	  if not @image.explicit? or current_user.view_adult?
+          send_file ((thumb)? @image.file.thumb.url : @image.file_url) || (logo)? CONFIG[:logo] : CONFIG["image_disabled#{suffix}".to_sym], :disposition => "inline"
+    	  else
+    	    send_file CONFIG["image_adult#{suffix}".to_sym], :disposition => "inline"
+    	  end
       end
     else
- 	  send_file CONFIG[:image_disabled_thumb], :disposition => 'inline'
+ 	    send_file CONFIG["image_disabled#{suffix}".to_sym], :disposition => "inline"
     end
   end
 end

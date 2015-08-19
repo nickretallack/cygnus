@@ -1,34 +1,35 @@
-CONFIG = {}
+CONFIG = {
+  thumbnail_width: 150,
+  thumbnail_height: 150,
+  email_required: false,
+  host: "localhost",
+  name: "Bleatr",
+  copyright: "&copy;2015",
+  image_adult: Rails.root.join("app/assets/images/icon.png"),
+  image_adult_thumb: Rails.root.join("app/assets/images/icon.png"),
+  image_disabled: Rails.root.join("app/assets/images/icon.png"),
+  image_disabled_thumb: Rails.root.join("app/assets/images/icon.png"),
+  logo: Rails.root.join("app/assets/images/logo.png"),
+  image_shelf_life: 5.hours,
 
-#please change these in config.rb
+  commission_icons: {
+    commissions: "perm_identity",
+    trades: "repeat",
+    requests: "loyalty",
+    collabs: "supervisor_account"
+  },
 
-#true or false ONLY
+  user_levels: [
+    "unactivated",
+    "blocked",
+    "member",
+    "privileged",
+    "contributor",
+    "test_janitor",
+    "janitor",
+    "mod",
+    "admin"
+  ],
 
-CONFIG["Email_Required"] = true
-
-#domain, minus http
-CONFIG["Host"] = "localhost"
-#names of things
-CONFIG["Name"] = "Cygnus"
-
-CONFIG["Copyright"] = "&copy;2015"
-
-#user levels, unactivated, member and admin in use
-CONFIG["user_levels"] = {
-  "Unactivated" => 0,
-  "Blocked" => 10,
-  "Member" => 20,
-  "Privileged" => 30,
-  "Contributor" => 33,
-  "Test Janitor" => 34,
-  "Janitor" => 35,
-  "Mod" => 40,
-  "Admin" => 50
+  about_text: ""
 }
-CONFIG["Image_Adult"] = "";
-CONFIG["Image_Adult_Thumb"] = "";
-CONFIG["Image_Disabled"] = "";
-CONFIG["Image_Disabled_Thumb"] = "";
-
-
-CONFIG["about-text"] = "Fill me with things! (in html)"

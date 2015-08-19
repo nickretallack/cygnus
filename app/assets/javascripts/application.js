@@ -24,7 +24,27 @@ $(window).load(function(){
 
 $(window).ready(function(){
 
-  $("header").children("nav").pushpin({ top: $("header").children("img").outerHeight() });
-  //$("header").children(".separator").pushpin({ top: $("header").children("nav").outerHeight() });
+  $("nav").pushpin({
+    top: $("header").children("img").outerHeight()
+  });
+
+  $(".dropdown-button").dropdown({
+    belowOrigin: true,
+    hover: true
+  });
+
+  var pushpinLogo = function(){
+    if($(window).scrollTop() > $("header").children("img").outerHeight()){
+      $("[class='brand-logo']").hide();
+      $("[class='brand-logo small']").show();
+    }else{
+      $("[class='brand-logo']").show();
+      $("[class='brand-logo small']").hide();
+    }
+  };
+
+  pushpinLogo();
+
+  $(window).scroll(pushpinLogo);
 
 });

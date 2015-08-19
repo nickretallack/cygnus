@@ -11,11 +11,15 @@ module UsersHelper
 	end
 
 	def statuses(user, verbosity:)
+		html = ""
 		case verbosity
 		when :verbose
 			"verbose"
 		when :condensed
-			"<i class = 'small material-icons'>perm_identity</i><i class = 'small material-icons'>loop</i><i class = 'small material-icons'>loyalty</i><i class = 'small material-icons'>supervisor_account</i>".html_safe
+			CONFIG[:commission_icons].each do |key, icon|
+				html += "<i class = 'small material-icons "+(user[key]? "success" : "danger")+"'>"+icon+"</i>"
+			end
 		end
+		html.html_safe
 	end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150816220654) do
+ActiveRecord::Schema.define(version: 20150818220804) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,6 +93,8 @@ ActiveRecord::Schema.define(version: 20150816220654) do
     t.string   "activation_digest"
     t.datetime "activated_at"
     t.datetime "reset_sent_at"
+    t.boolean  "collabs"
+    t.boolean  "avatar_adult"
   end
 
   add_index "users", ["tags_tsvector"], name: "users_tags_search_idx", using: :gin

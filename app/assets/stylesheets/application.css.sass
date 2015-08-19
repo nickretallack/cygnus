@@ -1,25 +1,19 @@
 /*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
- * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any styles
- * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
- * file per style scope.
- *
  *= require_tree .
  *= require_self
+ *
  */
 
 $separator-height: 50px
 $background-color-rgb: 247, 252, 242
 $background-color: rgba(nth($background-color-rgb, 1), nth($background-color-rgb, 2), nth($background-color-rgb, 3), 1)
 $background-color-transparent: rgba(nth($background-color-rgb, 1), nth($background-color-rgb, 2), nth($background-color-rgb, 3), 0)
+$thumb-size: 150px
+$success-color: aquamarine
+$danger-color: indianred
 
 @import url(https://fonts.googleapis.com/icon?family=Material+Icons)
+@import "materialize.min"
 
 @font-face
   font-family: "Blogger"
@@ -37,9 +31,23 @@ header
     cursor: pointer
   nav
     z-index: 1
+    .brand-logo
+      width: 200px
+      top: -50px
+    [class = "brand-logo small"]
+      width: 150px
+      top: -30px
   .dropdown-content
     a
       text-shadow: none
+    li
+      text-align: center
+    form
+      @extend .blue-grey
+      display: table
+      margin: 0 auto
+      margin-top: 10px
+      border-radius: 3px
   .separator
     height: $separator-height
     background: linear-gradient(to bottom, $background-color, $background-color-transparent)
@@ -80,12 +88,25 @@ div#main
 .fl
   float: left
   margin-right: 10px
+
 .fl:last-child
   margin-right: 0
+
 .thumb-large
-  width: 150px
-  height: 150px
+  width: $thumb-size
+  height: $thumb-size
+
+.success
+  color: $success-color
+  border-color: $success-color
+
+.danger
+  color: $danger-color
+  border-color: $danger-color
 
 img
   display: block
   width: 100%
+
+input[type = "submit"]
+  @extend .btn
