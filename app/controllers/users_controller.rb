@@ -4,14 +4,14 @@ class UsersController < ApplicationController
   # before_action :check_expiration, only: [:reset_return, :reset_return_confirm]
   # before_filter :set_user, only: [:activate, :show, :destroy, :edit, :update]
   
-  def index
-    @users = User.all.order(:name)
-    # respond_to do |format|
-    #   format.html
-    #   format.xml  { render xml: @users, :except => [:password_digest, :ip_Address] }
-    #   format.json { render json: @users, :except => [:password_digest, :ip_Address] }
-    # end
-  end
+  # def index
+  #   @users = User.all.order(:name)
+  #   respond_to do |format|
+  #     format.html
+  #     format.xml  { render xml: @users, :except => [:password_digest, :ip_Address] }
+  #     format.json { render json: @users, :except => [:password_digest, :ip_Address] }
+  #   end
+  # end
 
   def activate
     if @user && @user.level == CONFIG[:user_levels].index("unactivated") && @user.authenticated?(:activation, params[:activation])
