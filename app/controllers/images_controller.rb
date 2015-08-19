@@ -13,8 +13,6 @@ class ImagesController < ApplicationController
 
     expires_in CONFIG[:image_shelf_life], public: true
 
-    #raise "break"
-
     if @image.enabled?
       if stale? etag: @image, last_modified: @image.updated_at
     	  if not @image.explicit? or current_user.view_adult?

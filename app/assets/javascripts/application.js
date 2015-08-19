@@ -15,14 +15,16 @@
 //= require_tree .
 //= require_self
 
-$(window).load(function(){
+$(document).load(ready);
+
+$(document).on("page:load", ready);
+
+$(document).ready(ready);
+
+function ready(){
 
   $(".nojs").hide();
   $(".js").show();
-
-});
-
-$(window).ready(function(){
 
   $("nav").pushpin({
     top: $("header").children("img").outerHeight()
@@ -30,7 +32,8 @@ $(window).ready(function(){
 
   $(".dropdown-button").dropdown({
     belowOrigin: true,
-    hover: true
+    hover: true,
+    constrain_width: false
   });
 
   var pushpinLogo = function(){
@@ -47,4 +50,4 @@ $(window).ready(function(){
 
   $(window).scroll(pushpinLogo);
 
-});
+}

@@ -1,16 +1,16 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, only: [:edit, :update, :destroy] 
-  before_action :correct_user_or_admin, only: [:edit, :update, :destroy]
-  before_action :check_expiration, only: [:reset_return, :reset_return_confirm]
-  before_filter :set_user, only: [:activate, :show, :destroy, :edit, :update]
+  # before_action :logged_in_user, only: [:edit, :update, :destroy] 
+  # before_action :correct_user_or_admin, only: [:edit, :update, :destroy]
+  # before_action :check_expiration, only: [:reset_return, :reset_return_confirm]
+  # before_filter :set_user, only: [:activate, :show, :destroy, :edit, :update]
   
   def index
     @users = User.all.order(:name)
-    respond_to do |format|
-      format.html
-      format.xml  { render xml: @users, :except => [:password_digest, :ip_Address] }
-      format.json { render json: @users, :except => [:password_digest, :ip_Address] }
-    end
+    # respond_to do |format|
+    #   format.html
+    #   format.xml  { render xml: @users, :except => [:password_digest, :ip_Address] }
+    #   format.json { render json: @users, :except => [:password_digest, :ip_Address] }
+    # end
   end
 
   def activate
@@ -36,17 +36,17 @@ class UsersController < ApplicationController
     end
   end
 
-  def show
-    if @user.nil?
-      raise ActionController::RoutingError.new('Not Found')
-    end
+  # def show
+  #   if @user.nil?
+  #     raise ActionController::RoutingError.new('Not Found')
+  #   end
 
-    respond_to do |format|
-      format.html
-      format.xml  { render xml: @user, :except => [:password_digest, :ip_Address]}
-      format.json { render json: @user, :except => [:password_digest, :ip_Address]}
-    end
-  end
+  #   respond_to do |format|
+  #     format.html
+  #     format.xml  { render xml: @user, :except => [:password_digest, :ip_Address]}
+  #     format.json { render json: @user, :except => [:password_digest, :ip_Address]}
+  #   end
+  # end
 
   def destroy
     @user.destroy
@@ -172,27 +172,28 @@ class UsersController < ApplicationController
 
   def log_in
     user = User.find_by(name: params[:session][:name].downcase)
-    if user && user.authenticate(params[:session][:password])
-      log_in user
-      redirect_to :back
+    if user
+      if user.authenticate(params[:session][:password])
+        activate_session user
+        flash[:success] = "Logged in as "+user.name
+        redirect_to :back
+      else
+        flash[:danger] = "Incorrect password"
+        redirect_to :back
+      end
     else
-	
-      flash[:danger] = "Invalid username/password combination"
+      flash[:danger] = "No such user"
       redirect_to :back
     end
   end
 
   def log_out
     deactivate_session
-    flash[:info] = "You have successfully logged out."
+    flash[:info] = "Logged out"
     redirect_to :back
   end
 
   private
-
-  def set_user
-    @user = User.find params[:id]
-  end
 
   def user_params_permitted
     [:name, :email, :password, :password_confirmation, :commissions, :tags, :trades, :requests, :price, :details, :gallery, :view_adult]

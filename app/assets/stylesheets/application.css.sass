@@ -9,7 +9,7 @@ $background-color-rgb: 247, 252, 242
 $background-color: rgba(nth($background-color-rgb, 1), nth($background-color-rgb, 2), nth($background-color-rgb, 3), 1)
 $background-color-transparent: rgba(nth($background-color-rgb, 1), nth($background-color-rgb, 2), nth($background-color-rgb, 3), 0)
 $thumb-size: 150px
-$success-color: aquamarine
+$success-color: yellowgreen
 $danger-color: indianred
 
 @import url(https://fonts.googleapis.com/icon?family=Material+Icons)
@@ -37,7 +37,11 @@ header
     [class = "brand-logo small"]
       width: 150px
       top: -30px
+  .dropdown-button
+    i
+      margin-left: 0
   .dropdown-content
+    min-width: 150px
     a
       text-shadow: none
     li
@@ -48,13 +52,16 @@ header
       margin: 0 auto
       margin-top: 10px
       border-radius: 3px
+    input[type = "submit"]
+      @extend .cyan
   .separator
     height: $separator-height
     background: linear-gradient(to bottom, $background-color, $background-color-transparent)
 
 @media screen and (min-width: 993px)
-  .brand-logo
-    margin-left: 2%
+  .nav-wrapper
+    width: 98%
+    padding: 0 .5% 0 2%
 
 @media screen and (max-width: 600px)
   .row
@@ -75,15 +82,21 @@ div#main
     border: 3px outset aquamarine
     border-left-style: none
     border-right-style: none
-  div
-    border: 2px outset crimson
-    div
-      border-color: aquamarine
-      div
-        border-color: black
+  // div
+  //   border: 2px outset crimson
+  //   div
+  //     border-color: aquamarine
+  //     div
+  //       border-color: black
   .row
     margin-left: 0
     margin-right: 0
+  .success
+    color: $success-color
+    border-color: $success-color
+  .danger
+    color: $danger-color
+    border-color: $danger-color
 
 .fl
   float: left
@@ -96,13 +109,14 @@ div#main
   width: $thumb-size
   height: $thumb-size
 
-.success
-  color: $success-color
-  border-color: $success-color
-
-.danger
-  color: $danger-color
-  border-color: $danger-color
+#flash
+  margin-bottom: 25px
+  font-size: 20px
+  padding-left: 10px
+  border-radius: 10px
+  border: 2px dashed black
+  box-shadow: -1px 2px 15px rgba(0, 0, 0, 0.5)
+  background-color: snow
 
 img
   display: block

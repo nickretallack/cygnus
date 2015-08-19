@@ -2,6 +2,17 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   include ApplicationHelper
 	before_filter :make_safe_params_method, only: [:create, :update]
+  before_filter :make_setter, only: [:activate, :destroy, :edit, :update]
+
+  def make_setter
+    klass = controller_name.classify.constantize
+    variable = controller_name.singularize
+    self.singleton_class.send :define_method, "set_"+variable, Proc.new {
+      self.instance_variable_set("@"+variable, klass.find_by(klass.slug => params[klass.slug]))
+    }
+    self.send ("set_"+variable).to_sym
+    self.singleton_class.send :private, ("set_"+variable).to_sym
+  end
 
   self.send :define_method, "index", Proc.new {
     self.instance_variable_set("@"+controller_name, controller_name.classify.constantize.all.order(:id))

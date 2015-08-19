@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
  
 
   before_save { self.email = email.downcase }
-  validates :name, presence: true, length: { maximum: 50 }, uniqueness: { case_sensitive: false, message: "name is already taken" }
+  validates :name, presence: true, length: { maximum: 50 }, uniqueness: { case_sensitive: false, message: "name is already taken" }, exclusion: { in: :named_routes }
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence: true, length: { maximum: 255 },
@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
   validates :password, length: { minimum: 6 }, allow_blank: true
   
   def named_routes
-    Rails.application.routes.routes.collect{|route| route.path.spec.to_s}.collect{|route| route.gsub "/", ""}.collect{|route| route.gsub "(.:format)", ""}.reject{|route| route.include? ":"}.reject{|route| route.include? "rails"}.reject{|route| route.empty?}.concat ["rails", "/"]
+    Rails.application.routes.named_routes.helpers.map(&:to_s).collect{ |route| route.gsub(/_path|_url/, "") }
   end
 
   def self.search(terms = "")

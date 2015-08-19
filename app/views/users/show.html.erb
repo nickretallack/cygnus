@@ -8,11 +8,9 @@
 	<% end %>
 	<div class="wide-100">
 		<div class="wide-px-160 fl" style="min-height: 160px; margin: 23px 10px 0px 23px;">
-		  <%= image_tag(image_thumb_path(@user.upload.id), class: "thumbnail") unless @user.upload.nil? %>
 		</div>
 		<div class="fl">
 			<span><%= link_to "Gallery", pool_path(Pool.find_by(user_id: @user.id)) %><%= link_to "(ies)", pools_path(user_id: @user.id) %></span><br />
-				<%= comm_statuses_verbose(@user) %>
 				<span><%= f.check_box :commissions %> <%= f.label :commissions %> <%= f.check_box :trades %> <%= f.label :trades %> <%= f.check_box :requests %> <%= f.label :requests %></span><br />
 			<% if edit %>
 				<%= f.text_field :gallery, placeholder: "Offsite Gallery" %><br />

@@ -30,9 +30,10 @@
 
   <nav class = "js">
     <div class = "nav-wrapper">
-      <%= link_to CONFIG[:name], root_path, class: "brand-logo" %>
+      <%= link_to image_tag(image_path(id: -1, type: :logo)), root_path, class: "brand-logo" %>
+      <%= link_to image_tag(image_path(id: -1, type: :logo)), root_path, class: "brand-logo small" %>
       <ul class = "right hide-on-med-and-down">
-        <li><a class = "dropdown-button" data-beloworigin = "true" data-activates = "menu">current_user.name<i class = "material-icons right">arrow_drop_down</i></a></li>
+        <li><a class = "dropdown-button" data-activates = "menu"><%= current_user.name %><i class = "material-icons right">arrow_drop_down</i></a></li>
       </ul>
     </div>
     <div class = "separator"></div>

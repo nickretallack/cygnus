@@ -11,17 +11,19 @@ module ApplicationHelper
     user == current_user
   end
 
-  def flappelation(name)
-    case name
+  def format_flash(message, key:)
+    suffix = ""
+    case key
     when "success"
-      "!"
+      suffix = "!"
     when "danger", "info"
-      "."
+      suffix = "."
     end
+    ("<span>"+message.capitalize+suffix+"</span>").html_safe
   end
 
   def show_errors?
-    params[:action] == "create"
+    ["create", "log_in"].include? params[:action]
   end
 
   def back_with_errors

@@ -4,8 +4,8 @@ Rails.application.routes.draw do
 
   root to: "users#index"
 
-  post :log_in, to: "users#logon"
-  delete :log_out, to: "users#logout"
+  post :log_in, to: "users#log_in"
+  get :log_out, to: "users#log_out"
 
   get "images/:id/:type", to: "images#show", as: :image
 

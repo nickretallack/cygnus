@@ -1,18 +1,16 @@
 <% if flash.any? %>
-  <div class="mb">
-    <% flash.each do |name, msg| %>
-      <%= content_tag :div, id: "flash", class:"#{name}" do %>
-        <span class="ml"><%= msg+flappelation(name) %></span>
-      <% end %>
+  <% flash.each do |key, message| %>
+    <%= content_tag :div, id: "flash", class:"#{key}" do %>
+      <%= format_flash message, key: key %>
     <% end %>
-  </div>
+  <% end %>
 <% end %>
 
 <% if show_errors? %>
   <div class="mb">
     <% instance_variable_get("@new_"+controller_name.singularize).errors.full_messages.each do |msg| %>
       <div class="error">
-        <li class="fr mr"><%= msg %></li>
+        <li><%= msg %></li>
       </div>
     <% end %>
   </div>
