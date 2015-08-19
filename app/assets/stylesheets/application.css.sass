@@ -1,5 +1,5 @@
 /*
- *= require_tree .
+ *= require order_forms
  *= require_self
  *
  */
@@ -11,6 +11,10 @@ $background-color-transparent: rgba(nth($background-color-rgb, 1), nth($backgrou
 $thumb-size: 150px
 $success-color: yellowgreen
 $danger-color: indianred
+$form-background-color: #cfd8dc
+$menu-button-background-color: #90a4ae
+$placeholder-color: darkslategrey
+$placeholder-text-shadow-color: snow
 
 @import url(https://fonts.googleapis.com/icon?family=Material+Icons)
 @import "materialize.min"
@@ -22,6 +26,11 @@ $danger-color: indianred
 html
   font-family: "Blogger"
   background-color: $background-color
+
+@media only screen and (min-width: 992px)
+  html
+    font-size: 15px
+    font-weight: 800
 
 header
   a
@@ -46,17 +55,41 @@ header
       text-shadow: none
     li
       text-align: center
+    .separator
+      height: $separator-height
+      background: linear-gradient(to bottom, $background-color, $background-color-transparent)
     form
-      @extend .blue-grey
+      background-color: $form-background-color
       display: table
       margin: 0 auto
       margin-top: 10px
       border-radius: 3px
+      padding-bottom: 5px
     input[type = "submit"]
-      @extend .cyan
-  .separator
-    height: $separator-height
-    background: linear-gradient(to bottom, $background-color, $background-color-transparent)
+      background-color: $menu-button-background-color
+
+input[type = "submit"]
+  @extend .btn
+  text-shadow: 0px 2px 1px darkslategrey
+
+input[type = "text"],
+input[type = "email"],
+input[type = "password"]
+  padding-left: 5px
+
+::-webkit-input-placeholder
+  color: $placeholder-color
+  text-shadow: 0px 0px 5px $placeholder-text-shadow-color
+  padding-left: 5px
+
+\:-moz-placeholder
+  color: white
+
+::-moz-placeholder
+  color:white
+
+\:-ms-input-placeholder
+  color: white
 
 @media screen and (min-width: 993px)
   .nav-wrapper
@@ -121,6 +154,3 @@ div#main
 img
   display: block
   width: 100%
-
-input[type = "submit"]
-  @extend .btn

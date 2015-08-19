@@ -14,14 +14,14 @@
     <%= form_for :session, url: log_in_path do |f| %>
       <li><%= f.text_field :name, placeholder: "Username" %></li>
       <li><%= f.password_field :password, placeholder: "Password" %></li>
-      <li><%= f.submit "Log in", class: "btn" %></li>
+      <li><%= f.submit "Log in" %></li>
     <% end %>
     <hr />
     <%= form_for User.new, url: users_path do |f| %>
       <li><%= f.text_field :name, placeholder: "Username" %></li>
       <li><%= f.password_field :password, placeholder: "Password" %></li>
       <li><%= f.password_field :password_confirmation, placeholder: "Confirm Password" %></li>
-      <li><%= f.submit "Register", class: "btn btn-primary" %></li>
+      <li><%= f.submit "Register" %></li>
     <% end %>
     <hr />
   </ul>

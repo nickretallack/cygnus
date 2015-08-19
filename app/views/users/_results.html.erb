@@ -10,7 +10,7 @@
           <h4 class = "truncate"><%= link_to user.name, user_path(user) %></h4>
           <h4><%= statuses user, verbosity: :condensed %></h4>
     		  <% if user.galleries.first %>
-            <span><%= link_to "Gallery", pool_path(user.galleries.order('id asc').first)%><%= link_to "(ies)", pools_path(user) %></span>
+            <span><%= link_to "Gallery", pool_path(user.galleries.order(:id).first)%><%= link_to "(ies)", pools_path(user) %></span>
     		  <% end %>
         </div>
       </div>
