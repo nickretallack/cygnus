@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   post :log_in, to: "users#log_in"
   get :log_out, to: "users#log_out"
 
-  get "images/:id/:type", to: "images#show", as: :image
+  get "images/:type(/:id)", to: "images#show", as: :image
 
   resources :comments
   resources :order_forms

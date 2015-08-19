@@ -10,6 +10,7 @@ CONFIG = {
   image_disabled: Rails.root.join("app/assets/images/icon.png"),
   image_disabled_thumb: Rails.root.join("app/assets/images/icon.png"),
   logo: Rails.root.join("app/assets/images/logo.png"),
+  banner: Rails.root.join("app/assets/images/banner.png"),
   image_shelf_life: 5.hours,
 
   commission_icons: {
