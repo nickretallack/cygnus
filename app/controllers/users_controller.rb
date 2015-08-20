@@ -181,7 +181,7 @@ class UsersController < ApplicationController
   end
   
   def check_expiration
-    @user = User.find params[:name]
+    @user = User.find_by id: params[:id]
     unless @user and @user.level > CONFIG[:user_levels].index("member") and @user.authenticated?(:activation, params[:activation])
       redirect_to root_url
     end
