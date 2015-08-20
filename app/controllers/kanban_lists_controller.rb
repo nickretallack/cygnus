@@ -1,6 +1,6 @@
 class KanbanListsController < ApplicationController
   def index
-    @user = User.find(params[:id])
+    @user = User.find_by(User.slug => params[User.slug])
     @kanban_lists = @user.kanban_lists.order(:id)
   end
 

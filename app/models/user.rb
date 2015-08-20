@@ -22,6 +22,14 @@ class User < ActiveRecord::Base
     Rails.application.routes.named_routes.helpers.map(&:to_s).collect{ |route| route.gsub(/_path|_url/, "") }
   end
 
+  def self.level_for(grade)
+    CONFIG[:user_levels].index(grade.to_s)
+  end
+
+  def at_level(grade)
+    level == User.level_for(grade)
+  end
+
   def self.search(terms = "")
     sanitized = sanitize_sql_array(["to_tsquery('english', ?)",
 	terms.gsub(/\s/,"+")])

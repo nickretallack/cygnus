@@ -11,15 +11,15 @@ module ApplicationHelper
     user == current_user
   end
 
-  def format_flash(message, key:)
+  def format_flash(message, key)
     suffix = ""
-    case key
-    when "success"
+    case key.to_sym
+    when :success
       suffix = "!"
-    when "danger", "info"
+    when :danger, :info
       suffix = "."
     end
-    ("<span>"+message.capitalize+suffix+"</span>").html_safe
+    ("<span>"+message.slice(0, 1).capitalize+message.slice(1..-1)+suffix+"</span>").html_safe
   end
 
   def show_errors?
@@ -48,16 +48,37 @@ module ApplicationHelper
     end
   end
 
-  def level_of(level)
-    CONFIG[:user_levels].index(level.to_s)
-  end
-
   def at_least(grade)
-    current_user.level >= level_of(grade)
+    current_user.level >= User.level_for(grade)
   end
 
   def can_modify?(user: nil, id: nil)
-    @can_modify ||= at_least(:admin) or current_user == (user || User.find[id])
+    begin
+      user = user || User.find(id)
+    rescue
+      user = nil
+    end
+    @can_modify ||= at_least(:admin) or current_user == user
+  end
+
+  def insist_on(type, user: nil, id: nil)
+    case type
+    when :permission
+      unless can_modify? user: user, id: id
+        flash[:danger] = "you are not allowed to modify that record"
+        redirect_to :back
+      end
+    when :existence
+      begin
+        user = user || User.find(id)
+      rescue
+        user = nil
+      end
+      unless user
+        flash[:danger] = "no such user"
+        redirect_to :root
+      end
+    end
   end
 
   def enum_for(*args)
@@ -70,27 +91,4 @@ module ApplicationHelper
       end
     end
   end
-  
-  # def logged_in_user
-  #   #render :text => @current_user.name
-  #   unless logged_in?
-  #     flash[:danger] = "Please log in."
-  #     redirect_to :root
-  #   end
-  # end
-  
-  # CONFIG[:user_levels].each do |name|
-  #   normalized_name = name.downcase.gsub(/ /, "_")
-
-  #   define_method("#{normalized_name}_only") do 
-		#   unless current_user.level >= CONFIG[:user_levels].index(name)
-		#     flash[:danger] = "Access Denied"
-		#     redirect_to :root
-  #     end
-  #   end
-
-	 #  define_method("current_user_or_#{normalized_name}?") do |user|
-		#   @current_user == user or @current_user.is_admin?
-	 #  end
-  # end
 end

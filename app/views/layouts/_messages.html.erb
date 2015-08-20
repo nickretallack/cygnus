@@ -1,7 +1,7 @@
 <% if flash.any? %>
   <% flash.each do |key, message| %>
     <%= content_tag :div, id: "flash", class:"#{key}" do %>
-      <%= format_flash message, key: key %>
+      <%= format_flash message, key %>
     <% end %>
   <% end %>
 <% end %>

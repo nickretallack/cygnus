@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
     self.instance_exec do
       case action
       when :index
-        self.instance_variable_set("@"+controller_name, klass.all.order(:id))
+        self.instance_variable_set("@"+controller_name, klass.all.order(klass.slug))
       when :new
         self.instance_variable_set("@new_"+controller_name.singularize, klass.new)
       when :create

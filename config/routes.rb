@@ -35,10 +35,10 @@ Rails.application.routes.draw do
   
   
   #get "pools(/user/:user_id)" => "pools#index" , as: :pools
-  get "users/:id/workboard" => "kanban_lists#index", as: :workboard
-  post "users/:id/workboard" => "kanban_lists#create", as: :new_list
-  patch "users/:id/workboard/:kanban_list_id" => "kanban_lists#update", as: :list
-  post "users/:id/workboard/:kanban_list_id" => "kanban_cards#create", as: :new_card
-  patch "users/:id/workboard/:kanban_list_id/cards/:kanban_card_id" => "kanban_cards#update", as: :card
+  get ":name/workboard" => "kanban_lists#index", as: :workboard
+  post ":name/workboard" => "kanban_lists#create", as: :new_list
+  patch ":name/workboard/:kanban_list_id" => "kanban_lists#update", as: :list
+  post ":name/workboard/:kanban_list_id" => "kanban_cards#create", as: :new_card
+  patch ":name/workboard/:kanban_list_id/cards/:kanban_card_id" => "kanban_cards#update", as: :card
   resources :submissions
 end
