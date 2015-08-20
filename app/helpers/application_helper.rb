@@ -50,6 +50,18 @@ module ApplicationHelper
       user.upload.nil?? -1 : user.upload.id
     end
   end
+
+  def level_of(level)
+    CONFIG[:user_levels].index(level.to_s)
+  end
+
+  def at_least(grade)
+    current_user.level >= level_of(grade)
+  end
+
+  def has_permission?(user:, id:)
+    @can_modify ||= at_least(:admin) or current_user == (user || User.find[id])
+  end
   
   # def logged_in_user
   #   #render :text => @current_user.name

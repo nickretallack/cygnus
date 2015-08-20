@@ -9,12 +9,13 @@ $background-color-rgb: 247, 252, 242
 $background-color: rgba(nth($background-color-rgb, 1), nth($background-color-rgb, 2), nth($background-color-rgb, 3), 1)
 $background-color-transparent: rgba(nth($background-color-rgb, 1), nth($background-color-rgb, 2), nth($background-color-rgb, 3), 0)
 $thumb-size: 150px
-$success-color: yellowgreen
+$success-color: #9ccc65
 $danger-color: indianred
 $form-background-color: #cfd8dc
 $menu-button-background-color: #90a4ae
 $placeholder-color: darkslategrey
 $placeholder-text-shadow-color: snow
+$nav-background-color: #9ccc65
 
 @import url(https://fonts.googleapis.com/icon?family=Material+Icons)
 @import "materialize.min"
@@ -39,6 +40,7 @@ header
     text-decoration: underline
     cursor: pointer
   nav
+    background-color: $nav-background-color
     z-index: 1
     .brand-logo
       width: 200px
@@ -65,6 +67,8 @@ header
       margin-top: 10px
       border-radius: 3px
       padding-bottom: 5px
+    input
+      width: auto
     input[type = "submit"]
       background-color: $menu-button-background-color
 
@@ -97,15 +101,17 @@ input[type = "password"]
     padding: 0 .5% 0 2%
 
 @media screen and (max-width: 600px)
-  .row
-    .col.hc
-      padding: 0
-      margin: 0 auto
-      float: none
-      text-align: center
-      *
-        float: none
+  div#main
+    .row
+      .col
         margin: 0 auto
+        float: none
+        text-align: center
+        *
+          float: none
+          margin: 0 auto
+        h4
+          line-height: 120%
 
 div.container
   width: 85%
@@ -130,6 +136,22 @@ div#main
   .danger
     color: $danger-color
     border-color: $danger-color
+  input[type = "text"],
+  input[type = "email"],
+  input[type = "password"]
+    width: calc(100% - 3rem - 5px)
+  .col
+    padding: 0
+    h4
+      margin: 3% 0
+      a:hover
+        font-decoration: underline
+        font-size: 100%
+    a:hover
+      font-size: 120%
+
+.btn:hover
+  font-size: 110%
 
 .fl
   float: left
@@ -154,3 +176,28 @@ div#main
 img
   display: block
   width: 100%
+
+a:hover
+  text-decoration: underline
+
+.errors
+  background-color: $danger-color
+  border-radius: 2px
+  padding-top: 2px
+  li
+    line-height: 26px
+    border-bottom: 1px solid black
+    padding: 2px 0 2px 10px
+
+.comm-inactive
+  color: red
+.comm-accepting
+  color: green
+.comm-accepting_few
+  color: yellow
+.comm-backlogged
+  color: lightslategrey
+.comm-open_soon
+  color: yellowgreen
+.comm-vacation
+  color: purple

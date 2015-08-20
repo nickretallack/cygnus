@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150818220804) do
+ActiveRecord::Schema.define(version: 20150820020518) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,14 +78,11 @@ ActiveRecord::Schema.define(version: 20150818220804) do
     t.string   "email"
     t.integer  "level",             default: 0
     t.inet     "ip_Address"
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
     t.string   "gallery"
     t.string   "price"
     t.text     "details"
-    t.boolean  "commissions"
-    t.boolean  "trades"
-    t.boolean  "requests"
     t.string   "tags"
     t.tsvector "tags_tsvector"
     t.integer  "avatar"
@@ -93,8 +90,7 @@ ActiveRecord::Schema.define(version: 20150818220804) do
     t.string   "activation_digest"
     t.datetime "activated_at"
     t.datetime "reset_sent_at"
-    t.boolean  "collabs"
-    t.boolean  "avatar_adult"
+    t.integer  "statuses",          default: [0, 0, 0, 0],              array: true
   end
 
   add_index "users", ["tags_tsvector"], name: "users_tags_search_idx", using: :gin

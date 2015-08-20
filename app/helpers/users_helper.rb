@@ -10,14 +10,18 @@ module UsersHelper
 	   <span class='glyphicon #{user.requests ? "glyphicon-list-alt" : "glyphicon-list-alt text-danger"}'></span>".html_safe
 	end
 
-	def statuses(user, verbosity:)
+	def statuses(user, verbosity: :verbose)
 		html = ""
 		case verbosity
 		when :verbose
-			"verbose"
+			html = "verbose"
 		when :condensed
 			CONFIG[:commission_icons].each do |key, icon|
-				html += "<i class = 'small material-icons "+(user[key]? "success" : "danger")+"'>"+icon+"</i>"
+				html += "<i class = 'small material-icons'>"+icon+"</i>"
+			end
+			html += "<br />"
+			user.statuses.each do |status|
+				html += "<i class = 'small material-icons comm-"+CONFIG[:activity_icons].keys[status].to_s+"'>"+CONFIG[:activity_icons].values[status]+"</i>"
 			end
 		end
 		html.html_safe

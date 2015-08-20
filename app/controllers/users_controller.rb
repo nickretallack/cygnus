@@ -91,17 +91,11 @@ class UsersController < ApplicationController
     end
   end
 
-  def new
-  @user = User.new
-  
-  end
-
   def create
-    @user = User.new(user_params)
-    @user.ip_Address = request.remote_ip
-    @user.avatar = Upload.render(params[:user][:picture])
-    @user.level = CONFIG[:user_levels].index("unactivated") unless CONFIG[:email_required]
-    if @user.save
+    @new_user.ip_Address = request.remote_ip
+    @new_user.avatar = Upload.render(params[:user][:picture])
+    @new_user.level = CONFIG[:user_levels].index("unactivated") unless CONFIG[:email_required]
+    if @new_user.save
       if CONFIG[:email_required]
         UserMailer.account_activation(@user).deliver_now
         flash[:info] = "Please check your email to activate your account."
@@ -120,24 +114,26 @@ class UsersController < ApplicationController
         Pool.new(title: "Gallery", user_id: @user.id).save!
         activate_session @user
         flash[:success] = "Welcome to Bleatr!"
-    	  if request.xhr?
-    			render :text=> user_path(@user)
-    	  else
-      		respond_to do |format|
-      			format.html { redirect_to user_path(@user) }
-      			format.json { render xml: @user, :except =>
-      			[:password_digest, :ip_Address], status: :created, location: @user }
-      			format.xml { render json: @user, :except =>
-      			[:password_digest, :ip_Address], status: :created, location: @user }	  
-      		end
-    	  end
+        redirect_to :back
+    	  # if request.xhr?
+    			# render :text=> user_path(@user)
+    	  # else
+      	# 	respond_to do |format|
+      	# 		format.html { redirect_to user_path(@user) }
+      	# 		format.json { render xml: @user, :except =>
+      	# 		[:password_digest, :ip_Address], status: :created, location: @user }
+      	# 		format.xml { render json: @user, :except =>
+      	# 		[:password_digest, :ip_Address], status: :created, location: @user }	  
+      	# 	end
+    	  # end
       end
     else
-  		if request.xhr?
-  			render 'new', layout: false, status: 406
-  		else  
-  			render 'new'
-  		end
+      back_with_errors
+  		# if request.xhr?
+  		# 	render 'new', layout: false, status: 406
+  		# else  
+  		# 	render 'new'
+  		# end
     end
   end
 
