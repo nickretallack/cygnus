@@ -14,9 +14,7 @@ module ActiveRecordExtensions
     end
 
     def find(record)
-      thing = find_by(slug => record)
-      raise ActiveRecord::RecordNotFound if thing.nil?
-      thing
+      find_by(slug => record)
     end
   end
 end

@@ -1,10 +1,6 @@
 class ImagesController < ApplicationController
   def show
-    begin
-      @image = Upload.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      @image = Upload.new
-    end
+    @image = Upload.find(params[:id]) || Upload.new if @image.nil?
 
     expires_in CONFIG[:image_shelf_life], public: true
 
