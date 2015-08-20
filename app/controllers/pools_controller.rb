@@ -1,5 +1,12 @@
 class PoolsController < ApplicationController
 
+  def gallery
+    @user = User.find_by(User.slug => params[User.slug])
+    @pool = @user.galleries.order(:id).first
+    @submissions = @pool.submissions
+    render :show
+  end
+
   def index
     if params[:user_id]
       @user = User.find(params[:user_id])
@@ -9,14 +16,14 @@ class PoolsController < ApplicationController
     end
   end
 
-  def show
-    @pool = Pool.find(params[:id])
-    if !current_user.is_anonymous? && current_user.view_adult
-      @submissions = Submission.where(pool_id: @pool.id)
-    else
-      @submissions = Submission.where(pool_id: @pool.id, adult: false)
-    end
-  end
+  # def show
+  #   @pool = Pool.find(params[:id])
+  #   if !current_user.is_anonymous? && current_user.view_adult
+  #     @submissions = Submission.where(pool_id: @pool.id)
+  #   else
+  #     @submissions = Submission.where(pool_id: @pool.id, adult: false)
+  #   end
+  # end
 
   def new
     @pool = Pool.new

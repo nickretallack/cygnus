@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  custom_slug :name
   scope :ci_find, lambda { |attribute, value| where("lower(#{attribute}) = ?", value.downcase).first }
   attr_accessor  :activation_token, :reset_token
   has_many :galleries, class_name: :Pool, dependent: :destroy
@@ -8,7 +9,7 @@ class User < ActiveRecord::Base
  
 
   before_save { self.email = email.downcase }
-  validates :name, presence: true, length: { maximum: 50 }, uniqueness: { case_sensitive: false, message: "name is already taken" }, exclusion: { in: :named_routes }
+  validates :name, presence: true, length: { maximum: 50 }, uniqueness: { case_sensitive: false }, exclusion: { in: :named_routes }
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence: true, length: { maximum: 255 },

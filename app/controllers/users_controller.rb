@@ -111,9 +111,9 @@ class UsersController < ApplicationController
       		end
     	  end
       else
-        Pool.new(title: "Gallery", user_id: @user.id).save!
-        activate_session @user
-        flash[:success] = "Welcome to Bleatr!"
+        Pool.new(title: "Gallery", user_id: @new_user.id).save!
+        activate_session @new_user
+        flash[:success] = "Welcome to Bleatr"
         redirect_to :back
     	  # if request.xhr?
     			# render :text=> user_path(@user)
@@ -186,7 +186,7 @@ class UsersController < ApplicationController
   def log_out
     deactivate_session
     flash[:info] = "Logged out"
-    redirect_to :back
+    redirect_to :root
   end
 
   private

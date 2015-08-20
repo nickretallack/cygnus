@@ -1,25 +1,13 @@
-<% provide(:header, 'Sign up') %>
-  <div class="col-md-6 col-md-offset-3">
-  	<div id="form">
-        <%= form_for User.new do |f| %>
-		  <ul class="list-unstyled">
-			  <li class = "centered">
-				<%= f.text_field :name, class: "wide-90", placeholder: "Username" %>
-			  </li>
-			  <li class = "centered">
-				<%= f.email_field :email, class: "wide-90", placeholder: "Email" %>
-			  </li>
-			  <li class = "centered">
-				<%= f.password_field :password, class: "wide-90", placeholder: "Password" %>
-			  </li>
-			  <li class = "centered">
-				<%= f.password_field :password_confirmation, class: "wide-90", placeholder: "Password Confirmation" %>
-			  </li>
-			  <hr />
-			  <li class = "centered">
-				<%= f.submit "Create my account", class: "submit" %>
-			  </li>
-		  </ul>
-        <% end %>
-	</div>
+<% provide(:header, "Sign up") %>
+
+<%= form_for User.new, url: users_path do |f| %>
+  <div class = "row">
+    <div class = "col s9 m6 l3">
+      <%= f.text_field :name, placeholder: "Username" %>
+      <%= f.email_field :email, placeholder: "Email" %>
+      <%= f.password_field :password, placeholder: "Password" %>
+      <%= f.password_field :password_confirmation, placeholder: "Confirm Password" %>
+      <%= f.submit "Register" %>
+    </div>
   </div>
+<% end %>

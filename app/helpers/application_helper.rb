@@ -23,15 +23,12 @@ module ApplicationHelper
   end
 
   def show_errors?
-    ["create", "log_in"].include? params[:action]
+    ["create"].include? params[:action]
   end
 
   def back_with_errors
     referer_params = Rails.application.routes.recognize_path request.referer
-    obj = (referer_params[:controller].camelize+"Controller").constantize.new
-    obj.instance_variable_set "@referer_params", referer_params
-    variable_name = (referer_params[:action] == "index")? referer_params[:controller] : referer_params[:controller].singularize
-    instance_variable_set "@"+variable_name, obj.send(referer_params[:action])
+    setter(referer_params)
     render referer_params
   end
 
@@ -59,8 +56,19 @@ module ApplicationHelper
     current_user.level >= level_of(grade)
   end
 
-  def has_permission?(user:, id:)
+  def can_modify?(user: nil, id: nil)
     @can_modify ||= at_least(:admin) or current_user == (user || User.find[id])
+  end
+
+  def enum_for(*args)
+    key, value = args.first.first
+    if value.empty?
+      concat "No "+key.to_s+" here yet."
+    else
+      value.each do |item|
+        yield item
+      end
+    end
   end
   
   # def logged_in_user

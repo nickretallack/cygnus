@@ -6,28 +6,25 @@
   <%= form_for Submission.new do |f| %>
     <%= f.label :title %>
     <%= f.text_field :title %><br />
-    <%= f.file_field :picture, class: "uploader" %><br />
+    <div class = "row">
+      <div class = "col s12 m9 file-field input-field">
+        <div class = "btn fl">
+          <span>Picture</span>
+          <%= f.file_field :picture %>
+        </div>
+        <input class = "file-path validate fl" type = "text" />
+      </div>
+    </div>
     <%= f.check_box :adult %>
     <%= f.label :adult %><br />
     <%= hidden_field_tag "submission[pool_id]", @pool.id %>
-    <%= f.submit "New Submission", class: "btn btn-primary" %>
+    <%= f.submit "New Submission" %>
   <% end %>
   <hr />
 <% end %>
 
-<div class="wide-100">
-  <% if @submissions.empty? %>
-    <h2>No submissions here yet.</h2>
-  <% else %>
-    <% @submissions.each do |submission| %>
-      <div class="wide-px-150 high-px-190 fl centered">
-        <div class="wide-100 centered">Order print</div>
-        <% if current_user.is_admin? || @pool.user == current_user %>
-            <br /><div class="wide-100 centered"><%= link_to "Destroy", submission_path(submission), method: :delete, data: { confirm: "Are you sure?" } %></div>
-        <% end %>
-        <div class="wide-100 centered"><%= link_to image_tag(image_thumb_path(submission.upload.id), class: (submission.adult)? "thumbnail thumbnail-mini thumbnail-adult centered" : "thumbnail thumbnail-mini centered"), submission_path(submission.id) %></div>
-        <div class="wide-100 centered list"><%= link_to submission.title.length > 17? submission.title[0..14]+"..." : submission.title[0..17], submission_path(submission.id) %></div>
-      </div>
-    <% end %>
+<div>
+  <% enum_for(submissions: @submissions) do |submission| %>
+      <%= submission.title %>
   <% end %>
 </div>

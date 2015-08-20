@@ -1,7 +1,7 @@
 <% provide(:header, @user.name) %>
 
-<%= form_for @user, method: :patch, url: user_path, multipart: true do |f| %>
-	<% if edit %>
+<%= form_for @user, method: :patch, url: user_path(@user), multipart: true do |f| %>
+	<% if can_modify? user: @user %>
 		<span><%= f.check_box :view_adult %> <%= f.label "View Adult" %></span><br />
 		<span><%= f.label "Avatar" %> <%= f.file_field :picture, class: "uploader" %></span>
 	<% end %>
@@ -9,14 +9,13 @@
 		<div class="wide-px-160 fl" style="min-height: 160px; margin: 23px 10px 0px 23px;">
 		</div>
 		<div class="fl">
-			<span><%= link_to "Gallery", pool_path(Pool.find_by(user_id: @user.id)) %><%= link_to "(ies)", pools_path(user_id: @user.id) %></span><br />
-				<span><%= f.check_box :commissions %> <%= f.label :commissions %> <%= f.check_box :trades %> <%= f.label :trades %> <%= f.check_box :requests %> <%= f.label :requests %></span><br />
-			<% if edit %>
+			<span><%= link_to "Gallery", gallery_path(@user) %><%= link_to "(ies)", pools_path(@user) %></span><br />
+			<% if can_modify? user: @user %>
 				<%= f.text_field :gallery, placeholder: "Offsite Gallery" %><br />
 			<% elsif !@user.gallery.blank? %>
 				<%= link_to @user.gallery, url_with_protocol(@user.gallery) %><br />
 			<% end %>
-			<% if edit %>
+			<% if can_modify? user: @user %>
 				<span><%= f.label "I charge:" %> <%= f.text_field :price, placeholder: @user.price.blank?? "Set" : "Update" %></span><br />
 			<% elsif !@user.price.blank? %>
 				I charge:&nbsp;<%= @user.price %><br />
@@ -27,12 +26,11 @@
 	    <% end %>
 		</div>
 	</div>
-	<% if edit %>
+	<% if can_modify? user: @user %>
 		<%= f.text_area :tags, placeholder: "Tags", class: "wide-100" %>
 		<%= f.text_area :details, placeholder: "Profile Text", class: "wide-100" %>
 	<% else %>
 		<%= @user.tags %>
 		<%= render_markdown(@user.details || "") %>
 	<% end %>
-	<%= f.submit "Save Changes", class: "submit" if edit %>
 <% end %>
