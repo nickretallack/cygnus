@@ -148,7 +148,7 @@ class UsersController < ApplicationController
   end
 
   def log_in
-    user = User.find_by(name: params[:session][:name].downcase)
+    user = User.find(params[:session][:name].downcase)
     if user
       if user.authenticate(params[:session][:password])
         activate_session user
@@ -181,12 +181,12 @@ class UsersController < ApplicationController
   end
   
   def check_expiration
-    @user = User.find params[:id]
+    @user = User.find params[:name]
     unless @user and @user.level > CONFIG[:user_levels].index("member") and @user.authenticated?(:activation, params[:activation])
-        redirect_to root_url
+      redirect_to root_url
     end
     if @user.password_reset_expired?
-      flash[:danger] = "Password reset has expired."
+      flash[:danger] = "password reset has expired"
       redirect_to password_reset_path
     end
   end

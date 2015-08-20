@@ -19,17 +19,17 @@ class ApplicationController < ActionController::Base
       when :create
         self.instance_variable_set("@new_"+controller_name.singularize, klass.new(params.require(controller_name.singularize.to_sym).permit(send(controller_name.singularize+"_params_permitted"))))
       else
-        self.instance_variable_set("@"+controller_name.singularize, klass.find_by(klass.slug => referer_params.nil?? params[klass.slug] : referer_params[klass.slug]))
+        self.instance_variable_set("@"+controller_name.singularize, klass.find(referer_params.nil?? params[klass.slug] : referer_params[klass.slug]))
       end
     end
   end
 
   def activate_session(user)
-    session[:user_id] = user.id
+    session[:username] = user.name
   end
 
   def deactivate_session
-    session.delete(:user_id)
+    session.delete(:username)
     @current_user = nil
   end
 end

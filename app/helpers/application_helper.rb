@@ -1,6 +1,6 @@
 module ApplicationHelper
   def current_user
-    @current_user ||= session[:user_id].nil?? AnonymousUser.new : User.find(session[:user_id])
+    @current_user ||= session[:username].nil?? AnonymousUser.new : User.find(session[:username])
   end
 
   def anon?
