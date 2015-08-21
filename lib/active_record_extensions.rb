@@ -13,8 +13,10 @@ module ActiveRecordExtensions
       self.instance_variable_get("@slug") || :id
     end
 
-    def find(record)
-      find_by(slug => record)
+    def find(record, raise_error: false)
+      thing = find_by(slug => record)
+      raise ActiveRecord::RecordNotFound if thing.nil? and raise_error
+      thing
     end
   end
 end

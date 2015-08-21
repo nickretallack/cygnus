@@ -1,4 +1,11 @@
-class ImagesController < ApplicationController
+class UploadsController < ApplicationController
+  def create
+    if @new_upload.save
+
+    else
+    end
+  end
+
   def show
     @image = Upload.find(params[:id]) || Upload.new if @image.nil?
 
@@ -29,4 +36,11 @@ class ImagesController < ApplicationController
  	    send_file CONFIG["image_disabled#{suffix}".to_sym], :disposition => "inline"
     end
   end
+
+  private
+
+  def upload_params_permitted
+    [:file, :explicit]
+  end
 end
+
