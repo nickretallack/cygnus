@@ -26,10 +26,6 @@ function ready(){
   $(".nojs").hide();
   $(".js").show();
 
-  $("nav").pushpin({
-    top: $("header").children("img").outerHeight()
-  });
-
   $(".dropdown-button").dropdown({
     belowOrigin: true,
     hover: true,
@@ -37,10 +33,19 @@ function ready(){
   });
 
   var pushpinLogo = function(){
-    if($(window).scrollTop() > $("header").children("img").outerHeight()){
+    if($(window).scrollTop() > $("header").children("img").outerHeight())
+    {
+      $("nav").css({
+        position: "fixed",
+        top: 0
+      });
       $("[class='brand-logo']").hide();
       $("[class='brand-logo small']").show();
-    }else{
+    }else if($(window).scrollTop() === 0){
+      $("nav").css({
+        position: "relative",
+        top: "auto"
+      });
       $("[class='brand-logo']").show();
       $("[class='brand-logo small']").hide();
     }
