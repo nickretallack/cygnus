@@ -19,7 +19,12 @@ class ApplicationController < ActionController::Base
         self.instance_variable_set("@"+controller_name.singularize, klass.new)
       when :create
         self.instance_variable_set("@new_"+controller_name.singularize, klass.new(params.require(controller_name.singularize.to_sym).permit(send(controller_name.singularize+"_params_permitted"))))
-      else
+      when :update
+        self.instance_variable_set("@"+controller_name.singularize, klass.find(params[klass.slug]))
+        self.class.send :define_method, controller_name.singularize+"_params" do
+          params.require(controller_name.singularize.to_sym).permit(send(controller_name.singularize+"_params_permitted"))
+        end
+      else        
         self.instance_variable_set("@"+controller_name.singularize, klass.find(referer_params.nil?? params[klass.slug] : referer_params[klass.slug]))
       end
     end

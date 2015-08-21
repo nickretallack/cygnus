@@ -38,37 +38,40 @@ class UsersController < ApplicationController
   def destroy
     @user.destroy
     respond_to do |format|
-      format.html { redirect_to users_url, notice: params[:name] + 'has deactivated their account' }
+      format.html { redirect_to users_url, notice: params[:name] + "has deactivated their account" }
       format.json { head :no_content }
       format.xml { head :no_content }
     end
   end
 
   def update
-    @user.avatar = Upload.render(params[:user][:picture]) unless params[:user][:picture].nil?
+    @user.update_attribute(:avatar, Upload.render(params[:user][:upload][:picture])) unless params[:user][:upload][:picture].nil?
+    #raise "break"
     if @user.update_attributes(user_params)
       flash[:success] = "profile updated"
-  	  if request.xhr?
-  			render :text=> user_path(@user)
-  	  else  
-    		respond_to do |format|
-    			format.html { redirect_to user_path(@user) }
-    			format.json { render xml: @user, :except =>
-    			[:password_digest, :ip_Address], status: :ok, location: @user }
-    			format.xml { render json: @user, :except =>
-    			[:password_digest, :ip_Address], status: :ok, location: @user }
-    		end
-      end	
+      redirect_to :back
+  	  # if request.xhr?
+  			# render :text=> user_path(@user)
+  	  # else  
+    	# 	respond_to do |format|
+    	# 		format.html { redirect_to user_path(@user) }
+    	# 		format.json { render xml: @user, :except =>
+    	# 		[:password_digest, :ip_Address], status: :ok, location: @user }
+    	# 		format.xml { render json: @user, :except =>
+    	# 		[:password_digest, :ip_Address], status: :ok, location: @user }
+    	# 	end
+     #  end	
     else
-  		if request.xhr?
-  			render 'edit', layout: false, status: 406
-  		else  
-  			respond_to do |format|
-  			  format.html { render :edit }
-  				format.json { render json: @user.errors, status: :unprocessable_entity }
-  				format.xml { render json: @user.errors, status: :unprocessable_entity }
-  			end
-  		end	
+      back_with_errors
+  		# if request.xhr?
+  		# 	render 'edit', layout: false, status: 406
+  		# else  
+  		# 	respond_to do |format|
+  		# 	  format.html { render :edit }
+  		# 		format.json { render json: @user.errors, status: :unprocessable_entity }
+  		# 		format.xml { render json: @user.errors, status: :unprocessable_entity }
+  		# 	end
+  		# end	
     end
   end
 

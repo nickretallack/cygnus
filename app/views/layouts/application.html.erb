@@ -25,6 +25,6 @@
       <%= link_to "Back", request.referer.nil?? root_path : URI(request.referer).path %>
       <%= CONFIG[:copyright].html_safe %>
     </footer>
-    <% console %>
+    <%# console %>
   </body>
 </html>

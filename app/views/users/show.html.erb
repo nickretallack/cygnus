@@ -1,19 +1,27 @@
 <% provide(:header, @user.name) %>
 
-<%= form_for @user, method: :patch, url: user_path(@user), multipart: true do |f| %>
+<%= form_for @user, method: :patch, url: user_path(@user) do |f| %>
 	<% if can_modify? user: @user %>
-		
-			<%= f.check_box Upload.explicit %><%= f.label Upload.explicit %><br />
+		<%= f.fields_for Upload.new, url: new_avatar_path(@user), multipart: true do |u| %>
+			<%= u.check_box :explicit %><%= u.label :explicit %>
+			<i class = "small material-icons moving-left reverse danger">trending_flat</i><br />
       <div class = "col s12 m9 file-field input-field">
-        <div class = "btn fl">
+        <div class = "btn fl file-button">
           <span>Avatar</span>
-          <%= f.file_field :picture %>
+          <%= u.file_field :picture %>
         </div>
         <input class = "file-path validate fl" type = "text" />
       </div>
+		<% end %>
 	<% end %>
 	<div class="row">
-		<div class = "col s12 m9">
+		<div class = "col s12 m6 preview">
+			<div class = "danger nojs" id = "flash">
+				Update Profile to save. Please mark adult avatars explicit before saving.
+			</div>
+			<%= avatar_for @user %>
+		</div>
+		<div class = "col s12 m6">
 			<%= f.check_box :view_adult %><%= f.label :view_adult %><br />
 			<span><%= link_to "Gallery", gallery_path(@user) %><%= link_to "(ies)", pools_path(@user) %></span><br />
 			<% if can_modify? user: @user %>
@@ -39,4 +47,5 @@
 		<%= @user.tags %>
 		<%= render_markdown(@user.details || "") %>
 	<% end %>
+	<%= f.submit "Update Profile" %>
 <% end %>

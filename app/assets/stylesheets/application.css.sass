@@ -29,10 +29,16 @@ html
   font-family: "Blogger"
   background-color: $background-color
 
-@media only screen and (min-width: 992px)
+@media screen and (min-width: 992px)
   html
     font-size: 15px
     font-weight: 800
+
+@media only screen and (min-width: 601px)
+  div#main
+    .row
+      .col + .col
+        padding-left: 10px
 
 header
   a
@@ -136,6 +142,9 @@ div#main
   .danger
     color: $danger-color
     border-color: $danger-color
+  .danger-button
+    background-color: $danger-color
+
   input[type = "text"],
   input[type = "email"],
   input[type = "password"]
@@ -151,6 +160,8 @@ div#main
         font-size: 100%
     a:hover
       font-size: 120%
+    img
+      max-height: 350px
 
 .btn:hover
   font-size: 110%
@@ -174,10 +185,11 @@ div#main
   border: 2px dashed black
   box-shadow: -1px 2px 15px rgba(0, 0, 0, 0.5)
   background-color: snow
+  width: 100%
 
 img
   display: block
-  width: 100%
+  max-width: 100%
 
 a:hover
   text-decoration: underline
@@ -209,3 +221,13 @@ form
   color: yellowgreen
 .comm-vacation
   color: purple
+
+.material-icons
+  vertical-align: middle
+
+.reverse
+  transform: scaleX(-1)
+
+.moving-left.reverse
+  opacity: 0
+  padding-right: 130px

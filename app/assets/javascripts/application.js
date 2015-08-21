@@ -50,4 +50,23 @@ function ready(){
 
   $(window).scroll(pushpinLogo);
 
+  animatedOnce = false;
+
+  $(":file").change(function(){
+    if(this.files && this.files[0]){
+      var reader = new FileReader();
+      reader.onload = function(event){
+        var div = $(".preview");
+        div.children("#flash").show();
+        div.children("img").detach();
+        div.append($("<img />", { src: event.target.result }));
+        $(".moving-left.reverse").animate({
+          opacity: 1,
+          paddingRight: "-=120"
+        }, 2400);
+      }
+      reader.readAsDataURL(this.files[0]);
+    }
+  })
+
 }

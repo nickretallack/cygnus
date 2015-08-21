@@ -41,11 +41,8 @@ module ApplicationHelper
     markdown.render(content).html_safe
   end
 
-  def image_for(user: nil)
-    case false
-    when user.nil?
-      user.upload.nil?? -1 : user.upload.id
-    end
+  def avatar_for(user, type: :full)
+    image_tag(asset_path(type: type, id: user.avatar || -1))
   end
 
   def at_least(grade)
@@ -53,12 +50,7 @@ module ApplicationHelper
   end
 
   def can_modify?(user: nil, id: nil)
-    begin
-      user = user || User.find(id)
-    rescue
-      user = nil
-    end
-    @can_modify ||= at_least(:admin) or current_user == user
+    @can_modify ||= at_least(:admin) or current_user == user || User.find_by(id: id)
   end
 
   def insist_on(type, user: nil, id: nil)
@@ -69,12 +61,7 @@ module ApplicationHelper
         redirect_to :back
       end
     when :existence
-      begin
-        user = user || User.find(id)
-      rescue
-        user = nil
-      end
-      unless user
+      unless user || user.find_by(id: id)
         flash[:danger] = "no such user"
         redirect_to :root
       end
