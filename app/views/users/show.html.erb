@@ -1,12 +1,13 @@
 <% provide(:header, @user.name) %>
+<h5><span><%= link_to "Gallery", gallery_path(@user) %><%= link_to "(ies)", pools_path(@user) %></span></h5><br />
 
 <%= form_for @user, method: :patch, url: user_path(@user) do |f| %>
 	<% if can_modify? user: @user %>
-		<%= f.fields_for Upload.new, url: new_avatar_path(@user), multipart: true do |u| %>
-			<%= u.check_box :explicit %><%= u.label :explicit %>
+		<%= f.fields_for Upload.find(@user.avatar), multipart: true do |u| %>
+			<%= u.check_box :explicit %><%= u.label :explicit, "Explicit Avatar" %>
 			<i class = "small material-icons moving-left reverse danger">trending_flat</i><br />
       <div class = "col s12 m9 file-field input-field">
-        <div class = "btn fl file-button">
+        <div class = "btn fl">
           <span>Avatar</span>
           <%= u.file_field :picture %>
         </div>
@@ -23,7 +24,6 @@
 		</div>
 		<div class = "col s12 m6">
 			<%= f.check_box :view_adult %><%= f.label :view_adult %><br />
-			<span><%= link_to "Gallery", gallery_path(@user) %><%= link_to "(ies)", pools_path(@user) %></span><br />
 			<% if can_modify? user: @user %>
 				<%= f.text_field :gallery, placeholder: "Offsite Gallery" %><br />
 			<% elsif !@user.gallery.blank? %>
@@ -40,12 +40,14 @@
 	    <% end %>
 	   </div>
 	</div>
-	<% if can_modify? user: @user %>
-		<%= f.text_area :tags, placeholder: "Tags", class: "wide-100" %>
-		<%= f.text_area :details, placeholder: "Profile Text", class: "wide-100" %>
-	<% else %>
-		<%= @user.tags %>
-		<%= render_markdown(@user.details || "") %>
-	<% end %>
+	<div class = "row">
+		<% if can_modify? user: @user %>
+			<%= f.text_area :tags, placeholder: "Tags" %>
+			<%= f.text_area :details, placeholder: "Profile Text" %>
+		<% else %>
+			<%= @user.tags %>
+			<%= render_markdown(@user.details || "") %>
+		<% end %>
+	</div>
 	<%= f.submit "Update Profile" %>
 <% end %>

@@ -2,7 +2,7 @@
   <div class = "row">
     <hr />
     <div class = "row">
-      <div class = "col s12">
+      <div class = "col s12 m6">
         <div class = "fl thumb-large">
           <%= link_to avatar_for(user, type: :thumb), user_path(user) %>
         </div>
@@ -14,10 +14,12 @@
           <% end %>
         </div>
       </div>
+      <div class = "col s12 m6">
+        <% unless user.price.blank? %>
+          <%=user.price%><br />
+        <% end %>
+        Tags: <%= user.tags || "(None)"%>
+      </div>
     </div>
-    <%if !user.price.blank?%>
-      <%=user.price%><br />
-    <% end %>
-    Tags: <%= user.tags || "(None)"%>
   </div>
 <% end %>

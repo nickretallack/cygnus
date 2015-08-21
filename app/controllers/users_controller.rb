@@ -46,7 +46,7 @@ class UsersController < ApplicationController
 
   def update
     @user.update_attribute(:avatar, Upload.render(params[:user][:upload][:picture])) unless params[:user][:upload][:picture].nil?
-    #raise "break"
+    Upload.find(@user.avatar).update_attribute(:explicit, params[:user][:upload][:explicit])
     if @user.update_attributes(user_params)
       flash[:success] = "profile updated"
       redirect_to :back
