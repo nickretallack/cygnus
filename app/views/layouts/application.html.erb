@@ -22,7 +22,8 @@
       </div>
     </div>
     <footer>
-      <%= link_to "Back", request.referer.nil?? root_path : URI(request.referer).path %>
+      <hr />
+      <%= link_to "Back", request.referer.nil?? root_path : URI(request.referer).path %><br />
       <%= CONFIG[:copyright].html_safe %>
     </footer>
     <%# console %>
