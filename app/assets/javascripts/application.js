@@ -23,37 +23,67 @@ $(document).ready(ready);
 
 function ready(){
 
+  var nav = $("nav"),
+      banner = $("header").children("img"),
+      menu = $(".dropdown-button"),
+      logo = $(".brand-logo"),
+      widthTester = $(".widthTester");
+
   $(".nojs").hide();
   $(".js").show();
 
-  $(".dropdown-button").dropdown({
+  menu.dropdown({
     belowOrigin: true,
     hover: true,
     constrain_width: false
   });
 
   var pushpinLogo = function(){
-    if($(window).scrollTop() > $("header").children("img").outerHeight())
+    if($(window).scrollTop() > banner.outerHeight())
     {
       $("nav").css({
         position: "fixed",
         top: 0
       });
-      $("[class='brand-logo']").hide();
-      $("[class='brand-logo small']").show();
     }else if($(window).scrollTop() === 0){
       $("nav").css({
         position: "relative",
         top: "auto"
       });
-      $("[class='brand-logo']").show();
-      $("[class='brand-logo small']").hide();
     }
   };
 
   pushpinLogo();
 
   $(window).scroll(pushpinLogo);
+
+  var size = function(){
+    // if(widthTester.css("width") === "0px") return;
+    // nav.height(banner.outerHeight()/1.5 : banner.outerHeight());
+    // logo.width(nav.height()*3);
+
+    switch(widthTester.css("width")){
+      case "0px":    //small
+        //nav.height(banner.outerHeight() * 2);
+        break;
+      case "601px":  //medium
+        nav.height(banner.outerHeight());
+        logo.width(nav.height()*3);
+        break;
+      case "993px":  //large
+        nav.height(banner.outerHeight() / 1.5);
+        logo.width(nav.height()*3);
+        break;
+      case "1921px": //4k
+        nav.height(banner.outerHeight() / 2);
+        logo.width(nav.height()*3);
+        break;
+    }
+  };
+
+  size();
+
+  $(window).resize(size);
 
   animatedOnce = false;
 

@@ -3,14 +3,13 @@
   <nav class = "js">
     <div class = "nav-wrapper">
       <%= link_to image_tag(asset_path(:logo)), root_path, class: "brand-logo" %>
-      <%= link_to image_tag(asset_path(:logo)), root_path, class: "brand-logo small" %>
       <ul class = "right hide-on-med-and-down">
-        <li><a class = "dropdown-button" data-activates = "menu">Log In / Register<i class = "material-icons right">arrow_drop_down</i></a></li>
+        <li><a class = "dropdown-button" data-activates = "reg-menu"><div class = "vc">Log In / Register<i class = "material-icons right">arrow_drop_down</i></div></a></li>
       </ul>
     </div>
     <div class = "separator"></div>
   </nav>
-  <ul class = "js dropdown-content" id = "menu">
+  <ul class = "js dropdown-content" id = "reg-menu">
     <%= form_for :session, url: log_in_path do |f| %>
       <li><%= f.text_field :name, placeholder: "Username" %></li>
       <li><%= f.password_field :password, placeholder: "Password" %></li>
@@ -32,14 +31,13 @@
   <nav class = "js">
     <div class = "nav-wrapper">
       <%= link_to image_tag(asset_path(type: :logo)), root_path, class: "brand-logo" %>
-      <%= link_to image_tag(asset_path(type: :logo)), root_path, class: "brand-logo small" %>
       <ul class = "right hide-on-med-and-down">
-        <li><a class = "dropdown-button" data-activates = "menu"><%= current_user.name %><i class = "material-icons right">arrow_drop_down</i></a></li>
+        <li><a class = "dropdown-button" data-activates = "nav-menu"><div class = "vc"><%= current_user.name %><i class = "material-icons right">arrow_drop_down</i></div></a></li>
       </ul>
     </div>
     <div class = "separator"></div>
   </nav>
-  <ul class = "js dropdown-content" id = "menu">
+  <ul class = "js dropdown-content" id = "nav-menu">
     <li><%= link_to "Galleries", pools_path(current_user) %></li>
     <li><%= link_to "Order Forms", order_forms_path() %></li>
     <li><%= link_to "Workboard", workboard_path(current_user) %></li>

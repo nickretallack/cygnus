@@ -4,39 +4,90 @@
  *
  */
 
-$separator-height: 50px
-$background-color-rgb: 247, 252, 242
-$background-color: rgba(nth($background-color-rgb, 1), nth($background-color-rgb, 2), nth($background-color-rgb, 3), 1)
-$background-color-transparent: rgba(nth($background-color-rgb, 1), nth($background-color-rgb, 2), nth($background-color-rgb, 3), 0)
-$thumb-size: 150px
-$success-color: #9ccc65
-$danger-color: indianred
-$header-form-background-color: #cfd8dc
-$form-background-color: transparent
-$menu-button-background-color: #90a4ae
-$placeholder-color: darkslategrey
-$placeholder-text-shadow-color: snow
-$nav-background-color: #9ccc65
-
 @import url(https://fonts.googleapis.com/icon?family=Material+Icons)
 @import "materialize.min"
+@import "theme"
+
+@mixin block-centered
+  margin-left: auto
+  margin-right: auto
+  float: none
+  text-align: center
 
 @font-face
   font-family: "Blogger"
   src: url("Blogger_Sans-Medium.otf")
 
-html
-  font-family: "Blogger"
-  background-color: $background-color
+//very large
+@media only screen and (min-width: 1921px)
+  .widthTester
+    width: 1921px
+  html
+    font-size: 26px
+    font-weight: 700
+  .nav-wrapper
+    width: 99%
+    padding: 0 .5% 0 .5%
+  .container
+    max-width: 75%
+    width: 75%
+  #reg-menu
+    min-width: 400px !important
+
+//not very large
+@media only screen and (max-width: 1920px)
 
 //large
-@media only screen and (min-width: 993px)
+@media only screen and (min-width: 993px) and (max-width: 1920px)
+  .widthTester
+    width: 993px
   html
-    font-size: 15px
+    font-size: 18px
     font-weight: 500
   .nav-wrapper
     width: 98%
-    padding: 0 .5% 0 2%
+    padding: 0 .5% 0 1.5%
+  .container
+    max-width: 85%
+    width: 85%
+
+//not large
+@media only screen and (max-width: 992px)
+  .brand-logo
+    transform: translate(-50% -50%)
+    top: 0
+
+//medium
+@media only screen and (min-width: 601px) and (max-width: 992px)
+  .widthTester
+    width: 601px
+  div#main
+    .row
+      .col
+        *:not(.row):not(i):not(input)
+          @include block-centered
+          text-align: center
+          *
+            @include block-centered
+          h4
+            line-height: 120%
+
+//not medium
+@media only screen and (max-width: 600px), only screen and (min-width: 993px)
+
+//small
+@media only screen and (max-width: 600px)
+  .widthTester
+    width: 0px
+  div#main
+    .row
+      .col
+        @include block-centered
+        text-align: center
+        *:not(.row):not(i):not(input)
+          @include block-centered
+        h4
+          line-height: 120%
 
 //not small
 @media only screen and (min-width: 601px)
@@ -45,36 +96,15 @@ html
       .col + .col
         padding-left: 10px
 
-//medium
-@media only screen and (min-width: 601px) and (max-width: 992px)
-  div#main
-    .row
-      .col
-        *:not(.row):not(i):not(input)
-          margin: 0 auto
-          float: none
-          text-align: center
-          *
-            float: none
-            margin: 0 auto
-          h4
-            line-height: 120%
+//general
 
-//small
-@media only screen and (max-width: 600px)
-  div#main
-    .row
-      .col
-        margin: 0 auto
-        float: none
-        text-align: center
-        *:not(.row):not(i):not(input)
-          float: none
-          margin: 0 auto
-        h4
-          line-height: 120%
+html
+  font-family: "Blogger"
+  background-color: $background-color
 
 header
+  img
+    width: 100%
   a
     text-shadow: 0px 2px 0 black
   a:hover
@@ -84,90 +114,59 @@ header
     background-color: $nav-background-color
     z-index: 1
     .brand-logo
-      width: 200px
-      top: -50px
-    [class = "brand-logo small"]
-      width: 150px
-      top: -30px
-  .dropdown-button
-    i
-      margin-left: 0
-  .dropdown-content
-    min-width: 200px
-    a
-      text-shadow: none
+      width: 175px
+      top: -70%
+    .dropdown-button
+      i
+        margin-left: 0
+    #reg-menu
+      min-width: 300px
+      max-height: 800px
+      a
+        text-shadow: none
+      li
+        text-align: center
+    #nav-menu
+      li
+        text-align: left
+      hr
+        margin-bottom: 0
+  .right
+    height: 100%
     li
-      text-align: center
-    .separator
-      height: $separator-height
-      background: linear-gradient(to bottom, $background-color, $background-color-transparent)
-    form
-      background-color: $header-form-background-color
-      width: auto
-      margin-top: 10px
-      border-radius: 3px
-      padding-bottom: 5px
-    input
-      width: auto
-    input[type = "submit"]
-      background-color: $menu-button-background-color
-
-input[type = "submit"]
-  @extend .btn
-  text-shadow: 0px 2px 1px darkslategrey
-
-input[type = "text"],
-input[type = "email"],
-input[type = "password"]
-  padding-left: 5px
-
-input::-webkit-input-placeholder
-  color: $placeholder-color
-  text-shadow: 0px 0px 5px $placeholder-text-shadow-color
-  padding-left: 5px
-
-input:focus:hover::-webkit-input-placeholder
-  opacity: 0.3
-
-input:focus::-webkit-input-placeholder
-  opacity: 0.5
-  text-shadow: none
-
-input:-moz-placeholder
-  color: white
-
-input::-moz-placeholder
-  color:white
-
-input:-ms-input-placeholder
-  color: white
-
-div.container
-  width: 85%
+      height: 100%
+      a
+        height: 100% 
+  .separator
+    height: $separator-height
+    background: linear-gradient(to bottom, $background-color, $background-color-transparent)
+  form
+    background-color: $header-form-background-color
+    width: auto
+    margin-top: 10px
+    border-radius: 3px
+    padding-bottom: 5px
+  input
+    width: auto
+  input[type = "submit"]
+    background-color: $menu-button-background-color
 
 div#main
   .header
     border: 3px outset aquamarine
     border-left-style: none
     border-right-style: none
-  div
-    border: 2px outset crimson
-    div
-      border-color: aquamarine
-      div
-        border-color: black
+  // div
+  //   border: 2px outset crimson
+  //   div
+  //     border-color: aquamarine
+  //     div
+  //       border-color: black
   .row
     margin-left: 0
     margin-right: 0
-  .success
-    color: $success-color
-    border-color: $success-color
-  .danger
-    color: $danger-color
-    border-color: $danger-color
   .danger-button
     background-color: $danger-color
-
   input[type = "text"],
   input[type = "email"],
   input[type = "password"]
@@ -186,8 +185,82 @@ div#main
     img
       max-height: 350px
 
+//input
+input[type = "submit"]
+  @extend .btn
+  text-shadow: 0px 2px 1px darkslategrey
+
+input[type = "text"],
+input[type = "email"],
+input[type = "password"]
+  padding-left: 5px
+  width: calc(100% - 5px)
+
+@mixin placeholder
+  color: $placeholder-color
+  text-shadow: 0px 0px 5px $placeholder-text-shadow-color
+  padding-left: 5px
+
+@mixin placeholder-focus-hover
+  opacity: 0.3
+
+@mixin placeholder-focus
+  opacity: 0.5
+  text-shadow: none
+
+input::-webkit-input-placeholder
+  @include placeholder
+input:-moz-placeholder
+  @include placeholder
+input::-moz-placeholder
+  @include placeholder
+input:-ms-input-placeholder
+  @include placeholder
+
+input:focus:hover::-webkit-input-placeholder
+  @include placeholder-focus-hover
+input:focus:hover:-moz-placeholder
+  @include placeholder-focus-hover
+input:focus:hover::-moz-placeholder
+  @include placeholder-focus-hover
+input:focus:hover:-ms-input-placeholder
+  @include placeholder-focus-hover
+
+input:focus::-webkit-input-placeholder
+  @include placeholder-focus
+input:focus:-moz-placeholder
+  @include placeholder-focus
+input:focus::-moz-placeholder
+  @include placeholder-focus
+input:focus:-ms-input-placeholder
+  @include placeholder-focus
+  
+
+//flash
+#flash
+  margin-bottom: 25px
+  font-size: 125%
+  padding-left: 10px
+  border-radius: 10px
+  border: 2px dashed black
+  box-shadow: -1px 2px 15px rgba(0, 0, 0, 0.5)
+  background-color: $flash-background-color
+  width: 100%
+
+.success
+  color: $success-color
+  border-color: $success-color
+.danger
+  color: $danger-color
+  border-color: $danger-color
+
 .btn:hover
   font-size: 110%
+
+.vc
+  position: relative
+  top: 50%
+  transform: translateY(-50%)
 
 .fl
   float: left
@@ -199,16 +272,6 @@ div#main
 .thumb-large
   width: $thumb-size
   height: $thumb-size
-
-#flash
-  margin-bottom: 25px
-  font-size: 20px
-  padding-left: 10px
-  border-radius: 10px
-  border: 2px dashed black
-  box-shadow: -1px 2px 15px rgba(0, 0, 0, 0.5)
-  background-color: snow
-  width: 100%
 
 img
   display: block
@@ -260,3 +323,12 @@ label
 
 .js
   display: none
+
+.preview
+  #flash
+    box-shadow: none
+    margin-bottom: 10px
+
+blockquote
+  border-left-color: $nav-background-color
+  text-align: left !important

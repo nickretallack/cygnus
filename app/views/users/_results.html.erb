@@ -6,7 +6,7 @@
         <div class = "fl thumb-large">
           <%= link_to avatar_for(user, type: :thumb), user_path(user) %>
         </div>
-        <div class = "fl ">
+        <div class = "fl">
           <h4 class = "truncate"><%= link_to user.name, user_path(user) %></h4>
           <h4><%= statuses user, verbosity: :condensed %></h4>
           <% if user.galleries.first %>
@@ -14,11 +14,9 @@
           <% end %>
         </div>
       </div>
-      <div class = "col s12 m6">
-        <% unless user.price.blank? %>
-          <%=user.price%><br />
-        <% end %>
-        Tags: <%= user.tags || "(None)"%>
+      <div class = "col s9 m6">
+        <blockquote><%= user.price %></blockquote>
+        <blockquote><%= user.tags %></blockquote>
       </div>
     </div>
   </div>
