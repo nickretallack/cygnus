@@ -42,7 +42,15 @@ module ApplicationHelper
   end
 
   def avatar_for(user, type: :full)
-    image_tag(asset_path(type: type, id: user.avatar || -1))
+    @avatar = Upload.find(user.avatar)
+    if @avatar.nil?
+      klass = ""
+    elsif @avatar.explicit
+      klass = "danger"
+    else
+      klass = "success"
+    end
+    image_tag(asset_path(type: type, id: @avatar || -1), class: klass)
   end
 
   def at_least(grade)

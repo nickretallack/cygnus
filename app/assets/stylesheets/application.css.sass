@@ -41,6 +41,14 @@
     width: 75%
   #reg-menu
     min-width: 400px !important
+    div#main
+    .row
+      .col
+        .thumb-large
+          img
+            @include block-centered
+            display: block
+            float: none
 
 //very large
 @media only screen and (max-width: 1920px)
@@ -58,6 +66,14 @@
   .container
     max-width: 85%
     width: 85%
+    div#main
+    .row
+      .col
+        .thumb-large
+          img
+            @include block-centered
+            display: block
+            float: none
 
 //not large
 @media only screen and (max-width: 992px)
@@ -311,10 +327,12 @@ input:focus:-ms-input-placeholder
 .thumb-large
   margin-top: 2%
   min-width: $thumb-size
-  max-height: $thumb-size
+  height: $thumb-size
   img
     display: inline-block
     max-width: $thumb-size
+    border: 4px dashed black
+    border-radius: 4px
 
 img
   display: block
