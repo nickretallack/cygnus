@@ -4,6 +4,15 @@
  *
  */
 
+//layout hints
+// div#main
+//   div
+//     border: 2px outset crimson
+//     div
+//       border-color: aquamarine
+//       div
+//         border-color: black
+
 @import url(https://fonts.googleapis.com/icon?family=Material+Icons)
 @import "materialize.min"
 @import "theme"
@@ -11,7 +20,6 @@
 @mixin block-centered
   margin-left: auto
   margin-right: auto
-  float: none
   text-align: center
 
 @font-face
@@ -34,7 +42,7 @@
   #reg-menu
     min-width: 400px !important
 
-//not very large
+//very large
 @media only screen and (max-width: 1920px)
 
 //large
@@ -56,6 +64,8 @@
   .brand-logo
     transform: translate(-50% -50%)
     top: 0
+  .thumb-large
+    margin-top: 0 !important
 
 //medium
 @media only screen and (min-width: 601px) and (max-width: 992px)
@@ -64,9 +74,11 @@
   div#main
     .row
       .col
+        //margin-top: 0 !important
         *:not(.row):not(i):not(input)
           @include block-centered
           text-align: center
+          float: none
           *
             @include block-centered
           h4
@@ -76,13 +88,14 @@
 @media only screen and (max-width: 600px), only screen and (min-width: 993px)
 
 //small
-@media only screen and (max-width: 600px)
+@media only screen and (min-width: 364px) and (max-width: 600px)
   .widthTester
-    width: 0px
+    width: 363px
   div#main
     .row
       .col
         @include block-centered
+        margin-top: 0 !important
         text-align: center
         *:not(.row):not(i):not(input)
           @include block-centered
@@ -91,10 +104,20 @@
 
 //not small
 @media only screen and (min-width: 601px)
+
+//very small
+@media only screen and (max-width: 363px)
+  .widthTester
+    width: 0px
   div#main
     .row
-      .col + .col
-        padding-left: 10px
+      .col
+        margin-top: 0 !important
+        text-align: center
+        *:not(.row):not(i):not(input)
+          width: 100%
+        h4
+          line-height: 120%
 
 //general
 
@@ -113,6 +136,7 @@ header
   nav
     background-color: $nav-background-color
     z-index: 1
+    //height: 85% !important
     .brand-logo
       width: 175px
       top: -70%
@@ -150,18 +174,29 @@ header
     width: auto
   input[type = "submit"]
     background-color: $menu-button-background-color
+  .nojs
+    form
+      background-color: transparent
+      width: 100%
+      margin-top: 0
+      input
+        margin-left: 1%
+        box-shadow: 0 -2px 5px #4A9A6D inset
+        margin-bottom: 0
+      input:not([type = "submit"])
+        width: 30%
+        border-radius: 50px
+        padding-left: 10px
+        color: #2F6EA5
+      input[type = "submit"]
+        border-radius: 30px
+        background-color: transparent
 
 div#main
   .header
     border: 3px outset aquamarine
     border-left-style: none
     border-right-style: none
-  // div
-  //   border: 2px outset crimson
-  //   div
-  //     border-color: aquamarine
-  //     div
-  //       border-color: black
   .row
     margin-left: 0
     margin-right: 0
@@ -179,9 +214,7 @@ div#main
       margin: 3% 0
       a:hover
         font-decoration: underline
-        font-size: 100%
-    a:hover
-      font-size: 120%
+        font-size: 120%
     img
       max-height: 350px
 
@@ -234,7 +267,6 @@ input:focus::-moz-placeholder
   @include placeholder-focus
 input:focus:-ms-input-placeholder
   @include placeholder-focus
-  
 
 //flash
 #flash
@@ -246,13 +278,14 @@ input:focus:-ms-input-placeholder
   box-shadow: -1px 2px 15px rgba(0, 0, 0, 0.5)
   background-color: $flash-background-color
   width: 100%
+  box-shadow: none
 
 .success
-  color: $success-color
-  border-color: $success-color
+  color: $success-color !important
+  border-color: $success-color !important
 .danger
-  color: $danger-color
-  border-color: $danger-color
+  color: $danger-color !important
+  border-color: $danger-color !important
 
 .btn:hover
   font-size: 110%
@@ -262,16 +295,26 @@ input:focus:-ms-input-placeholder
   top: 50%
   transform: translateY(-50%)
 
+.mt
+  margin-top: 10px
+
 .fl
   float: left
   margin-right: 10px
+  span
+    text-align: center
+    width: 100%
 
 .fl:last-child
   margin-right: 0
 
 .thumb-large
-  width: $thumb-size
-  height: $thumb-size
+  margin-top: 2%
+  min-width: $thumb-size
+  max-height: $thumb-size
+  img
+    display: inline-block
+    max-width: $thumb-size
 
 img
   display: block
@@ -329,6 +372,16 @@ label
     box-shadow: none
     margin-bottom: 10px
 
-blockquote
+blockquote.inline
+  @extend .flow-text
+  font-size: 80%
   border-left-color: $nav-background-color
   text-align: left !important
+  max-height: 7rem
+  padding-right: 8px
+  overflow: auto
+  margin-bottom: 0
+  a
+    font-size: 140%
+  a:hover
+    font-size: 180% !important

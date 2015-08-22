@@ -38,7 +38,7 @@ function ready(){
     constrain_width: false
   });
 
-  var pushpinLogo = function(){
+  var pushpinNav = function(){
     if($(window).scrollTop() > banner.outerHeight())
     {
       $("nav").css({
@@ -53,9 +53,9 @@ function ready(){
     }
   };
 
-  pushpinLogo();
+  pushpinNav();
 
-  $(window).scroll(pushpinLogo);
+  $(window).scroll(pushpinNav);
 
   var size = function(){
     // if(widthTester.css("width") === "0px") return;
@@ -63,9 +63,6 @@ function ready(){
     // logo.width(nav.height()*3);
 
     switch(widthTester.css("width")){
-      case "0px":    //small
-        //nav.height(banner.outerHeight() * 2);
-        break;
       case "601px":  //medium
         nav.height(banner.outerHeight());
         logo.width(nav.height()*3);
@@ -74,7 +71,7 @@ function ready(){
         nav.height(banner.outerHeight() / 1.5);
         logo.width(nav.height()*3);
         break;
-      case "1921px": //4k
+      case "1921px": //very large
         nav.height(banner.outerHeight() / 2);
         logo.width(nav.height()*3);
         break;

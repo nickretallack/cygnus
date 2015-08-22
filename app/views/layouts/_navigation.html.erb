@@ -1,11 +1,18 @@
 <% if anon? %>
 
-  <nav class = "js">
+  <nav>
     <div class = "nav-wrapper">
       <%= link_to image_tag(asset_path(:logo)), root_path, class: "brand-logo" %>
-      <ul class = "right hide-on-med-and-down">
+      <ul class = "right hide-on-med-and-down js">
         <li><a class = "dropdown-button" data-activates = "reg-menu"><div class = "vc">Log In / Register<i class = "material-icons right">arrow_drop_down</i></div></a></li>
       </ul>
+      <div class = "right hide-on-med-and-down nojs">
+        <%= form_for :session, url: log_in_path do |f| %>
+          <%= f.text_field :name, placeholder: "Username" %>
+          <%= f.password_field :password, placeholder: "Password" %>
+          <%= f.submit "Log in" %>
+        <% end %>
+      </div>
     </div>
     <div class = "separator"></div>
   </nav>
@@ -28,10 +35,10 @@
 
 <% else %>
 
-  <nav class = "js">
+  <nav>
     <div class = "nav-wrapper">
       <%= link_to image_tag(asset_path(type: :logo)), root_path, class: "brand-logo" %>
-      <ul class = "right hide-on-med-and-down">
+      <ul class = "right hide-on-med-and-down js">
         <li><a class = "dropdown-button" data-activates = "nav-menu"><div class = "vc"><%= current_user.name %><i class = "material-icons right">arrow_drop_down</i></div></a></li>
       </ul>
     </div>

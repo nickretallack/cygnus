@@ -2,22 +2,25 @@
   <div class = "row">
     <hr />
     <div class = "row">
-      <div class = "col s12 m6">
-        <div class = "fl thumb-large">
+      <div class = "col s12 m6 mt">
+        <div class = "thumb-large fl col s6 l5">
           <%= link_to avatar_for(user, type: :thumb), user_path(user) %>
         </div>
-        <div class = "fl">
+        <div class = "col s6 l6 fl">
           <h4 class = "truncate"><%= link_to user.name, user_path(user) %></h4>
           <h4><%= statuses user, verbosity: :condensed %></h4>
-          <% if user.galleries.first %>
-            <span><%= link_to "Gallery", gallery_path(user) %><%= link_to "(ies)", pools_path(user) %></span>
-          <% end %>
+          
         </div>
       </div>
-      <div class = "col s9 m6">
-        <blockquote><%= user.price %></blockquote>
-        <blockquote><%= user.tags %></blockquote>
+      <div class = "col s12 m6 l6">
+        <% if user.galleries.first %>
+          <blockquote class = "inline"><%= link_to "Gallery", gallery_path(user) %><%= link_to "(ies)", pools_path(user) %></blockquote>
+        <% end %>
+        <blockquote class = "inline"><%= user.price || "No prices specified." %></blockquote>
       </div>
+        <div class = "col s12 m6 l12 fl">
+          <blockquote class = "inline"><%= user.tags || "No tags specified." %></blockquote>
+        </div>
     </div>
   </div>
 <% end %>
