@@ -41,6 +41,19 @@ module ApplicationHelper
     markdown.render(content).html_safe
   end
 
+  def avatar_for(user, type = :thumb)
+    image_for(type, id: user.avatar)
+  end
+
+  def image_for(type = :full, id: nil)
+    @image = Upload.find(id) || Upload.new
+    if type == :bordered
+      render inline: "<div id = 'flash' class = '"+(@image.explicit?? "danger" : "success")+"'><img src='"+image_path(type, id: id)+"'></div>".html_safe
+    else
+      render inline: "<img src='"+image_path(type, id: id)+"'>".html_safe
+    end
+  end
+
   def at_least(grade)
     current_user.level >= User.level_for(grade)
   end

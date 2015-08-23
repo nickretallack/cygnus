@@ -1,7 +1,6 @@
 class ImagesController < ApplicationController
   def show
-    #@image ||= Upload.find(params[:id]) || Upload.new
-    get_image
+    @image ||= Upload.find(params[:id]) || Upload.new
 
     expires_in CONFIG[:image_shelf_life], public: true
 
