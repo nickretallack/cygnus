@@ -5,12 +5,15 @@ CONFIG = {
   host: "localhost",
   name: "Bleatr",
   copyright: "&copy;2015",
-  image_adult: Rails.root.join("app/assets/images/icon.png"),
-  image_adult_thumb: Rails.root.join("app/assets/images/icon.png"),
-  image_disabled: Rails.root.join("app/assets/images/icon.png"),
-  image_disabled_thumb: Rails.root.join("app/assets/images/icon.png"),
-  logo: Rails.root.join("app/assets/images/logo.png"),
-  banner: Rails.root.join("app/assets/images/banner.png"),
+  image_path: Rails.root.join("app", "assets", "images"),
+  image_adult: "not_found.png",
+  image_adult_thumb: "not_found.png",
+  image_disabled: "not_found.png",
+  image_disabled_thumb: "not_found.png",
+  image_not_found: "not_found.png",
+  image_not_found_thumb: "not_found.png",
+  logo: "logo.png",
+  banner: "banner.png",
   image_shelf_life: 5.hours,
 
   commission_icons: {
@@ -18,6 +21,15 @@ CONFIG = {
     trades: "repeat",
     requests: "loyalty",
     collabs: "supervisor_account"
+  },
+
+  activity_icons: {
+    inactive: "not_interested",
+    accepting: "play_circle_outline",
+    accepting_few: "error_outline",
+    backlogged: "toll",
+    open_soon: "schedule",
+    vacation: "pause_circle_outline"
   },
 
   user_levels: [
