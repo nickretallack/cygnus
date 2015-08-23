@@ -48,9 +48,11 @@ module ApplicationHelper
   def image_for(type = :full, id: nil)
     @image = Upload.find(id) || Upload.new
     if type == :bordered
-      render inline: "<div id = 'flash' class = '"+(@image.explicit?? "danger" : "success")+"'><img src='"+image_path(type, id: id)+"'></div>".html_safe
+      content_tag :div, class: "thumbnail "+(@image.explicit?? "danger" : "success") do
+        image_tag(image_path(type, id: id))
+      end
     else
-      render inline: "<img src='"+image_path(type, id: id)+"'>".html_safe
+      image_tag(image_path(type, id: id))
     end
   end
 
