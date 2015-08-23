@@ -9,9 +9,9 @@ Rails.application.routes.draw do
   get :register, to: "users#new"
   get User.slug.to_s+"/gallery", to: "pools#gallery", as: "gallery"
 
-  get "uploads/:type(/:id)", to: "uploads#show", as: :asset
+  get "image/:type(/:id)", to: "images#show", as: :image
 
-  post User.slug.to_s+"/avatar" => "uploads#create", as: :new_avatar
+  post User.slug.to_s+"/avatar" => "images#create", as: :new_avatar
 
   resources :comments
   resources :order_forms

@@ -12,6 +12,10 @@ class UsersController < ApplicationController
   #   end
   # end
 
+  # def index
+  #   raise "break"
+  # end
+
   def activate
     if @user and @user.at_level :unactivated and @user.authenticated? :activation, params[:activation]
       @user.update_attribute(:level, User.level_for(:member))
@@ -170,7 +174,7 @@ class UsersController < ApplicationController
   def log_out
     deactivate_session
     flash[:info] = "logged out"
-    redirect_to :root
+    redirect_to :back
   end
 
   private

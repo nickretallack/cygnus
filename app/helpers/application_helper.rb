@@ -41,18 +41,6 @@ module ApplicationHelper
     markdown.render(content).html_safe
   end
 
-  def avatar_for(user, type: :full)
-    @avatar = Upload.find(user.avatar)
-    if @avatar.nil?
-      klass = ""
-    elsif @avatar.explicit
-      klass = "danger"
-    else
-      klass = "success"
-    end
-    image_tag(asset_path(type: type, id: @avatar || -1), class: klass)
-  end
-
   def at_least(grade)
     current_user.level >= User.level_for(grade)
   end

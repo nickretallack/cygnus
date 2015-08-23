@@ -11,7 +11,7 @@
   <body>
     <div class = "widthTester hide"></div>
     <header>
-      <%= image_tag asset_path(:banner) %>
+      <%= image_for :banner %>
       <%= render "layouts/navigation" %>
     </header>
     <div class = "container">
@@ -26,6 +26,6 @@
       <%= link_to "Back", request.referer.nil?? root_path : URI(request.referer).path %><br />
       <%= CONFIG[:copyright].html_safe %>
     </footer>
-    <%# console %>
+    <% console %>
   </body>
 </html>
