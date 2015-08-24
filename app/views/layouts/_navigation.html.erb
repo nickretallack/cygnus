@@ -43,8 +43,8 @@
       </ul>
       <div class = "right hide-on-med-and-down nojs">
         <%= link_to "Galleries", pools_path(current_user) %>
-        <%= link_to "Order Forms", order_forms_path() %>
-        <%= link_to "Workboard", workboard_path(current_user) %>
+        <%= link_to "Order Forms", order_forms_path(current_user) %>
+        <%= link_to "Workboard", workboard_user_path(current_user) %>
         <%= link_to "Profile", user_path(current_user) %>
         <%= link_to "Log out", log_out_path, method: "delete" %>
       </div>
@@ -53,8 +53,8 @@
   </nav>
   <ul class = "js dropdown-content" id = "nav-menu">
     <li><%= link_to "Galleries", pools_path(current_user) %></li>
-    <li><%= link_to "Order Forms", order_forms_path() %></li>
-    <li><%= link_to "Workboard", workboard_path(current_user) %></li>
+    <li><%= link_to "Order Forms", order_forms_path(current_user) %></li>
+    <li><%= link_to "Workboard", workboard_user_path(current_user) %></li>
     <hr />
     <li><%= link_to "Profile", user_path(current_user) %></li>
     <hr />
