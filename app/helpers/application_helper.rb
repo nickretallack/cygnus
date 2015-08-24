@@ -28,8 +28,8 @@ module ApplicationHelper
 
   def back_with_errors
     referer_params = Rails.application.routes.recognize_path request.referer
-    setter(referer_params)
-    render referer_params
+    referer_params[:messages] = instance_variable_get("@new_"+controller_name.singularize).errors.full_messages
+    redirect_to referer_params
   end
 
   def url_with_protocol(url)

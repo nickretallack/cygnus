@@ -4,7 +4,7 @@
   <% provide :header, "All pools" %>
 <% end %>
 
-<% unless params[:user_id].nil? || params[:user_id].to_i != current_user.id %>
+<% if can_modify? %>
   <%= form_for Pool.new do |f| %>
     <div class="form-group field">
       <%= f.label :title %>
@@ -24,14 +24,14 @@
   </thead>
 
   <tbody>
-    <% @pools.each do |pool| %>
+    <% enum_for(pools: @pools) do |pool| %>
       <tr>
-        <td><%= link_to pool.title, pool %></td>
+        <td><%= link_to pool.title, pool_path(pool) %></td>
         <td><%= pool.user.name %></td>
         <% if current_user.is_admin? || pool.user_id == current_user.id %>
           <td><%= link_to 'Destroy', pool, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>
       </tr>
-    <% end %>
+  <% end %>
   </tbody>
 </table>

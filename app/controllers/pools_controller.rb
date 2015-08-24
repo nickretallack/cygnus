@@ -1,29 +1,20 @@
 class PoolsController < ApplicationController
 
-  def gallery
-    @user = User.find_by(User.slug => params[User.slug])
-    @pool = @user.galleries.order(:id).first
-    @submissions = @pool.submissions
-    render :show
-  end
-
   def index
-    if params[:user_id]
-      @user = User.find(params[:user_id])
-      @pools = Pool.where(user_id: @user) 
+    if params[User.slug]
+      @user = User.find(params[User.slug])
+      @pools = Pool.where(user_id: @user.id) 
     else
       @pools = Pool.all
     end
   end
 
-  # def show
-  #   @pool = Pool.find(params[:id])
-  #   if !current_user.is_anonymous? && current_user.view_adult
-  #     @submissions = Submission.where(pool_id: @pool.id)
-  #   else
-  #     @submissions = Submission.where(pool_id: @pool.id, adult: false)
-  #   end
-  # end
+  def show
+    @user = User.find(params[User.slug])
+    @pool = Pool.find(params[Pool.slug]) || @user.pools.first
+    redirect_to :back unless @pool
+    @submissions = Submission.where(pool_id: @pool.id)
+  end
 
   def new
     @pool = Pool.new

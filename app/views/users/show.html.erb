@@ -21,7 +21,7 @@
 			<div class = "danger nojs" id = "flash">
 				Please mark adult avatars explicit before saving.
 			</div>
-			<%= avatar_for @user %>
+			<%= avatar_for @user, :full %>
 		</div>
 		<div class = "col s12 m6 l9">
 			<% if can_modify? user: @user %>

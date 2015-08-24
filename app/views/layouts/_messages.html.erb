@@ -6,9 +6,9 @@
   <% end %>
 <% end %>
 
-<% if show_errors? %>
+<% if params[:messages] %>
   <div class="errors">
-    <% instance_variable_get("@new_"+controller_name.singularize).errors.full_messages.each do |msg| %>
+    <% params[:messages].each do |msg| %>
       <li><%= msg %></li>
     <% end %>
   </div>

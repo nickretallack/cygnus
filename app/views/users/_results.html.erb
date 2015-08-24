@@ -13,7 +13,7 @@
         </div>
       </div>
       <div class = "col s12 m6 l6">
-        <% if user.galleries.first %>
+        <% if user.pools.first %>
           <blockquote class = "inline"><%= link_to "Gallery", gallery_path(user) %><%= link_to "(ies)", pools_path(user) %></blockquote>
         <% end %>
         <blockquote class = "inline"><%= user.price || "No prices specified." %></blockquote>

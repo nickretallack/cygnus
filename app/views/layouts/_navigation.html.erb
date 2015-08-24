@@ -41,6 +41,13 @@
       <ul class = "right hide-on-med-and-down js">
         <li><a class = "dropdown-button" data-activates = "nav-menu"><div class = "vc"><%= current_user.name %><i class = "material-icons right">arrow_drop_down</i></div></a></li>
       </ul>
+      <div class = "right hide-on-med-and-down nojs">
+        <%= link_to "Galleries", pools_path(current_user) %>
+        <%= link_to "Order Forms", order_forms_path() %>
+        <%= link_to "Workboard", workboard_path(current_user) %>
+        <%= link_to "Profile", user_path(current_user) %>
+        <%= link_to "Log out", log_out_path, method: "delete" %>
+      </div>
     </div>
     <div class = "separator"></div>
   </nav>
