@@ -25,17 +25,17 @@ Rails.application.routes.draw do
 
   resources :users, except: [:new, :edit], param: User.slug, path: "" do
     member do
-    get "/activate/:activation" => "users#activate", as: :activate_user
-    post "/avatar" => "images#create", as: :new_avatar
-    get "/workboard" => "kanban_lists#index", as: :workboard
-    post "/workboard" => "kanban_lists#create", as: :new_list
-    patch "/workboard/:kanban_list_id" => "kanban_lists#update", as: :list
-    post "/workboard/:kanban_list_id" => "kanban_cards#create", as: :new_card
-    patch "/workboard/:kanban_list_id/cards/:kanban_card_id" => "kanban_cards#update", as: :card
-    resources :pools, except: [:new, :index, :edit]
-    resources :submissions
-    resources :comments
-    resources :order_forms
+      get "/activate/:activation" => "users#activate", as: :activate_user
+      post "/avatar" => "images#create", as: :new_avatar
+      get "/workboard" => "kanban_lists#index", as: :workboard
+      post "/workboard" => "kanban_lists#create", as: :new_list
+      patch "/workboard/:kanban_list_id" => "kanban_lists#update", as: :list
+      post "/workboard/:kanban_list_id" => "kanban_cards#create", as: :new_card
+      patch "/workboard/:kanban_list_id/cards/:kanban_card_id" => "kanban_cards#update", as: :card
+      resources :pools, except: [:new, :index, :edit]
+      resources :submissions
+      resources :comments
+      resources :order_forms
     end
   end
 end

@@ -72,7 +72,7 @@ module ApplicationHelper
         redirect_to :back
       end
     when :existence
-      unless user || user.find_by(id: id)
+      unless user || User.find_by(id: id)
         flash[:danger] = "no such user"
         redirect_to :root
       end
