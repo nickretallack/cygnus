@@ -6,9 +6,8 @@ Rails.application.routes.draw do
 
   get  "reset" => "users#reset", as: :password_reset
   post   "reset" => "users#reset_confirm"
-  get    "reset/"+User.rslug+"/:activation" => "users#reset_return", as: :send_password_reset
-  patch   "reset/"+User.rslug+"/:activation" => "users#reset_return_confirm"
-  get User.rslug+"/activate/:activation" => "users#activate", as: :activate_user
+  get    "reset/:#{User.slug}/:activation" => "users#reset_return", as: :send_password_reset
+  patch   "reset/:#{User.slug}/:activation" => "users#reset_return_confirm"
 
   post :log_in, to: "users#log_in"
   get :log_out, to: "users#log_out"
@@ -17,25 +16,26 @@ Rails.application.routes.draw do
   get "search"  => "users#search", as: :search_user
   post "search"  => "users#search"
 
-  get User.rslug+"/gallery", to: "pools#show", as: :gallery
+  get ":#{User.slug}/gallery", to: "pools#show", as: :gallery
 
   get "image/:type(/:id)", to: "images#show", as: :image
-  post User.rslug+"/avatar" => "images#create", as: :new_avatar
 
-  get "pools"+User.rslug(:optional) => "pools#index" , as: :pools
-  get "pools/:"+Pool.rslug => "pools#show", as: :pool
-  get User.rslug+"/workboard" => "kanban_lists#index", as: :workboard
-  post User.rslug+"/workboard" => "kanban_lists#create", as: :new_list
-  patch User.rslug+"/workboard/:kanban_list_id" => "kanban_lists#update", as: :list
-  post User.rslug+"/workboard/:kanban_list_id" => "kanban_cards#create", as: :new_card
-  patch User.rslug+"/workboard/:kanban_list_id/cards/:kanban_card_id" => "kanban_cards#update", as: :card
+  get "pools(/:#{User.slug})" => "pools#index" , as: :pools
+  get "pools/:#{Pool.slug}" => "pools#show", as: :pool
 
   resources :users, except: [:new, :edit], param: User.slug, path: "" do
     member do
-      resources :pools, except: [:new, :index, :edit]
-      resources :submissions
-      resources :comments
-      resources :order_forms
+    get "/activate/:activation" => "users#activate", as: :activate_user
+    post "/avatar" => "images#create", as: :new_avatar
+    get "/workboard" => "kanban_lists#index", as: :workboard
+    post "/workboard" => "kanban_lists#create", as: :new_list
+    patch "/workboard/:kanban_list_id" => "kanban_lists#update", as: :list
+    post "/workboard/:kanban_list_id" => "kanban_cards#create", as: :new_card
+    patch "/workboard/:kanban_list_id/cards/:kanban_card_id" => "kanban_cards#update", as: :card
+    resources :pools, except: [:new, :index, :edit]
+    resources :submissions
+    resources :comments
+    resources :order_forms
     end
   end
 end
