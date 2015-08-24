@@ -49,5 +49,5 @@
 			<%= render_markdown(@user.details || "") %>
 		<% end %>
 	</div>
-	<%= f.submit "Update Profile" %>
+	<%= f.submit "Update Profile" if can_modify? %>
 <% end %>
