@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
-  custom_slug :name
+  custom_slug :name, case_insensitive: true
+  has_secure_password
   scope :ci_find, lambda { |attribute, value| where("lower(#{attribute}) = ?", value.downcase).first }
   attr_accessor  :activation_token, :reset_token
   has_many :pools
@@ -12,10 +13,8 @@ class User < ActiveRecord::Base
   validates :name, presence: true, length: { maximum: 50 }, uniqueness: { case_sensitive: false }, exclusion: { in: :named_routes }
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-  validates :email, presence: true, length: { maximum: 255 },
-                    format: { with: VALID_EMAIL_REGEX },
-                    uniqueness: { case_sensitive: false }
-  has_secure_password
+  validates :email, presence: true, length: { maximum: 255 }, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
+  
   validates :password, length: { minimum: 6 }, allow_blank: true
   
   def named_routes
@@ -31,36 +30,21 @@ class User < ActiveRecord::Base
   end
 
   def self.search(terms = "")
-    sanitized = sanitize_sql_array(["to_tsquery('english', ?)",
-	terms.gsub(/\s/,"+")])
-    User.where("tags @@ #{sanitized}")
-  end
-
-  CONFIG[:user_levels].each do |name, value|
-      normalized_name = name.downcase.gsub(/ /, "_")
-      define_method("is_#{normalized_name}?") do
-        self.level == value
-      end
-
-      define_method("is_#{normalized_name}_or_higher?") do
-        self.level >= value
-      end
-
-      define_method("is_#{normalized_name}_or_lower?") do
-        self.level <= value
-      end
+    sanitized = sanitize_sql_array(["to_tsquery('english', ?)", terms.gsub(/\s/, "+")])
+    User.where("tags_tsvector @@ #{sanitized}")
   end
   
   def User.digest(string)
-    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
-                                                  BCrypt::Engine.cost
+    cost = ActiveModel::SecurePassword.min_cost?? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
     BCrypt::Password.create(string, cost: cost)
   end
+
   def authenticated?(attribute, token)
     digest = send("#{attribute}_digest")
     return false if digest.nil?
     BCrypt::Password.new(digest).is_password?(token)
   end
+
   def create_reset_digest  
     self.reset_token = SecureRandom.urlsafe_base64
     update_attribute(:activation_digest,  User.digest(reset_token))
@@ -68,10 +52,11 @@ class User < ActiveRecord::Base
   end
 
   def password_reset_expired?
-    reset_sent_at < 2.hours.ago
+    reset_sent_at < CONFIG[:password_reset_shelf_life].ago
   end
 
-private
+  private
+
   def create_activation_digest  
       self.activation_token  = SecureRandom.urlsafe_base64
       self.activation_digest = User.digest(activation_token)

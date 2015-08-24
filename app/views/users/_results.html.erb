@@ -7,7 +7,7 @@
           <%= link_to avatar_for(user, :bordered), user_path(user) %>
         </div>
         <div class = "col s6 l6 fl">
-          <h4 class = "truncate"><%= link_to user.name, user_path(user) %></h4>
+          <h5 class = "truncate"><%= link_to user.name, user_path(user) %></h5>
           <h4><%= statuses user, verbosity: :condensed %></h4>
           
         </div>

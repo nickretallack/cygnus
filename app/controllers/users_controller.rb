@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_filter :check_expiration, only: [:reset_return, :reset_return_confirm]
-  before_filter -> { insist_on :existence, user: @user }, only: [:show]
+  #before_filter -> { insist_on :existence, user: @user }, only: [:show]
   before_filter -> { insist_on :permission, user: @user }, only: [:update, :destroy]
   
   # def index
@@ -50,7 +50,7 @@ class UsersController < ApplicationController
 
   def update
     @user.update_attribute(:avatar, Upload.render(params[:user][:upload][:picture])) unless params[:user][:upload][:picture].nil?
-    Upload.find(@user.avatar).update_attribute(:explicit, params[:user][:upload][:explicit])
+    Upload.find(@user.avatar).update_attribute(:explicit, params[:user][:upload][:explicit]) unless @user.avatar.nil?
     if @user.update_attributes(user_params)
       flash[:success] = "profile updated"
       redirect_to :back
@@ -155,7 +155,7 @@ class UsersController < ApplicationController
   end
 
   def log_in
-    user = User.find(params[:session][:name].downcase)
+    user = User.find(params[:session][:name])
     if user
       if user.authenticate(params[:session][:password])
         activate_session user

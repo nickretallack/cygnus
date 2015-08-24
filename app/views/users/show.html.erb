@@ -4,7 +4,7 @@
 <%= form_for @user, method: :patch, url: user_path(@user) do |f| %>
 	<% if can_modify? user: @user %>
 		<%= f.check_box :view_adult %><%= f.label :view_adult %><br />
-		<%= f.fields_for Upload.find(@user.avatar), multipart: true do |u| %>
+		<%= f.fields_for @user.avatar.nil?? Upload.new : Upload.find(@user.avatar), multipart: true do |u| %>
 			<%= u.check_box :explicit %><%= u.label :explicit, "Explicit Avatar" %>
 			<i class = "small material-icons moving-left reverse danger">trending_flat</i><br />
       <div class = "col s12 m9 file-field input-field">
@@ -49,5 +49,5 @@
 			<%= render_markdown(@user.details || "") %>
 		<% end %>
 	</div>
-	<%= f.submit "Update Profile" if can_modify? %>
+	<%= f.submit "Update Profile" if can_modify? user: @user %>
 <% end %>

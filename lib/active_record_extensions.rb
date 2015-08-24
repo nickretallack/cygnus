@@ -2,27 +2,28 @@ module ActiveRecordExtensions
   extend ActiveSupport::Concern
 
   class_methods do
-    def custom_slug(slug)
+    def custom_slug(slug, case_insensitive: false)
       self.redefine_method :to_param do
         self.send(slug).parameterize
       end
       self.instance_variable_set "@slug", slug
+      self.instance_variable_set "@case_insensitive", case_insensitive
     end
 
     def slug
       self.instance_variable_get("@slug") || :id
     end
 
-    def rslug(*args)
-      unless args.include? :optional
-        ":"+self.slug.to_s
-      else
-        "(/:"+self.slug.to_s+")"
-      end
+    def case_insensitive_slug
+      self.instance_variable_get("@case_insensitive") || false
     end
 
     def find(record, raise_error: false)
-      thing = find_by(slug => record)
+      if case_insensitive_slug
+        thing = where("lower(#{self.slug}) = ?", record.nil?? nil : record.downcase).first
+      else
+        thing = find_by(slug => record)
+      end
       raise ActiveRecord::RecordNotFound if thing.nil? and raise_error
       thing
     end
