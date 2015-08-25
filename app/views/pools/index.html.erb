@@ -26,9 +26,9 @@
   <tbody>
     <% enum_for(pools: @pools) do |pool| %>
       <tr>
-        <td><%= link_to pool.title, pool_path(pool) %></td>
+        <td><%= link_to pool.title, pool %></td>
         <td><%= pool.user.name %></td>
-        <% if current_user.is_admin? || pool.user_id == current_user.id %>
+        <% if can_modify? %>
           <td><%= link_to 'Destroy', pool, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>
       </tr>

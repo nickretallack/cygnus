@@ -3,14 +3,14 @@ class PoolsController < ApplicationController
   def index
     if params[User.slug]
       @user = User.find(params[User.slug])
-      @pools = Pool.where(user_id: @user.id) 
+      @pools = @user.pools
     else
       @pools = Pool.all
     end
   end
 
   def show
-    @user = User.find(params[User.slug])
+    @user = User.find(params[User.slug]) if params[User.slug]
     @pool = Pool.find(params[Pool.slug]) || @user.pools.first
     redirect_to :back unless @pool
     @submissions = Submission.where(pool_id: @pool.id)

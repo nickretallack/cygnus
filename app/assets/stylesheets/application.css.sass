@@ -17,10 +17,33 @@
 @import "materialize.min"
 @import "theme"
 
-@mixin block-centered
+=block-centered
   margin-left: auto
   margin-right: auto
   text-align: center
+
+=vertical-center
+  position: relative
+  top: 50%
+  transform: translateY(-50%)
+
+=float-left
+  float: left
+  span
+    text-align: center
+    width: 100%
+
+=placeholder
+  color: $placeholder-color
+  text-shadow: 0px 0px 5px $placeholder-text-shadow-color
+  padding-left: 5px
+
+=placeholder-focus-hover
+  opacity: 0.3
+
+=placeholder-focus
+  opacity: 0.5
+  text-shadow: none
 
 @font-face
   font-family: "Blogger"
@@ -75,7 +98,7 @@
     .row
       .col
         //margin-top: 0 !important
-        *:not(.row):not(i):not(input)
+        *:not(.row):not(i):not(input):not(.input-field)
           @include block-centered
           text-align: center
           float: none
@@ -83,9 +106,6 @@
             @include block-centered
           h4
             line-height: 120%
-
-//not medium
-@media only screen and (max-width: 600px), only screen and (min-width: 993px)
 
 //small
 @media only screen and (min-width: 364px) and (max-width: 600px)
@@ -111,6 +131,8 @@
 @media only screen and (max-width: 363px)
   .widthTester
     width: 0px
+  .spacer
+    display: none !important
   div#main
     .row
       .col
@@ -128,12 +150,79 @@
   .moving-left.reverse
     padding-right: 50px !important
 
-//general
-
+//mod defaults
 html
   font-family: "Blogger"
   background-color: $background-color
 
+.input-field
+  margin-top: 10px
+
+input[type="checkbox"] + label
+  padding-left: 30px
+  display: initial
+  color: black
+  +vertical-center
+  &:before
+    top: -2px
+    width: 20px
+    border-color: #B08ECE
+
+img
+  display: block
+  max-width: 100%
+
+.btn:hover
+  font-size: 110%
+
+a:hover
+  text-decoration: underline
+
+form
+  background-color: $form-background-color
+  display: table
+  margin: 0 auto
+  width: 100%
+
+.material-icons
+  vertical-align: middle
+
+.reverse
+  transform: scaleX(-1)
+
+.moving-left.reverse
+  opacity: 0
+  padding-right: 130px
+
+label
+  color: inherit
+
+.js
+  display: none
+
+blockquote.inline
+  @extend .flow-text
+  font-size: 80%
+  border-left-color: $nav-background-color
+  text-align: left !important
+  max-height: 7rem
+  padding-right: 8px
+  overflow: auto
+  margin-bottom: 0
+  a
+    font-size: 140%
+  a:hover
+    font-size: 180% !important
+
+.file-field
+  display: table
+  .btn
+    float: left
+
+.container .row
+  margin-bottom: 20px
+
+//trees
 header
   img
     width: 100%
@@ -213,17 +302,9 @@ div#main
     border: 3px outset aquamarine
     border-left-style: none
     border-right-style: none
-  .row
-    margin-left: 0
-    margin-right: 0
+  
   .danger-button
     background-color: $danger-color
-  input[type = "text"],
-  input[type = "email"],
-  input[type = "password"]
-    width: calc(100% - 3rem - 5px)
-  input[type = "text"].fl
-    width: calc(100% - 180px)
   .col
     padding: 5px
     h4
@@ -231,8 +312,48 @@ div#main
       a:hover
         font-decoration: underline
         font-size: 120%
-    img
-      max-height: 350px
+
+input[type = "text"],
+input[type = "email"],
+input[type = "password"]
+  width: calc(100% - 3rem - 5px)
+input[type = "text"].fl
+  width: calc(100% - 180px)
+
+footer
+  width: 100%
+  float: left
+  margin-top: 2%
+
+//thumbnails
+.preview
+  #flash
+    box-shadow: none
+    margin-bottom: 10px
+    padding: 0
+  img
+    +block-centered
+    max-height: 300px
+
+.gallery
+  text-align: center
+
+.thumbnail-block
+  margin-top: 2%
+  width: 200px
+  display: inline-block
+  +block-centered
+
+.thumbnail
+  +block-centered
+  margin-top: 2%
+  width: calc(#{$thumb-size} + 8px)
+  height: calc(#{$thumb-size} + 8px)
+  border: 4px dashed black
+  border-radius: 4px
+  img
+    max-width: $thumb-size
+    +block-centered
 
 //input
 input[type = "submit"]
@@ -245,46 +366,34 @@ input[type = "password"]
   padding-left: 5px
   width: calc(100% - 5px)
 
-@mixin placeholder
-  color: $placeholder-color
-  text-shadow: 0px 0px 5px $placeholder-text-shadow-color
-  padding-left: 5px
-
-@mixin placeholder-focus-hover
-  opacity: 0.3
-
-@mixin placeholder-focus
-  opacity: 0.5
-  text-shadow: none
-
 input::-webkit-input-placeholder
-  @include placeholder
+  +placeholder
 input:-moz-placeholder
-  @include placeholder
+  +placeholder
 input::-moz-placeholder
-  @include placeholder
+  +placeholder
 input:-ms-input-placeholder
-  @include placeholder
+  +placeholder
 
 input:focus:hover::-webkit-input-placeholder
-  @include placeholder-focus-hover
+  +placeholder-focus-hover
 input:focus:hover:-moz-placeholder
-  @include placeholder-focus-hover
+  +placeholder-focus-hover
 input:focus:hover::-moz-placeholder
-  @include placeholder-focus-hover
+  +placeholder-focus-hover
 input:focus:hover:-ms-input-placeholder
-  @include placeholder-focus-hover
+  +placeholder-focus-hover
 
 input:focus::-webkit-input-placeholder
-  @include placeholder-focus
+  +placeholder-focus
 input:focus:-moz-placeholder
-  @include placeholder-focus
+  +placeholder-focus
 input:focus::-moz-placeholder
-  @include placeholder-focus
+  +placeholder-focus
 input:focus:-ms-input-placeholder
-  @include placeholder-focus
+  +placeholder-focus
 
-//flash
+//messages
 #flash
   margin-bottom: 25px
   font-size: 125%
@@ -303,44 +412,6 @@ input:focus:-ms-input-placeholder
   color: $danger-color !important
   border-color: $danger-color !important
 
-.btn:hover
-  font-size: 110%
-
-.vc
-  position: relative
-  top: 50%
-  transform: translateY(-50%)
-
-.mt
-  margin-top: 10px
-
-.fl
-  float: left
-  margin-right: 10px
-  span
-    text-align: center
-    width: 100%
-
-.fl:last-child
-  margin-right: 0
-
-.thumbnail
-  @include block-centered
-  margin-top: 2%
-  width: calc(#{$thumb-size} + 8px)
-  height: calc(#{$thumb-size} + 8px)
-  border: 4px dashed black
-  border-radius: 4px
-  img
-    max-width: $thumb-size
-
-img
-  display: block
-  max-width: 100%
-
-a:hover
-  text-decoration: underline
-
 .errors
   background-color: $danger-color
   border-radius: 2px
@@ -349,12 +420,6 @@ a:hover
     line-height: 26px
     border-bottom: 1px solid black
     padding: 2px 0 2px 10px
-
-form
-  background-color: $form-background-color
-  display: table
-  margin: 0 auto
-  width: 100%
 
 .comm-inactive
   color: red
@@ -369,37 +434,16 @@ form
 .comm-vacation
   color: purple
 
-.material-icons
-  vertical-align: middle
+//behavior
 
-.reverse
-  transform: scaleX(-1)
+.vc
+  +vertical-center
 
-.moving-left.reverse
-  opacity: 0
-  padding-right: 130px
+.hc
+  width: 100%
+  text-align: center
+  *
+    +block-centered
 
-label
-  color: inherit
-
-.js
-  display: none
-
-.preview
-  #flash
-    box-shadow: none
-    margin-bottom: 10px
-
-blockquote.inline
-  @extend .flow-text
-  font-size: 80%
-  border-left-color: $nav-background-color
-  text-align: left !important
-  max-height: 7rem
-  padding-right: 8px
-  overflow: auto
-  margin-bottom: 0
-  a
-    font-size: 140%
-  a:hover
-    font-size: 180% !important
+.fl
+  +float-left

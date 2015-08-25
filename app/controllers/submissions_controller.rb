@@ -26,6 +26,10 @@ class SubmissionsController < ApplicationController
     end
   end
 
+  def show
+    @comments = @submission.comments
+  end
+
   def update
     respond_to do |format|
       if @submission.update(submission_params)

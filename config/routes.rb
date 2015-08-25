@@ -20,8 +20,9 @@ Rails.application.routes.draw do
 
   get "image/:type(/:id)", to: "images#show", as: :image
 
-  get "pools(/:#{User.slug})" => "pools#index" , as: :pools
-  get "pools/:#{Pool.slug}" => "pools#show", as: :pool
+  get "(:#{User.slug})/pools" => "pools#index" , as: :pools
+  resources :pools, only: [:create, :update, :destroy, :show]
+  resources :submissions
 
   resources :users, except: [:new, :edit], param: User.slug, path: "" do
     member do
@@ -32,9 +33,8 @@ Rails.application.routes.draw do
       patch "/workboard/:kanban_list_id" => "kanban_lists#update", as: :list
       post "/workboard/:kanban_list_id" => "kanban_cards#create", as: :new_card
       patch "/workboard/:kanban_list_id/cards/:kanban_card_id" => "kanban_cards#update", as: :card
-      resources :pools, except: [:new, :index, :edit]
-      resources :submissions
-      resources :comments
+
+      resources :comments, only: [:create, :update, :destroy]
       resources :order_forms
     end
   end

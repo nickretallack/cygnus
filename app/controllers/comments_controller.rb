@@ -1,35 +1,11 @@
 class CommentsController < ApplicationController
-  before_action :set_comment, only: [:show, :edit, :update, :destroy]
-
-  def index
-    @comments = Comment.all
-  end
-
-  def show
-  end
-
-  def new
-    @comment = Comment.new
-  end
-
-  def edit
-  end
+  before_filter -> { insist_on :permission }
 
   def create
-    @comment = Comment.new(comment_params)
-    if @comment.user == current_user
-      respond_to do |format|
-        if @comment.save
-          format.html { redirect_to submission_path(Submission.find_by(id: @comment.submission_id))+"#"+@comment.id.to_s }
-          format.json { render :show, status: :created, location: @comment }
-        else
-          format.html { redirect_to :back }
-          format.json { render json: @comment.errors, status: :unprocessable_entity }
-        end
-      end
+    if @new_comment.save
+      redirect_to @new_comment.submission, anchor: @new_comment.id
     else
-      flash[:danger] = "You may not comment for someone else."
-      redirect_to :back
+      back_with_errors
     end
   end
 
@@ -58,7 +34,7 @@ class CommentsController < ApplicationController
       @comment = Comment.find(params[:id])
     end
 
-    def comment_params
-      params.require(:comment).permit(:content, :user_id, :submission_id)
+    def comment_params_permitted
+      [:content, :user_id, :submission_id]
     end
 end

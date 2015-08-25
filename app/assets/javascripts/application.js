@@ -27,7 +27,9 @@ function ready(){
       banner = $("header").children("img"),
       menu = $(".dropdown-button"),
       logo = $(".brand-logo"),
-      widthTester = $(".widthTester");
+      widthTester = $(".widthTester")
+      gallery = $(".gallery"),
+      galleryTable = $(".gallery").children("table");
 
   $(".nojs").hide();
   $(".js").show();
@@ -58,10 +60,6 @@ function ready(){
   $(window).scroll(pushpinNav);
 
   var size = function(){
-    // if(widthTester.css("width") === "0px") return;
-    // nav.height(banner.outerHeight()/1.5 : banner.outerHeight());
-    // logo.width(nav.height()*3);
-
     switch(widthTester.css("width")){
       case "601px":  //medium
         nav.height(banner.outerHeight());
@@ -90,7 +88,7 @@ function ready(){
       reader.onload = function(event){
         var div = $(".preview");
         div.children("#flash").show();
-        div.children("img").detach();
+        div.children("img").remove();
         div.append($("<img />", { src: event.target.result }));
         $(".moving-left.reverse").animate({
           opacity: 1,

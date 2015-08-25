@@ -2,29 +2,44 @@
 
 <p id="notice"><%= notice %></p>
 
-<% if @pool.user == current_user %>
+<% if can_modify? user: @pool.user %>
   <%= form_for Submission.new do |f| %>
-    <%= f.label :title %>
-    <%= f.text_field :title %><br />
+    
     <div class = "row">
-      <div class = "col s12 m9 file-field input-field">
-        <div class = "btn fl">
-          <span>Picture</span>
-          <%= f.file_field :picture %>
+      <div class = "col s12 m6">
+        <%= f.text_field :title, placeholder: "Title" %>
+        <div class = "file-field input-field">
+          <div class = "btn fl">
+            <span>Picture</span>
+            <%= f.file_field :picture %>
+          </div>
         </div>
-        <input class = "file-path validate fl" type = "text" />
+        <div class = "input-field">
+          <%= f.check_box :adult %><%= f.label :adult %>
+        </div>
+        <%= hidden_field_tag "submission[pool_id]", @pool.id %>
+        <div class = "input-field">
+          <%= f.submit "New Submission" %>  
+        </div>
+      </div>
+      <div class = "col s12 m6 preview">
       </div>
     </div>
-    <%= f.check_box :adult %>
-    <%= f.label :adult %><br />
-    <%= hidden_field_tag "submission[pool_id]", @pool.id %>
-    <%= f.submit "New Submission" %>
+    
   <% end %>
   <hr />
 <% end %>
 
-<div>
+<div class = "row gallery">
   <% enum_for(submissions: @submissions) do |submission| %>
-      <%= submission.title %>
+    <div class = "thumbnail-block">
+      <%= link_to submission do %>
+        <%= submission.title %>
+        <%= image_for :bordered, submission.file_id %>
+      <% end %>
+    </div>
+  <% end %>
+  <% 11.times do %>
+    <div class = "thumbnail-block spacer"></div>
   <% end %>
 </div>

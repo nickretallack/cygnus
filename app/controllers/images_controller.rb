@@ -14,7 +14,11 @@ class ImagesController < ApplicationController
       file = @image.file.url
       suffix = ""
     else
-      file = File.join(CONFIG[:image_path], CONFIG[type])
+      begin
+        file = File.join(CONFIG[:image_path], CONFIG[type])
+      rescue TypeError
+        file = nil
+      end
     end
 
     if @image.enabled?

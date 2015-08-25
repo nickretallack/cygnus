@@ -41,11 +41,11 @@ module ApplicationHelper
     markdown.render(content).html_safe
   end
 
-  def avatar_for(user, type = :thumb)
-    image_for(type, id: user.avatar)
+  def avatar_for(user, type = :bordered)
+    image_for(type, user.avatar)
   end
 
-  def image_for(type = :full, id: nil)
+  def image_for(type = :full, id = nil)
     @image = Upload.find(id) || Upload.new
     if type == :bordered
       content_tag :div, class: "thumbnail "+(@image.explicit?? "danger" : "success") do
@@ -64,7 +64,7 @@ module ApplicationHelper
     @can_modify ||= at_least(:admin) or current_user == user || User.find_by(id: id)
   end
 
-  def insist_on(type, user: nil, id: nil)
+  def insist_on(type, user: current_user, id: nil)
     case type
     when :permission
       unless can_modify? user: user, id: id
