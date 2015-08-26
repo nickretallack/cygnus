@@ -1,53 +1,62 @@
 <% provide(:header, @user.name) %>
-<h5><span><%= link_to "Gallery", gallery_path(@user) %><%= link_to "(ies)", pools_path(@user) %></span></h5><br />
 
 <%= form_for @user, method: :patch, url: user_path(@user) do |f| %>
-	<% if can_modify? user: @user %>
-		<%= f.check_box :view_adult %><%= f.label :view_adult %><br />
-		<%= f.fields_for @user.avatar.nil?? Upload.new : Upload.find(@user.avatar), multipart: true do |u| %>
-			<%= u.check_box :explicit %><%= u.label :explicit, "Explicit Avatar" %>
-			<i class = "small material-icons moving-left reverse danger">trending_flat</i><br />
-      <div class = "col s12 m9 file-field input-field">
-        <div class = "btn fl">
-          <span>Avatar</span>
-          <%= u.file_field :picture %>
-        </div>
-        <input class = "file-path validate fl" type = "text" />
-      </div>
+	<div class = "row">
+		<%= link_to "Gallery", gallery_path(@user) %><%= link_to "(ies)", pools_path(@user) %><br />
+		<% if can_modify? @user %>
+			<%= f.text_field :gallery, placeholder: "Offsite Gallery" %><br />
+		<% elsif !@user.gallery.blank? %>
+			<%= link_to @user.gallery, url_with_protocol(@user.gallery) %><br />
 		<% end %>
-	<% end %>
+	</div>
 	<div class="row">
-		<div class = "col s12 m6 preview">
-			<div class = "danger nojs" id = "flash">
-				Please mark adult avatars explicit before saving.
+		<% if can_modify? @user %>
+			<div class = "col s12 m3">
+				<div class = "col">
+					<div class = "input-field"><%= f.check_box :view_adult %><%= f.label :view_adult %></div>
+					<%= f.fields_for @user.avatar.nil?? Upload.new : Upload.find(@user.avatar), multipart: true do |u| %>
+						<div class = "input-field"><%= u.check_box :explicit %><%= u.label :explicit, "Explicit Avatar" %></div>
+			      <div class = "row file-field input-field hc">
+			        <div class = "btn">
+			          <span>Avatar</span>
+			          <%= u.file_field :picture %>
+			        </div>
+			      </div>
+			    <% end %>
+		    </div>
+		  </div>
+			<div class = "col s12 m3 preview">
+				<div class = "danger nojs" id = "flash">
+					Please mark adult avatars explicit before saving.
+				</div>
+				<%= avatar_for @user, :full %>
 			</div>
-			<%= avatar_for @user, :full %>
+		<% else %>
+			<div class = "col s12 m6 l7 preview">
+				<%= avatar_for @user, :full %>
+			</div>
+		<% end %>
+		<div class = "col s12 m6 l5">
+			<%= statuses @user %>
 		</div>
-		<div class = "col s12 m6">
-			<% if can_modify? user: @user %>
-				<%= f.text_field :gallery, placeholder: "Offsite Gallery" %><br />
-			<% elsif !@user.gallery.blank? %>
-				<%= link_to @user.gallery, url_with_protocol(@user.gallery) %><br />
-			<% end %>
-			<% if can_modify? user: @user %>
-				<span><%= f.text_field :price, placeholder: "Commission rates" %></span><br />
-			<% elsif !@user.price.blank? %>
-				I charge:&nbsp;<%= @user.price %><br />
-			<% end %>
-			Member Since: <%= Date.parse(@user.created_at.to_s).to_formatted_s(:long_ordinal) %><br />
-	    <% if at_least :mod %>
-				Last Login: <%=Date.parse(@user.created_at.to_s).to_formatted_s(:long_ordinal) %>
-	    <% end %>
-	   </div>
 	</div>
 	<div class = "row">
-		<% if can_modify? user: @user %>
+		<% if can_modify? @user %>
+			<%= f.text_area :price, placeholder: "Commission rates" %>
 			<%= f.text_area :tags, placeholder: "Tags" %>
 			<%= f.text_area :details, placeholder: "Profile Text" %>
+			<%= f.submit "Update Profile" if can_modify? @user %>
 		<% else %>
-			<%= @user.tags %>
-			<%= render_markdown(@user.details || "") %>
+			<blockquote class = "inline"><%= @user.price %></blockquote>
+			<blockquote class = "inline"><%= @user.tags %></blockquote>
+			<blockquote class = "inline"><%= render_markdown(@user.details || "") %></blockquote>
 		<% end %>
 	</div>
-	<%= f.submit "Update Profile" if can_modify? user: @user %>
+<% end %>
+
+<% content_for :footer do %>
+	Member Since: <%= Date.parse(@user.created_at.to_s).to_formatted_s(:long_ordinal) %><br />
+	<% if can_modify? @user %>
+		Last Login: <%=Date.parse(@user.created_at.to_s).to_formatted_s(:long_ordinal) %><br />
+	<% end %>
 <% end %>

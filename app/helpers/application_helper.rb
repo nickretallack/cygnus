@@ -60,14 +60,14 @@ module ApplicationHelper
     current_user.level >= User.level_for(grade)
   end
 
-  def can_modify?(user: nil, id: nil)
+  def can_modify?(user, id: nil)
     @can_modify ||= at_least(:admin) or current_user == user || User.find_by(id: id)
   end
 
   def insist_on(type, user: current_user, id: nil)
     case type
     when :permission
-      unless can_modify? user: user, id: id
+      unless can_modify? user, id: id
         flash[:danger] = "you are not allowed to modify that record"
         redirect_to :back
       end

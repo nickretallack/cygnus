@@ -16,13 +16,16 @@
     </header>
     <div class = "container">
       <div id="main">
-        <h2 class = "header truncate"><%= yield :header %></h2>
-        <%= render "layouts/messages" %>
+        <div class = "row stout">
+          <h2 class = "header truncate"><%= yield :header %></h2>
+          <%= render "layouts/messages" %>
+        </div>
         <%= yield %>
       </div>
     </div>
     <footer>
       <hr />
+      <%= yield :footer %>
       <%= link_to "Back", request.referer.nil?? root_path : URI(request.referer).path %><br />
       <%= CONFIG[:copyright].html_safe %>
     </footer>

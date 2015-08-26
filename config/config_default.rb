@@ -15,12 +15,13 @@ CONFIG = {
   logo: "logo.png",
   banner: "banner.png",
   image_shelf_life: 5.hours,
+  password_reset_shelf_life: 2.hours,
 
   commission_icons: {
     commissions: "perm_identity",
     trades: "repeat",
     requests: "loyalty",
-    collabs: "supervisor_account"
+    collaborations: "supervisor_account"
   },
 
   activity_icons: {

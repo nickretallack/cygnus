@@ -94,18 +94,25 @@
 @media only screen and (min-width: 601px) and (max-width: 992px)
   .widthTester
     width: 601px
+  .m12
+    text-align: center
   div#main
     .row
       .col
         //margin-top: 0 !important
-        *:not(.row):not(i):not(input):not(.input-field)
-          @include block-centered
-          text-align: center
-          float: none
-          *
-            @include block-centered
-          h4
-            line-height: 120%
+        // *:not(.row):not(i):not(input):not(.input-field)
+        //   @include block-centered
+        //   text-align: center
+        //   float: none
+        //   *
+        //     @include block-centered
+        //   h4
+        //     line-height: 120%
+
+//below medium
+@media only screen and (max-width: 600px)
+  .btn
+    width: 100%
 
 //small
 @media only screen and (min-width: 364px) and (max-width: 600px)
@@ -114,18 +121,15 @@
   div#main
     .row
       .col
-        @include block-centered
-        text-align: left
-        margin-top: 0 !important
-        h4
-          line-height: 120%
+        // @include block-centered
+        // text-align: left
+        // margin-top: 0 !important
+        // h4
+        //   line-height: 120%
     input[type = "text"].fl
       width: 100% !important
     textarea
       width: 100% !important
-
-//not small
-@media only screen and (min-width: 601px)
 
 //very small
 @media only screen and (max-width: 363px)
@@ -155,18 +159,59 @@ html
   font-family: "Blogger"
   background-color: $background-color
 
+.container .row
+  margin: 0
+
+.col [class = "col"]
+  float: none
+
+.header, .stout
+  margin-bottom: 10px !important
+
 .input-field
   margin-top: 10px
+  margin-bottom: 10px
 
-input[type="checkbox"] + label
-  padding-left: 30px
+[type="checkbox"] + label
+  padding-left: 2.5rem
   display: initial
   color: black
   +vertical-center
   &:before
     top: -2px
-    width: 20px
+    width: 1.3rem
+    height: 1.3rem
     border-color: #B08ECE
+
+[type="checkbox"]:checked + label
+  padding-left: 2.5rem
+  display: initial
+  color: black
+  +vertical-center
+  &:before
+    top: -9px
+    left: -8px
+    width: 1.1rem
+    height: 1.9rem
+
+.button-with-icon
+  padding: 0
+  i.right
+    margin-left: 10px
+  span:before
+    width: 30px
+    height: 30px
+    position: absolute
+    top: 0
+    left: 0
+    background-color: red
+
+.button-with-icon:hover
+  text-decoration: none
+
+.dropdown-content
+  *:hover
+    text-decoration: none
 
 img
   display: block
@@ -217,10 +262,7 @@ blockquote.inline
 .file-field
   display: table
   .btn
-    float: left
-
-.container .row
-  margin-bottom: 20px
+    float: none
 
 //trees
 header

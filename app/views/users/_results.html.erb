@@ -3,10 +3,10 @@
     <hr />
     <div class = "row">
       <div class = "col s12 m6 mt">
-        <div class = "fl col s6 l5">
+        <div class = "fl col s6 m12 l5">
           <%= link_to avatar_for(user, :bordered), user_path(user) %>
         </div>
-        <div class = "col s6 l6 fl">
+        <div class = "col s6 m12 l6">
           <h5 class = "truncate"><%= link_to user.name, user_path(user) %></h5>
           <h4><%= statuses user, verbosity: :condensed %></h4>
           
@@ -18,7 +18,7 @@
         <% end %>
         <blockquote class = "inline"><%= user.price || "No prices specified." %></blockquote>
       </div>
-        <div class = "col s12 m6 l12 fl">
+        <div class = "col s12 m6 l12">
           <blockquote class = "inline"><%= user.tags || "No tags specified." %></blockquote>
         </div>
     </div>

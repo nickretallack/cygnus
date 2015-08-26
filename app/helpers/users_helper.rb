@@ -1,27 +1,48 @@
 module UsersHelper
-	def comm_statuses_verbose(user)
-	  "<h3><span class='label label-#{user.commissions ? "success" : "danger"}'>#{user.commissions ? "$" : "<span class='glyphicon glyphicon-ban-circle'></span>"} Commissions</span></h3>
-	   <h3><span class='label label-#{user.trades ? "success" : "danger"}'><span class='glyphicon #{user.trades ? "glyphicon-transfer" : "glyphicon-ban-circle"}'></span> Trades</span></h3>
-	   <h3><span class='label label-#{user.requests ? "success" : "danger"}'><span class='glyphicon #{user.requests ? "glyphicon-list-alt" : "glyphicon-ban-circle"}'></span> Requests</span></h3>".html_safe
-	end
-	def comm_statuses_condensed(user)
-	  "#{user.commissions ? "<span class='text-success'>$</span>" : "<span class='text-danger'>$</span>"}
-	   <span class='glyphicon #{user.trades ? "glyphicon-transfer" : "glyphicon-transfer text-danger"}'></span>
-	   <span class='glyphicon #{user.requests ? "glyphicon-list-alt" : "glyphicon-list-alt text-danger"}'></span>".html_safe
-	end
-
-	def statuses(user, verbosity: :verbose)
+	def statuses(user, modify: false, verbosity: :verbose)
 		html = ""
 		case verbosity
 		when :verbose
-			html = "verbose"
+			for i in 0..user.statuses.length-1
+				html += "<div class = 'row'>"
+				html += "<div class = 'col s6'>"
+				html += "<i class = 'small material-icons'>#{CONFIG[:commission_icons].values[i]}</i> #{CONFIG[:commission_icons].keys[i].capitalize}:"
+				html += "</div>"
+				status = user.statuses[i]
+				html += "<div class = 'col s6'>"
+				if can_modify? user
+					html += "<select name = 'user[statuses][#{i}]' class = 'btn button-with-icon'>"
+					CONFIG[:activity_icons].each_with_index do |(key, value), index|
+						html += "<option value = #{index} #{"selected = 'selected'" if status == index}>#{key}</option>"
+					end
+					html += "</select>"
+				else
+					html += "<i class = 'small material-icons comm-#{CONFIG[:activity_icons].keys[status]}'>#{CONFIG[:activity_icons].values[status]}</i> #{CONFIG[:activity_icons].keys[status].capitalize}"
+				end
+				html += "</div>"
+				html += "</div>"
+			end
+			# case type
+			# when :labels
+			# 	CONFIG[:commission_icons].each do |key, value|
+			# 		html += "<i class = 'small material-icons'>#{value}</i> #{key}:<br />"
+			# 	end
+			# when :states
+			# 	user.statuses.each do |status|
+			# 		html += "<i class = 'small material-icons comm-#{CONFIG[:activity_icons].keys[status]}'>#{CONFIG[:activity_icons].values[status]}</i> #{CONFIG[:activity_icons].keys[status]}<br />"
+			# 	end
+			# when :modify
+			# 	user.statuses.each do |status|
+			# 		html += "<a class = 'dropdown-button btn' data-activates = '#{CONFIG[:commission_icons].keys[status]}'><i class = 'small material-icons comm-#{CONFIG[:activity_icons].keys[status]}'>#{CONFIG[:activity_icons].values[status]}</i> #{CONFIG[:activity_icons].keys[status]}<i class = 'material-icons right'>arrow_drop_down</i></div></a><br />"
+			# 	end
+			# end
 		when :condensed
 			CONFIG[:commission_icons].each do |key, icon|
 				html += "<i class = 'small material-icons'>"+icon+"</i>"
 			end
 			html += "<br />"
 			user.statuses.each do |status|
-				html += "<i class = 'small material-icons comm-"+CONFIG[:activity_icons].keys[status].to_s+"'>"+CONFIG[:activity_icons].values[status]+"</i>"
+				html += "<i class = 'small material-icons comm-#{CONFIG[:activity_icons].keys[status]}'>#{CONFIG[:activity_icons].values[status]}</i>"
 			end
 		end
 		html.html_safe

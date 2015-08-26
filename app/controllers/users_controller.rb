@@ -51,6 +51,7 @@ class UsersController < ApplicationController
   def update
     @user.update_attribute(:avatar, Upload.render(params[:user][:upload][:picture])) unless params[:user][:upload][:picture].nil?
     Upload.find(@user.avatar).update_attribute(:explicit, params[:user][:upload][:explicit]) unless @user.avatar.nil?
+    @user.update_attribute(:statuses, params[:user][:statuses].values)
     if @user.update_attributes(user_params)
       flash[:success] = "profile updated"
       redirect_to :back
@@ -180,7 +181,7 @@ class UsersController < ApplicationController
   private
 
   def user_params_permitted
-    [:name, :email, :password, :password_confirmation, :commissions, :tags, :trades, :requests, :price, :details, :gallery, :view_adult]
+    [:name, :email, :password, :password_confirmation, :tags, :price, :details, :gallery, :view_adult]
   end
 
   def reset_params

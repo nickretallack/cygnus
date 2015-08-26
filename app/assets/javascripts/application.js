@@ -25,7 +25,7 @@ function ready(){
 
   var nav = $("nav"),
       banner = $("header").children("img"),
-      menu = $(".dropdown-button"),
+      menu = $("li").children(".dropdown-button"),
       logo = $(".brand-logo"),
       widthTester = $(".widthTester")
       gallery = $(".gallery"),
@@ -90,13 +90,12 @@ function ready(){
         div.children("#flash").show();
         div.children("img").remove();
         div.append($("<img />", { src: event.target.result }));
-        $(".moving-left.reverse").animate({
-          opacity: 1,
-          paddingRight: "-=120"
-        }, 2400);
+        $("label[for = 'user_upload_explicit']").addClass("danger");
       }
       reader.readAsDataURL(this.files[0]);
     }
-  })
+  });
+
+  if(typeof readyChild === "function") readyChild();
 
 }
