@@ -95,7 +95,4 @@ function ready(){
       reader.readAsDataURL(this.files[0]);
     }
   });
-
-  if(typeof readyChild === "function") readyChild();
-
 }
