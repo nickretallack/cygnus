@@ -1,0 +1,7 @@
+<% if can_watch? user %>
+    <% if watching? user %>
+      <blockquote class = "inline success"><%= link_to "Watch #{user.name}", watch_user_path(user) %></blockquote>
+    <% else %>
+      <blockquote class = "inline danger"><%= link_to "Unwatch #{user.name}", watch_user_path(user) %></blockquote>
+    <% end %>
+<% end %>

@@ -1,0 +1,7 @@
+<li><%= link_to "Galleries", pools_path(current_user) %></li>
+<li><%= link_to "Order Forms", order_forms_path(current_user) %></li>
+<li><%= link_to "Workboard", workboard_user_path(current_user) %></li>
+<hr />
+<li><%= link_to "Profile", user_path(current_user) %></li>
+<hr />
+<li><%= link_to "Log out", log_out_path, method: "delete" %></li>

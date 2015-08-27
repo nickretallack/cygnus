@@ -1,0 +1,3 @@
+<% if user.pools.first %>
+  <blockquote class = "inline"><%= link_to "Gallery", gallery_path(user) %><%= link_to "(ies)", pools_path(user) %></blockquote>
+<% end %>

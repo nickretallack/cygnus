@@ -21,7 +21,7 @@ class UsersController < ApplicationController
       @user.update_attribute(:level, User.level_for(:member))
       @user.update_attribute(:activated_at, Time.zone.now)
       activate_session @user
-      flash[:success] = "account activated!"
+      flash[:success] = "account activated"
       redirect_to action: :show, User.slug => @user
     else
       flash[:danger] = "invalid activation link"

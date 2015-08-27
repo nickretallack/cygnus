@@ -26,6 +26,7 @@ function ready(){
   var nav = $("nav"),
       banner = $("header").children("img"),
       menu = $("li").children(".dropdown-button"),
+      sideMenu = $(".button-collapse");
       logo = $(".brand-logo"),
       widthTester = $(".widthTester")
       gallery = $(".gallery"),
@@ -39,6 +40,12 @@ function ready(){
     hover: true,
     constrain_width: false
   });
+
+  $(window).keydown(function(event){
+    if(event.keyCode === 27) sideMenu.sideNav("hide");
+  });
+
+  sideMenu.sideNav();
 
   var pushpinNav = function(){
     if($(window).scrollTop() > banner.outerHeight())
