@@ -86,17 +86,17 @@ class UsersController < ApplicationController
     @new_user.level = User.level_for :unactivated unless CONFIG[:email_required]
     if @new_user.save
       if CONFIG[:email_required]
-        UserMailer.account_activation(@user).deliver_now
+        UserMailer.account_activation(@new_user).deliver_now
         flash[:info] = "please check your email to activate your account."
     	  if request.xhr?
     			render :text=> root_url
     	  else
       		respond_to do |format|
       			format.html { redirect_to root_url }
-      			format.json { render xml: @user, :except =>
-      			[:password_digest, :ip_Address], status: :check_email, location: @user }
-      			format.xml { render json: @user, :except =>
-      			[:password_digest, :ip_Address], status: :check_email, location: @user }	  
+      			format.json { render xml: @new_user, :except =>
+      			[:password_digest, :ip_Address], status: :check_email, location: @new_user }
+      			format.xml { render json: @new_user, :except =>
+      			[:password_digest, :ip_Address], status: :check_email, location: @new_user }	  
       		end
     	  end
       else
