@@ -26,7 +26,7 @@ Rails.application.routes.draw do
 
   resources :users, except: [:new, :edit], param: User.slug, path: "" do
     member do
-      get "/activate/:activation" => "users#activate", as: :activate_user
+      get "/activate/:activation" => "users#activate", as: :activate
       post "/avatar" => "images#create", as: :new_avatar
       get "/workboard" => "kanban_lists#index", as: :workboard
       post "/workboard" => "kanban_lists#create", as: :new_list
