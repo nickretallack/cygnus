@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
     rescue
       return
     end
-    #i alraise "break"
+    #raise "break"
     self.instance_exec do
       case action
       when :index, :search

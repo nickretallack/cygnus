@@ -1,0 +1,16 @@
+<% @image = Upload.find(id) || Upload.new %>
+
+<% if @image.enabled? %>
+  <% if @image.explicit? and not current_user.view_adult? %>
+    <% html = image_tag(image_path(:image_adult_thumb)) %>
+  <% else %>
+    <% html = image_tag(image_path(type, id: id)) %>
+  <% end %>
+<% else %>
+  <% html = image_tag(image_path(:image_disabled_thumb)) %>
+<% end %>
+<% if type == :bordered %>
+  <div class = 'thumbnail <%= @image.explicit?? "danger" : "success" %>'><%= html %></div>
+<% else %>
+  <%= html %>
+<% end %>

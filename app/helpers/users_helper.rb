@@ -13,7 +13,7 @@ module UsersHelper
 				if can_modify? user
 					html += "<select name = 'user[statuses][#{i}]' class = 'btn button-with-icon'>"
 					CONFIG[:activity_icons].each_with_index do |(key, value), index|
-						html += "<option value = #{index} #{"selected = 'selected'" if status == index}>#{key}</option>"
+						html += "<option value = #{index} #{"selected = 'selected'" if status == index}>#{key.to_s.gsub("_", " ")}</option>"
 					end
 					html += "</select>"
 				else
@@ -22,20 +22,6 @@ module UsersHelper
 				html += "</div>"
 				html += "</div>"
 			end
-			# case type
-			# when :labels
-			# 	CONFIG[:commission_icons].each do |key, value|
-			# 		html += "<i class = 'small material-icons'>#{value}</i> #{key}:<br />"
-			# 	end
-			# when :states
-			# 	user.statuses.each do |status|
-			# 		html += "<i class = 'small material-icons comm-#{CONFIG[:activity_icons].keys[status]}'>#{CONFIG[:activity_icons].values[status]}</i> #{CONFIG[:activity_icons].keys[status]}<br />"
-			# 	end
-			# when :modify
-			# 	user.statuses.each do |status|
-			# 		html += "<a class = 'dropdown-button btn' data-activates = '#{CONFIG[:commission_icons].keys[status]}'><i class = 'small material-icons comm-#{CONFIG[:activity_icons].keys[status]}'>#{CONFIG[:activity_icons].values[status]}</i> #{CONFIG[:activity_icons].keys[status]}<i class = 'material-icons right'>arrow_drop_down</i></div></a><br />"
-			# 	end
-			# end
 		when :condensed
 			CONFIG[:commission_icons].each do |key, icon|
 				html += "<i class = 'small material-icons'>"+icon+"</i>"

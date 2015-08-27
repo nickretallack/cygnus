@@ -46,35 +46,42 @@ module ApplicationHelper
   end
 
   def image_for(type = :full, id = nil)
-    @image = Upload.find(id) || Upload.new
-    if type == :bordered
-      content_tag :div, class: "thumbnail "+(@image.explicit?? "danger" : "success") do
-        image_tag(image_path(type, id: id))
-      end
-    else
-      image_tag(image_path(type, id: id))
-    end
+    render template: "images/show", locals: { type: type, id: id }
   end
 
   def at_least(grade)
     current_user.level >= User.level_for(grade)
   end
 
-  def can_modify?(user, id: nil)
-    @can_modify ||= at_least(:admin) or current_user == user || User.find_by(id: id)
+  def can_modify?(user)
+    @can_modify ||= at_least(:admin) or current_user? user
   end
 
-  def insist_on(type, user: current_user, id: nil)
+  def can_watch?(user)
+    @can_watch ||= at_least(:admin) or (not anon? and not current_user? user)
+  end
+
+  def watching? user
+    current_user.watching.include? user.id
+  end
+
+  def insist_on(type = nil, user = nil)
     case type
     when :permission
-      unless can_modify? user, id: id
+      unless can_modify? user
         flash[:danger] = "you are not allowed to modify that record"
-        redirect_to :back
+        "works"
+        #redirect_to :back
       end
     when :existence
-      unless user || User.find_by(id: id)
+      unless user
         flash[:danger] = "no such user"
         redirect_to :root
+      end
+    else
+      unless Proc.new.call
+        flash[:danger] = "you do not have permission to do that"
+        redirect_to :back
       end
     end
   end
@@ -82,11 +89,21 @@ module ApplicationHelper
   def enum_for(*args)
     key, value = args.first.first
     if value.empty?
-      concat "No "+key.to_s+" here yet."
+      concat "No #{key} here yet."
     else
       value.each do |item|
         yield item
       end
+    end
+  end
+
+  def message_for(*args)
+    key, value = args.first.first
+    key = key.to_s.pluralize
+    if value.blank?
+      "No #{key} specified."
+    else
+      value
     end
   end
 end

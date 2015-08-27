@@ -59,6 +59,7 @@ class PoolsController < ApplicationController
   end
 
   def destroy
+    raise "break"
     @pool = Pool.find(params[:id])
     @pool.destroy
     respond_to do |format|
@@ -68,11 +69,8 @@ class PoolsController < ApplicationController
   end
 
   private
-    def set_pool
-      @pool = Pool.find(params[:id])
-    end
 
-    def pool_params
-      params.require(:pool).permit(:title, :user_id)
-    end
+  def pool_params_permitted
+    [:title, :user_id]
+  end
 end

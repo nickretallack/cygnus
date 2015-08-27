@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
   before_filter :check_expiration, only: [:reset_return, :reset_return_confirm]
-  #before_filter -> { insist_on :existence, user: @user }, only: [:show]
-  before_filter -> { insist_on :permission, user: @user }, only: [:update, :destroy]
-  
+  before_filter -> { insist_on :existence, @user }, only: [:show]
+  before_filter -> { insist_on :permission, @user }, only: [:update, :destroy]
+
   # def index
   #   @users = User.all.order(:name)
   #   respond_to do |format|
@@ -175,6 +175,23 @@ class UsersController < ApplicationController
   def log_out
     deactivate_session
     flash[:info] = "logged out"
+    redirect_to :back
+  end
+
+  def watch
+    user = User.find(params[User.slug])
+    insist_on do
+      can_watch? user
+    end
+    if current_user.watching.include? user.id
+      user.watched_by.delete(current_user.id)
+      user.update_attribute(:watched_by, user.watched_by)
+      current_user.watching.delete(user.id)
+      current_user.update_attribute(:watching, current_user.watching)
+    else
+      user.update_attribute(:watched_by, user.watched_by << current_user.id)
+      current_user.update_attribute(:watching, current_user.watching << user.id)
+    end
     redirect_to :back
   end
 

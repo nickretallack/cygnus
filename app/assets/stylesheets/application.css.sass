@@ -96,18 +96,6 @@
     width: 601px
   .m12
     text-align: center
-  div#main
-    .row
-      .col
-        //margin-top: 0 !important
-        // *:not(.row):not(i):not(input):not(.input-field)
-        //   @include block-centered
-        //   text-align: center
-        //   float: none
-        //   *
-        //     @include block-centered
-        //   h4
-        //     line-height: 120%
 
 //below medium
 @media only screen and (max-width: 600px)
@@ -118,14 +106,6 @@
 @media only screen and (min-width: 364px) and (max-width: 600px)
   .widthTester
     width: 363px
-  div#main
-    .row
-      .col
-        // @include block-centered
-        // text-align: left
-        // margin-top: 0 !important
-        // h4
-        //   line-height: 120%
     input[type = "text"].fl
       width: 100% !important
     textarea
@@ -151,8 +131,6 @@
           text-align: left !important
   input[type = "text"].fl
     width: 100% !important
-  .moving-left.reverse
-    padding-right: 50px !important
 
 //mod defaults
 html
@@ -165,8 +143,10 @@ html
 .col [class = "col"]
   float: none
 
-.header, .stout
+.header
   margin-bottom: 10px !important
+  a
+    color: inherit
 
 .input-field
   margin-top: 10px
@@ -194,8 +174,8 @@ html
     width: 1.1rem
     height: 1.9rem
 
-.input-field .prefix ~ input[type = "text"]
-  width: calc(100% - 3rem - 5px)
+.col input
+  margin-bottom: 0 !important
 
 .button-with-icon
   padding: 0
@@ -225,6 +205,7 @@ img
 
 a:hover
   text-decoration: underline
+  font-size: 120%
 
 form
   background-color: $form-background-color
@@ -358,13 +339,6 @@ div#main
         font-decoration: underline
         font-size: 120%
 
-input[type = "text"],
-input[type = "email"],
-input[type = "password"]
-  width: calc(100% - 3rem - 5px)
-input[type = "text"].fl
-  width: calc(100% - 180px)
-
 footer
   width: 100%
   float: left
@@ -388,6 +362,8 @@ footer
   width: 200px
   display: inline-block
   +block-centered
+  a:hover
+    font-size: 100%
 
 .thumbnail
   +block-centered
@@ -404,12 +380,6 @@ footer
 input[type = "submit"]
   @extend .btn
   text-shadow: 0px 2px 1px darkslategrey
-
-input[type = "text"],
-input[type = "email"],
-input[type = "password"]
-  padding-left: 5px
-  width: calc(100% - 5px)
 
 input::-webkit-input-placeholder
   +placeholder
@@ -476,7 +446,7 @@ input:focus:-ms-input-placeholder
   color: lightslategrey
 .comm-open_soon
   color: yellowgreen
-.comm-vacation
+.comm-on_vacation
   color: purple
 
 //behavior

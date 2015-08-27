@@ -8,7 +8,7 @@ class ImagesController < ApplicationController
 
     case type
     when :thumb, :bordered
-      file = @image.file.thumb.url
+      file = @image.file.thumb.url      
       suffix = "_thumb"
     when :full
       file = @image.file.url
@@ -16,21 +16,13 @@ class ImagesController < ApplicationController
     else
       begin
         file = File.join(CONFIG[:image_path], CONFIG[type])
-      rescue TypeError
+      rescue
         file = nil
       end
     end
 
-    if @image.enabled?
-      if stale? etag: @image, last_modified: @image.updated_at
-        if not @image.explicit? or current_user.view_adult?
-          send_file file || File.join(CONFIG[:image_path], CONFIG["image_not_found#{suffix}".to_sym]), disposition: :inline
-        else
-          send_file File.join(CONFIG[:image_path], CONFIG["image_adult#{suffix}".to_sym]), disposition: :inline
-        end
-      end
-    else
-      send_file File.join(CONFIG[:image_path], CONFIG["image_disabled#{suffix}".to_sym]), disposition: :inline
+    if stale? etag: @image, last_modified: @image.updated_at
+      send_file file || File.join(CONFIG[:image_path], CONFIG["image_not_found#{suffix}".to_sym]), disposition: :inline
     end
   end
 end

@@ -4,11 +4,10 @@
   <% provide :header, "All pools" %>
 <% end %>
 
-<% if can_modify? %>
+<% if can_modify? @user %>
   <%= form_for Pool.new do |f| %>
     <div class="form-group field">
-      <%= f.label :title %>
-      <%= f.text_field :title %>
+      <%= f.text_field :title, placeholder: "Title" %>
       <%= hidden_field_tag "pool[user_id]", params[:user_id] %>
       <%= f.submit "New Pool", class: "btn btn-primary" %>
     </div>
@@ -28,10 +27,10 @@
       <tr>
         <td><%= link_to pool.title, pool %></td>
         <td><%= pool.user.name %></td>
-        <% if can_modify? %>
-          <td><%= link_to 'Destroy', pool, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if can_modify? pool.user %>
+          <td><%= link_to "Destroy", pool, method: :delete, data: { confirm: "Are you sure?" } %></td>
         <% end %>
       </tr>
-  <% end %>
+    <% end %>
   </tbody>
 </table>
