@@ -1,13 +1,11 @@
 class KanbanListsController < ApplicationController
   def index
-    @user = User.find_by(User.slug => params[User.slug])
+    @user = User.find(params[User.slug])
     @kanban_lists = @user.kanban_lists.order(:id)
   end
 
   def create
-    @user = User.find(params[:id])
-    @new_kanban_list = KanbanList.new(kanban_list_params)
-    @new_kanban_list.user_id = @user.id
+    @new_kanban_list.user_id = User.find(params[User.slug]).id
 
     if @new_kanban_list.save
       redirect_to :back
@@ -19,7 +17,6 @@ class KanbanListsController < ApplicationController
 
   def update
     @kanban_list = KanbanList.find(params[:kanban_list_id])
-
     if @kanban_list.update_attributes(kanban_list_params)
       redirect_to :back
     else
@@ -30,7 +27,7 @@ class KanbanListsController < ApplicationController
 
   private
 
-  def kanban_list_params
-    params.require(:kanban_list).permit(:title)
+  def kanban_list_params_permitted
+    [:title]
   end
 end

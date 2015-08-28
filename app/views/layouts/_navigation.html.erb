@@ -8,26 +8,22 @@
         <li><a class = "dropdown-button" data-activates = "reg-menu"><div class = "vc">Log In / Register<i class = "material-icons right">arrow_drop_down</i></div></a></li>
       </ul>
       <div class = "right hide-on-med-and-down nojs">
-        <%= form_for :session, url: log_in_path do |f| %>
-          <%= f.text_field :name, placeholder: "Username" %>
-          <%= f.password_field :password, placeholder: "Password" %>
-          <%= f.submit "Log in" %>
-        <% end %>
+        <%= render "users/log_in" %>
       </div>
       <a data-activates="mobile-reg-menu" class="button-collapse"><i class="material-icons">menu</i></a>
     </div>
     <div class = "separator"></div>
   </nav>
   <ul class = "js dropdown-content" id = "reg-menu">
-    <%= render "log_in" %>
+    <%= render "users/log_in" %>
     <hr />
-    <%= render "register" %>
+    <%= render "users/register" %>
     <hr />
   </ul>
   <ul class = "side-nav" id = "mobile-reg-menu">
-    <%= render "log_in" %>
+    <%= render "users/log_in" %>
     <hr />
-    <%= render "register" %>
+    <%= render "users/register" %>
     <hr />
   </ul>
 
@@ -40,16 +36,16 @@
         <li><a class = "dropdown-button" data-activates = "nav-menu"><div class = "vc"><%= current_user.name %><i class = "material-icons right">arrow_drop_down</i></div></a></li>
       </ul>
       <div class = "right hide-on-med-and-down nojs">
-        <%= render "member_menu" %>
+        <%= render "users/member_menu" %>
       </div>
       <a data-activates="mobile-nav-menu" class="button-collapse"><i class="material-icons">menu</i></a>
     </div>
     <div class = "separator"></div>
   </nav>
   <ul class = "js dropdown-content" id = "nav-menu">
-    <%= render "member_menu" %>
+    <%= render "users/member_menu" %>
   </ul>
   <ul class = "side-nav" id = "mobile-nav-menu">
-    <%= render "member_menu" %>
+    <%= render "users/member_menu" %>
   </ul>
 <% end %>

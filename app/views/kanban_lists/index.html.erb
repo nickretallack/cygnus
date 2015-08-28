@@ -1,40 +1,70 @@
 <% provide :header, @user.name+"'s workboard" %>
 
-<% if current_user? @user %>
+<% if can_modify? @user %>
   <%= form_for KanbanList.new, url: new_list_path do |f| %>
     <%= f.text_field :title, placeholder: "Title" %>
     <%= f.submit "New List", class: "submit" %>
   <% end %>
+  <hr />
 <% end %>
 
-<% @kanban_lists.each do |l| %>
-  <div class="kanbanlist fl">
-    <% if current_user? @user %>
-      <%= form_for l, url: list_path(kanban_list_id: l), method: :patch do |f| %>
-        <%= f.label :title %> <%= f.text_field :title %> <%= f.submit "Save", class: "submit" %>
-      <% end %>
-    <% else %>
-      <%= l.title %>
-    <% end %>
-    <hr />
-    <% if current_user? @user %>
-      <%= form_for KanbanCard.new, url: new_card_path(kanban_list_id: l) do |f| %>
-        <%= f.text_field :title, placeholder: "Title" %>
-        <%= f.submit "New Item", class: "submit" %>
-      <% end %>
-    <% end %>
-    <% l.cards.each do |cid| %>
-      <% c = KanbanCard.find(cid) %>
-      <div class="kanbancard">
-        <% if current_user? @user %>
-          <%= form_for c, url: card_path(kanban_list_id: l, kanban_card_id: cid), method: :patch do |f| %>
-            <%= f.label :title %> <%= f.text_field :title %><br />
-            <%= f.label :order %> <%= f.number_field :order, value: 0 %> <%= f.submit "Save", class: "submit" %>
+<div class = "row">
+  <% enum_for workcards: @kanban_lists do |l| %>
+    <div class="col s12 l4">
+      <div class = "card">
+        <div class = "card-content">
+          <div class = "card-title">
+            <% if current_user? @user %>
+              <%= form_for l, url: list_path(kanban_list_id: l), method: :patch do |f| %>
+                <%= f.text_field :title, placeholder: "List Title" %>
+          </div>
+          <div class = "card-action">
+                <%= f.submit "Save", class: "submit" %>
+              <% end %>
+            <% else %>
+              <h5><%= title_for list: l %></h5>
+            <% end %>
+          </div>
+          <hr />
+          <% if can_modify? @user %>
+            <div class = "card">
+              <div class = "card-content">
+                <div class = "card-title">
+                  <%= form_for KanbanCard.new, url: new_card_path(kanban_list_id: l) do |f| %>
+                    <%= f.text_field :title, placeholder: "Title" %>
+                </div>
+                <div class = "card-action">
+                    <%= f.submit "New Item" %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
           <% end %>
-        <% else %>
-          <%= c.title %>
-        <% end %>
+          <% enum_for cards: l.cards do |cid| %>
+          <% c = KanbanCard.find(cid) %>
+            <div class="card">
+              <div class = "card-content">
+                <div class = "card-title">
+                  <% if can_modify? @user %>
+                    <%= form_for c, url: card_path(kanban_list_id: l, kanban_card_id: cid), method: :patch do |f| %>
+                      <%= f.text_field :title, placeholder: "Card Title" %>
+                </div>
+                <div class = "card-action">
+                      <%= f.submit "Save" %>
+                      <%= f.submit :submit, name: "kanban_card[order]", value: "Move Up" %>
+                      <%= f.submit :submit, name: "kanban_card[order]", value: "Move Down" %>
+                      <%= link_to "Delete", destroy_card_path(kanban_list_id: l, kanban_card_id: cid), method: :destroy, class: "submit" %>
+                    <% end %>
+
+                  <% else %>
+                    <h5><%= title_for card: c %></h5>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
       </div>
-    <% end %>
-  </div>
-<% end %>
+    </div>
+  <% end %>
+</div>

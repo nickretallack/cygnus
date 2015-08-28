@@ -99,11 +99,20 @@ module ApplicationHelper
 
   def message_for(*args)
     key, value = args.first.first
-    key = key.to_s.pluralize
+    key = key.to_s.gsub("_", " ").pluralize
     if value.blank?
       "No #{key} specified."
     else
       value
+    end
+  end
+
+  def title_for(*args)
+    key, value = args.first.first
+    if value.title.blank?
+      "Untitled #{key.to_s.gsub("_", " ").titleize}"
+    else
+      value.title
     end
   end
 end

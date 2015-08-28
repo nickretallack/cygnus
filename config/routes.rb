@@ -24,17 +24,18 @@ Rails.application.routes.draw do
   resources :pools, only: [:create, :update, :destroy, :show]
   resources :submissions
 
+  get ":#{User.slug}/activate/:activation" => "users#activate", as: :activate_user
+  post ":#{User.slug}/avatar" => "images#create", as: :new_avatar
+  get ":#{User.slug}/workboard" => "kanban_lists#index", as: :workboard
+  post ":#{User.slug}/workboard" => "kanban_lists#create", as: :new_list
+  patch ":#{User.slug}/workboard/:kanban_list_id" => "kanban_lists#update", as: :list
+  post ":#{User.slug}/workboard/:kanban_list_id" => "kanban_cards#create", as: :new_card
+  patch ":#{User.slug}/workboard/:kanban_list_id/cards/:kanban_card_id" => "kanban_cards#update", as: :card
+  delete ":#{User.slug}/workboard/:kanban_list_id/cards/:kanban_card_id" => "kanban_cards#destroy", as: :destroy_card
+
   resources :users, except: [:new, :edit], param: User.slug, path: "" do
     member do
       get :watch
-      get "/activate/:activation" => "users#activate", as: :activate_user
-      post "/avatar" => "images#create", as: :new_avatar
-      get "/workboard" => "kanban_lists#index", as: :workboard
-      post "/workboard" => "kanban_lists#create", as: :new_list
-      patch "/workboard/:kanban_list_id" => "kanban_lists#update", as: :list
-      post "/workboard/:kanban_list_id" => "kanban_cards#create", as: :new_card
-      patch "/workboard/:kanban_list_id/cards/:kanban_card_id" => "kanban_cards#update", as: :card
-
       resources :comments, only: [:create, :update, :destroy]
       resources :order_forms
     end
