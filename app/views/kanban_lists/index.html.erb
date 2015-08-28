@@ -17,8 +17,6 @@
             <% if current_user? @user %>
               <%= form_for l, url: list_path(kanban_list_id: l), method: :patch do |f| %>
                 <%= f.text_field :title, placeholder: "List Title" %>
-          </div>
-          <div class = "card-action">
                 <%= f.submit "Save", class: "submit" %>
               <% end %>
             <% else %>
