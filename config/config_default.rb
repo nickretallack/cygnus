@@ -1,8 +1,8 @@
 CONFIG = {
   thumbnail_width: 150,
   thumbnail_height: 150,
-  email_required: false,
-  host: "localhost",
+  email_required: true,
+  host: "bleatr.com",
   name: "Bleatr",
   copyright: "&copy;2015",
   image_path: Rails.root.join("app", "assets", "images"),
@@ -11,8 +11,10 @@ CONFIG = {
   image_disabled: "not_found.png",
   image_disabled_thumb: "not_found.png",
   image_not_found: "not_found.png",
-  image_not_found_thumb: "not_found.png",
+  image_not_found_thumb: "thumb_not_found.png",
   logo: "logo.png",
+  logo_thumb: "thumb_logo.png",
+  logo_email: "email_logo.gif",
   banner: "banner.png",
   image_shelf_life: 5.hours,
   password_reset_shelf_life: 2.hours,
@@ -30,7 +32,7 @@ CONFIG = {
     accepting_few: "error_outline",
     backlogged: "toll",
     open_soon: "schedule",
-    vacation: "pause_circle_outline"
+    on_vacation: "pause_circle_outline"
   },
 
   user_levels: [
