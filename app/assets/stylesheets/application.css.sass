@@ -21,6 +21,7 @@
   margin-left: auto
   margin-right: auto
   text-align: center
+  display: block
 
 =vertical-center
   position: relative
@@ -141,6 +142,12 @@
 html
   font-family: "Blogger"
   background-color: $background-color
+
+select
+  display: block
+
+select:focus
+  outline: none
 
 nav .button-collapse
   +vertical-center
@@ -263,6 +270,9 @@ input:not([type = "submit"]), textarea
 
 .button-with-icon
   padding: 0
+  text-shadow: 0px 2px 1px darkslategrey !important
+  option
+    text-shadow: 0px 2px 1px darkslategrey !important
   i.right
     margin-left: 10px
   span:before
@@ -354,6 +364,7 @@ footer
   .card-content
     .card-title
       color: #11A2A9
+    .card-action
 
 =card2
   background-color: #DEE4BD
@@ -463,6 +474,14 @@ div#main
     max-width: $thumb-size
     +block-centered
 
+.preview.thumbnail
+  margin-top: 0
+  border: none
+  a
+    margin-right: 0
+  .thumbnail
+    margin-top: 0
+
 //input
 
 .submit
@@ -474,9 +493,10 @@ div#main
   transition: .2s ease-out !important
   margin-top: 5px !important
   margin-bottom: 5px !important
+  font-size: 1rem !important
 
 .submit:hover
-  font-size: 120% !important
+  font-size: 1.2rem !important
   color: white !important
   text-decoration: none !important
 
@@ -515,6 +535,7 @@ input:focus:-ms-input-placeholder
   margin-bottom: 25px
   font-size: 125%
   padding-left: 10px
+  padding-right: 10px
   border-radius: 10px
   border: 2px dashed black
   box-shadow: -1px 2px 15px rgba(0, 0, 0, 0.5)
@@ -539,17 +560,17 @@ input:focus:-ms-input-placeholder
     padding: 2px 0 2px 10px
 
 .comm-inactive
-  color: red
+  color: coral
 .comm-accepting
-  color: green
+  color: forestgreen
 .comm-accepting_few
-  color: yellow
+  color: gold
 .comm-backlogged
   color: lightslategrey
 .comm-open_soon
-  color: yellowgreen
+  color: sandybrown
 .comm-on_vacation
-  color: purple
+  color: lightpurple
 
 //behavior
 

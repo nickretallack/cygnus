@@ -1,9 +1,6 @@
-<h1><%=CONFIG[:name]%>!</h1>
+<div style = "width: 100%;">
+<%= image_tag attachments["logo.png"].url, style: "display: block; margin: 0 auto;" %>
 
-<p>Hi <%= @user.name %>,</p>
-
-<p>
-Welcome to the <%=CONFIG[:name]%>! Click on the link below to activate your account:
-</p>
-
-<%= link_to "Activate", activate_user_url(@user.id, @user.activation_token) %>
+<p><h3 style = "text-align: center;">
+Welcome to <%=CONFIG[:name]%>! Click <%= link_to "here", activate_user_url(@user[User.slug], @user.activation_token) %> to activate your account.
+</h3></p>

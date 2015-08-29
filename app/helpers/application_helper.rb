@@ -1,4 +1,10 @@
 module ApplicationHelper
+  def first_log_in(user)
+    Pool.new(title: "Gallery", user_id: user.id).save!
+    activate_session user
+    flash[:success] = "welcome to "+CONFIG[:name]
+  end
+
   def current_user
     @current_user ||= session[:username].nil?? AnonymousUser.new : User.find(session[:username])
   end

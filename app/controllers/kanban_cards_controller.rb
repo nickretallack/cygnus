@@ -14,6 +14,7 @@ class KanbanCardsController < ApplicationController
 
   def update
     @kanban_card = KanbanCard.find(params[:kanban_card_id])
+    @kanban_card.file_id = Upload.render(params[:kanban_card][:upload][:picture], params[:kanban_card][:upload][:explicit])
     if @kanban_card.update_attributes(kanban_card_params)
       case params[:kanban_card][:order]
       when "Move Up"

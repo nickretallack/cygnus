@@ -17,7 +17,7 @@
             <% if current_user? @user %>
               <%= form_for l, url: list_path(kanban_list_id: l), method: :patch do |f| %>
                 <%= f.text_field :title, placeholder: "List Title" %>
-                <%= f.submit "Save", class: "submit" %>
+                <%= f.submit "Save" %>
               <% end %>
             <% else %>
               <h5><%= title_for list: l %></h5>
@@ -48,14 +48,32 @@
                       <%= f.text_field :title, placeholder: "Card Title" %>
                 </div>
                 <div class = "card-action">
+                      <%= f.fields_for c.file_id.nil?? Upload.new : Upload.find(c.file_id), multipart: true do |u| %>
+                        <div class = "row file-field input-field submit">
+                          <span>Picture</span>
+                          <%= u.file_field :picture %>
+                        </div>
+                        <div class = "input-field">
+                          <%= u.check_box :explicit %><%= u.label :explicit %>
+                        </div>
+                        <% if c.file_id %>
+                          <div class = "preview thumbnail nojs">
+                            <%= link_to (image_for :bordered, c.file_id), image_path(:full, c.file_id) %>
+                          </div>
+                        <% end %>
+                      <% end %>
                       <%= f.submit "Save" %>
                       <%= f.submit :submit, name: "kanban_card[order]", value: "Move Up" %>
                       <%= f.submit :submit, name: "kanban_card[order]", value: "Move Down" %>
                       <%= link_to "Delete", destroy_card_path(kanban_list_id: l, kanban_card_id: cid), method: :destroy, class: "submit" %>
                     <% end %>
-
                   <% else %>
                     <h5><%= title_for card: c %></h5>
+                    <% if c.file_id %>
+                      <div class = "nojs">
+                        <%= link_to (image_for :bordered, c.file_id), image_path(:full, c.file_id) %>
+                      </div>
+                    <% end %>
                   <% end %>
                 </div>
               </div>

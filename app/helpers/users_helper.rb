@@ -1,4 +1,10 @@
 module UsersHelper
+	def first_log_in(user)
+		Pool.new(title: "Gallery", user_id: @new_user.id).save!
+    activate_session user
+    flash[:success] = "welcome to "+CONFIG[:name]
+	end
+
 	def statuses(user, modify: false, verbosity: :verbose)
 		html = ""
 		case verbosity
@@ -13,7 +19,7 @@ module UsersHelper
 				if can_modify? user
 					html += "<select name = 'user[statuses][#{i}]' class = 'btn button-with-icon'>"
 					CONFIG[:activity_icons].each_with_index do |(key, value), index|
-						html += "<option value = #{index} #{"selected = 'selected'" if status == index}>#{key.to_s.gsub("_", " ")}</option>"
+						html += "<option class = 'comm-#{CONFIG[:activity_icons].keys[index]}' value = #{index} #{"selected = 'selected'" if status == index}>#{key.to_s.gsub("_", " ")}</option>"
 					end
 					html += "</select>"
 				else

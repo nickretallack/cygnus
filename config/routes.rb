@@ -24,7 +24,6 @@ Rails.application.routes.draw do
   resources :pools, only: [:create, :update, :destroy, :show]
   resources :submissions
 
-  get ":#{User.slug}/activate/:activation" => "users#activate", as: :activate_user
   post ":#{User.slug}/avatar" => "images#create", as: :new_avatar
   get ":#{User.slug}/workboard" => "kanban_lists#index", as: :workboard
   post ":#{User.slug}/workboard" => "kanban_lists#create", as: :new_list
@@ -36,6 +35,7 @@ Rails.application.routes.draw do
   resources :users, except: [:new, :edit], param: User.slug, path: "" do
     member do
       get :watch
+      get "/activate/:activation" => "users#activate", as: :activate
       resources :comments, only: [:create, :update, :destroy]
       resources :order_forms
     end

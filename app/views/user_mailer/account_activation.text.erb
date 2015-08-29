@@ -1,5 +1,3 @@
-Hi <%= @user.name %>,
+Welcome to <%=CONFIG[:name]%>! Click on the link below to activate your account:
 
-Welcome to the <%=CONFIG[:name]%>! Click on the link below to activate your account:
-
-<%= activate_user_url(@user.id, @user.activation_token) %>
+<%= activate_user_url(@user.name, @user.activation_token) %>

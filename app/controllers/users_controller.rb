@@ -12,16 +12,11 @@ class UsersController < ApplicationController
   #   end
   # end
 
-  # def index
-  #   raise "break"
-  # end
-
   def activate
     if @user and @user.at_level :unactivated and @user.authenticated? :activation, params[:activation]
       @user.update_attribute(:level, User.level_for(:member))
       @user.update_attribute(:activated_at, Time.zone.now)
-      activate_session @user
-      flash[:success] = "account activated"
+      first_log_in @user
       redirect_to action: :show, User.slug => @user
     else
       flash[:danger] = "invalid activation link"
@@ -32,27 +27,32 @@ class UsersController < ApplicationController
   def search
     @query = params[:search]? params[:search][:search] : ""
     @users = User.search(@query)
-    respond_to do |format|
-      format.html
-      format.xml  { render xml: @users, except: [:password_digest, :ip_Address]}
-      format.json { render json: @users, except: [:password_digest, :ip_Address]}
-    end
+    # respond_to do |format|
+    #   format.html
+    #   format.xml  { render xml: @users, except: [:password_digest, :ip_Address]}
+    #   format.json { render json: @users, except: [:password_digest, :ip_Address]}
+    # end
   end
 
   def destroy
     @user.destroy
-    respond_to do |format|
-      format.html { redirect_to users_url, notice: params[:name] + "has deactivated their account" }
-      format.json { head :no_content }
-      format.xml { head :no_content }
-    end
+    flash[:success] = "account deleted"
+    redirect_to :root
+    # respond_to do |format|
+    #   format.html { redirect_to users_url, notice: params[:name] + "has deactivated their account" }
+    #   format.json { head :no_content }
+    #   format.xml { head :no_content }
+    # end
   end
 
   def update
-    @user.update_attribute(:avatar, Upload.render(params[:user][:upload][:picture])) unless params[:user][:upload][:picture].nil?
-    Upload.find(@user.avatar).update_attribute(:explicit, params[:user][:upload][:explicit]) unless @user.avatar.nil?
-    @user.update_attribute(:statuses, params[:user][:statuses].values)
     if @user.update_attributes(user_params)
+      @user.update_attribute(:avatar, Upload.render(params[:user][:upload][:picture], params[:user][:upload][:explicit])) unless params[:user][:upload][:picture].nil?
+      @user.update_attribute(:view_adult, true) if params[:user][:upload][:explicit]
+      unless @user.avatar.nil? or params[:user][:upload][:pool] == "0"
+        Submission.new(title: "Avatar", pool_id: params[:user][:upload][:pool].to_i, file_id: @user.avatar).save!
+      end
+      @user.update_attribute(:statuses, params[:user][:statuses].values)
       flash[:success] = "profile updated"
       redirect_to :back
   	  # if request.xhr?
@@ -87,23 +87,21 @@ class UsersController < ApplicationController
     if @new_user.save
       if CONFIG[:email_required]
         UserMailer.account_activation(@new_user).deliver_now
-        flash[:info] = "please check your email to activate your account."
-    	  if request.xhr?
-    			render :text=> root_url
-    	  else
-      		respond_to do |format|
-      			format.html { redirect_to root_url }
-      			format.json { render xml: @new_user, :except =>
-      			[:password_digest, :ip_Address], status: :check_email, location: @new_user }
-      			format.xml { render json: @new_user, :except =>
-      			[:password_digest, :ip_Address], status: :check_email, location: @new_user }	  
-      		end
-    	  end
-      else
-        Pool.new(title: "Gallery", user_id: @new_user.id).save!
-        activate_session @new_user
-        flash[:success] = "welcome to "+CONFIG[:name]
+        flash[:info] = "please check your email to activate your account"
         redirect_to :back
+    	  # if request.xhr?
+    			# render :text=> root_url
+    	  # else
+      	# 	respond_to do |format|
+      	# 		format.html { redirect_to root_url }
+      	# 		format.json { render xml: @new_user, :except =>
+      	# 		[:password_digest, :ip_Address], status: :check_email, location: @new_user }
+      	# 		format.xml { render json: @new_user, :except =>
+      	# 		[:password_digest, :ip_Address], status: :check_email, location: @new_user }	  
+      	# 	end
+    	  # end
+      else
+        first_log_in @new_user
     	  # if request.xhr?
     			# render :text=> user_path(@user)
     	  # else
@@ -175,7 +173,7 @@ class UsersController < ApplicationController
   def log_out
     deactivate_session
     flash[:info] = "logged out"
-    redirect_to :back
+    redirect_to :root
   end
 
   def watch
