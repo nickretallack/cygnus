@@ -1,5 +1,5 @@
 class CommentsController < ApplicationController
-  #before_filter -> { insist_on :logged_in }, only: [:create]
+  before_filter -> { insist_on :logged_in }, only: [:create]
   before_filter -> { insist_on :permission }, only: [:update, :destroy]
 
   def create

@@ -20,9 +20,11 @@
   <% end %>
 <% end %>
 
-<%= form_for Comment.new, url: comments_path(current_user) do |f| %>
-  <%= f.text_area :content %>
-  <%= hidden_field_tag "comment[user_id]", current_user.id %>
-  <%= hidden_field_tag "comment[submission_id]", @submission.id %>
-  <%= f.submit "Post Comment" %>
+<% unless anon? %>
+  <%= form_for Comment.new, url: comments_path(current_user) do |f| %>
+    <%= f.text_area :content %>
+    <%= hidden_field_tag "comment[user_id]", current_user.id %>
+    <%= hidden_field_tag "comment[submission_id]", @submission.id %>
+    <%= f.submit "Post Comment" %>
+  <% end %>
 <% end %>

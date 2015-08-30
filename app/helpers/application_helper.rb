@@ -73,6 +73,11 @@ module ApplicationHelper
 
   def insist_on(type = nil, user = nil)
     case type
+    when :logged_in
+      if anon?
+        flash[:danger] = "please sign in first"
+        redirect_to :back
+      end
     when :permission
       unless can_modify? user
         flash[:danger] = "you are not allowed to modify that record"
