@@ -1,5 +1,5 @@
 class CommentsController < ApplicationController
-  before_filter -> { insist_on :permission }
+  before_filter -> { insist_on :permission }, only: :destroy
 
   def create
     if @new_comment.save

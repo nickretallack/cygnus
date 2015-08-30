@@ -76,8 +76,7 @@ module ApplicationHelper
     when :permission
       unless can_modify? user
         flash[:danger] = "you are not allowed to modify that record"
-        "works"
-        #redirect_to :back
+        redirect_to :back
       end
     when :existence
       unless user

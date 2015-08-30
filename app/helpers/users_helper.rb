@@ -1,10 +1,4 @@
 module UsersHelper
-	def first_log_in(user)
-		Pool.new(title: "Gallery", user_id: @new_user.id).save!
-    activate_session user
-    flash[:success] = "welcome to "+CONFIG[:name]
-	end
-
 	def statuses(user, modify: false, verbosity: :verbose)
 		html = ""
 		case verbosity
