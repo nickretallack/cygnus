@@ -102,6 +102,7 @@ class UsersController < ApplicationController
     	  # end
       else
         first_log_in @new_user
+        redirect_to :back
     	  # if request.xhr?
     			# render :text=> user_path(@user)
     	  # else

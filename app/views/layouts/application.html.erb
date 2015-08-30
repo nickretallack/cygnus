@@ -26,9 +26,17 @@
     <footer>
       <hr />
       <%= yield :footer %>
-      <%= link_to "Back", request.referer.nil?? root_path : URI(request.referer).path %><br />
-      <%= CONFIG[:copyright].html_safe %>
+      <div class = "row hc">
+        <div class = "col s12">
+          <span>
+            <%= link_to "About", static_path(:about) %>
+            <div class = "vdiv"></div>
+            <%= link_to "Back", request.referer.nil?? root_path : URI(request.referer).path %>
+          </span>
+          <%= CONFIG[:copyright].html_safe %>
+        </div>
+      </div>
     </footer>
-    <% console %>
+    <%# console %>
   </body>
 </html>

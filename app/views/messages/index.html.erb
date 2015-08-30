@@ -1,0 +1,16 @@
+<% enum_for messages: @messages do |message| %>
+  <div class = "row comment">
+    <div class = "col">
+      <%= avatar_for message.sender %>
+    </div>
+    <div class = "col">
+      <h5><%= message.sender.name %></h5>
+      <h6><%= message.subject %></h6>
+      <blockquote class = "inline"><%= message.content %></blockquote>
+    </div>
+  </div>
+  <h5>Reply</h5>
+  <div class = "row nojs">
+    <%= render template: "messages/new", locals: { to: message.sender.name } %>
+  </div>
+<% end %>

@@ -38,5 +38,9 @@ class ApplicationController < ActionController::Base
     session.delete(:username)
     @current_user = nil
   end
+
+  def static_page
+    render template: "pages/#{params[:page_name]}"
+  end
 end
 

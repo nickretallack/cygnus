@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
   attr_accessor  :activation_token, :reset_token
   has_many :pools
   has_many :kanban_lists
+  has_many :messages
+  has_many :comments
   belongs_to :upload, foreign_key: :avatar
   before_create :create_activation_digest
  

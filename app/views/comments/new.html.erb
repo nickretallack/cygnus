@@ -1,0 +1,10 @@
+<% unless anon? %>
+  <% to ||= current_user.name %>
+  <% from ||= current_user.name %>
+  <div class = "row">
+    <%= form_for Comment.new, url: post_comment_path(to, from) do |f| %>
+      <%= f.text_area :content %>
+      <%= f.submit "Post as #{current_user.name}" %>
+    <% end %>
+  </div>
+<% end %>

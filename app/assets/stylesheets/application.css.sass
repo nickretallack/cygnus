@@ -21,7 +21,6 @@
   margin-left: auto
   margin-right: auto
   text-align: center
-  display: block
 
 =vertical-center
   position: relative
@@ -45,6 +44,13 @@
 =placeholder-focus
   opacity: 0.5
   text-shadow: none
+
+=vertical-divider
+  height: 1.2rem
+  margin: 0.15rem 5px 0 5px
+  border: 1px solid forestgreen
+  border-top-style: none
+  border-bottom-style: none
 
 @font-face
   font-family: "Blogger"
@@ -239,6 +245,11 @@ input:not([type = "submit"]), textarea
   a
     color: inherit
 
+span:not(.console-cursor)
+  display: table
+  *
+    +float-left
+
 .input-field
   margin-top: 10px
   margin-bottom: 10px
@@ -325,10 +336,14 @@ label
 .js
   display: none
 
-blockquote.inline
+blockquote
   @extend .flow-text
   font-size: 80%
   border-left-color: $nav-background-color
+  ul li
+    list-style-type: disc
+
+blockquote.inline
   text-align: left !important
   max-height: 7rem
   padding-right: 8px
@@ -348,6 +363,8 @@ footer
   width: 100%
   float: left
   margin-top: 2%
+  a:hover
+    font-size: 100%
 
 //cards
 .card
@@ -585,3 +602,6 @@ input:focus:-ms-input-placeholder
 
 .fl
   +float-left
+
+.vdiv
+  +vertical-divider
