@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   patch   "reset/:#{User.slug}/:activation" => "users#reset_return_confirm"
 
   post :log_in, to: "users#log_in"
-  get :log_out, to: "users#log_out"
+  delete :log_out, to: "users#log_out"
   get :register, to: "users#new"
 
   get "search"  => "users#search", as: :search_user
