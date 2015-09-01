@@ -1,6 +1,6 @@
 class OrderFormsController < ApplicationController
   before_action :set_order_form, only: [:show, :edit, :update, :destroy]
-  before_action :correct_user_or_admin,   only: [:edit, :update, :destroy]
+  before_filter -> { insist_on :permission, @order_form.user }, only: [:update, :destroy]
   before_filter -> { insist_on :logged_in }, only: [:new, :create, :edit, :update, :destroy] 
   # GET /order_forms
   # GET /order_forms.json

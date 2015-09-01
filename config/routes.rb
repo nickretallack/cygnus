@@ -40,7 +40,7 @@ Rails.application.routes.draw do
     member do
       get :watch
       get "/activate/:activation" => "users#activate", as: :activate
-      resources :comments, only: [:show, :destroy]
+      resources :comments, only: [:show, :create, :destroy]
       resources :order_forms
     end
   end
