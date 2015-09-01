@@ -99,7 +99,7 @@ module ApplicationHelper
   def enum_for(*args)
     key, value = args.first.first
     if value.empty?
-      concat "No #{key} here yet."
+      concat "No #{key}."
     else
       value.each do |item|
         yield item

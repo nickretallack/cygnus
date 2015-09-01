@@ -4,6 +4,8 @@ Rails.application.routes.draw do
 
   root to: "users#index"
 
+  get "pages/:page_name", to: "application#static_page", as: :static
+
   get  "reset" => "users#reset", as: :password_reset
   post   "reset" => "users#reset_confirm"
   get    "reset/:#{User.slug}/:activation" => "users#reset_return", as: :send_password_reset
@@ -17,12 +19,14 @@ Rails.application.routes.draw do
   post "search"  => "users#search"
 
   get ":#{User.slug}/gallery", to: "pools#show", as: :gallery
-
   get "image/:type(/:id)", to: "images#show", as: :image
 
   get "(:#{User.slug})/pools" => "pools#index" , as: :pools
   resources :pools, only: [:create, :update, :destroy, :show]
   resources :submissions
+
+  get ":#{User.slug}/messages", to: "messages#index", as: :messages
+  post "message/:to/:from", to: "messages#create", as: :post_message
 
   post ":#{User.slug}/avatar" => "images#create", as: :new_avatar
   get ":#{User.slug}/workboard" => "kanban_lists#index", as: :workboard
@@ -36,7 +40,7 @@ Rails.application.routes.draw do
     member do
       get :watch
       get "/activate/:activation" => "users#activate", as: :activate
-      resources :comments, only: [:create, :update, :destroy]
+      resources :comments, only: [:show, :destroy]
       resources :order_forms
     end
   end

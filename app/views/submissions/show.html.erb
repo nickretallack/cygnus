@@ -20,11 +20,4 @@
   <% end %>
 <% end %>
 
-<% unless anon? %>
-  <%= form_for Comment.new, url: comments_path(current_user) do |f| %>
-    <%= f.text_area :content %>
-    <%= hidden_field_tag "comment[user_id]", current_user.id %>
-    <%= hidden_field_tag "comment[submission_id]", @submission.id %>
-    <%= f.submit "Post Comment" %>
-  <% end %>
-<% end %>
+<%= render template: "comments/new", to: @submission.id, from: current_user.name %>

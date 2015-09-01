@@ -1,3 +1,33 @@
-<% provide(:header, 'About the Website') %>
+<% provide :header, "About" %>
 
-<%= CONFIG[:about_text].html_safe %>
+<blockquote>
+  <%= CONFIG[:name] %> is for commissioners and commission artists. It provides tools to streamline the process, a place to connect, and the opportunity to display the work you do and the work that's been done for you.
+
+  <p>
+  In other words, it's the site you never knew you wanted so bad. We're here to help if...
+  </p>
+
+  <ul>
+    <li>...you're looking for the perfect artist to do your piece but don't want to spend hours looking for them only to find they're not even accepting.</li>
+
+    <li>...you're an aritst who wants to reach a wide audience who can search you by name, price, status, and the content of your art. Or if you're just tired of updating your commission info on five different sites every time you make a change. Link those info pages to your profile page here.</li>
+    
+    <li>...you've ever gotten frustrated coordinating payment over one site while messaging over another. <%= CONFIG[:name] %> has an order-and-invoice system built in.</li>
+    
+    <li>...you've ever wanted a print of that picture you bought or maybe just one you found and really like. <%= CONFIG[:name] %> is hooked up with <%= link_to "InkedFur", CONFIG[:inkedfur] %>, our print provider. Order through us, receive from them, and the original artist gets payment.</li>
+    
+    <li>...you're wondering about the status of your ongoing commission or you wanted to update your commissioner on your progress. <%= CONFIG[:name] %> provides workboard and queue tools for every artist.</li>
+
+    <li>...you're not sure if a particular artist you've found is up to the task. <%= CONFIG[:name] %> tracks artists' recent work only with a simple and fair like/neutral/dislike rating system that rewards good behavior and doesn't punish improving artists. Only paid commissioners who have received your work can vote on it.</li>
+
+    <li>...you're looking for like-minded people and a friendly community where you're encouraged to share your opinion.</li>
+
+    <li>...you're excited to use an always developing site made by people who know what they're doing for people who know what they want. We have more tools planned like a chat, polls, auctions, stream notifications, and whatever else we can think up or you can suggest.</li>
+  </ul>
+
+    <p>
+    We hope you enjoy yourself and your time here. Feedback is welcome! Please register or sign in and PM the <%= CONFIG[:name] %> Feedback account with your comments and suggestions.
+    </p>
+</blockquote>
+
+<%= render template: "messages/new", locals: { to: CONFIG[:feedback_account_name] } %>

@@ -1,0 +1,11 @@
+<% unless anon? %>
+  <% to ||= current_user.name %>
+  <% value ||= nil %>
+  <div class = "row">
+    <%= form_for Message.new, url: post_message_path(to, current_user.name) do |f| %>
+      <%= f.text_field :subject, value: value, placeholder: "Subject here" %>
+      <%= f.text_area :content, placeholder: "Message here" %>
+      <%= f.submit "Send to #{to}" %>
+    <% end %>
+  </div>
+<% end %>
