@@ -11,11 +11,12 @@
 <div class = "row">
   <% enum_for workcards: @kanban_lists do |l| %>
     <div class="col s12 l4">
-      <div class = "card">
+      <div class = "card" >
         <div class = "card-content">
           <div class = "card-title">
             <% if current_user? @user %>
               <%= form_for l, url: list_path(kanban_list_id: l), method: :patch do |f| %>
+                <%= f.hidden_field :order, value: l.cards * "," %>
                 <%= f.text_field :title, placeholder: "List Title" %>
                 <%= f.submit "Save" %>
               <% end %>
@@ -40,7 +41,7 @@
           <% end %>
           <% enum_for cards: l.cards do |cid| %>
           <% c = KanbanCard.find(cid) %>
-            <div class="card">
+            <div class = "card kanban-card" id = <%= cid %> >
               <div class = "card-content">
                 <div class = "card-title">
                   <% if can_modify? @user %>

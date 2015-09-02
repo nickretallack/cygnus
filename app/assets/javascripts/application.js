@@ -102,4 +102,13 @@ function ready(){
       reader.readAsDataURL(this.files[0]);
     }
   });
+
+  if(typeof onReady === "function") onReady();
+}
+
+function pauseEvent(event){
+  if(event.stopPropagation) event.stopPropagation();
+  if(event.preventDefault) event.preventDefault();
+  event.cancelBubble = true;
+  event.returnValue = false;
 }

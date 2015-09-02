@@ -17,6 +17,7 @@ class KanbanListsController < ApplicationController
 
   def update
     @kanban_list = KanbanList.find(params[:kanban_list_id])
+    @kanban_list.cards = params[:kanban_list][:order].split(",").collect{ |card_id| card_id.to_i }
     if @kanban_list.update_attributes(kanban_list_params)
       redirect_to :back
     else
