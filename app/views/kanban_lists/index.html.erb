@@ -58,7 +58,7 @@
                           <%= u.check_box :explicit %><%= u.label :explicit %>
                         </div>
                         <% if c.file_id %>
-                          <div class = "preview thumbnail nojs">
+                          <div class = "preview thumbnail">
                             <%= link_to (image_for :bordered, c.file_id), image_path(:full, c.file_id) %>
                           </div>
                         <% end %>
@@ -71,7 +71,7 @@
                   <% else %>
                     <h5><%= title_for card: c %></h5>
                     <% if c.file_id %>
-                      <div class = "nojs">
+                      <div class = "">
                         <%= link_to (image_for :bordered, c.file_id), image_path(:full, c.file_id) %>
                       </div>
                     <% end %>
