@@ -27,21 +27,16 @@ class PoolsController < ApplicationController
   end
 
   def create
-    @pool = Pool.new(pool_params)
 
-    if @pool.user == current_user
-      respond_to do |format|
-        if @pool.save
-          format.html { redirect_to @pool, notice: 'Pool was successfully created.' }
-          format.json { render :show, status: :created, location: @pool }
-        else
-          format.html { render :new }
-          format.json { render json: @pool.errors, status: :unprocessable_entity }
-        end
+    @new_pool.user_id = current_user.id #we don't trust the outside world
+    respond_to do |format|
+      if @new_pool.save
+        format.html { redirect_to @new_pool, notice: 'Pool was successfully created.' }
+        format.json { render :show, status: :created, location: @new_pool }
+      else
+        format.html { render :new }
+        format.json { render json: @new_pool.errors, status: :unprocessable_entity }
       end
-    else
-      flash[:danger] = "You cannot make a pool for another user."
-      redirect_to :back
     end
   end
 

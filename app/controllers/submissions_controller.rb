@@ -1,5 +1,10 @@
 class SubmissionsController < ApplicationController
+  before_filter -> { insist_on :permission, @submission.pool.user }, only: [:update, :destroy]
   def create
+	if params[:submission][:picture].blank?
+		flash[:danger] = "You forgot to add an image!"
+		return redirect_to :back
+	end
     @new_submission.file_id = Upload.render(params[:submission][:picture], @new_submission.adult)
     @new_submission.title = "Untitled" if @new_submission.title.blank?
     #raise "break"

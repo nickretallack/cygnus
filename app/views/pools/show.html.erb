@@ -4,20 +4,19 @@
 
 <% if can_modify? @pool.user %>
   <%= form_for Submission.new do |f| %>
-    
     <div class = "row">
       <div class = "col s12 m6">
-        <%= f.text_field :title, placeholder: "Title" %>
+        <%= f.text_field :title, placeholder: "Title for New Gallery Submission" %>
         <div class = "input-field">
           <%= f.check_box :adult %><%= f.label :adult %>
         </div>
-        <div class = "row file-field input-field submit">
-            <span>Picture</span>
+        <div class = "file-field input-field submit">
+            <span>Image File</span>
             <%= f.file_field :picture %>
         </div>
         <%= hidden_field_tag "submission[pool_id]", @pool.id %>
         <div class = "input-field">
-          <%= f.submit "New Submission" %>  
+          <%= f.submit "Create New Submission" %>  
         </div>
       </div>
       <div class = "col s12 m6 preview">
@@ -35,7 +34,7 @@
         <%= submission.title %>
         <%= image_for :bordered, submission.file_id %>
         <% if can_modify? submission.pool.user %>
-          <h5><%= link_to "Destroy", submission, method: :destroy, data: { confirm: "Are you sure?" } %></h5>
+          <h5><%= link_to "Destroy", submission, method: :delete, data: { confirm: "Are you sure?" } %></h5>
         <% end %>
       <% end %>
     </div>

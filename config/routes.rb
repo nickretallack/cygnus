@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   patch   "reset/:#{User.slug}/:activation" => "users#reset_return_confirm"
 
   post :log_in, to: "users#log_in"
-  get :log_out, to: "users#log_out"
+  delete :log_out, to: "users#log_out"
   get :register, to: "users#new"
 
   get "search"  => "users#search", as: :search_user
@@ -40,7 +40,7 @@ Rails.application.routes.draw do
     member do
       get :watch
       get "/activate/:activation" => "users#activate", as: :activate
-      resources :comments, only: [:show, :destroy]
+      resources :comments, only: [:show, :create, :destroy]
       resources :order_forms
     end
   end

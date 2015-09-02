@@ -60,7 +60,7 @@ module ApplicationHelper
   end
 
   def can_modify?(user)
-    @can_modify ||= at_least(:admin) or current_user? user
+    @can_modify ||= at_least(:mod) or current_user? user
   end
 
   def can_watch?(user)
