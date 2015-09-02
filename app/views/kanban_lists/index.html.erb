@@ -55,7 +55,7 @@
                           <%= u.file_field :picture %>
                         </div>
                         <div class = "input-field">
-                          <%= u.check_box :explicit %><%= u.label :explicit %>
+                          <%= u.check_box :explicit, id: "kanban_card_upload_explicit_#{cid}" %><%= u.label :explicit, for: "kanban_card_upload_explicit_#{cid}" %>
                         </div>
                         <% if c.file_id %>
                           <div class = "preview thumbnail">

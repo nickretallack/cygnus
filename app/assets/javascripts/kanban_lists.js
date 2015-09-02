@@ -6,58 +6,59 @@ function onReady(){
   $(".kanban-card").on("mouseenter", function(){
     $(this).css("outline", "4px dashed slategrey");
     $(this).on("mousedown", function(event){
-      pauseEvent(event);
       held = $(this);
-      if($.extend($(".submit"), $("[type='submit']")).toArray().contains(event.target)) return;
-      $("<div />", {
-        class: "card thing"
-      }).css({
-        backgroundColor: held.css("background-color"),
-        color: held.find("#kanban_card_title").css("color")
-      }).append($("<h3 />", {
-        text: held.find("#kanban_card_title").attr("value")
-      })).appendTo($(document.body));
-      $(".thing").css({
-        color: held.find("#kanban_card_title").css("color"),
-        position: "absolute",
-        top: event.pageY,
-        left: event.pageX,
-        pointerEvents: "none"
-      });
-      $(".thing").css({
-        marginLeft: $(".thing").outerWidth()/-2,
-        marginTop: $(".thing").outerHeight()/-4
-      });
-      $(window).on("mousemove", function(event){
-        y = event.pageY;
-        if(event.pageY-$(window).scrollTop() > $(window).height()*.8){
-          if(typeof scrollTimer !== "undefined") clearInterval(scrollTimer);
-          scrollTimer = setInterval(function(){
-            if(y < $("footer").offset().top){
-              $(window).scrollTop($(window).scrollTop()+3);
-              y += 3;
+      if(!$(event.target).is("label") && !$(event.target).is("input") && !$(event.target).is("img")){
+        pauseEvent(event);
+        $("<div />", {
+          class: "card thing"
+        }).css({
+          backgroundColor: held.css("background-color"),
+          color: held.find("#kanban_card_title").css("color")
+        }).append($("<h3 />", {
+          text: held.find("#kanban_card_title").attr("value")
+        })).appendTo($(document.body));
+        $(".thing").css({
+          color: held.find("#kanban_card_title").css("color"),
+          position: "absolute",
+          top: event.pageY,
+          left: event.pageX,
+          pointerEvents: "none"
+        });
+        $(".thing").css({
+          marginLeft: $(".thing").outerWidth()/-2,
+          marginTop: $(".thing").outerHeight()/-4
+        });
+        $(window).on("mousemove", function(event){
+          y = event.pageY;
+          if(event.pageY-$(window).scrollTop() > $(window).height()*.8){
+            if(typeof scrollTimer !== "undefined") clearInterval(scrollTimer);
+            scrollTimer = setInterval(function(){
+              if(y < $("footer").offset().top){
+                $(window).scrollTop($(window).scrollTop()+3);
+                y += 3;
+                $(".thing").css({
+                  top: y
+                });
+              }
+            }, 5);
+          }else if(event.pageY-$(window).scrollTop() < $("header").height()*2){
+            if(typeof scrollTimer !== "undefined") clearInterval(scrollTimer);
+            scrollTimer = setInterval(function(){
+              $(window).scrollTop($(window).scrollTop()-3);
+              y -= 3;
               $(".thing").css({
                 top: y
               });
-            }
-          }, 5);
-        }else if(event.pageY-$(window).scrollTop() < $("header").height()*2){
-          if(typeof scrollTimer !== "undefined") clearInterval(scrollTimer);
-          scrollTimer = setInterval(function(){
-            $(window).scrollTop($(window).scrollTop()-3);
-            y -= 3;
-            $(".thing").css({
-              top: y
-            });
-          }, 5);
-        }else{
-          if(typeof scrollTimer !== "undefined") clearInterval(scrollTimer);
-        }
-        $(".thing").css({
-          top: event.pageY,
-          left: event.pageX
+            }, 5);
+          }else{
+            if(typeof scrollTimer !== "undefined") clearInterval(scrollTimer);
+          }
+          $(".thing").css({
+            top: event.pageY,
+            left: event.pageX
+          });
         });
-      });
+      }
     });
   }).mouseleave(function(){
     $(this).css("outline", "none");
