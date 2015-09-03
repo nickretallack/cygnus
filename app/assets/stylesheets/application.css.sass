@@ -5,6 +5,7 @@
  */
 
 //layout hints
+//
 // div#main
 //   div
 //     border: 2px outset crimson
@@ -113,36 +114,24 @@
 @media only screen and (max-width: 600px)
   .btn
     width: 100%
+  span
+    +block-centered
 
 //small
 @media only screen and (min-width: 364px) and (max-width: 600px)
   .widthTester
     width: 363px
-    input[type = "text"].fl
-      width: 100% !important
-    textarea
-      width: 100% !important
 
 //very small
 @media only screen and (max-width: 363px)
   .widthTester
     width: 0px
-  .spacer
-    display: none !important
-  div#main
-    .row
-      .col
-        margin-top: 0 !important
-        text-align: center
-        *:not(.row):not(i):not(input):not(.thumbnail)
-          @include block-centered
-          width: 100%
-        h4
-          line-height: 120%
-        blockquote
-          text-align: left !important
-  input[type = "text"].fl
-    width: 100% !important
+  .col
+    margin-top: 0 !important
+    text-align: center
+    *:not(.row):not(i):not(input):not(.thumbnail):not(.vdiv):not(a):not(span)
+      +block-centered
+      width: 100%
 
 //mod defaults
 html
@@ -201,7 +190,6 @@ nav .button-collapse:hover
     margin-right: 10px
   *
     float: left
-  //
   li
     +vertical-center
     margin-right: 10px
@@ -625,6 +613,7 @@ input:focus:-ms-input-placeholder
   text-align: center
   *
     +block-centered
+    display: block
 
 .fl
   +float-left
