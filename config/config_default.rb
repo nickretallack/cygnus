@@ -9,7 +9,7 @@ CONFIG = {
   image_adult: "adult.png",
   image_adult_thumb: "thumb_adult.png",
   image_disabled: "not_found.png",
-  image_disabled_thumb: "not_found.png",
+  image_disabled_thumb: "thumb_not_found.png",
   image_not_found: "not_found.png",
   image_not_found_thumb: "thumb_not_found.png",
   logo: "logo.png",
@@ -20,9 +20,9 @@ CONFIG = {
   password_reset_shelf_life: 2.hours,
 
   commission_icons: {
-    commissions: "perm_identity",
+    commissions: "loyalty",
     trades: "repeat",
-    requests: "loyalty",
+    requests: "comment",
     collaborations: "supervisor_account"
   },
 

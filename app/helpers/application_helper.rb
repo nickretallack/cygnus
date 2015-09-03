@@ -6,7 +6,7 @@ module ApplicationHelper
   end
 
   def current_user
-    @current_user ||= session[:username].nil?? AnonymousUser.new : User.find(session[:username])
+    @current_user ||= session[:username].nil?? AnonymousUser.new : User.find(session[:username]) || AnonymousUser.new
   end
 
   def anon?
@@ -40,10 +40,6 @@ module ApplicationHelper
     referer_params = Rails.application.routes.recognize_path request.referer
     referer_params[:messages] = instance_variable_get("@new_"+controller_name.singularize).errors.full_messages
     redirect_to referer_params
-  end
-
-  def url_with_protocol(url)
-    /^http:\/\/|^https:\/\//.match(url)? url : "http://" + url
   end
 
   def render_markdown(content)
