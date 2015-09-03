@@ -6,8 +6,6 @@ class OrderForm < ActiveRecord::Base
   validate :content_is_proper
   
   def content_is_proper
-    if !content.is_a? Array
-		errors.add(:content, "Severe Error has Occured, please retry")
-	end
+  	errors.add(:content, "Severe Error has Occured, please retry") unless content.is_a? Array
   end
 end

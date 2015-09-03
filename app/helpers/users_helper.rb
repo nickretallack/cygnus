@@ -24,11 +24,11 @@ module UsersHelper
 			end
 		when :condensed
 			CONFIG[:commission_icons].each do |key, icon|
-				html += "<i class = 'small material-icons'>"+icon+"</i>"
+				html += "<i class = 'small material-icons' title = '#{key.capitalize}'>"+icon+"</i>"
 			end
 			html += "<br />"
 			user.statuses.each do |status|
-				html += "<i class = 'small material-icons comm-#{CONFIG[:activity_icons].keys[status]}'>#{CONFIG[:activity_icons].values[status]}</i>"
+				html += "<i class = 'small material-icons comm-#{CONFIG[:activity_icons].keys[status]}' title = '#{CONFIG[:activity_icons].keys[status].to_s.gsub("_", " ").titleize}'>#{CONFIG[:activity_icons].values[status]}</i>"
 			end
 		end
 		html.html_safe

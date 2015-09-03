@@ -1,38 +1,28 @@
 class OrderFormsController < ApplicationController
-  before_action :set_order_form, only: [:show, :edit, :update, :destroy]
-  before_filter -> { insist_on :permission, @order_form.user }, only: [:update, :destroy]
-  before_filter -> { insist_on :logged_in }, only: [:new, :create, :edit, :update, :destroy] 
-  # GET /order_forms
-  # GET /order_forms.json
+  before_filter -> { insist_on :logged_in }, only: [:new, :create]
+  before_filter -> { insist_on :permission, @order_form.user }, only: [:edit, :update, :destroy]
+  
   def index
-	@user = User.ci_find(User.slug, params[User.slug])
-    @order_forms = OrderForm.where(:user => current_user).all
+  	@user = User.find(params[User.slug])
+    @order_forms = current_user.order_forms
   end
 
-  # GET /order_forms/1
-  # GET /order_forms/1.json
   def show
-	@user = User.ci_find(User.slug, params[User.slug])
+    @user = User.find(params[User.slug])
   end
 
-  # GET /order_forms/new
   def new
-	@user = User.ci_find(User.slug, params[User.slug])
+  	@user = User.find(params[User.slug])
     @order_form = OrderForm.new
   end
 
-  # GET /order_forms/1/edit
-  #We don't want users to edit order forms.
   def edit
-	
-	raise ActionController::RoutingError.new('Not Found')
-	
+    not_found
   end
 
-  # POST /order_forms
-  # POST /order_forms.json
   def create
 	@new_order_form.user_id = current_user.id
+  raise "break"
 	if(!params[:order_form][:file].nil?)
 		params[:order_form][:file].each do |index, file|
 			if @new_order_form.content[index.to_i]["type"] == "image"
@@ -52,9 +42,6 @@ class OrderFormsController < ApplicationController
     end
   end
 
-
-  # DELETE /order_forms/1
-  # DELETE /order_forms/1.json
   def destroy
     @order_form.destroy
     respond_to do |format|
@@ -64,19 +51,8 @@ class OrderFormsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_order_form
-      @order_form = OrderForm.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def order_form_params_permitted
-      [:content, :file]
-    end
-	def correct_user_or_admin
-		unless current_user_or_admin?(@order_form.user)
-		  flash[:danger] = "Access Denied"
-		  redirect_to(root_url)
-		end
-	end
+  def order_form_params_permitted
+    [:content, :file]
+  end
 end

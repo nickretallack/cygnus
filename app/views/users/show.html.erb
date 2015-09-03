@@ -1,14 +1,7 @@
 <% provide(:header, @user.name) %>
 
 <%= form_for @user, method: :patch, url: user_path(@user) do |f| %>
-	<div class = "row">
-		<%= render "galleries", user: @user %>
-		<% if can_modify? @user %>
-			<%= f.text_field :gallery, placeholder: "Offsite Gallery" %><br />
-		<% elsif !@user.gallery.blank? %>
-			<blockquote class = "inline"><%= link_to @user.gallery, url_with_protocol(@user.gallery) %></blockquote>
-		<% end %>
-	</div>
+	
 	<div class="row">
 		<% if can_modify? @user %>
 			<div class = "col s12 m3">
@@ -38,7 +31,17 @@
 			</div>
 		<% end %>
 		<div class = "col s12 m6 l5">
-			<%= statuses @user %>
+			<div class = "row">
+				<%= statuses @user %>
+			</div>
+			<div class = "row">
+				<%= render "links", user: @user %>
+				<% if can_modify? @user %>
+					<%= f.text_field :gallery, placeholder: "Offsite Gallery" %><br />
+				<% elsif !@user.gallery.blank? %>
+					<blockquote class = "inline link"><%= link_to @user.gallery, url_with_protocol(@user.gallery) %></blockquote>
+				<% end %>
+			</div>
 		</div>
 	</div>
 	<div class = "row">

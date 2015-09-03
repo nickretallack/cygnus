@@ -1,12 +1,12 @@
 class User < ActiveRecord::Base
   custom_slug :name, case_insensitive: true
   has_secure_password
-  scope :ci_find, lambda { |attribute, value| where("lower(#{attribute}) = ?", value.downcase).first }
   attr_accessor  :activation_token, :reset_token
   has_many :pools
   has_many :kanban_lists
   has_many :messages
   has_many :comments
+  has_many :order_forms
   belongs_to :upload, foreign_key: :avatar
   before_create :create_activation_digest
  

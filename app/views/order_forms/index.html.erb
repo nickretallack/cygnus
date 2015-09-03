@@ -15,7 +15,6 @@
         <td><%= order_form.content %></td>
         <td><%= order_form.user_id %></td>
         <td><%= link_to 'Show', order_form_path(@user, order_form) %></td>
-        <td><%= link_to 'Edit', edit_order_form_path(@user, order_form) %></td>
         <td><%= link_to 'Destroy', order_form_path(@user, order_form), method: :delete, content: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>

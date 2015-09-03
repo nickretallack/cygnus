@@ -1,12 +1,10 @@
 <% provide(:header, link_to(@pool.user.name, @pool.user)+"'s "+@pool.title) unless User.where(id: @pool.user_id).empty? %>
 
-<p id="notice"><%= notice %></p>
-
 <% if can_modify? @pool.user %>
   <%= form_for Submission.new do |f| %>
     <div class = "row">
       <div class = "col s12 m6">
-        <%= f.text_field :title, placeholder: "Title for New Gallery Submission" %>
+        <%= f.text_field :title, placeholder: "Title for New #{@pool.title} Submission" %>
         <div class = "input-field">
           <%= f.check_box :adult %><%= f.label :adult %>
         </div>

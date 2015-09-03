@@ -306,6 +306,12 @@ span:not(.console-cursor)
 img
   display: block
   max-width: 100%
+  max-height: 100%
+
+h5
+  line-height: 145%
+  a:hover
+    font-size: 100%
 
 .btn:hover
   font-size: 110%
@@ -319,9 +325,14 @@ form
   display: table
   margin: 0 auto
   width: 100%
+  row
+    height: 398px
+    col
+      height: 100%
 
 .material-icons
   vertical-align: middle
+  cursor: default
 
 .reverse
   transform: scaleX(-1)
@@ -345,14 +356,27 @@ blockquote
 
 blockquote.inline
   text-align: left !important
-  max-height: 7rem
+  max-height: 3.6rem
   padding-right: 8px
-  overflow: auto
+  overflow-x: hidden
+  overflow-y: auto
   margin-bottom: 0
   a
     font-size: 140%
   a:hover
     font-size: 180% !important
+
+blockquote.link
+  height: 2rem
+  margin-top: 15px
+  padding-top: 3px
+  overflow: hidden
+  a
+    position: relative
+    top: 0
+    vertical-align: text-top
+  a:hover
+    top: -5px
 
 .file-field
   display: table
@@ -434,6 +458,7 @@ header
   .separator
     height: $separator-height
     background: linear-gradient(to bottom, $background-color, $background-color-transparent)
+    pointer-events: none
   form
     background-color: $header-form-background-color
     width: 60%
@@ -469,7 +494,6 @@ div#main
     padding: 0
   img
     +block-centered
-    max-height: 300px
 
 .gallery
   text-align: center

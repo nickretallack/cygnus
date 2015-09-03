@@ -12,11 +12,10 @@
         </div>
       </div>
       <div class = "col s12 m6 l6">
-        <%= render "watch", user: user %>
-        <%= render "galleries", user: user %>
-        <blockquote class = "inline"><%= message_for price: user.price %></blockquote>
+        <%= render "links", user: user %>
       </div>
         <div class = "col s12 m6 l12">
+          <blockquote class = "inline"><%= message_for price: user.price %></blockquote>
           <blockquote class = "inline"><%= message_for tags: user.tags %></blockquote>
         </div>
     </div>

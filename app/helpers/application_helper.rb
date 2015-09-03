@@ -17,6 +17,10 @@ module ApplicationHelper
     user == current_user
   end
 
+  def not_found
+    raise ActionController::RoutingError.new("Not Found")
+  end
+
   def format_flash(message, key)
     suffix = ""
     case key.to_sym
@@ -124,5 +128,9 @@ module ApplicationHelper
     else
       value.title
     end
+  end
+
+  def sanitize_title(content)
+    content.gsub("&#39;", "'").gsub(/<.*>(?=\w+)|<.+>/, "").titleize
   end
 end

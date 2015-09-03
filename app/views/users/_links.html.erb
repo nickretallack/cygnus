@@ -1,0 +1,11 @@
+<% if can_watch? user %>
+    <% if watching? user %>
+      <blockquote class = "inline success link truncate"><%= link_to "Watch #{user.name}", watch_user_path(user) %></blockquote>
+    <% else %>
+      <blockquote class = "inline danger link truncate"><%= link_to "Unwatch #{user.name}", watch_user_path(user) %></blockquote>
+    <% end %>
+<% end %>
+<% if user.pools.first %>
+  <blockquote class = "inline link"><%= link_to "Gallery", gallery_path(user) %><%= link_to "(ies)", pools_path(user) %></blockquote>
+<% end %>
+<blockquote class = "inline link"><%= link_to "Workboard", workboard_path(user.name) %></blockquote>

@@ -1,15 +1,15 @@
-<% provide :header, @user.name+"'s workboard" %>
+<% provide :header, link_to(@user.name, user_path(@user))+"'s workboard" %>
 
 <% if can_modify? @user %>
   <%= form_for KanbanList.new, url: new_list_path do |f| %>
-    <%= f.text_field :title, placeholder: "Title" %>
-    <%= f.submit "New List", class: "submit" %>
+    <%= f.text_field :title, placeholder: "Title for new worklist" %>
+    <%= f.submit "Create Worklist" %>
   <% end %>
   <hr />
 <% end %>
 
 <div class = "row">
-  <% enum_for workcards: @kanban_lists do |l| %>
+  <% enum_for worklists: @kanban_lists do |l| %>
     <div class="col s12 l4">
       <div class = "card" >
         <div class = "card-content">

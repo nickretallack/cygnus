@@ -4,7 +4,7 @@ module ActiveRecordExtensions
   class_methods do
     def custom_slug(slug, case_insensitive: false)
       self.redefine_method :to_param do
-        self.send(slug).parameterize
+        self.send(slug)
       end
       self.instance_variable_set "@slug", slug
       self.instance_variable_set "@case_insensitive", case_insensitive
