@@ -109,6 +109,17 @@
     width: 601px
   .m12
     text-align: center
+  .fh
+    height: 12rem !important
+
+//above small
+@media only screen and (min-width: 601px)
+  .comment
+    height: 12rem
+    .col.hc
+      height: inherit
+  .col .thumbnail
+    +vertical-center
 
 //below medium
 @media only screen and (max-width: 600px)
@@ -130,7 +141,7 @@
     margin-top: 0 !important
     text-align: center
     width: 100% !important
-    *:not(.row):not(i):not(input):not(.thumbnail):not(.vdiv):not(a):not(span)
+    *:not(.row):not(i):not(input):not(.thumbnail):not(.vdiv):not(a):not(span):not(blockquote)
       +block-centered
       width: 100%
 
@@ -138,6 +149,14 @@
 html
   font-family: "Blogger"
   background-color: $background-color
+
+h1, h2, h3, h4, h5, h6
+  margin: 0
+
+h5
+  line-height: 220%
+  a:hover
+    font-size: 100%
 
 select
   display: block
@@ -230,18 +249,14 @@ input:not([type = "submit"]), textarea
   float: none
 
 .header
-  margin-bottom: 10px !important
+  margin-bottom: 10px
+  margin-top: 30px
   a
     color: inherit
 
 .comment
   box-shadow: 0px 3px 15px #488E8E
   margin: 12px 0 !important
-  .col.s6
-    margin-top: -11.5px
-  h5
-    line-height: 120%
-    //margin: .4rem 0
   blockquote
     margin-top: 0 !important
 
@@ -312,12 +327,7 @@ img
 
 .limit-height
   *
-    max-height: 500px
-
-h5
-  line-height: 145%
-  a:hover
-    font-size: 100%
+    max-height: 500px  
 
 .btn:hover
   font-size: 110%
@@ -372,8 +382,11 @@ blockquote.inline
   a:hover
     font-size: 180% !important
 
+blockquote[class = "inline"]
+  margin-left: 5px
+
 blockquote.link
-  height: 2rem
+  height: 2.32rem
   margin-top: 15px
   padding-top: 3px
   overflow: hidden
@@ -399,6 +412,10 @@ footer
 //cards
 .card
   box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 15px 30px 0 rgba(0, 0, 0, 0.12)
+  .thumbnail
+    position: inherit
+    top: auto
+    transform: none
   h5
     text-align: center
   .card
@@ -514,7 +531,6 @@ div#main
 
 .thumbnail
   +block-centered
-  margin-top: 6%
   width: calc(#{$thumb-size} + 8px)
   height: calc(#{$thumb-size} + 8px)
   border: 4px dashed black
@@ -632,6 +648,14 @@ input:focus:-ms-input-placeholder
   *
     +block-centered
     display: block
+
+.fh
+  height: 10rem
+  a
+    display: inherit
+    height: inherit
+  div
+    +vertical-center
 
 .fl
   +float-left
