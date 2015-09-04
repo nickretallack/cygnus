@@ -1,23 +1,15 @@
 <% provide :header, @submission.title %>
 
 <div class = "row hc">
+  <span>
+    <%= link_to "Pool", pool_path(@submission.pool.id) %>
+    <div class = "vdiv"></div>
+    <%= link_to "Download", download_path(@submission.file_id) %>
+  </span>
+</div>
+<div class = "row hc limit-height">
   <%= image_for :full, @submission.file_id %>
 </div>
-
-<div class = "row hc">
-  <%= link_to "Pool", pool_path(@submission.pool.id) %>
-</div>
-
-<% enum_for comments: @comments do |comment| %>
-  <%= content_tag :div, class: "row comment", id: comment.id do %>
-    <div class = "col">
-      <%= avatar_for comment.user %>
-    </div>
-    <div class = "col">
-      <h4><%= comment.user.name %></h4>
-      <blockquote class = "inline"><%= comment.content %></blockquote>
-    </div>
-  <% end %>
-<% end %>
-
-<%= render template: "comments/new", to: @submission.id, from: current_user.name %>
+<%= render template: "comments/index" %>
+<hr />
+<%= render template: "comments/new", to: @submission.id %>

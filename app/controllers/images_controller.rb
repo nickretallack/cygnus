@@ -1,9 +1,11 @@
 class ImagesController < ApplicationController
-  def show
+  before_filter do
     @image ||= Upload.find(params[:id]) || Upload.new
 
     expires_in CONFIG[:image_shelf_life], public: true
+  end
 
+  def show
     type = params[:type].to_sym
 
     case type
@@ -21,8 +23,10 @@ class ImagesController < ApplicationController
       end
     end
 
-    if stale? etag: @image, last_modified: @image.updated_at
-      send_file file || File.join(CONFIG[:image_path], CONFIG["image_not_found#{suffix}".to_sym]), disposition: :inline
-    end
+    send_file file || File.join(CONFIG[:image_path], CONFIG["image_not_found#{suffix}".to_sym]), disposition: :inline if stale? etag: @image, last_modified: @image.updated_at
+  end
+
+  def download
+    send_file @image.file.url || not_found, disposition: :attachment if stale? etag: @image, last_modified: @image.updated_at
   end
 end

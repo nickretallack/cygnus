@@ -1,0 +1,12 @@
+<%= content_tag :div, class: "row comment", id: comment.id do %>
+  <div class = "col s6 m4 l3">
+    <%= avatar_for comment.user %>
+  </div>
+  <div class = "col s6 m8 l9">
+    <h5 class = "truncate"><%= comment.user.name %></h5>
+    <blockquote class = "inline link"><%= link_to "Reply" %></blockquote>
+  </div>
+  <div class = "col s12 m8 l9">
+    <blockquote class = "inline"><%= comment.content %></blockquote>
+  </div>
+<% end %>

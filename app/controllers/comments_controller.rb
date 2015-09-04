@@ -3,8 +3,11 @@ class CommentsController < ApplicationController
   before_filter -> { insist_on :permission, @comment.user }, only: [:update, :destroy]
 
   def create
+    @new_comment.user_id = current_user.id
+    @new_comment.submission_id = params[:submission_id]
+    @new_comment.recipient_id = User.find(params[:recipient_id])
     if @new_comment.save
-      redirect_to @new_comment.submission, anchor: @new_comment.id
+      redirect_to :back
     else
       back_with_errors
     end
@@ -13,29 +16,28 @@ class CommentsController < ApplicationController
   def update
     respond_to do |format|
       if @comment.update(comment_params)
-        format.html { redirect_to @comment, notice: 'Comment was successfully updated.' }
-        format.json { render :show, status: :ok, location: @comment }
+
       else
-        format.html { render :edit }
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
       end
     end
   end
 
+  def index
+    @comments = @submission.nil?? User.find(params[User.slug]).messages : @submission.comments
+  end
+
+  def show
+
+  end
+
   def destroy
     @comment.destroy
-    respond_to do |format|
-      format.html { redirect_to comments_url, notice: 'Comment was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to :back
   end
 
   private
-    def set_comment
-      @comment = Comment.find(params[:id])
-    end
 
-    def comment_params_permitted
-      [:content, :user_id, :submission_id]
-    end
+  def comment_params_permitted
+    [:content]
+  end
 end

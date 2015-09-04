@@ -1,11 +1,20 @@
-<% if can_watch? user %>
+<div class = "col s6">
+  <% if can_watch? user %>
     <% if watching? user %>
-      <blockquote class = "inline success link truncate"><%= link_to "Watch #{user.name}", watch_user_path(user) %></blockquote>
+      <blockquote class = "inline success link truncate"><%= link_to "Watch", watch_user_path(user) %></blockquote>
     <% else %>
-      <blockquote class = "inline danger link truncate"><%= link_to "Unwatch #{user.name}", watch_user_path(user) %></blockquote>
+      <blockquote class = "inline danger link truncate"><%= link_to "Unwatch", watch_user_path(user) %></blockquote>
     <% end %>
-<% end %>
-<% if user.pools.first %>
-  <blockquote class = "inline link"><%= link_to "Gallery", gallery_path(user) %><%= link_to "(ies)", pools_path(user) %></blockquote>
-<% end %>
-<blockquote class = "inline link"><%= link_to "Workboard", workboard_path(user.name) %></blockquote>
+  <% else %>
+    <blockquote class = "inline link"><%= link_to "Profile", user_path(user) %></blockquote>  
+  <% end %>
+  <% if user.pools.any? %>
+    <blockquote class = "inline link"><%= link_to "Gallery", gallery_path(user) %><%= link_to "(ies)", pools_path(user) %></blockquote>
+  <% end %>
+  <blockquote class = "inline link"><%= link_to "Workboard", workboard_path(user.name) %></blockquote>
+</div>
+<div class = "col s6">
+  <blockquote class = "inline link"><%= link_to "PM" %></blockquote>
+  <blockquote class = "inline link"><%= link_to "Order Work" %></blockquote>
+  <blockquote class = "inline link"><%= link_to "Activity" %></blockquote>
+</div>

@@ -1,8 +1,6 @@
 <% unless anon? %>
-  <% to ||= current_user.name %>
-  <% from ||= current_user.name %>
   <div class = "row">
-    <%= form_for Comment.new, url: comments_path(from) do |f| %>
+    <%= form_for Comment.new, url: @submission.nil?? messages_path(to) : comments_path(@submission.id) do |f| %>
       <%= f.text_area :content %>
       <%= f.submit "Post as #{current_user.name}" %>
     <% end %>

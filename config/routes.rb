@@ -20,12 +20,12 @@ Rails.application.routes.draw do
 
   get ":#{User.slug}/gallery", to: "pools#show", as: :gallery
   get "image/:type(/:id)", to: "images#show", as: :image
+  get "download/:id", to: "images#download", as: :download
 
   get "(:#{User.slug})/pools" => "pools#index" , as: :pools
   resources :pools, only: [:create, :update, :destroy, :show]
   resources :submissions
 
-  get ":#{User.slug}/messages", to: "messages#index", as: :messages
   post "message/:to/:from", to: "messages#create", as: :post_message
 
   post ":#{User.slug}/avatar" => "images#create", as: :new_avatar
@@ -36,11 +36,26 @@ Rails.application.routes.draw do
   patch ":#{User.slug}/workboard/:kanban_list_id/cards/:kanban_card_id" => "kanban_cards#update", as: :card
   delete ":#{User.slug}/workboard/:kanban_list_id/cards/:kanban_card_id" => "kanban_cards#destroy", as: :destroy_card
 
+  scope path: ":#{User.slug}" do
+    controller :comments do
+      resources :comments, except: [:index, :create, :edit], path: "messages", as: :messages
+      scope path: "(:recipient)" do
+        resources :comments, only: [:index], path: "messages", as: :messages
+      end
+      scope path: ":recipient" do
+        resources :comments, only: [:create], path: "messages", as: :messages
+      end
+    end
+  end
+
+  scope path: "submission/:submission_#{Submission.slug}" do
+    resources :comments, except: [:edit]
+  end
+
   resources :users, except: [:new, :edit], param: User.slug, path: "" do
     member do
       get :watch
       get "/activate/:activation" => "users#activate", as: :activate
-      resources :comments, only: [:show, :create, :destroy]
       resources :order_forms
     end
   end

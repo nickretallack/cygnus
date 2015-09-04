@@ -129,6 +129,7 @@
   .col
     margin-top: 0 !important
     text-align: center
+    width: 100% !important
     *:not(.row):not(i):not(input):not(.thumbnail):not(.vdiv):not(a):not(span)
       +block-centered
       width: 100%
@@ -233,10 +234,23 @@ input:not([type = "submit"]), textarea
   a
     color: inherit
 
+.comment
+  box-shadow: 0px 3px 15px #488E8E
+  margin: 12px 0 !important
+  .col.s6
+    margin-top: -11.5px
+  h5
+    line-height: 120%
+    //margin: .4rem 0
+  blockquote
+    margin-top: 0 !important
+
 span:not(.console-cursor)
   display: table
   *
     +float-left
+  a:hover
+    font-size: 100%
 
 .input-field
   margin-top: 10px
@@ -295,6 +309,10 @@ img
   display: block
   max-width: 100%
   max-height: 100%
+
+.limit-height
+  *
+    max-height: 500px
 
 h5
   line-height: 145%
