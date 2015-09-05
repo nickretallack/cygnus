@@ -37,19 +37,19 @@ Rails.application.routes.draw do
   delete ":#{User.slug}/workboard/:kanban_list_id/cards/:kanban_card_id" => "kanban_cards#destroy", as: :destroy_card
 
   scope path: ":#{User.slug}" do
-    controller :comments do
-      resources :comments, except: [:index, :create, :edit], path: "messages", as: :messages
+    controller :messages do
       scope path: "(:recipient)" do
-        resources :comments, only: [:index], path: "messages", as: :messages
+        resources :messages, only: [:index]
       end
       scope path: ":recipient" do
-        resources :comments, only: [:create], path: "messages", as: :messages
+        resources :messages, only: [:create]
       end
+      resources :messages, except: [:index, :create, :edit]
     end
   end
 
   scope path: "submission/:submission_#{Submission.slug}" do
-    resources :comments, except: [:edit]
+    resources :messages, except: [:edit], path: "comments", as: :comments
   end
 
   resources :users, except: [:new, :edit], param: User.slug, path: "" do

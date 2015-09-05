@@ -10,6 +10,6 @@
 <div class = "row hc limit-height">
   <%= image_for :full, @submission.file_id %>
 </div>
-<%= render template: "comments/index" %>
+<%= render "messages/index_comments", comments: @submission.comments %>
 <hr />
-<%= render template: "comments/new", to: @submission.id %>
+<%= render "messages/new_comment" %>

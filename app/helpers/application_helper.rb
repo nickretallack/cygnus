@@ -127,6 +127,6 @@ module ApplicationHelper
   end
 
   def sanitize_title(content)
-    content.gsub("&#39;", "'").gsub(/<.*>(?=\w+)|<.+>/, "").titleize
+    sanitize(content, tags: []).gsub("&#39;", "'").titleize
   end
 end

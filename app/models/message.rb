@@ -1,8 +1,8 @@
-class Comment < ActiveRecord::Base
+class Message < ActiveRecord::Base
   belongs_to :submission
   belongs_to :user
-  belongs_to :comment
-  has_many :comments
+  belongs_to :message
+  has_many :messages
 
   validates :content, format: { with: /\S+/, message: "must have some content." }
 end

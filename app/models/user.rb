@@ -4,7 +4,11 @@ class User < ActiveRecord::Base
   attr_accessor  :activation_token, :reset_token
   has_many :pools
   has_many :kanban_lists
-  has_many :messages, class_name: "Comment", foreign_key: "recipient_id"
+  has_many :messages, foreign_key: :recipient_id
+  has_many :comments_recieved, -> { where("messages.submission_id IS NOT NULL") }, class_name: "Message", foreign_key: :recipient_id
+  has_many :comments_made, -> { where("messages.submission_id IS NOT NULL") }, class_name: "Message"
+  has_many :pms_received, -> { where(submission_id: nil) }, class_name: "Message", foreign_key: :recipient_id
+  has_many :pms_sent, -> { where(submission_id: nil) }, class_name: "Message"
   has_many :order_forms
   belongs_to :upload, foreign_key: :avatar
   before_create :create_activation_digest

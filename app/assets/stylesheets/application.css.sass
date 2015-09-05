@@ -132,6 +132,13 @@
 @media only screen and (min-width: 364px) and (max-width: 600px)
   .widthTester
     width: 363px
+  .comment
+    .col.hc
+      height: 200px
+      .thumbnail
+        +vertical-center
+    .col.s3
+      width: 100%
 
 //very small
 @media only screen and (max-width: 363px)
@@ -260,12 +267,21 @@ input:not([type = "submit"]), textarea
   blockquote
     margin-top: 0 !important
 
-span:not(.console-cursor)
+.message
+  margin: 10px 0 !important
+  padding: 0 5px
+  outline: 2px solid green
+
+span:not(.inline)
   display: table
   *
     +float-left
   a:hover
     font-size: 100%
+
+.console
+  *
+    display: inline !important
 
 .input-field
   margin-top: 10px

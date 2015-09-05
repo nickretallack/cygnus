@@ -10,6 +10,7 @@ class SubmissionsController < ApplicationController
     @new_submission.file_id = Upload.render(params[:submission][:picture], @new_submission.adult)
     @new_submission.title = "Untitled" if @new_submission.title.blank?
     if @new_submission.save
+      activity_message(:new_submission, @new_submission)
       redirect_to :back
     else
       back_with_errors

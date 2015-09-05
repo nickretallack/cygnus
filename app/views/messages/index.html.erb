@@ -1,0 +1,7 @@
+<% provide :header, link_to(@user.name, user_path(@user))+"'s Activity" %>
+
+<% enum_for messages: current_user.messages do |message| %>
+  <div class = "row message">
+    <%= format_message(message) %>
+  </div>
+<% end %>

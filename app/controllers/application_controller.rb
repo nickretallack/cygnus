@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   include ApplicationHelper
+  include MessagesHelper
   before_filter :setter
 
   def setter(referer_params = nil)
