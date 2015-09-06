@@ -1,11 +1,15 @@
 class MessagesController < ApplicationController
-  before_filter -> { insist_on :logged_in }, only: [:create]
+  before_filter -> { insist_on :logged_in }, only: [:new, :create]
   before_filter -> { insist_on :permission, @message.user }, only: [:update, :destroy]
+  before_filter only: [:inbox, :outbox] do
+    @user = User.find(params[User.slug])
+    insist_on :permission, @user
+  end
 
   def create
     @new_message.user_id = current_user.id
     @new_message.submission_id = params[:submission_id]
-    @new_message.recipient_id = User.find(params[:recipient_id])
+    @new_message.recipient_id = User.find(params[:recipient]).id
     if @new_message.save
       redirect_to :back
     else
@@ -27,18 +31,30 @@ class MessagesController < ApplicationController
     @messages = @user.messages
   end
 
-  def show
-
-  end
-
   def destroy
     @message.destroy
     redirect_to :back
   end
 
+  def inbox
+    @recipient = params[:recipient]
+    @pms = current_user.pms_received
+    @header = "Inbox"
+    @box_link = view_context.link_to "Switch to Outbox", outbox_path(@user.name, @recipient)
+    render "index_pms"
+  end
+
+  def outbox
+    @recipient = params[:recipient]
+    @pms = current_user.pms_sent
+    @header = "Outbox"
+    @box_link = view_context.link_to "Switch to Inbox", inbox_path(@user.name, @recipient)
+    render "index_pms"
+  end
+
   private
 
   def message_params_permitted
-    [:content]
+    [:subject, :content]
   end
 end

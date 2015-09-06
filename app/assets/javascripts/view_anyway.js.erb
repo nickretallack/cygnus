@@ -1,0 +1,47 @@
+readyFunctions.push(function(){
+  var images = $(".adult");
+
+  $.each(images, function(index, image){
+    var container = $(image).parent(),
+        cover = $("<div />", {
+          class: "cover"
+        }).append($("<span />", {
+          text: "View Anyway"
+        }).addClass("vc").css({
+          cursor: "default"
+        }));
+    container.on("mouseenter", function(){
+      container.append(cover.css({
+        backgroundColor: "rgba(47, 79, 79, .8)",
+        height: "100%",
+        width: "100%",
+        position: "absolute",
+        color: "#D2FFC7",
+        textShadow: "0px 0px 35px black",
+      }));
+      if(!container.hasClass("thumbnail")){
+        cover.css({
+          top: 0
+        });
+        cover.children("span").css({
+          width: "100%",
+          textAlign: "center",
+          fontSize: container.width()/10
+        });
+      }
+    });
+    container.mouseleave(function(){
+      cover.detach();
+    }).on("click", function(event){
+      pauseEvent(event);
+      if(container.hasClass("thumbnail")){
+        $(image).replaceWith("<img src='/image/thumb/"+$(image).attr("id")+"'></img>");
+      }else{
+        $(image).replaceWith("<img src='/image/full/"+$(image).attr("id")+"'></img>");
+      }
+      $(this).trigger("mouseleave").off("mouseenter").off("click");
+    });
+  });
+
+  
+});

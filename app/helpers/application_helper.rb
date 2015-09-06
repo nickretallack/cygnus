@@ -96,12 +96,11 @@ module ApplicationHelper
     end
   end
 
-  def enum_for(*args)
-    key, value = args.first.first
-    if value.empty?
-      concat "No #{key}."
+  def enum_for(collection)
+    if collection.empty?
+      concat "Nothing here."
     else
-      value.each do |item|
+      collection.each do |item|
         yield item
       end
     end

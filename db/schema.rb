@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150905090235) do
+ActiveRecord::Schema.define(version: 20150906124809) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 20150905090235) do
     t.integer  "submission_id"
     t.integer  "recipient_id"
     t.integer  "message_id"
+    t.string   "subject"
   end
 
   create_table "order_forms", force: :cascade do |t|

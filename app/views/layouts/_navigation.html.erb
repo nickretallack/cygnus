@@ -34,11 +34,6 @@
       <%= link_to image_for(:logo_thumb), root_path, class: "brand-logo" %>
       <ul class = "right hide-on-med-and-down">
         <li>
-          <div class = "vc">
-            <%= render "users/messages" %>
-          </div>
-        </li>
-        <li>
           <a class = "dropdown-button" data-activates = "nav-menu">
             <div class = "vc">
               <%= current_user.name %>
@@ -58,7 +53,6 @@
     <%= render "users/member_menu" %>
   </ul>
   <ul class = "side-nav" id = "mobile-nav-menu">
-    <li><%= render "users/messages" %></li>
     <%= render "users/member_menu" %>
   </ul>
 <% end %>

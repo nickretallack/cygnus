@@ -26,8 +26,6 @@ Rails.application.routes.draw do
   resources :pools, only: [:create, :update, :destroy, :show]
   resources :submissions
 
-  post "message/:to/:from", to: "messages#create", as: :post_message
-
   post ":#{User.slug}/avatar" => "images#create", as: :new_avatar
   get ":#{User.slug}/workboard" => "kanban_lists#index", as: :workboard
   post ":#{User.slug}/workboard" => "kanban_lists#create", as: :new_list
@@ -38,18 +36,20 @@ Rails.application.routes.draw do
 
   scope path: ":#{User.slug}" do
     controller :messages do
+      resources :messages, only: [:index]
       scope path: "(:recipient)" do
-        resources :messages, only: [:index]
+        get :inbox, as: :inbox
+        get :outbox, as: :outbox
       end
       scope path: ":recipient" do
-        resources :messages, only: [:create]
+        resources :messages, only: [:create], path: "pms", as: :pms
       end
-      resources :messages, except: [:index, :create, :edit]
+      resources :messages, only: [:destroy], path: "pms", as: :pms
     end
   end
 
   scope path: "submission/:submission_#{Submission.slug}" do
-    resources :messages, except: [:edit], path: "comments", as: :comments
+    resources :messages, except: [:new, :edit, :show], path: "comments", as: :comments
   end
 
   resources :users, except: [:new, :edit], param: User.slug, path: "" do

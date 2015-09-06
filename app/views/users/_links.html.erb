@@ -6,7 +6,11 @@
       <blockquote class = "inline danger link truncate"><%= link_to "Unwatch", watch_user_path(user) %></blockquote>
     <% end %>
   <% else %>
-    <blockquote class = "inline link"><%= link_to "Profile", user_path(user) %></blockquote>  
+    <% if anon? %>
+      <blockquote class = "inline link"><%= link_to "Profile", user_path(user) %></blockquote>
+    <% else %>
+      <blockquote class = "inline link"><%= link_to "Financial" %></blockquote>
+    <% end %>
   <% end %>
   <% if user.pools.any? %>
     <blockquote class = "inline link"><%= link_to "Gallery", gallery_path(user) %><%= link_to "(ies)", pools_path(user) %></blockquote>
@@ -14,7 +18,11 @@
   <blockquote class = "inline link"><%= link_to "Workboard", workboard_path(user.name) %></blockquote>
 </div>
 <div class = "col s6">
-  <blockquote class = "inline link"><%= link_to "PM" %></blockquote>
+  <% if current_user? user %>
+    <blockquote class = "inline link"><%= link_to "PMs", inbox_path(current_user.name) %></blockquote>
+  <% else %>
+    <blockquote class = "inline link"><%= link_to "PM", inbox_path(current_user.name, user.name) %></blockquote>
+  <% end %>
   <blockquote class = "inline link"><%= link_to "Order Work" %></blockquote>
-  <blockquote class = "inline link"><%= link_to "Activity" %></blockquote>
+  <blockquote class = "inline link"><%= link_to "Activity", messages_path(user) %></blockquote>
 </div>

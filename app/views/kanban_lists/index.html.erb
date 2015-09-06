@@ -1,15 +1,17 @@
 <% provide :header, link_to(@user.name, user_path(@user))+"'s workboard" %>
 
 <% if can_modify? @user %>
-  <%= form_for KanbanList.new, url: new_list_path do |f| %>
-    <%= f.text_field :title, placeholder: "Title for new worklist" %>
-    <%= f.submit "Create Worklist" %>
-  <% end %>
+  <div class = "row new">
+    <%= form_for KanbanList.new, url: new_list_path do |f| %>
+      <%= f.text_field :title, placeholder: "Title for new worklist" %>
+      <%= f.submit "Create Worklist" %>
+    <% end %>
+  </div>
   <hr />
 <% end %>
 
 <div class = "row">
-  <% enum_for worklists: @kanban_lists do |l| %>
+  <% enum_for @kanban_lists do |l| %>
     <div class="col s12 l4">
       <div class = "card" >
         <div class = "card-content">
@@ -39,7 +41,7 @@
               </div>
             </div>
           <% end %>
-          <% enum_for cards: l.cards do |cid| %>
+          <% enum_for l.cards do |cid| %>
           <% c = KanbanCard.find(cid) %>
             <div class = "card kanban-card" id = <%= cid %> >
               <div class = "card-content">

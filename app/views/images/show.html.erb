@@ -9,7 +9,7 @@
 
 <% if @image.enabled? %>
   <% if @image.explicit? and not current_user.view_adult? %>
-    <% html = image_tag(image_path("image_adult#{suffix}".to_sym)) %>
+    <% html = image_tag(image_path("image_adult#{suffix}".to_sym), id: id, class: "adult") %>
   <% else %>
     <% html = image_tag(image_path(type, id: id)) %>
   <% end %>

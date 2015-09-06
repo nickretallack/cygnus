@@ -23,7 +23,7 @@
   </thead>
 
   <tbody>
-    <% enum_for(pools: @pools) do |pool| %>
+    <% enum_for @pools do |pool| %>
       <tr>
         <td><%= link_to pool.title, pool %></td>
         <td><%= pool.user.name %></td>

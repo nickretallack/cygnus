@@ -1,5 +1,10 @@
-<li><%= link_to "Galleries", pools_path(current_user) %></li>
-<li><%= link_to "Order Forms", order_forms_path(current_user) %></li>
+<li><%= link_to "Messages", messages_path(current_user.name) %></li>
+<li><%= link_to "PMs", inbox_path(current_user.name) %></li>
+<li><%= link_to "Financial" %></li>
+<li><%= link_to "Orders", order_forms_path(current_user) %></li>
+<hr />
+<li><%= link_to current_user.pools.first.title, gallery_path(current_user) if current_user.pools.any? %></li>
+<li><%= link_to "Pools", pools_path(current_user) %></li>
 <li><%= link_to "Workboard", workboard_path(current_user) %></li>
 <hr />
 <li><%= link_to "Profile", user_path(current_user) %></li>
