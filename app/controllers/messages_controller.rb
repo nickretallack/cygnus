@@ -9,7 +9,14 @@ class MessagesController < ApplicationController
   def create
     @new_message.user_id = current_user.id
     @new_message.submission_id = params[:submission_id]
-    @new_message.recipient_id = User.find(params[:recipient]).id
+    @new_message.recipient_id = ->(params) {
+      if params[:recipient]
+        User.find(params[:recipient]).id
+      else
+        params[:message][:recipient_id]
+      end
+    }.call(params)
+    @new_message.content = view_context.sanitize(params[:message][:content])
     if @new_message.save
       redirect_to :back
     else
@@ -52,9 +59,17 @@ class MessagesController < ApplicationController
     render "index_pms"
   end
 
+  def new
+    @submission = Submission.find(params[:submission_id])
+    @recipient = Message.find(params[:recipient_id]).user
+    respond_to do |format|
+      format.js
+    end
+  end
+
   private
 
   def message_params_permitted
-    [:subject, :content]
+    [:subject, :content, :recipient_id]
   end
 end

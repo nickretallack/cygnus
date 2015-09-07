@@ -96,9 +96,13 @@ module ApplicationHelper
     end
   end
 
-  def enum_for(collection)
+  def enum_for(collection, word = nil)
     if collection.empty?
-      concat "Nothing here."
+      if word.nil?
+        concat "Nothing here."
+      else
+        concat "No #{word} yet."
+      end
     else
       collection.each do |item|
         yield item

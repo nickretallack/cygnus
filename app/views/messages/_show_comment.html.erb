@@ -1,11 +1,12 @@
-<div class = "row comment" id = <%= comment.id %> >
+<% indent ||= 0 %>
+<div class = "row comment indent-<%= indent %>" id = <%= comment.id %> >
   <div class = "col s6 m4 l3 hc">
     <%= avatar_for comment.user %>
   </div>
   <div class = "col s6 m8 l9">
     <h5 class = "truncate"><%= comment.user.name %></h5>
     <div class = "col s3">
-      <blockquote class = "inline link"><%= link_to "Reply" %></blockquote>
+      <blockquote class = "inline link"><%= link_to "Reply", new_comment_path(comment.submission.id, comment.id), remote: true, class: "reply" %></blockquote>
     </div>
     <div class = "col s3">
       <blockquote class = "inline link"><%= link_to "Expand" %></blockquote>
@@ -18,6 +19,9 @@
     </div>
   </div>
   <div class = "col s12 m8 l9">
-    <blockquote class = "inline"><%= comment.content %></blockquote>
+    <blockquote class = "inline"><%= render_markdown comment.content %></blockquote>
   </div>
 </div>
+<% comment.replies.each do |reply| %>
+  <%= render "messages/show_comment", comment: reply, indent: indent+1 %>
+<% end %>

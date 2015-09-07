@@ -50,6 +50,7 @@ Rails.application.routes.draw do
 
   scope path: "submission/:submission_#{Submission.slug}" do
     resources :messages, except: [:new, :edit, :show], path: "comments", as: :comments
+    resources :messages, only: [:new], path: "reply/:recipient_id", as: :comments
   end
 
   resources :users, except: [:new, :edit], param: User.slug, path: "" do

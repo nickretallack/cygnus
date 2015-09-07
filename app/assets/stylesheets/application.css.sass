@@ -105,7 +105,7 @@
     margin-top: 0 !important
 
 //medium
-@media only screen and (min-width: 601px) and (max-width: 992px)
+@media only screen and (min-width: 761px) and (max-width: 992px)
   .widthTester
     width: 601px
   .m12
@@ -114,32 +114,33 @@
     height: 12rem !important
 
 //above small
-@media only screen and (min-width: 601px)
-  .comment
-    height: 12rem
-    .col.hc
-      height: inherit
-  .col .thumbnail
-    +vertical-center
+@media only screen and (min-width: 761px)
 
 //below medium
-@media only screen and (max-width: 600px)
+@media only screen and (max-width: 760px)
   .btn
     width: 100%
   span
     +block-centered
 
 //small
-@media only screen and (min-width: 364px) and (max-width: 600px)
+@media only screen and (min-width: 364px) and (max-width: 760px)
   .widthTester
     width: 363px
   .comment
-    .col.hc
-      height: 200px
-      .thumbnail
-        +vertical-center
+    .col.s6
+      +block-centered
+      blockquote
+        text-align: center
+        border: none
     .col.s3
       width: 100%
+    .hc
+      margin-top: 6%
+  .m12
+    text-align: center
+  .fh
+    height: 12rem !important
 
 //very small
 @media only screen and (max-width: 363px)
@@ -269,9 +270,21 @@ input:not([type = "submit"]), textarea
 
 .comment
   box-shadow: 0px 3px 15px #488E8E
-  margin: 12px 0 !important
-  blockquote
+  margin-top: 6px !important
+  margin-bottom: 6px !important
+  width: 75%
+  margin-left: 25% !important
+  blockquote.inline
     margin-top: 0 !important
+    max-height: 200%
+  .hc
+    margin-top: 1%
+
+@for $i from 0 through 4
+  .indent-#{$i}
+    $indent: (5*$i)
+    width: 100% - $indent
+    margin-left: $indent + 0% !important
 
 .message
   margin: 10px 0 !important
@@ -286,6 +299,7 @@ span:not(.inline)
     font-size: 100%
 
 .console
+  top: 70px
   *
     display: inline !important
 
