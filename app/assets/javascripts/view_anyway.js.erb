@@ -2,46 +2,65 @@ readyFunctions.push(function(){
   var images = $(".adult");
 
   $.each(images, function(index, image){
-    var container = $(image).parent(),
+    var image = $(image);
+    var container = image.parent(),
         cover = $("<div />", {
           class: "cover"
+        }).css({
+          backgroundColor: "rgba(47, 79, 79, .8)",
+          position: "absolute",
+          color: "#D2FFC7",
+          textShadow: "0px 0px 35px black"
         }).append($("<span />", {
           text: "View Anyway"
-        }).addClass("vc").css({
-          cursor: "default"
-        }));
-    container.on("mouseenter", function(){
-      container.append(cover.css({
-        backgroundColor: "rgba(47, 79, 79, .8)",
-        height: "100%",
-        width: "100%",
-        position: "absolute",
-        color: "#D2FFC7",
-        textShadow: "0px 0px 35px black",
-      }));
-      if(!container.hasClass("thumbnail")){
-        cover.css({
-          top: 0
-        });
-        cover.children("span").css({
+        }).css({
+          cursor: "default",
           width: "100%",
-          textAlign: "center",
-          fontSize: container.width()/10
-        });
-      }
-    });
-    container.mouseleave(function(){
-      cover.detach();
-    }).on("click", function(event){
-      pauseEvent(event);
-      if(container.hasClass("thumbnail")){
-        $(image).replaceWith("<img src='/image/thumb/"+$(image).attr("id")+"'></img>");
+          textAlign: "center"
+        }).addClass("vc"));
+    image.on("mouseenter", function(){
+      container.append(cover.css({
+        fontSize: image.width()/10,
+        height: image.height(),
+        width: image.width()
+      }).on("click", function(event){
+        pauseEvent(event);
+        if(container.hasClass("thumbnail")){
+          $(image).replaceWith("<img src='/image/thumb/"+$(image).attr("id")+"'></img>");
+        }else{
+          $(image).replaceWith("<img src='/image/full/"+$(image).attr("id")+"'></img>");
+        }
+        $(this).trigger("mouseleave");
+      })).on("mouseleave", function(){
+        cover.detach();
+      });
+      if(container.css("position") === "relative" || container.parent().css("position") === "relative"){
+        if(container.hasClass("vc") || container.parent().parent().hasClass("fh")){
+          cover.css({
+            top: "-50%",
+            left: 0,
+            position: "relative"
+          });
+        }else{
+          cover.css({
+            top: 0,
+            left: 0,
+            position: "absolute"
+          });
+        }
       }else{
-        $(image).replaceWith("<img src='/image/full/"+$(image).attr("id")+"'></img>");
+        cover.css({
+          top: image.offset().top,
+          left: image.offset().left,
+          position: "absolute"
+        })
       }
-      $(this).trigger("mouseleave").off("mouseenter").off("click");
+      $(window).scroll(function(){
+        container.trigger("mouseleave");
+      });
+      $(window).resize(function(){
+        container.trigger("mouseleave");
+      })
     });
   });
-
-  
 });

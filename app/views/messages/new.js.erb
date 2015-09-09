@@ -1,1 +1,2 @@
-$("#"+"<%=j params[:recipient_id] %>").append("<%=j render 'new_comment', recipient_id: params[:recipient_id] %>");
+$("#"+"<%=j params[:recipient_id] %>").find(".reply").html("<%=j render 'new_comment', recipient_id: params[:recipient_id] %>");
+ready();

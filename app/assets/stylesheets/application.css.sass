@@ -48,9 +48,9 @@
   text-shadow: none
 
 =vertical-divider
-  height: 1.2rem
+  height: 1.8rem
   margin: 0.15rem 5px 0 5px
-  border: 1px solid forestgreen
+  border: 1px solid #ABC7AB
   border-top-style: none
   border-bottom-style: none
 
@@ -133,6 +133,8 @@
       blockquote
         text-align: center
         border: none
+      blockquote:not(.link)
+        font-size: 100% !important
     .col.s3
       width: 100%
     .hc
@@ -295,11 +297,13 @@ span:not(.inline)
   display: table
   *
     +float-left
+  a
+    font-size: 130%
   a:hover
-    font-size: 100%
+    font-size: 130%
 
 .console
-  top: 70px
+  //top: 70px
   *
     display: inline !important
 
@@ -358,8 +362,10 @@ span:not(.inline)
 
 img
   display: block
+  position: relative
   max-width: 100%
   max-height: 100%
+  box-sizing: content-box
 
 .limit-height
   *
@@ -492,7 +498,6 @@ footer
 header
   img
     position: relative
-    z-index: 1
     width: 100%
   a
     text-shadow: 0px 2px 0 black
@@ -545,7 +550,7 @@ div#main
         font-decoration: underline
         font-size: 120%
 
-//thumbnails
+//images
 .preview
   position: relative
   #flash
@@ -558,6 +563,10 @@ div#main
 .gallery
   text-align: center
 
+.image
+  width: auto
+  display: inline-block !important
+
 .thumbnail-block
   +block-centered
   margin-top: 2%
@@ -568,10 +577,11 @@ div#main
 
 .thumbnail
   +block-centered
-  width: calc(#{$thumb-size} + 8px)
-  height: calc(#{$thumb-size} + 8px)
+  width: $thumb-size
+  height: $thumb-size
   border: 4px dashed black
   border-radius: 4px
+  box-sizing: content-box
   img
     max-width: $thumb-size
     +block-centered

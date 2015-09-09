@@ -10,9 +10,10 @@ class PoolsController < ApplicationController
   end
 
   def show
-    @user = User.find(params[User.slug]) if params[User.slug]
-    @pool = Pool.find(params[Pool.slug]) || @user.pools.first
-    redirect_to :back unless @pool
+    @user = User.find(params[User.slug])
+    @pool = Pool.find(params[Pool.slug])
+    @pool = @user.pools.first if @user and not @pool
+    not_found and return unless @pool
     @submissions = Submission.where(pool_id: @pool.id)
   end
 
@@ -27,7 +28,6 @@ class PoolsController < ApplicationController
   end
 
   def create
-
     @new_pool.user_id = current_user.id #we don't trust the outside world
     respond_to do |format|
       if @new_pool.save

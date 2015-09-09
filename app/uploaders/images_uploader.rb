@@ -1,6 +1,11 @@
 # encoding: utf-8
 
 class ImagesUploader < CarrierWave::Uploader::Base
+  before :cache, :save_original_filename
+
+  def save_original_filename(file)
+    model.original_filename ||= "#{file.original_filename}"
+  end
 
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick

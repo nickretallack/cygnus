@@ -19,5 +19,9 @@
 <% if type == :bordered %>
   <div class = 'thumbnail <%= @image.explicit?? "danger" : "success" %>'><%= html %></div>
 <% else %>
-  <%= html %>
+  <% if type == :full %>
+    <div class = 'image'><%= html %></div>
+  <% else %>
+    <%= html %>
+  <% end %>
 <% end %>

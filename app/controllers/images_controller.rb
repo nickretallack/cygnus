@@ -10,7 +10,7 @@ class ImagesController < ApplicationController
 
     case type
     when :thumb, :bordered
-      file = @image.file.thumb.url      
+      file = @image.file.thumb.url
       suffix = "_thumb"
     when :full
       file = @image.file.url
@@ -23,10 +23,10 @@ class ImagesController < ApplicationController
       end
     end
 
-    send_file file || File.join(CONFIG[:image_path], CONFIG["image_not_found#{suffix}".to_sym]), disposition: :inline if stale? etag: @image, last_modified: @image.updated_at
+    send_file file || File.join(CONFIG[:image_path], CONFIG["image_not_found#{suffix}".to_sym]), disposition: :inline, filename: @image.original_filename if stale? etag: @image, last_modified: @image.updated_at
   end
 
   def download
-    send_file @image.file.url || not_found, disposition: :attachment if stale? etag: @image, last_modified: @image.updated_at
+    send_file @image.file.url || not_found, disposition: :attachment, filename: @image.original_filename if stale? etag: @image, last_modified: @image.updated_at
   end
 end

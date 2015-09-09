@@ -18,13 +18,8 @@ Rails.application.routes.draw do
   get "search"  => "users#search", as: :search_user
   post "search"  => "users#search"
 
-  get ":#{User.slug}/gallery", to: "pools#show", as: :gallery
   get "image/:type(/:id)", to: "images#show", as: :image
   get "download/:id", to: "images#download", as: :download
-
-  get "(:#{User.slug})/pools" => "pools#index" , as: :pools
-  resources :pools, only: [:create, :update, :destroy, :show]
-  resources :submissions
 
   post ":#{User.slug}/avatar" => "images#create", as: :new_avatar
   get ":#{User.slug}/workboard" => "kanban_lists#index", as: :workboard
@@ -46,12 +41,20 @@ Rails.application.routes.draw do
       end
       resources :messages, only: [:destroy], path: "pms", as: :pms
     end
+    controller :pools do
+      get :show, path: "gallery", as: :gallery
+    end
   end
 
   scope path: "submission/:submission_#{Submission.slug}" do
     resources :messages, except: [:new, :edit, :show], path: "comments", as: :comments
     resources :messages, only: [:new], path: "reply/:recipient_id", as: :comments
   end
+
+  resources :pools, only: [:index], path: "(:#{User.slug})/pools", as: :pools
+  resources :pools, only: [:create], as: :pools
+  resources :pools, except: [:index, :create, :edit]
+  resources :submissions
 
   resources :users, except: [:new, :edit], param: User.slug, path: "" do
     member do

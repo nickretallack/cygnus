@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150906124809) do
+ActiveRecord::Schema.define(version: 20150909154939) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,11 +69,12 @@ ActiveRecord::Schema.define(version: 20150906124809) do
 
   create_table "uploads", force: :cascade do |t|
     t.string   "file"
-    t.boolean  "enabled",    default: true
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.boolean  "explicit",   default: false
+    t.boolean  "enabled",           default: true
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.boolean  "explicit",          default: false
     t.string   "md5"
+    t.string   "original_filename"
   end
 
   create_table "users", force: :cascade do |t|

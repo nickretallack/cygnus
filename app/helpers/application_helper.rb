@@ -18,7 +18,16 @@ module ApplicationHelper
   end
 
   def not_found
-    raise ActionController::RoutingError.new("Not Found")
+    flash[:danger] = "record not found"
+    back
+  end
+
+  def back
+    if request.referer
+      redirect_to :back
+    else
+      redirect_to :root
+    end
   end
 
   def format_flash(message, key)
@@ -32,14 +41,9 @@ module ApplicationHelper
     ("<span>"+message.slice(0, 1).capitalize+message.slice(1..-1)+suffix+"</span>").html_safe
   end
 
-  def show_errors?
-    ["create"].include? params[:action]
-  end
-
   def back_with_errors
-    referer_params = Rails.application.routes.recognize_path request.referer
-    referer_params[:messages] = instance_variable_get("@new_"+controller_name.singularize).errors.full_messages
-    redirect_to referer_params
+    flash[:errors] = instance_variable_get("@new_"+controller_name.singularize).errors.full_messages
+    back
   end
 
   def render_markdown(content)
