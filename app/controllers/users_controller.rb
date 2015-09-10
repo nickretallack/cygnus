@@ -10,13 +10,8 @@ class UsersController < ApplicationController
   }, only: [:watch]
 
   def index
-    @users = ->(params) {
-      if params[:search]
-        User.search(params[:search][:search])
-      else
-        User.all.order(User.slug)
-      end
-    }.call(params)
+    # handles search; if we are just indexing, @users is already set
+    @users = User.search(params[:search][:search]) if params[:search]
   end
 
   def create
@@ -26,7 +21,7 @@ class UsersController < ApplicationController
     if @new_user.save
       if CONFIG[:email_required]
         UserMailer.account_activation(@new_user).deliver_now
-        flash[:info] = "please check your email to activate your account"
+        flash[:info] = "please check #{@new_user.email} to activate your account"
         redirect_to :back
       else
         first_log_in @new_user

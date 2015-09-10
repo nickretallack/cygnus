@@ -1,9 +1,15 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
-  include ApplicationHelper
-  include MessagesHelper
+  Dir["#{File.dirname(__FILE__)}/../helpers/*.rb"].each {|file| require file }
   before_filter :setter
 
+  #setter
+  #
+  #intended to automatically assign all useful instance variables
+  #does not yet work with nested resources
+  #example for UsersController:
+  #
+  # on index: @user = User.find(params[User.slug])
   def setter(referer_params = nil)
     action = referer_params.nil?? params[:action].to_sym : referer_params[:action].to_sym
     begin
@@ -11,10 +17,9 @@ class ApplicationController < ActionController::Base
     rescue
       return
     end
-    #raise "break"
     self.instance_exec do
       case action
-      when :index, :search
+      when :index
         self.instance_variable_set("@"+controller_name, klass.all.order(klass.slug))
       when :new
         self.instance_variable_set("@"+controller_name.singularize, klass.new)

@@ -1,26 +1,6 @@
 module ApplicationHelper
-  def first_log_in(user)
-    Pool.new(title: "Gallery", user_id: user.id).save!
-    activate_session user
-    flash[:success] = "welcome to "+CONFIG[:name]
-  end
-
-  def current_user
-    @current_user ||= session[:username].nil?? AnonymousUser.new : User.find(session[:username]) || AnonymousUser.new
-  end
-
-  def anon?
-    current_user.instance_of? AnonymousUser
-  end
-
-  def current_user?(user)
-    user == current_user
-  end
-
-  def not_found
-    flash[:danger] = "record not found"
-    back
-  end
+  
+  ###routing###
 
   def back
     if request.referer
@@ -30,6 +10,56 @@ module ApplicationHelper
     end
   end
 
+    #not_found
+    #
+    #shunts bad urls to a safe location
+    #gotchas:
+    #
+    # must be called in a separate procedure like a before_filter or with (and return) to avoid calling redirect twice in the same action
+    #
+    #example:
+    #
+    # def index
+    #   @user = User.find(params[User.slug])
+    #   not_found and return unless @user
+    #   @pool = @user.pools
+    # end
+    #
+  def not_found
+    flash[:danger] = "record not found"
+    back
+  end
+
+    #back_with_errors
+    #
+    #redirects to referer or root if there are form errors and displays those errors along with the flashes
+    #example:
+    #
+    # if @new_user.save
+    #   back
+    # else
+    #   back_with_errors
+  def back_with_errors
+    flash[:errors] = instance_variable_get("@new_"+controller_name.singularize).errors.full_messages
+    back
+  end
+
+  ###formatting###
+
+    #format_flash
+    #
+    #formats flash messages in a standard way.
+    #gotchas:
+    #
+    # notice: "message" will appear as an :info flash without formatting
+    # only the first letter is capitalized; other letters are left with unmodified case
+    #
+    #example:
+    #
+    # flash[:success] = "record destroyed"
+    # => <div class = "success">Record destroyed!</div>
+    #
+    #
   def format_flash(message, key)
     suffix = ""
     case key.to_sym
@@ -41,9 +71,13 @@ module ApplicationHelper
     ("<span>"+message.slice(0, 1).capitalize+message.slice(1..-1)+suffix+"</span>").html_safe
   end
 
-  def back_with_errors
-    flash[:errors] = instance_variable_get("@new_"+controller_name.singularize).errors.full_messages
-    back
+    #sanitize_title
+    #
+    #allows tags and apostrophes in :header without bad formatting in the title bar
+    #
+    #
+  def sanitize_title(content)
+    sanitize(content, tags: []).gsub("&#39;", "'").titleize
   end
 
   def render_markdown(content)
@@ -51,55 +85,21 @@ module ApplicationHelper
     markdown.render(content).html_safe
   end
 
-  def avatar_for(user, type = :bordered)
-    image_for(type, user.avatar)
-  end
-
-  def image_for(type = :full, id = nil)
-    render template: "images/show", locals: { type: type, id: id }
-  end
-
-  def at_least(grade)
-    current_user.level >= User.level_for(grade)
-  end
-
-  def can_modify?(user)
-    @can_modify ||= at_least(:mod) or current_user? user
-  end
-
-  def can_watch?(user)
-    @can_watch ||= at_least(:admin) or (not anon? and not current_user? user)
-  end
-
-  def watching? user
-    current_user.watching.include? user.id
-  end
-
-  def insist_on(type = nil, user = nil)
-    case type
-    when :logged_in
-      if anon?
-        flash[:danger] = "please sign in first"
-        redirect_to :back
-      end
-    when :permission
-      unless can_modify? user
-        flash[:danger] = "you are not allowed to modify that record"
-        redirect_to :back
-      end
-    when :existence
-      unless user
-        flash[:danger] = "no such user"
-        redirect_to :root
-      end
-    else
-      unless Proc.new.call
-        flash[:danger] = "you do not have permission to do that"
-        redirect_to :back
-      end
-    end
-  end
-
+    #enum_for
+    #
+    #loops over an enumerable, performing (block) on each item. if the enumerable is empty, a descriptive string is shown in the view and the block is not performed
+    #params:
+    #
+    # collection means the enumerable to loop over
+    # word is optional and means a description of the collection for the empty message
+    #
+    #example:
+    #
+    # <% enum_for @users do |user| %>
+    #   <%= render "links", user: user %>
+    # <% end %>
+    #
+    #
   def enum_for(collection, word = nil)
     if collection.empty?
       if word.nil?
@@ -114,6 +114,18 @@ module ApplicationHelper
     end
   end
 
+    #message_for, title_for
+    #
+    #similar to enum_for but for a string database column
+    #example:
+    #
+    # <%= message_for prices: user.price %>
+    # => user.price or "No prices specified."
+    #
+    # <%= title_for submission: @submission %>
+    # => @submission.title or "Untitled Submission"
+    #
+    #
   def message_for(*args)
     key, value = args.first.first
     key = key.to_s.gsub("_", " ").pluralize
@@ -131,9 +143,5 @@ module ApplicationHelper
     else
       value.title
     end
-  end
-
-  def sanitize_title(content)
-    sanitize(content, tags: []).gsub("&#39;", "'").titleize
   end
 end

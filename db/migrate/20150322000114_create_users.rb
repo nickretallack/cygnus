@@ -4,7 +4,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string :name
       t.string :password_digest
       t.string :email
-      t.integer :level, default: 0
+      t.string :level
       t.inet :ip_address
       t.string :gallery
       t.string :price
@@ -20,6 +20,7 @@ class CreateUsers < ActiveRecord::Migration
       t.integer :watching, array: true, default: []
       t.integer :watched_by, array: true, default: []
       t.index :tags_tsvector, using: :gin
+      t.string :artist_type
 
       t.timestamps null: false
     end

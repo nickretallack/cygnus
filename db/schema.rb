@@ -97,6 +97,7 @@ ActiveRecord::Schema.define(version: 20150830095323) do
     t.datetime "reset_sent_at"
     t.integer  "watching",          default: [],                        array: true
     t.integer  "watched_by",        default: [],                        array: true
+    t.integer  "artist_type",       default: 0
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
   end
