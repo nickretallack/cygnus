@@ -1,6 +1,6 @@
-class CreateOrderForms < ActiveRecord::Migration
+class CreateOrders < ActiveRecord::Migration
   def change
-    create_table :order_forms do |t|
+    create_table :orders do |t|
       t.json :content, null: false
       t.integer :user_id
 

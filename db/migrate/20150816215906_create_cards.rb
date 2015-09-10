@@ -1,9 +1,11 @@
-class CreateKanbanLists < ActiveRecord::Migration
+class CreateCards < ActiveRecord::Migration
   def change
-    create_table :kanban_lists do |t|
+    create_table :cards do |t|
       t.string :title
+      t.string :description
       t.integer :user_id
       t.integer :cards, array: true, default: []
+      t.integer :file_id
 
       t.timestamps null: false
     end

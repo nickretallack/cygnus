@@ -1,9 +1,9 @@
 <div class = "row">
-  <%= form_for :search, url: search_user_path, html: { class: "input-field col s12 m10" } do |f| %>
-    <div class = "row">
+  <div class = "input-field col s12 m10">
+    <%= form_for :search, url: search_path do |f| %>
       <i class = "material-icons prefix">search</i>
-      <%= f.text_field :search, placeholder: 'Artists who do...', value: query %>
+      <%= f.text_field :search, placeholder: "Artists who do...", value: query %>
       <%= f.submit "Search" %>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
 </div>

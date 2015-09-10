@@ -11,40 +11,40 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150909154939) do
+ActiveRecord::Schema.define(version: 20150830095323) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "kanban_cards", force: :cascade do |t|
+  create_table "cards", force: :cascade do |t|
     t.string   "title"
     t.string   "description"
-    t.integer  "kanban_list_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
-    t.integer  "file_id"
-  end
-
-  create_table "kanban_lists", force: :cascade do |t|
-    t.string   "title"
     t.integer  "user_id"
-    t.integer  "cards",      default: [],              array: true
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.integer  "cards",       default: [],              array: true
+    t.integer  "file_id"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
-  create_table "messages", force: :cascade do |t|
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+  create_table "comments", force: :cascade do |t|
     t.text     "content"
     t.integer  "user_id"
     t.integer  "submission_id"
-    t.integer  "recipient_id"
-    t.integer  "message_id"
-    t.string   "subject"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
-  create_table "order_forms", force: :cascade do |t|
+  create_table "messages", force: :cascade do |t|
+    t.string   "subject"
+    t.text     "content"
+    t.integer  "user_id"
+    t.integer  "recipient_id"
+    t.integer  "message_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  create_table "orders", force: :cascade do |t|
     t.json     "content",    null: false
     t.integer  "user_id"
     t.datetime "created_at", null: false
@@ -70,11 +70,11 @@ ActiveRecord::Schema.define(version: 20150909154939) do
   create_table "uploads", force: :cascade do |t|
     t.string   "file"
     t.boolean  "enabled",           default: true
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
     t.boolean  "explicit",          default: false
     t.string   "md5"
     t.string   "original_filename"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -82,24 +82,25 @@ ActiveRecord::Schema.define(version: 20150909154939) do
     t.string   "password_digest"
     t.string   "email"
     t.integer  "level",             default: 0
-    t.inet     "ip_Address"
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
+    t.inet     "ip_address"
     t.string   "gallery"
     t.string   "price"
     t.text     "details"
+    t.integer  "statuses",          default: [0, 0, 0, 0],              array: true
     t.string   "tags"
+    t.string   "string"
     t.tsvector "tags_tsvector"
     t.integer  "avatar"
     t.boolean  "view_adult",        default: false
     t.string   "activation_digest"
     t.datetime "activated_at"
     t.datetime "reset_sent_at"
-    t.integer  "statuses",          default: [0, 0, 0, 0],              array: true
     t.integer  "watching",          default: [],                        array: true
     t.integer  "watched_by",        default: [],                        array: true
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
   end
 
-  add_index "users", ["tags_tsvector"], name: "users_tags_search_idx", using: :gin
+  add_index "users", ["tags_tsvector"], name: "index_users_on_tags_tsvector", using: :gin
 
 end

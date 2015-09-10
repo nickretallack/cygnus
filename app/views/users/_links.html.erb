@@ -15,13 +15,13 @@
   <% if user.pools.any? %>
     <blockquote class = "inline link"><%= link_to "Gallery", gallery_path(user) %><%= link_to "(ies)", pools_path(user) %></blockquote>
   <% end %>
-  <blockquote class = "inline link"><%= link_to "Workboard", workboard_path(user.name) %></blockquote>
+  <blockquote class = "inline link"><%= link_to "Workboard", lists_path(user.name) %></blockquote>
 </div>
 <div class = "col s6">
   <% if current_user? user %>
-    <blockquote class = "inline link"><%= link_to "PMs", inbox_path(current_user.name) %></blockquote>
+    <blockquote class = "inline link"><%= link_to "PMs", pms_path(current_user.name) %></blockquote>
   <% else %>
-    <blockquote class = "inline link"><%= link_to "PM", inbox_path(current_user.name, user.name) %></blockquote>
+    <blockquote class = "inline link"><%= link_to "PM", pms_path(current_user.name, user.name) %></blockquote>
   <% end %>
   <blockquote class = "inline link"><%= link_to "Order Work" %></blockquote>
   <blockquote class = "inline link"><%= link_to "Activity", messages_path(user) %></blockquote>

@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
     @current_user = nil
   end
 
-  def static_page
+  def static
     render template: "pages/#{params[:page_name]}"
   end
 end
