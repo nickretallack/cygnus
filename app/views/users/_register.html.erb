@@ -1,7 +1,16 @@
-<%= form_for User.new, url: users_path do |f| %>
-  <li><%= f.text_field :name, placeholder: "Username" %></li>
-  <li><%= f.email_field :email, placeholder: "Email" %></li>
-  <li><%= f.password_field :password, placeholder: "Password" %></li>
-  <li><%= f.password_field :password_confirmation, placeholder: "Confirm Password" %></li>
-  <li><%= f.submit "Register" %></li>
+<% unless session[:email] %>
+  <%= form_for User.new, url: users_path do |f| %>
+    <li><%= f.text_field :name, placeholder: "Username" %></li>
+    <li><%= f.email_field :email, placeholder: "Email" %></li>
+    <li><%= f.password_field :password, placeholder: "Password" %></li>
+    <li><%= f.password_field :password_confirmation, placeholder: "Confirm Password" %></li>
+    <li><%= f.submit "Register" %></li>
+  <% end %>
+<% else %>
+  <%= form_for :user, url: resend_path do |f| %>
+    <li><%= f.password_field :password, placeholder: "Password" %></li>
+    <li><%= f.password_field :password_confirmation, placeholder: "Confirm Password" %></li>
+    <li><%= f.submit "Resend Activation" %></li>
+  <% end %>
+  <% button_to "Delete Account", { method: :delete, id: User.find_by(email: session[:email]).id, data: { confirm: "Are you sure?" } } %>
 <% end %>

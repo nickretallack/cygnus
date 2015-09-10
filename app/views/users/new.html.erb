@@ -1,13 +1,7 @@
 <% provide(:header, "Sign up") %>
 
-<%= form_for User.new, url: users_path do |f| %>
-  <div class = "row">
-    <div class = "col s9 m6 l3">
-      <%= f.text_field :name, placeholder: "Username" %>
-      <%= f.email_field :email, placeholder: "Email" %>
-      <%= f.password_field :password, placeholder: "Password" %>
-      <%= f.password_field :password_confirmation, placeholder: "Confirm Password" %>
-      <%= f.submit "Register" %>
-    </div>
+<div class = "row">
+  <div class = "col s9 m6 l3">
+    <%= render "register" %>
   </div>
-<% end %>
+</div>

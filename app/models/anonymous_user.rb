@@ -4,7 +4,7 @@ class AnonymousUser
   end
 
   def level
-    0
+    :unactivated
   end
   
   def created_at

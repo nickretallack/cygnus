@@ -253,6 +253,9 @@ nav .button-collapse:hover
 input:not([type = "submit"]), textarea
   margin-bottom: 5px
 
+li
+  list-style: none
+
 .new
   border: 4px dotted #9DD0B4
   padding: 5px
@@ -304,7 +307,7 @@ span:not(.inline)
 
 .console
   //top: 70px
-  max-height: 57px !important
+  max-height: 75px !important
   *
     display: inline !important
 
@@ -420,10 +423,6 @@ blockquote.inline
   overflow-x: hidden
   overflow-y: auto
   margin-bottom: 0
-  a
-    font-size: 140%
-  a:hover
-    font-size: 180% !important
 
 blockquote[class = "inline"]
   margin-left: 5px
@@ -433,12 +432,16 @@ blockquote.link
   margin-top: 15px
   padding-top: 3px
   overflow: hidden
+  font-size: 140%
   a
     position: relative
     top: 0
     vertical-align: text-top
   a:hover
     top: -5px
+    margin-left: -8px
+  a~a:hover
+    margin-left: 0
 
 .file-field
   display: table

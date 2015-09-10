@@ -10,9 +10,7 @@ class User < ActiveRecord::Base
   has_many :pms_received, -> { where("submission_id IS NULL AND user_id > ?", -1) }, class_name: "Message", foreign_key: :recipient_id
   has_many :pms_sent, -> { where("submission_id IS NULL") }, class_name: "Message"
   has_many :order_forms
-  belongs_to :upload, foreign_key: :avatar
-  before_create :create_activation_digest
- 
+  belongs_to :upload, foreign_key: :avatar 
 
   before_save { self.email = email.downcase }
   validates :name, presence: true, length: { maximum: 50 }, uniqueness: { case_sensitive: false }, exclusion: { in: :named_routes }
@@ -30,8 +28,17 @@ class User < ActiveRecord::Base
     CONFIG[:user_levels].index(grade.to_s)
   end
 
+  def send_activation_email
+    update_attribute(:activation_digest, create_activation_digest)
+    UserMailer.account_activation(self).deliver_now
+  end
+
   def at_level(grade)
-    level == User.level_for(grade)
+    User.level_for(level) == User.level_for(grade)
+  end
+
+  def at_least(grade)
+    User.level_for(level) >= User.level_for(grade)
   end
 
   def self.search(terms = "")

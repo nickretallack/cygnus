@@ -9,7 +9,7 @@
 					<div class = "input-field"><%= f.check_box :view_adult %><%= f.label :view_adult %></div>
 					<%= f.fields_for @user.avatar.nil?? Upload.new : Upload.find(@user.avatar), multipart: true do |u| %>
 						<div class = "input-field"><%= u.check_box :explicit %><%= u.label :explicit, "Explicit Avatar" %></div>
-						<div class = "input-field"><%= select "user[upload]", :pool, [["Add to pool", 0]].concat(@user.pools.order(:id).collect{ |pool| [pool.title, pool.id] }), {}, { class: "btn button-with-icon" } %></div>
+						<div class = "input-field"><%= select "user[upload]", :pool, [["Add to pool", 0]].concat(@user.pools.order(:id).collect { |pool| [pool.title, pool.id] }), {}, { class: "btn button-with-icon" } %></div>
 			      <div class = "row file-field input-field hc">
 			        <div class = "submit">
 			          <span>Avatar</span>
@@ -17,6 +17,7 @@
 			        </div>
 			      </div>
 			    <% end %>
+			    <div class = "input-field"><%= f.select :artist_type, [["Artist Type", 0]].concat(CONFIG[:artist types][1..-1].each_with_index.map { }), {}, { class "btn, button-with-icon" } %></div>
 		    </div>
 		  </div>
 			<div class = "col s12 m3 preview">

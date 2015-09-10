@@ -17,15 +17,22 @@ class UsersController < ApplicationController
   def create
     @new_user.ip_address = request.remote_ip
     @new_user.avatar = Upload.render(params[:user][:picture])
-    @new_user.level = User.level_for :unactivated unless CONFIG[:email_required]
+    @new_user.level = ->(email_required) {
+      if email_required
+        :unactivated
+      else
+        :member
+      end
+    }.call(CONFIG[:email_required])
     if @new_user.save
       if CONFIG[:email_required]
-        UserMailer.account_activation(@new_user).deliver_now
+        session[:email] = @new_user.email
+        @new_user.send_activation_email
         flash[:info] = "please check #{@new_user.email} to activate your account"
-        redirect_to :back
+        redirect_to action: :new
       else
         first_log_in @new_user
-        redirect_to :back
+        back
       end
     else
       back_with_errors
@@ -91,7 +98,7 @@ class UsersController < ApplicationController
 
   def activate
     if @user and @user.at_level :unactivated and @user.authenticated? :activation, params[:activation]
-      @user.update_attribute(:level, User.level_for(:member))
+      @user.update_attribute(:level, :member)
       @user.update_attribute(:activated_at, Time.zone.now)
       first_log_in @user
       redirect_to action: :show, User.slug => @user
@@ -99,6 +106,17 @@ class UsersController < ApplicationController
       flash[:danger] = "invalid activation link"
       redirect_to :root
     end
+  end
+
+  def resend_activation_email
+    @user = User.find_by(email: session[:email])
+    if @user.authenticate(params[:user][:password])
+      @user.send_activation_email
+      flash[:success] = "activation email resent to #{session[:email]}"
+    else
+      flash[:danger] = "incorrect password for @user.name"
+    end
+    redirect_to action: :new
   end
 
   def reset_confirm

@@ -30,4 +30,4 @@
     </p>
 </blockquote>
 
-<%= render template: "messages/new", locals: { to: CONFIG[:feedback_account_name] } %>
+<%= render "messages/new_pm", recipient: CONFIG[:feedback_account_name] %>

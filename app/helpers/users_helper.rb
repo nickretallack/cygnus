@@ -6,6 +6,7 @@ module UsersHelper
     Pool.new(title: "Gallery", user_id: user.id).save!
     activate_session user
     flash[:success] = "welcome to "+CONFIG[:name]
+    session.delete(:email)
   end
 
   def current_user
@@ -23,7 +24,7 @@ module UsersHelper
   # permission
 
   def at_least(grade)
-    current_user.level >= User.level_for(grade)
+    User.level_for(current_user.level) >= User.level_for(grade)
   end
 
   def can_modify?(user)
@@ -114,7 +115,7 @@ module UsersHelper
   #   :verbose or (no argument) means icons and descriptive names are displayed side by side
   #     if the statuses are those of the logged-in user, select menus will be displayed
   #     allowing the user to modify his or her commission statuses
-  #   :condensed means icons only are displayed
+  #   :condensed means icons only with tooltip descriptions are displayed
   #
   #examples:
   #

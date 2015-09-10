@@ -7,13 +7,19 @@
     <% end %>
   <% else %>
     <% if anon? %>
-      <blockquote class = "inline link"><%= link_to "Profile", user_path(user) %></blockquote>
+      <% unless user.at_least(:blocked) %>
+        <blockquote class = "inline danger link">Unactivated</blockquote>
+      <% else %>
+        <blockquote class = "inline link"><%= link_to "Profile", user_path(user) %></blockquote>
+      <% end %>
     <% else %>
       <blockquote class = "inline link"><%= link_to "Financial" %></blockquote>
     <% end %>
   <% end %>
   <% if user.pools.any? %>
     <blockquote class = "inline link"><%= link_to "Gallery", gallery_path(user) %><%= link_to "(ies)", pools_path(user) %></blockquote>
+  <% else %>
+    <blockquote class = "inline danger link">No Pools</blockquote>
   <% end %>
   <blockquote class = "inline link"><%= link_to "Workboard", lists_path(user.name) %></blockquote>
 </div>
@@ -23,6 +29,6 @@
   <% else %>
     <blockquote class = "inline link"><%= link_to "PM", pms_path(current_user.name, user.name) %></blockquote>
   <% end %>
-  <blockquote class = "inline link"><%= link_to "Order Work" %></blockquote>
+  <blockquote class = "inline link"><%= link_to "Order" %></blockquote>
   <blockquote class = "inline link"><%= link_to "Activity", messages_path(user) %></blockquote>
 </div>

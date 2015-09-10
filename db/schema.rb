@@ -81,7 +81,7 @@ ActiveRecord::Schema.define(version: 20150830095323) do
     t.string   "name"
     t.string   "password_digest"
     t.string   "email"
-    t.integer  "level",             default: 0
+    t.string   "level"
     t.inet     "ip_address"
     t.string   "gallery"
     t.string   "price"
@@ -97,7 +97,7 @@ ActiveRecord::Schema.define(version: 20150830095323) do
     t.datetime "reset_sent_at"
     t.integer  "watching",          default: [],                        array: true
     t.integer  "watched_by",        default: [],                        array: true
-    t.integer  "artist_type",       default: 0
+    t.string   "artist_type"
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
   end

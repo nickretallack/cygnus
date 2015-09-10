@@ -35,10 +35,11 @@ Rails.application.routes.draw do
   end
 
   controller :users do
+    post :resend_activation_email, as: :resend
     post :index, as: :search
     post :log_in
     delete :log_out
-    get :new, as: :register
+    get :new, path: "register", as: :register
     scope path: "reset" do
       get :reset, as: :password_reset
       post :reset_confirm, as: :reset
