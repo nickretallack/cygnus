@@ -24,8 +24,10 @@ Rails.application.routes.draw do
   end
 
   scope path: ":#{User.slug}" do
-    resources :lists, except: [:edit], path: "workboard"
-    resources :cards, only: [:new, :create, :update, :destroy], path: "workboard/:list_id/cards"
+    scope path: "workboard" do
+      resources :cards, only: [:create, :index], path: ""
+      resources :cards, only: [:update, :destroy], path: ""
+    end
     resources :messages, only: [:index]
     resources :messages, only: [:index], path: "(:recipient)/conversations", as: :pms
     resources :messages, only: [:create], path: ":recipient/conversations", as: :pms

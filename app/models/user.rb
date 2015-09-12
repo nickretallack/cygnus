@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
   has_secure_password
   attr_accessor  :activation_token, :reset_token
   has_many :pools
-  has_many :kanban_lists
+  has_one :card
   has_many :messages, -> { where "user_id = ?", -1 }, foreign_key: :recipient_id
   has_many :comments_recieved, -> { where("messages.submission_id IS NOT NULL") }, class_name: "Message", foreign_key: :recipient_id
   has_many :comments_made, -> { where("submission_id IS NOT NULL") }, class_name: "Message"

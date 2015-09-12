@@ -1,0 +1,47 @@
+<% provide :header, link_to(@user.name, user_path(@user))+"'s workboard" %>
+
+<% if can_modify? @user %>
+  <div class = "row hc js">
+    <span>
+      <%= link_to "Create Mode", "", remote: true %>
+      <div class = "vdiv"></div>
+      <%= link_to "Reorder Mode", "", remote: true %>
+      <div class = "vdiv"></div>
+      <%= link_to "Delete Mode", "", remote: true, data: { confirm: "Are you sure you wish to enter delete mode?" } %>
+    </span>
+  </div>
+<% end %>
+<div class = "row">
+  <div class = "card top-card">
+    <div class = "card-content">
+      <div class = "card-title">
+        <% if can_modify? @user %>
+          <div class = "new create-mode">
+            <%= form_for @top_card, url: card_path(@user, @top_card), method: :patch do |f| %>
+              <%= f.text_field :title, placeholder: "Title for New List" %>
+              <%= f.submit "Create List" %>
+            <% end %>
+          </div>
+        <% end %>
+        <p>
+          <% @top_card.cards.each do |list| %>
+            <div class = "card list-card">
+              <div class = "card-content">
+                <div class = "card-title">
+                  <% if can_modify? @user %>
+                    <div class = "new create-mode">
+                      <%= form_for list, url: card_path(@user, list), method: :patch do |f| %>
+                        <%= f.text_field :title, placeholder: "Title for New Card" %>
+                        <%= f.submit "Create Card" %>
+                      <% end %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -14,7 +14,7 @@
       <%= image_for :banner %>
       <%= render "layouts/navigation" %>
     </header>
-    <div class = "container">
+    <div class = "container <%= "fw" if controller_name == "cards" %>">
       <div id="main">
         <div class = "row stout">
           <h2 class = "header truncate"><%= yield :header %></h2>

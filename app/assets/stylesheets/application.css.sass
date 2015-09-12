@@ -54,6 +54,10 @@
   border-top-style: none
   border-bottom-style: none
 
+=full-width
+  max-width: 98%
+  width: 98%
+
 @font-face
   font-family: "Blogger"
   src: url("Blogger_Sans-Medium.otf")
@@ -563,13 +567,12 @@ div#main
 
 //images
 .preview
+  @extend .hc
   position: relative
   #flash
     box-shadow: none
     margin-bottom: 10px
     padding: 0
-  img
-    +block-centered
 
 .gallery
   text-align: center
@@ -720,3 +723,6 @@ input:focus:-ms-input-placeholder, textarea:focus:-ms-input-placeholder
 
 .vdiv
   +vertical-divider
+
+.fw
+  +full-width

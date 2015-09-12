@@ -1,4 +1,13 @@
-class KanbanCardsController < ApplicationController
+class CardsController < ApplicationController
+  def index
+    @user = User.find(params[User.slug])
+    @top_card = @user.card
+    unless @user.card
+      Card.new(user_id: @user.id).save!
+      redirect_to request.path
+    end
+  end
+
   def create
     @new_kanban_card.kanban_list_id = params[:kanban_list_id]
 
