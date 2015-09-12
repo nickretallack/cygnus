@@ -253,6 +253,9 @@ nav .button-collapse:hover
 input:not([type = "submit"]), textarea
   margin-bottom: 5px
 
+textarea
+  margin-top: 10px
+
 li
   list-style: none
 
@@ -372,8 +375,12 @@ img
   box-sizing: content-box
 
 .limit-height
-  *
-    max-height: 500px  
+  height: 400px
+  .preview
+    max-height: 400px
+
+.limit-height>.col
+  height: 400px
 
 .btn:hover
   font-size: 110%
@@ -411,7 +418,7 @@ label
 
 blockquote
   @extend .flow-text
-  font-size: 80%
+  font-size: 90%
   border-left-color: $nav-background-color
   ul li
     list-style-type: disc
@@ -628,7 +635,7 @@ input::-moz-placeholder, textarea::-moz-placeholder
 input:-ms-input-placeholder, textarea:-ms-input-placeholder
   +placeholder
 
-input:focus:hover::-webkit-textarea-placeholder, textarea:focus:hover::-webkit-input-placeholder
+input:focus:hover::-webkit-input-placeholder, textarea:focus:hover::-webkit-input-placeholder
   +placeholder-focus-hover
 input:focus:hover:-moz-placeholder, textarea:focus:hover:-moz-placeholder
   +placeholder-focus-hover

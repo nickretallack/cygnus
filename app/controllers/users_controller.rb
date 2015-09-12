@@ -40,13 +40,12 @@ class UsersController < ApplicationController
   end
 
   def update
+    @user.avatar = Upload.render(params[:user][:upload][:picture], params[:user][:upload][:explicit]) unless params[:user][:upload][:picture].nil?
+    @user.view_adult = true if params[:user][:upload][:explicit]
+    @user.artist_type = format_artist_type(params[:user][:artist_types].values) unless params[:user][:artist_type][0] == "0"
+    @user.statuses = params[:user][:statuses].values
     if @user.update_attributes(user_params)
-      @user.update_attribute(:avatar, Upload.render(params[:user][:upload][:picture], params[:user][:upload][:explicit])) unless params[:user][:upload][:picture].nil?
-      @user.update_attribute(:view_adult, true) if params[:user][:upload][:explicit]
-      unless @user.avatar.nil? or params[:user][:upload][:pool] == "0"
-        Submission.new(title: "Avatar", pool_id: params[:user][:upload][:pool].to_i, file_id: @user.avatar).save!
-      end
-      @user.update_attribute(:statuses, params[:user][:statuses].values)
+      Submission.new(title: "Avatar", pool_id: params[:user][:upload][:pool].to_i, file_id: @user.avatar).save! unless @user.avatar.nil? or params[:user][:upload][:pool] == "0"
       flash[:success] = "profile updated"
       redirect_to :back
     else

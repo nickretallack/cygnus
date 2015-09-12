@@ -52,6 +52,7 @@ readyFunctions.push(function(){
       galleryTable = $(".gallery").children("table");
 
   $(".nojs").hide();
+  $(".js").show();
 
   menu.dropdown({
     belowOrigin: true,
