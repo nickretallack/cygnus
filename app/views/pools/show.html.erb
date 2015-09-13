@@ -8,9 +8,11 @@
         <div class = "input-field">
           <%= f.check_box :adult %><%= f.label :adult %>
         </div>
-        <div class = "file-field input-field submit">
+        <div class = "file-field input-field">
+          <div class = "submit">
             <span>Image File</span>
             <%= f.file_field :picture %>
+          </div>
         </div>
         <%= hidden_field_tag "submission[pool_id]", @pool.id %>
         <div class = "input-field">

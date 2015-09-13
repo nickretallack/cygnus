@@ -18,6 +18,12 @@
     <div class = "card-content">
       <div class = "card-title">
         <% if can_modify? @user %>
+          <div class = "reorder-mode">
+            <%= form_for @top_card, url: card_path(@user, @top_card), method: :patch do |f| %>
+              <%= f.hidden_field :order, value: cards_order %>
+              <%= f.submit "Finalize Order" %>
+            <% end %>
+          </div>
           <div class = "new edit-mode">
             <%= form_for @top_card, url: card_path(@user, @top_card), method: :patch do |f| %>
               <%= f.text_field :title, placeholder: "Title for New List" %>

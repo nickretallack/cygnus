@@ -11,6 +11,13 @@ class CardsController < ApplicationController
   def update
     @card = Card.find(params[Card.slug])
     case params[:commit]
+    when /.*Order/
+      order = JSON.parse(params[:card][:order].gsub("=>", ":")).inject({}) { |memo, (key, value)| memo[key.to_i>0? key.to_i : nil] = value.collect { |id| id.to_i>0? id.to_i : nil }; memo }
+      order.each do |key, value|
+        card = Card.find(key)
+        card.update_attribute(:cards, value) if can_modify? User.find_by(id: card.user_id)
+      end
+      back and return
     when /Create.*/
       @new_card = Card.new(title: params[:card][:title])
       @new_card.save!
@@ -38,7 +45,7 @@ class CardsController < ApplicationController
     #   @kanban_list.update_attribute(:cards, @kanban_list.cards.insert(index, @kanban_card.id))
       back
     else
-      flash[:danger] = "Error updating item."
+      flash[:danger] = "error updating item"
       back
     end
   end

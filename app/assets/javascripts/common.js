@@ -30,6 +30,8 @@ function size(){
   }
 }
 
+readyFunctions.push(size);
+
 function ready(){
   $.each(readyFunctions, function(index, func){ func(); });
 }

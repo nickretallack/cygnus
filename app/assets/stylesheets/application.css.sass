@@ -28,6 +28,17 @@
   top: 50%
   transform: translateY(-50%)
 
+=horizontal-center
+  position: relative
+  left: 50%
+  transform: translateX(-50%)
+
+=full-center
+  position: relative
+  top: 50%
+  left: 50%
+  transform: translateX(-50%) translateY(-50%)
+
 =float-left
   float: left
   span
@@ -77,9 +88,8 @@
     width: 75%
   #reg-menu
     min-width: 400px !important
-
-//very large
-@media only screen and (max-width: 1920px)
+  [type = "checkbox"] + label:before
+    margin-top: -6px
 
 //large
 @media only screen and (min-width: 993px) and (max-width: 1920px)
@@ -94,6 +104,8 @@
   .container
     max-width: 85%
     width: 85%
+  [type = "checkbox"] + label:before
+    margin-top: 0
 
 //above medium
 @media only screen and (min-width: 993px)
@@ -124,9 +136,10 @@
 @media only screen and (max-width: 760px)
   .btn
     width: 100%
-    padding: 0 2px
   span
     +block-centered
+  input[type = "submit"]
+    margin-bottom: 10px
 
 //small
 @media only screen and (min-width: 364px) and (max-width: 760px)
@@ -157,7 +170,7 @@
     margin-top: 0 !important
     text-align: center
     width: 100% !important
-    *:not(.row):not(i):not(input):not(.thumbnail):not(.vdiv):not(a):not(span):not(blockquote)
+    *:not(.row):not(i):not(input):not(.thumbnail):not(.vdiv):not(a):not(span):not(blockquote):not(label)
       +block-centered
       width: 100%
 
@@ -322,12 +335,14 @@ span:not(.inline)
 .input-field
   padding-top: 10px
   padding-bottom: 5px
+  margin: 0
 
 [type="checkbox"] + label
-  padding-left: 2.5rem
+  padding-left: 2rem
   display: table
   color: black
   top: -2px
+  margin-top: .6rem
   &:before
     width: 1.3rem
     height: 1.3rem
@@ -484,6 +499,7 @@ footer
 .top-card
   box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 15px 30px 0 rgba(0, 0, 0, 0.12)
   background-color: #C5F992
+  text-align: left
   input[type = "text"]
     text-shadow: 0px 0px 4px black
     color: whitesmoke
@@ -531,6 +547,9 @@ footer
       +card1
     .card:nth-child(odd)
       +card2
+
+.edit-mode
+  text-align: left
 
 //header
 header
@@ -590,8 +609,9 @@ div#main
 
 //images
 .preview
-  @extend .hc
+  +block-centered
   position: relative
+  text-align: left
   #flash
     box-shadow: none
     margin-bottom: 10px
@@ -603,6 +623,7 @@ div#main
 .image
   width: auto
   display: inline-block !important
+  height: 100%
 
 .thumbnail-block
   +block-centered
@@ -619,18 +640,18 @@ div#main
   border: 4px dashed black
   border-radius: 4px
   box-sizing: content-box
+  overflow: hidden
   img
-    max-width: $thumb-size
-    +block-centered
-    +vertical-center
+    max-height: none
+    max-width: none
+    left: -25%
+    +full-center
 
-.preview.thumbnail
-  margin-top: 0
-  border: none
-  a
-    margin-right: 0
+.thumb-preview
   .thumbnail
-    margin-top: 0
+    img
+      max-height: 100%
+      max-width: 100%
 
 //input
 
@@ -641,9 +662,11 @@ div#main
   -webkit-appearance: none !important
   color: white !important
   transition: .2s ease-out !important
-  margin-top: 5px !important
-  margin-bottom: 5px !important
   font-size: 1rem !important
+  display: inline-block
+  line-height: 2rem !important
+  height: 2rem !important
+  padding: 0 2rem !important
 
 .submit:hover
   font-size: 1.2rem !important

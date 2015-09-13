@@ -53,7 +53,7 @@ class ImagesUploader < CarrierWave::Uploader::Base
   def resized(width, height)
     manipulate! do |img|
       img.coalesce
-      img.resize "#{width}x#{height}>"
+      img.resize "#{width}x#{height}^"
       img = yield(img) if block_given?
       img
     end
