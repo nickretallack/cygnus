@@ -25,7 +25,7 @@ Rails.application.routes.draw do
 
   scope path: ":#{User.slug}" do
     scope path: "workboard" do
-      resources :cards, only: [:create, :index], path: ""
+      resources :cards, only: [:index], path: ""
       resources :cards, only: [:update, :destroy], path: ""
     end
     resources :messages, only: [:index]

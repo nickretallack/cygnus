@@ -8,40 +8,38 @@ class CardsController < ApplicationController
     end
   end
 
-  def create
-    @new_kanban_card.kanban_list_id = params[:kanban_list_id]
-
-    if @new_kanban_card.save
-      @kanban_list = KanbanList.find(params[:kanban_list_id])
-      @kanban_list.update_attribute(:cards, (@kanban_list.cards << @new_kanban_card.id))
-      redirect_to :back
-    else
-      flash[:danger] = "Error saving item."
-      redirect_to :back
-    end
-  end
-
   def update
-    @kanban_card = KanbanCard.find(params[:kanban_card_id])
-    @kanban_card.file_id = Upload.render(params[:kanban_card][:upload][:picture], params[:kanban_card][:upload][:explicit]) unless params[:kanban_card][:upload][:picture].nil?
-    Upload.find(@kanban_card.file_id).update_attribute(:explicit, params[:kanban_card][:upload][:explicit]) unless @kanban_card.file_id.nil?
-    if @kanban_card.update_attributes(kanban_card_params)
-      case params[:kanban_card][:order]
-      when "Move Up"
-        order = 1
-      when "Move Down"
-        order = -1
-      else
-        order = params[:kanban_card][:order]
-      end
-      @kanban_list = KanbanList.find params[:kanban_list_id]
-      index = [0, @kanban_list.cards.index(@kanban_card.id)-order.to_i, @kanban_list.cards.length-1].sort[1]
-      @kanban_list.cards.delete(@kanban_card.id)
-      @kanban_list.update_attribute(:cards, @kanban_list.cards.insert(index, @kanban_card.id))
-      redirect_to :back
+    @card = Card.find(params[Card.slug])
+    case params[:commit]
+    when /Create.*/
+      @new_card = Card.new(title: params[:card][:title])
+      @new_card.save!
+      @card.cards << @new_card.id
+    when "Save"
+      @card.title = params[:card][:title]
+      @card.description = params[:card][:description]
+      @card.file_id = Upload.render(params[:card][:upload][:picture], params[:card][:upload][:explicit]) if params[:card][:upload][:picture]
+    end
+    if @card.update_attributes(@card.attributes)
+    # @kanban_card.file_id = Upload.render(params[:kanban_card][:upload][:picture], params[:kanban_card][:upload][:explicit]) unless params[:kanban_card][:upload][:picture].nil?
+    # Upload.find(@kanban_card.file_id).update_attribute(:explicit, params[:kanban_card][:upload][:explicit]) unless @kanban_card.file_id.nil?
+    # if @kanban_card.update_attributes(kanban_card_params)
+    #   case params[:kanban_card][:order]
+    #   when "Move Up"
+    #     order = 1
+    #   when "Move Down"
+    #     order = -1
+    #   else
+    #     order = params[:kanban_card][:order]
+    #   end
+    #   @kanban_list = KanbanList.find params[:kanban_list_id]
+    #   index = [0, @kanban_list.cards.index(@kanban_card.id)-order.to_i, @kanban_list.cards.length-1].sort[1]
+    #   @kanban_list.cards.delete(@kanban_card.id)
+    #   @kanban_list.update_attribute(:cards, @kanban_list.cards.insert(index, @kanban_card.id))
+      back
     else
       flash[:danger] = "Error updating item."
-      redirect_to :back
+      back
     end
   end
 
@@ -52,6 +50,6 @@ class CardsController < ApplicationController
   private
 
   def kanban_card_params_permitted
-    [:title]
+    []
   end
 end

@@ -6,7 +6,7 @@ class Card < ActiveRecord::Base
     @level ||= -> {
       if user_id
         0
-      elsif card_id and not cards.empty?
+      elsif not cards.empty?
         1
       else
         2

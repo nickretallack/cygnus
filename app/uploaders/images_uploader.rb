@@ -46,9 +46,18 @@ class ImagesUploader < CarrierWave::Uploader::Base
   end
   
   # Create different versions of your uploaded files:
-   version :thumb do
-     process :resize_to_fill => [150, 150]
-   end
+  version :thumb do
+    process :resized => [150, 150]
+  end
+
+  def resized(width, height)
+    manipulate! do |img|
+      img.coalesce
+      img.resize "#{width}x#{height}>"
+      img = yield(img) if block_given?
+      img
+    end
+  end
 
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:

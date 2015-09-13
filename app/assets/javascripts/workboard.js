@@ -1,4 +1,38 @@
-function onReady(){
+readyFunctions.push(function(){
+  topCard = $(".top-card");
+  if(topCard === []){
+    delete topCard;
+    return;
+  }
+  topCard.find("[class$='-mode']").hide();
+  $(".trigger").on("click", function(){
+    switchToWorklistMode($(this).html().toLowerCase().replace(" mode", ""));
+  });
+  switchToWorklistMode("view");
+});
+
+function switchToWorklistMode(toMode){
+  if(typeof mode !== "undefined"){
+    var elements = topCard.find("."+mode+"-mode");
+    elements.hide();
+    elements.off();
+  }
+  mode = toMode;
+  topCard.find($("."+mode+"-mode")).show();
+  window[mode+"Worklist"]();
+}
+
+function viewWorklist(){
+  topCard.children(".card-content").css({
+    paddingTop: "5px"
+  });
+}
+
+function editWorklist(){
+
+}
+
+function reorderWorklist(){
   if(!$(".kanban-card") === []){
     $(".kanban-card").on("mouseenter", function(){
       $(this).css("outline", "4px dashed slategrey");
@@ -79,4 +113,8 @@ function onReady(){
       $(window).off("mousemove");
     });
   }
+}
+
+function deleteWorklist(){
+
 }

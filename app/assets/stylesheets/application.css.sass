@@ -124,6 +124,7 @@
 @media only screen and (max-width: 760px)
   .btn
     width: 100%
+    padding: 0 2px
   span
     +block-centered
 
@@ -319,25 +320,20 @@ span:not(.inline)
     display: inline !important
 
 .input-field
-  margin-top: 10px
-  margin-bottom: 10px
+  padding-top: 10px
+  padding-bottom: 5px
 
 [type="checkbox"] + label
   padding-left: 2.5rem
-  display: initial
+  display: table
   color: black
-  +vertical-center
+  top: -2px
   &:before
-    top: -2px
     width: 1.3rem
     height: 1.3rem
     border-color: #B08ECE
 
 [type="checkbox"]:checked + label
-  padding-left: 2.5rem
-  display: initial
-  color: black
-  +vertical-center
   &:before
     top: -9px
     left: -8px
@@ -410,9 +406,12 @@ form
 .reverse
   transform: scaleX(-1)
 
-.moving-left.reverse
-  opacity: 0
-  padding-right: 130px
+.new
+  input[type = "text"],
+  input[type = "email"],
+  input[type = "password"]
+    padding-left: 5px
+    width: calc(100% - 5px)
 
 label
   color: inherit
@@ -467,21 +466,9 @@ footer
     font-size: 100%
 
 //cards
-.card
-  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 15px 30px 0 rgba(0, 0, 0, 0.12)
-  .thumbnail
-    position: inherit
-    top: auto
-    transform: none
-  h5
-    text-align: center
-  .card
-    h5
-      text-align: left
-      font-size: 80%
-
 =card1
   background-color: #EEFFE1
+  color: #EEFFE1
   .card-content
     .card-title
       color: #11A2A9
@@ -489,24 +476,60 @@ footer
 
 =card2
   background-color: #DEE4BD
+  color: #DEE4BD
   .card-content
     .card-title
       color: #1F7B3B
 
-.col:nth-of-type(odd)
+.top-card
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 15px 30px 0 rgba(0, 0, 0, 0.12)
+  background-color: #C5F992
+  input[type = "text"]
+    text-shadow: 0px 0px 4px black
+    color: whitesmoke
+  input[type = "submit"]
+    margin-bottom: 10px !important
+  textarea
+    font-size: 1rem
+    line-height: 2rem
+    height: auto
+  .thumbnail
+    position: inherit
+    top: auto
+    transform: none
   .card
+    @extend .col
+    @extend .s12
+    @extend .m6
+    @extend .l4
+    .card-content
+      padding-top: 0 !important
+    .card-action
+      padding: 0
+      font-size: 1.2rem
+      line-height: 1.2rem
+      border: none
+      margin-top: -10px
+      text-align: left !important
+      .thumbnail
+        float: left
+        margin-right: 5px
+      span
+        display: inline
+    .card
+      @extend .m12
+      @extend .l12
+  .card:nth-of-type(odd)
     +card1
-    .card:nth-child(odd)
+    .card:nth-child(even)
       +card2
-    .card:nth-child(even)
-      +card1
-
-.col:nth-of-type(even)
-  .card
-    +card2
     .card:nth-child(odd)
       +card1
+  .card:nth-of-type(even)
+    +card2
     .card:nth-child(even)
+      +card1
+    .card:nth-child(odd)
       +card2
 
 //header
@@ -599,6 +622,7 @@ div#main
   img
     max-width: $thumb-size
     +block-centered
+    +vertical-center
 
 .preview.thumbnail
   margin-top: 0

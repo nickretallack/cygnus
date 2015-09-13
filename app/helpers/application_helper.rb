@@ -165,7 +165,7 @@ module ApplicationHelper
     #
   def message_for(*args)
     key, value = args.first.first
-    key = key.to_s.gsub("_", " ").pluralize
+    key = key.to_s.gsub("_", " ")
     if value.blank?
       "No #{key} specified."
     else

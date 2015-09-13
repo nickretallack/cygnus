@@ -3,11 +3,21 @@ readyFunctions.push(function(){
     if(this.files && this.files[0]){
       var reader = new FileReader();
       reader.onload = function(event){
-        var div = $(".preview");
-        div.children("#flash").show();
-        div.children("img").remove();
-        div.append($("<img />", { src: event.target.result }));
-        $("label[for = 'user_upload_explicit']").addClass("danger");
+        var div = $("[class$='preview']"),
+            image = $("<img />", { src: event.target.result });
+        image.load(function(){
+          pic = $(this)[0]
+          div.children("#flash").show();
+          div.children("img").remove();
+          if(div.hasClass("thumb-preview")){
+            div.html($("<div />", {
+              class: "thumbnail success"
+            }).append(image));
+          }else{
+            div.html(image);
+          }
+          $("label[for $='_upload_explicit']").addClass("danger");
+        });
       }
       reader.readAsDataURL(this.files[0]);
     }

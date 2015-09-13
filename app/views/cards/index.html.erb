@@ -3,11 +3,13 @@
 <% if can_modify? @user %>
   <div class = "row hc js">
     <span>
-      <%= link_to "Create Mode", "", remote: true %>
+      <%= link_to "View Mode", "", remote: true, class: "trigger" %>
       <div class = "vdiv"></div>
-      <%= link_to "Reorder Mode", "", remote: true %>
+      <%= link_to "Edit Mode", "", remote: true, class: "trigger" %>
       <div class = "vdiv"></div>
-      <%= link_to "Delete Mode", "", remote: true, data: { confirm: "Are you sure you wish to enter delete mode?" } %>
+      <%= link_to "Reorder Mode", "", remote: true, class: "trigger" %>
+      <div class = "vdiv"></div>
+      <%= link_to "Delete Mode", "", remote: true, class: "trigger", data: { confirm: "Are you sure you wish to enter delete mode?" } %>
     </span>
   </div>
 <% end %>
@@ -16,7 +18,7 @@
     <div class = "card-content">
       <div class = "card-title">
         <% if can_modify? @user %>
-          <div class = "new create-mode">
+          <div class = "new edit-mode">
             <%= form_for @top_card, url: card_path(@user, @top_card), method: :patch do |f| %>
               <%= f.text_field :title, placeholder: "Title for New List" %>
               <%= f.submit "Create List" %>
@@ -24,16 +26,67 @@
           </div>
         <% end %>
         <p>
-          <% @top_card.cards.each do |list| %>
-            <div class = "card list-card">
+          <% @top_card.cards.collect { |card_id| Card.find(card_id) }.each do |list| %>
+            <div class = "card">
               <div class = "card-content">
                 <div class = "card-title">
+                  <div class = "view-mode reorder-mode delete-mode hc">
+                    <h4><%= title_for list: list %></h4>
+                    <hr />
+                  </div>
                   <% if can_modify? @user %>
-                    <div class = "new create-mode">
+                    <div class = "edit-mode">
                       <%= form_for list, url: card_path(@user, list), method: :patch do |f| %>
-                        <%= f.text_field :title, placeholder: "Title for New Card" %>
+                        <%= f.text_field :title, placeholder: "List Title" %>
+                        <%= f.submit "Save" %>
+                      <% end %>
+                    </div>
+                    <div class = "new edit-mode">
+                      <%= form_for list, url: card_path(@user, list), method: :patch do |f| %>
+                        <%= f.text_field :title, placeholder: "Title for New Card", value: "" %>
                         <%= f.submit "Create Card" %>
                       <% end %>
+                    </div>
+                  <% end %>
+                  <% enum_for list.cards.collect { |card_id| Card.find(card_id) } do |card| %>
+                    <div class = "card">
+                      <div class = "card-content">
+                        <div class = "card-title">
+                          <div class = "view-mode reorder-mode delete-mode hc">
+                            <h4><%= title_for workcard: card %></h4>
+                            <hr />
+                          </div>
+                          <% if can_modify? @user %>
+                            <div class = "edit-mode">
+                              <%= form_for card, url: card_path(@user, card), method: :patch do |f| %>
+                                <%= f.text_field :title, placeholder: "Card Title" %>
+                                <%= f.text_area :description, placeholder: "Description" %>
+                                <div class = "new">
+                                  <%= f.fields_for card.file_id.nil?? Upload.new : Upload.find(card.file_id), multipart: true do |u| %>
+                                    <div class = "input-field"><%= u.check_box :explicit %><%= u.label :explicit, "Explicit Attachment" %></div>
+                                    <div class = "row file-field input-field">
+                                      <div class = "submit">
+                                        <span>Attachment</span>
+                                        <%= u.file_field :picture %>
+                                      </div>
+                                    </div>
+                                  <% end %>
+                                  <div class = "thumb-preview">
+                                    <%= image_for :bordered, card.file_id if card.file_id %>
+                                  </div>
+                                </div>
+                                <%= f.submit "Save" %>
+                              <% end %>
+                            </div>
+                          <% end %>
+                          <div class = "card-action">
+                            <div class = "view-mode">
+                              <%= image_for :bordered, card.file_id if card.file_id %>
+                              <span><%= message_for description: card.description %></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   <% end %>
                 </div>
