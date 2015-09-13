@@ -15,8 +15,9 @@ class CardsController < ApplicationController
       order = JSON.parse(params[:card][:order].gsub("=>", ":")).inject({}) { |memo, (key, value)| memo[key.to_i>0? key.to_i : nil] = value.collect { |id| id.to_i>0? id.to_i : nil }; memo }
       order.each do |key, value|
         card = Card.find(key)
-        card.update_attribute(:cards, value) if can_modify? User.find_by(id: card.user_id)
+        card.update_attribute(:cards, value) if can_modify? User.find_by(id: Card.find(order.keys[0]).user_id)
       end
+      #raise "break"
       back and return
     when /Create.*/
       @new_card = Card.new(title: params[:card][:title])
@@ -25,7 +26,7 @@ class CardsController < ApplicationController
     when "Save"
       @card.title = params[:card][:title]
       @card.description = params[:card][:description]
-      @card.file_id = Upload.render(params[:card][:upload][:picture], params[:card][:upload][:explicit]) if params[:card][:upload][:picture]
+      @card.file_id = Upload.render(params[:card][:upload][:picture], params[:card][:upload][:explicit]) if params[:card][:upload] and params[:card][:upload][:picture]
     end
     if @card.update_attributes(@card.attributes)
     # @kanban_card.file_id = Upload.render(params[:kanban_card][:upload][:picture], params[:kanban_card][:upload][:explicit]) unless params[:kanban_card][:upload][:picture].nil?

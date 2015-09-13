@@ -111,6 +111,13 @@
 @media only screen and (min-width: 993px)
   .submit
     padding: 0 1rem
+  .top-card
+    .card
+      width: 31.81%
+      margin-left: .76%
+      margin-right: .76%
+    .card:nth-of-type(3n)
+      clear: left
 
 //below large
 @media only screen and (max-width: 992px)
@@ -128,6 +135,13 @@
     text-align: center
   .fh
     height: 12rem !important
+  .top-card
+    .card
+      width: 47%
+      margin-left: 1.5%
+      margin-right: 1.5%
+    .card:nth-of-type(odd)
+      clear: left
 
 //above small
 @media only screen and (min-width: 761px)
@@ -140,6 +154,8 @@
     +block-centered
   input[type = "submit"]
     margin-bottom: 10px
+  .top-card .card
+    width: 100%
 
 //small
 @media only screen and (min-width: 364px) and (max-width: 760px)
@@ -509,15 +525,14 @@ footer
     font-size: 1rem
     line-height: 2rem
     height: auto
+  h5
+    margin-bottom: -5%
   .thumbnail
     position: inherit
     top: auto
     transform: none
   .card
     @extend .col
-    @extend .s12
-    @extend .m6
-    @extend .l4
     .card-content
       padding-top: 0 !important
     .card-action
