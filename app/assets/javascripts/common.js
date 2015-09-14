@@ -1,12 +1,29 @@
-var readyFunctions = [];
+var readyFunctions = [],
+    loadFunctions = [];
 
-$(window).load(size);
-
-$(document).load(ready);
-
-$(document).on("page:load", ready);
+$(document).on("page:load", function(){
+  ready();
+  load();
+});
 
 $(document).ready(ready);
+
+$(window).load(load);
+
+function ready(){
+  $.each(readyFunctions, function(index, func){ func(); });
+}
+
+function load(){
+  $.each(loadFunctions, function(index, func){ func(); });
+}
+
+function pauseEvent(event){
+  if(event.stopPropagation) event.stopPropagation();
+  if(event.preventDefault) event.preventDefault();
+  event.cancelBubble = true;
+  event.returnValue = false;
+}
 
 function size(){
   var nav = $("nav"),
@@ -28,25 +45,20 @@ function size(){
       logo.width(nav.height()*3);
       break;
   }
-}
+};
 
-readyFunctions.push(size);
+loadFunctions.push(function(){
+  size();
 
-function ready(){
-  $.each(readyFunctions, function(index, func){ func(); });
-}
+  $(window).resize(size);
 
-function pauseEvent(event){
-  if(event.stopPropagation) event.stopPropagation();
-  if(event.preventDefault) event.preventDefault();
-  event.cancelBubble = true;
-  event.returnValue = false;
-}
+  $(".dropdown-button").off("click");
+});
 
 readyFunctions.push(function(){
   var nav = $("nav"),
       banner = $("header").children("img"),
-      menu = $("li").children(".dropdown-button"),
+      menu = $(".dropdown-button"),
       sideMenu = $(".button-collapse"),
       logo = $(".brand-logo"),
       widthTester = $(".widthTester"),
