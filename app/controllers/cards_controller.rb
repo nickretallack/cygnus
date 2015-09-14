@@ -52,7 +52,22 @@ class CardsController < ApplicationController
   end
 
   def destroy
-    raise "break"
+    @user = User.find(params[User.slug])
+    @card = Card.find(params[Card.slug])
+    not_found and return unless @card
+    case @card.level
+    when :list
+      @card.cards.collect { |card_id| Card.find(card_id) }.each do |card|
+        card.delete
+      end
+      @user.card.update_attribute(:cards, @user.card.cards) if @user.card.cards.delete @card.id
+    when :card
+      @user.card.cards.collect { |list_id| Card.find(list_id) }.each do |list|
+        list.update_attribute(:cards, list.cards) if list.cards.delete @card.id
+      end
+    end
+    @card.destroy
+    back
   end
 
   private

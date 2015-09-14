@@ -19,17 +19,13 @@ function switchToWorklistMode(toMode){
   }
   mode = toMode;
   topCard.find($("."+mode+"-mode")).show();
-  window[mode+"Worklist"]();
+  if(typeof window[mode+"Worklist"] === "function") window[mode+"Worklist"]();
 }
 
 function viewWorklist(){
   topCard.children(".card-content").css({
     paddingTop: "5px"
   });
-}
-
-function editWorklist(){
-
 }
 
 function reorderWorklist(){
@@ -97,7 +93,7 @@ function reorderWorklist(){
     if($(event.target).prop("tagName") === "INPUT") return;
     $(window).off("mousemove");
     $(".thing").remove();
-    hover.css("outline", "none");
+    if(typeof hover !== "undefined") hover.css("outline", "none");
     if(typeof held !== "undefined"){
       if($(held.parents(".card")[0]).hasClass("list")){
         if(hover.hasClass("list")){
@@ -117,25 +113,25 @@ function reorderWorklist(){
         }
       }
     }
-    var lists = $(".list");
-    $("#card_order").attr("value",
-      ("{"+$(".top-card").attr("id")+"=>["+[].fill(lists.length, function(index){
-          return lists[index].id
-        }).join(", ")+"]").replace(/'/g, "\"")+
-      (function(){
-        var append = "";
-        $.each(lists, function(index, list){
-          list = $(list);
-          var cards = list.find(".card");
-          append += (", "+list.attr("id")+"=>["+[].fill(cards.length, function(index){
-              return cards.length > 0? cards[index].id : "";
-            }).join(", ")+"]").replace(/'/g, "\"");
-        });
-        return append+"}";
-      })());
+    fillWorklistOrderField();
   });
 }
 
-function deleteWorklist(){
-
+function fillWorklistOrderField(){
+  var lists = $(".list");
+  $("#card_order").attr("value",
+  ("{"+$(".top-card").attr("id")+"=>["+[].fill(lists.length, function(index){
+      return lists.length > 0? lists[index].id : "";
+    }).join(", ")+"]").replace(/'/g, "\"")+
+  (function(){
+    var append = "";
+    $.each(lists, function(index, list){
+      list = $(list);
+      var cards = list.find(".card");
+      append += (", "+list.attr("id")+"=>["+[].fill(cards.length, function(index){
+          return cards.length > 0? cards[index].id : "";
+        }).join(", ")+"]").replace(/'/g, "\"");
+    });
+    return append+"}";
+  })());
 }

@@ -8,8 +8,6 @@
       <%= link_to "Edit Mode", "", remote: true, class: "trigger" %>
       <div class = "vdiv"></div>
       <%= link_to "Reorder Mode", "", remote: true, class: "trigger" %>
-      <div class = "vdiv"></div>
-      <%= link_to "Delete Mode", "", remote: true, class: "trigger", data: { confirm: "Are you sure you wish to enter delete mode?" } %>
     </span>
   </div>
 <% end %>
@@ -18,12 +16,12 @@
     <div class = "card-content">
       <div class = "card-title">
         <% if can_modify? @user %>
-          <div class = "reorder-mode">
-            <%= form_for @top_card, url: card_path(@user, @top_card), method: :patch do |f| %>
-              <%= f.hidden_field :order, value: cards_order %>
+          <%= form_for @top_card, url: card_path(@user, @top_card), method: :patch do |f| %>
+            <%= f.hidden_field :order, value: cards_order %>
+            <div class = "reorder-mode">
               <%= f.submit "Finalize Order" %>
-            <% end %>
-          </div>
+            </div>
+          <% end %>
           <div class = "new edit-mode">
             <%= form_for @top_card, url: card_path(@user, @top_card), method: :patch do |f| %>
               <%= f.text_field :title, placeholder: "Title for New List" %>
@@ -40,7 +38,7 @@
                     <h4><%= title_for list: list %></h4>
                     <hr />
                   </div>
-                  <div class = "hc reorder-mode delete-mode">
+                  <div class = "hc reorder-mode">
                     <h4 id = "title"><%= title_for list: list %></h4>
                   </div>
                   <% if can_modify? @user %>
@@ -49,6 +47,7 @@
                         <%= f.text_field :title, placeholder: "List Title" %>
                         <%= f.submit "Save" %>
                       <% end %>
+                      <%= button_to "Delete", card_path(@user, list), method: :delete %>
                     </div>
                     <div class = "new edit-mode">
                       <%= form_for list, url: card_path(@user, list), method: :patch do |f| %>
@@ -65,7 +64,7 @@
                             <h5><%= title_for workcard: card %></h5>
                             <hr />
                           </div>
-                          <div class = "hc reorder-mode delete-mode">
+                          <div class = "hc reorder-mode">
                             <h5 id = "title"><%= title_for workcard: card %></h5>
                           </div>
                           <% if can_modify? @user %>
@@ -89,6 +88,7 @@
                                 </div>
                                 <%= f.submit "Save" %>
                               <% end %>
+                              <%= button_to "Delete", card_path(@user, card), method: :delete %>
                             </div>
                           <% end %>
                           <div class = "card-action">
