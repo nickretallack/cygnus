@@ -23,7 +23,7 @@ class CardsController < ApplicationController
       @new_card = Card.new(title: params[:card][:title])
       @new_card.save!
       @card.cards << @new_card.id
-    when "Save"
+    when /Save.*/
       @card.title = params[:card][:title]
       @card.description = params[:card][:description]
       @card.file_id = Upload.render(params[:card][:upload][:picture], params[:card][:upload][:explicit]) if params[:card][:upload] and params[:card][:upload][:picture]

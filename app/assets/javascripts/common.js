@@ -52,52 +52,10 @@ loadFunctions.push(function(){
 
   $(window).resize(size);
 
-  $(".dropdown-button").off("click");
+  // $(".dropdown-button").off("click");
 });
 
 readyFunctions.push(function(){
-  var nav = $("nav"),
-      banner = $("header").children("img"),
-      menu = $(".dropdown-button"),
-      sideMenu = $(".button-collapse"),
-      logo = $(".brand-logo"),
-      widthTester = $(".widthTester"),
-      gallery = $(".gallery"),
-      galleryTable = $(".gallery").children("table");
-
   $(".nojs").hide();
   $(".js").show();
-
-  menu.dropdown({
-    belowOrigin: true,
-    hover: true,
-    constrain_width: false
-  });
-
-  $(window).keydown(function(event){
-    if(event.keyCode === 27) sideMenu.sideNav("hide");
-  });
-
-  sideMenu.sideNav();
-
-  var pushpinNav = function(){
-    if($(window).scrollTop() > banner.outerHeight())
-    {
-      $("nav").css({
-        position: "fixed",
-        top: 0
-      });
-    }else if($(window).scrollTop() === 0){
-      $("nav").css({
-        position: "relative",
-        top: "auto"
-      });
-    }
-  };
-
-  pushpinNav();
-
-  $(window).scroll(pushpinNav);
-
-  $(window).resize(size);
 });

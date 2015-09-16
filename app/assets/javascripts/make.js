@@ -340,6 +340,21 @@ Make.extend(Array.prototype, {
 
       if (b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2) return false;
       return true;
+    },
+
+    splitBy: function(elementName){
+      var groups = [],
+      elements = this;
+      index = -1; do{
+        groups.push((function(){
+          var array = [];
+          while($(elements[++index]).prop("tagName") !== elementName && index < elements.length){
+            array.push(elements[index]);
+          }
+          return array;
+        })());
+      }while(index < this.length);
+      return groups;
     }
     
   });

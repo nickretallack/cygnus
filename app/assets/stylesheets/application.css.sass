@@ -239,7 +239,6 @@ nav .button-collapse:hover
     width: 100%
 
 #nav-menu
-  min-width: 150px
   a
     text-shadow: none
   li
@@ -257,7 +256,6 @@ nav .button-collapse:hover
     float: left
   li
     +vertical-center
-    margin-right: 10px
   form
     margin-top: 32px
     background-color: transparent
@@ -542,6 +540,8 @@ footer
       border: none
       margin-top: -10px
       text-align: left !important
+      .view-mode
+        margin-top: 12%
       .thumbnail
         float: left
         margin-right: 5px
@@ -571,8 +571,10 @@ header
   img
     position: relative
     width: 100%
+    z-index: 1
   a
     text-shadow: 0px 2px 0 black
+    z-index: 2
   a:hover
     text-decoration: underline
     cursor: pointer

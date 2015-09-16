@@ -31,6 +31,9 @@ function viewWorklist(){
 function reorderWorklist(){
   $(".top-card").find(".card").on("mouseenter", function(){
     hover = $(this);
+    hover.find("h4", "h5").css({
+      cursor: "default"
+    })
     $(this).css("outline", "4px dashed slategrey");
     $(this).on("mousedown", function(event){
       held = $(this);

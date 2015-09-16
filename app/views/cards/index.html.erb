@@ -18,7 +18,7 @@
         <% if can_modify? @user %>
           <%= form_for @top_card, url: card_path(@user, @top_card), method: :patch do |f| %>
             <%= f.hidden_field :order, value: cards_order %>
-            <div class = "reorder-mode">
+            <div class = "js reorder-mode">
               <%= f.submit "Finalize Order" %>
             </div>
           <% end %>
@@ -34,20 +34,17 @@
             <div class = "card list" id = "'<%= list.id %>'" >
               <div class = "card-content">
                 <div class = "card-title">
-                  <div class = "hc view-mode">
-                    <h4><%= title_for list: list %></h4>
-                    <hr />
-                  </div>
-                  <div class = "hc reorder-mode">
+                  <div class = "hc view-mode reorder-mode">
                     <h4 id = "title"><%= title_for list: list %></h4>
+                    <hr />
                   </div>
                   <% if can_modify? @user %>
                     <div class = "edit-mode">
                       <%= form_for list, url: card_path(@user, list), method: :patch do |f| %>
                         <%= f.text_field :title, placeholder: "List Title" %>
-                        <%= f.submit "Save" %>
+                        <%= f.submit "Save List" %>
                       <% end %>
-                      <%= button_to "Delete", card_path(@user, list), method: :delete %>
+                      <%= button_to "Delete List", card_path(@user, list), method: :delete %>
                     </div>
                     <div class = "new edit-mode">
                       <%= form_for list, url: card_path(@user, list), method: :patch do |f| %>
@@ -60,12 +57,9 @@
                     <div class = "card" id = "'<%= card.id %>'">
                       <div class = "card-content">
                         <div class = "card-title">
-                          <div class = "hc view-mode">
-                            <h5><%= title_for workcard: card %></h5>
-                            <hr />
-                          </div>
-                          <div class = "hc reorder-mode">
+                          <div class = "hc view-mode reorder-mode">
                             <h5 id = "title"><%= title_for workcard: card %></h5>
+                            <hr />
                           </div>
                           <% if can_modify? @user %>
                             <div class = "edit-mode">
@@ -82,13 +76,13 @@
                                       </div>
                                     </div>
                                   <% end %>
-                                  <div class = "thumb-preview">
+                                  <div class = "js thumb-preview">
                                     <%= image_for :bordered, card.file_id if card.file_id %>
                                   </div>
                                 </div>
-                                <%= f.submit "Save" %>
+                                <%= f.submit "Save Card" %>
                               <% end %>
-                              <%= button_to "Delete", card_path(@user, card), method: :delete %>
+                              <%= button_to "Delete Card", card_path(@user, card), method: :delete %>
                             </div>
                           <% end %>
                           <div class = "card-action">
