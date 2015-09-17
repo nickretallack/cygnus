@@ -18,6 +18,10 @@
 @import "materialize.min"
 @import "theme"
 
+@font-face
+  font-family: "Blogger"
+  src: url("Blogger_Sans-Medium.otf")
+
 =block-centered
   margin-left: auto
   margin-right: auto
@@ -69,9 +73,43 @@
   max-width: 98%
   width: 98%
 
-@font-face
-  font-family: "Blogger"
-  src: url("Blogger_Sans-Medium.otf")
+=clickable-icon
+  &
+    color: black
+  &:hover
+    color: #E045BF
+
+//behavior
+
+.vc
+  +vertical-center
+
+.hc
+  width: 100%
+  text-align: center
+  *
+    +block-centered
+    display: block
+
+.fh
+  height: 10rem
+  a
+    display: inherit
+    height: inherit
+  div
+    +vertical-center
+
+.fl
+  +float-left
+
+.vdiv
+  +vertical-divider
+
+.fw
+  +full-width
+
+.clickable-icon
+  +clickable-icon
 
 //very large
 @media only screen and (min-width: 1921px)
@@ -346,10 +384,21 @@ span:not(.inline)
   *
     display: inline !important
 
+.hidable
+  background-color: azure
+  margin-top: 20px !important
+  border-radius: 8px
+  outline: 4px outset #BB2A2A
+  padding: 5px
+  .input-field
+    padding-top: 0
+    padding-bottom: 0
+
 .input-field
   padding-top: 10px
   padding-bottom: 5px
   margin: 0
+  display: inline
 
 [type="checkbox"] + label
   padding-left: 2rem
@@ -603,10 +652,14 @@ header
     margin-top: 10px
     border-radius: 3px
     padding-bottom: 5px
+    min-width: 200px
   input
     width: auto
   input[type = "submit"]
     background-color: $menu-button-background-color
+  .col:not(.fl)
+    float: none !important
+    width: 100%
 
 div#main
   .header
@@ -684,6 +737,7 @@ div#main
   line-height: 2rem !important
   height: 2rem !important
   padding: 0 2rem !important
+  margin: 8px auto
 
 .submit:hover
   font-size: 1.2rem !important
@@ -761,32 +815,3 @@ input:focus:-ms-input-placeholder, textarea:focus:-ms-input-placeholder
   color: sandybrown
 .comm-on_vacation
   color: lightpurple
-
-//behavior
-
-.vc
-  +vertical-center
-
-.hc
-  width: 100%
-  text-align: center
-  *
-    +block-centered
-    display: block
-
-.fh
-  height: 10rem
-  a
-    display: inherit
-    height: inherit
-  div
-    +vertical-center
-
-.fl
-  +float-left
-
-.vdiv
-  +vertical-divider
-
-.fw
-  +full-width

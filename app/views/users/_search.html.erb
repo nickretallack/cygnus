@@ -4,6 +4,9 @@
       <i class = "material-icons prefix">search</i>
       <%= f.text_field :search, placeholder: "Artists who do...", value: query %>
       <%= f.submit "Search" %>
+      <div class = "row hidable min" id = "search_by">
+        <div class = "input-field"><%= select "user[search]", :status, select_options_for(:status), {}, { class: "btn button-with-icon" } %></div>
+      </div>
     <% end %>
   </div>
 </div>

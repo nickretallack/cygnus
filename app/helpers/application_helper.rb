@@ -196,6 +196,11 @@ module ApplicationHelper
       each_with_index.map { |type, index|
         [type, index]
       })
+    when :status
+      CONFIG[:activity_icons].keys.
+      each_with_index.map { |status, index|
+        [status.to_s.gsub("_", " "), index]
+      }
     end
   end
 end

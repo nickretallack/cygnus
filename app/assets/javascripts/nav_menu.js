@@ -1,4 +1,4 @@
-readyFunctions.push(function(){
+loadFunctions.push(function(){
   $(".dropdown-button").dropdown({
     belowOrigin: true,
     hover: true,
@@ -6,6 +6,8 @@ readyFunctions.push(function(){
   });
 
   $(".dropdown-button").off("click");
+  $(".dropdown-button").trigger("mouseover");
+  $(".dropdown-button").trigger("mouseout");
 
   $(".button-collapse").sideNav({
     menuWidth: 530,
@@ -17,8 +19,15 @@ readyFunctions.push(function(){
       class: "row"
     });
     $.each(menu.children().splitBy("HR"), function(index, array){
+      var me = $(this)
       var column = $("<div />", {
-        class: "col"
+        class: "col"+(function(){
+          if(me.prop("tagName") === "FORM"){
+            return "";
+          }else{
+            return " fl";
+          }
+        })()
       });
       $.each(array, function(index, element){
         $(element).appendTo(column);
@@ -31,7 +40,6 @@ readyFunctions.push(function(){
 
   columnize($(".dropdown-content"));
   columnize($(".side-nav").css({
-    height: "296px",
     padding: 0,
     paddingTop: "20px"
   }));

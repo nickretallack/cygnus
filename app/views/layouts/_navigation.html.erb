@@ -4,7 +4,7 @@
     <div class = "nav-wrapper">
       <%= link_to image_for(:logo_thumb), root_path, class: "brand-logo" %>
       
-      <ul class = "right hide-on-med-and-down">
+      <ul class = "right hide-on-med-and-down js">
         <li><a class = "dropdown-button" data-activates = "reg-menu"><div class = "vc">Log In / Register<i class = "material-icons right">arrow_drop_down</i></div></a></li>
       </ul>
       <div class = "right hide-on-med-and-down nojs">
@@ -18,13 +18,11 @@
     <%= render "users/log_in" %>
     <hr />
     <%= render "users/register" %>
-    <hr />
   </ul>
   <ul class = "side-nav" id = "mobile-reg-menu">
     <%= render "users/log_in" %>
     <hr />
     <%= render "users/register" %>
-    <hr />
   </ul>
 
 <% else %>
