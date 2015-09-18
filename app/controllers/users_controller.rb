@@ -11,9 +11,12 @@ class UsersController < ApplicationController
 
   def index
     # handles search; if we are just indexing, @users is already set
-    if params[:search]
-      @header = params[:search][:search]
-      @users = User.search(params[:search][:search])
+    if params[:terms]
+      @header = params[:terms][:tags]
+      @status = params[:terms][:status]
+      @users = User.search(params[:terms])
+      
+      #raise "break"
     end
   end
 

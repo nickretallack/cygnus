@@ -41,9 +41,22 @@ class User < ActiveRecord::Base
     User.level_for(level) >= User.level_for(grade)
   end
 
-  def self.search(terms = "")
-    sanitized = sanitize_sql_array(["to_tsquery('english', ?)", terms.gsub(/\s/, "+")])
-    User.where("tags_tsvector @@ #{sanitized}")
+  def self.search(terms)
+    @result = User.where(->(tags) { #returns all instead of none if no search tags are given
+      if tags == ""
+        return ""
+      else
+        return "tags_tsvector @@ #{sanitize_sql_array(["to_tsquery('english', ?)", terms[:tags].gsub(/\s/, "+")])} AND "
+      end
+    }.call(terms[:tags]) + ->(statuses) { #prepared to receive a hash of commission statuses like "statuses" => {"0" => "1", "1" => "4"} for convenient selecting
+      append = ""
+      statuses.collect { |key, value| sanitize_sql_array(["statuses[#{key.to_i+1}] = %d", value.to_i]) }.each_with_index do |statement, index|
+        append << "#{statement}"
+        append << " AND " if index < statuses.length - 1
+      end
+      append
+    }.call(terms[:statuses]) )
+    #raise "break"
   end
   
   def User.digest(string)

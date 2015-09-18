@@ -226,7 +226,7 @@
     margin-top: 0 !important
     text-align: center
     width: 100% !important
-    *:not(.row):not(i):not(input):not(.thumbnail):not(.vdiv):not(a):not(span):not(blockquote):not(label):not(form)
+    *:not(.row):not(i):not(input):not(.thumbnail):not(.vdiv):not(a):not(span):not(blockquote):not(label):not(form):not(select)
       +block-centered
       width: 100%
 
@@ -404,7 +404,14 @@ span:not(.inline)
   padding-top: 10px
   padding-bottom: 5px
   margin: 0
-  display: inline
+  display: inline-block
+  width: 100%
+  label
+    font-size: 17px
+    margin-top: -6px
+  label + select
+    width: 65%
+    float: right
 
 [type="checkbox"] + label
   padding-left: 2rem
