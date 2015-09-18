@@ -10,9 +10,9 @@ loadFunctions.push(function(){
   $(".dropdown-button").trigger("mouseout");
 
   $(".button-collapse").sideNav({
-    menuWidth: 530,
-    closeOnClick: true
-  }); 
+    closeOnClick: true,
+    menuWidth: 550
+  });
 
   var columnize = function(menu){
     var row = $("<div />", {

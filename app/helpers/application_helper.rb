@@ -104,7 +104,7 @@ module ApplicationHelper
     when :danger, :info
       suffix = "."
     end
-    ("<span>"+message.slice(0, 1).capitalize+message.slice(1..-1)+suffix+"</span>").html_safe
+    message.slice(0, 1).capitalize+message.slice(1..-1)+suffix.html_safe
   end
 
     #sanitize_title

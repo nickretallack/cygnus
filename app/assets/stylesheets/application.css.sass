@@ -220,11 +220,13 @@
 @media only screen and (max-width: 363px)
   .widthTester
     width: 0px
+  .hidable-title
+    margin-bottom: 10px
   .col
     margin-top: 0 !important
     text-align: center
     width: 100% !important
-    *:not(.row):not(i):not(input):not(.thumbnail):not(.vdiv):not(a):not(span):not(blockquote):not(label)
+    *:not(.row):not(i):not(input):not(.thumbnail):not(.vdiv):not(a):not(span):not(blockquote):not(label):not(form)
       +block-centered
       width: 100%
 
@@ -232,6 +234,9 @@
 html
   font-family: "Blogger"
   background-color: $background-color
+
+.side-nav
+  max-width: 80%
 
 h1, h2, h3, h4, h5, h6
   margin: 0
@@ -389,7 +394,8 @@ span:not(.inline)
   margin-top: 20px !important
   border-radius: 8px
   outline: 4px outset #BB2A2A
-  padding: 5px
+  padding: 10px
+  padding-bottom: 20px
   .input-field
     padding-top: 0
     padding-bottom: 0
