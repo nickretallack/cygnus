@@ -51,7 +51,7 @@ class UsersController < ApplicationController
     @user.artist_type = format_artist_type(params[:user][:artist_types].values) unless params[:user][:artist_type][0] == "0"
     @user.statuses = params[:user][:statuses].values
     if @user.update_attributes(user_params)
-      Submission.new(title: "Avatar", pool_id: params[:user][:upload][:pool].to_i, file_id: @user.avatar).save! unless @user.avatar.nil? or params[:user][:upload][:pool] == "0"
+      #Submission.new(title: "Avatar", pool_id: params[:user][:upload][:pool].to_i, file_id: @user.avatar).save! unless @user.avatar.nil? or params[:user][:upload][:pool] == "0"
       flash[:success] = "profile updated"
       redirect_to :back
     else
@@ -90,16 +90,15 @@ class UsersController < ApplicationController
 
   def watch
     if watching? @user
-      @user.watched_by.delete(current_user.id)
-      @user.update_attribute(:watched_by, @user.watched_by)
-      current_user.watching.delete(@user.id)
-      current_user.update_attribute(:watching, current_user.watching)
+      current_user.update_attribute(:watching, current_user.watching.delete_if { |id| id == @user.id })
     else
-      @user.update_attribute(:watched_by, @user.watched_by << current_user.id)
       current_user.update_attribute(:watching, current_user.watching << @user.id)
       activity_message(:watch, @user)
     end
-    redirect_to :back
+    respond_to do |format|
+      format.html { back }
+      format.js
+    end
   end
 
   def activate
@@ -110,7 +109,7 @@ class UsersController < ApplicationController
       redirect_to action: :show, User.slug => @user
     else
       flash[:danger] = "invalid activation link"
-      redirect_to :root
+      back
     end
   end
 

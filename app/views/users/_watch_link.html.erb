@@ -1,0 +1,25 @@
+<div id = "watch">
+  <% if can_watch? user %>
+    <% unless watching? user %>
+      <blockquote class = "inline link">
+        <%= link_to "Watch", watch_user_path(user), class: "js", remote: true %>
+        <%= link_to "Watch", watch_user_path(user), class: "nojs" %>
+      </blockquote>
+    <% else %>
+      <blockquote class = "inline danger link">
+        <%= link_to "Unwatch", watch_user_path(user), class: "js", remote: true %>
+        <%= link_to "Unwatch", watch_user_path(user), class: "nojs" %>
+      </blockquote>
+    <% end %>
+  <% else %>
+    <% if anon? %>
+      <% unless user.at_least(:blocked) %>
+        <blockquote class = "inline danger link">Unactivated</blockquote>
+      <% else %>
+        <blockquote class = "inline link"><%= link_to "Profile", user_path(user) %></blockquote>
+      <% end %>
+    <% else %>
+      <blockquote class = "inline link"><%= link_to "Financial" %></blockquote>
+    <% end %>
+  <% end %>
+</div>

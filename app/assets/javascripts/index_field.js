@@ -3,13 +3,13 @@ readyFunctions.push(function(){
 
   $.each(fields, function(index, field){
     field = $(field);
-    field.addClass("vc").css({
-      height: 150
+    field.css({
+      height: 170
     });
     var pool = field.children(".col");
     pool.css({
       width: "80%",
-      height: 160,
+      height: 163,
       overflow: "hidden"
     });
     $(window).resize(function(){ pool.children().show() });

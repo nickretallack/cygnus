@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150919185211) do
+ActiveRecord::Schema.define(version: 20150920041127) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,9 +64,8 @@ ActiveRecord::Schema.define(version: 20150919185211) do
     t.boolean  "adult"
     t.integer  "file_id"
     t.integer  "pool_id"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.integer  "faved_by",   default: [],              array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "uploads", force: :cascade do |t|
@@ -98,7 +97,6 @@ ActiveRecord::Schema.define(version: 20150919185211) do
     t.datetime "activated_at"
     t.datetime "reset_sent_at"
     t.integer  "watching",          default: [],                        array: true
-    t.integer  "watched_by",        default: [],                        array: true
     t.string   "artist_type"
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false

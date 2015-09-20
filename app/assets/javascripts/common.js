@@ -25,3 +25,9 @@ function pauseEvent(event){
   event.returnValue = false;
 }
 
+function hideAndShow(){
+  $(".nojs").hide();
+  $(".js").show();
+}
+
+readyFunctions.push(hideAndShow);

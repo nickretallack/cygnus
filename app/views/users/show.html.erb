@@ -64,7 +64,8 @@
 <% end %>
 
 <% content_for :footer do %>
-	<div class = "row hidable min" id = "favorites">
+	<div class = "row hidable max">
+		<div class = "hidable-title"><%= @user.name %>'s favorites</div>
 		<div class = "row pool-index-field">
 			<div class = "col">
 				<% enum_for @user.favs.collect { |id| Submission.find(id) } do |submission| %>

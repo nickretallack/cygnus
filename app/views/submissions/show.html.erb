@@ -5,14 +5,7 @@
     <%= link_to "Pool", pool_path(@submission.pool.id) %>
     <div class = "vdiv"></div>
     <%= link_to "Download", download_path(@submission.file_id) %>
-    <% if can_fav? @submission %>
-      <div class = "vdiv"></div>
-      <% unless faved? @submission %>
-        <%= link_to "Favorite", fav_submission_path(@submission) %>
-      <% else %>
-        <%= link_to "Unfavorite", fav_submission_path(@submission), class: "danger" %>
-      <% end %>
-    <% end %>
+    <%= render "favorite_link" %>
   </span>
 </div>
 <div class = "row hc limit-height">

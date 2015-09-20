@@ -36,7 +36,7 @@ module UsersHelper
   end
 
   def watching?(user)
-    @watching ||= current_user.watching.include? user.id
+    current_user.watching.include? user.id
   end
 
   def can_fav?(submission)
@@ -44,7 +44,7 @@ module UsersHelper
   end
 
   def faved?(submission)
-    @faved ||= current_user.favs.include? submission.id
+    current_user.favs.include? submission.id
   end
 
   #insist_on

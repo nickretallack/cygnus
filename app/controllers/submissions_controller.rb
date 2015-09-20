@@ -58,16 +58,15 @@ class SubmissionsController < ApplicationController
 
   def fav
     if faved? @submission
-      @submission.faved_by.delete(current_user.id)
-      @submission.update_attribute(:faved_by, @submission.faved_by)
-      current_user.favs.delete(@submission.id)
-      current_user.update_attribute(:favs, current_user.favs)
+      current_user.update_attribute(:favs, current_user.favs.delete_if { |id| id == @submission.id })
     else
-      @submission.update_attribute(:faved_by, @submission.faved_by << current_user.id)
       current_user.update_attribute(:favs, current_user.favs << @submission.id)
       activity_message(:fav, @submission)
     end
-    back
+    respond_to do |format|
+      format.html { back }
+      format.js
+    end
   end
 
   private

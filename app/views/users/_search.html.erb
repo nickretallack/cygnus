@@ -4,7 +4,8 @@
       <i class = "material-icons prefix">search</i>
       <%= f.text_field :tags, placeholder: "Artists who do...", value: query %>
       <%= f.submit "Search" %>
-      <div class = "row hidable max" id = "search_by">
+      <div class = "row hidable max">
+        <div class = "hidable-title">Search by</div>
         <div class = "input-field">
           <%= f.label :status %>
           <%= f.select "statuses[0]", select_options_for(:status), { selected: @status || CONFIG[:activity_icons].keys.index(:accepting) }, { class: "btn button-with-icon" } %>

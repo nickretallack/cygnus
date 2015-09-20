@@ -83,7 +83,7 @@
 =pool-index-field
   &
     text-align: center
-    margin-top: 1rem
+    margin: 2rem auto auto 0 !important
     +block-centered
     .col
       display: inline
@@ -216,6 +216,12 @@
     margin-bottom: 10px
   .top-card .card
     width: 100%
+  .pool-index-field
+    .col
+      width: 100% !important
+      transform: none
+      top: 0
+      margin: 5% auto
 
 //small
 @media only screen and (min-width: 364px) and (max-width: 760px)
@@ -244,7 +250,7 @@
     width: 0px
   .hidable-title
     margin-bottom: 10px
-  .col
+  .row
     margin-top: 0 !important
     text-align: center
     width: 100% !important
@@ -360,6 +366,9 @@ li
   border: 4px dotted #9DD0B4
   padding: 5px
   border-radius: 15px
+
+.hidable + .row
+  margin-top: 10px !important
 
 .container .row
   margin: 0
@@ -727,7 +736,7 @@ div#main
 
 .image
   width: auto
-  display: inline-block !important
+  //display: inline-block !important
   height: 100%
 
 .thumbnail-block

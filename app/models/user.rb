@@ -24,6 +24,10 @@ class User < ActiveRecord::Base
     Rails.application.routes.named_routes.helpers.map(&:to_s).collect{ |route| route.gsub(/_path|_url/, "") }
   end
 
+  def watched_by
+    User.where("? = ANY (watching)", id)
+  end
+
   def self.level_for(grade)
     CONFIG[:user_levels].index(grade.to_s)
   end

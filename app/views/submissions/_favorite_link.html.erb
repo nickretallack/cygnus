@@ -1,0 +1,12 @@
+<div id = "favorite">
+  <% if can_fav? @submission %>
+    <div class = "vdiv"></div>
+    <% unless faved? @submission %>
+      <%= link_to "Favorite", fav_submission_path(@submission), class: "js", remote: true %>
+      <%= link_to "Favorite", fav_submission_path(@submission), class: "nojs" %>
+    <% else %>
+      <%= link_to "Unfavorite", fav_submission_path(@submission), class: "js danger", remote: true %>
+      <%= link_to "Unfavorite", fav_submission_path(@submission), class: "nojs danger" %>
+    <% end %>
+  <% end %>
+</div>
