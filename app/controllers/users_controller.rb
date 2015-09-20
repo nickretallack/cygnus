@@ -15,8 +15,7 @@ class UsersController < ApplicationController
       @header = params[:terms][:tags]
       @status = params[:terms][:status]
       @users = User.search(params[:terms])
-      
-      #raise "break"
+      @searching = true
     end
   end
 

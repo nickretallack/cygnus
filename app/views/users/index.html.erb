@@ -1,17 +1,21 @@
 <% provide(:header, @header) %>
 
-<div class = "row hidable max">
-  <div class = "hidable-title">Recent</div>
-  <div class = "row pool-index-field">
-    <div class = "col">
-      <% enum_for recent_submissions do |submission| %>
-        <%= link_to submission_path(submission) do %>
-          <%= image_for :bordered, submission.file_id %>
+<%= render "search", query: @query %>
+
+<% unless @searching %>
+  <hr />
+  <div class = "row hidable max">
+    <div class = "hidable-title">Recent Submissions</div>
+    <div class = "row pool-index-field">
+      <div class = "col">
+        <% enum_for recent_submissions do |submission| %>
+          <%= link_to submission_path(submission) do %>
+            <%= image_for :bordered, submission.file_id %>
+          <% end %>
         <% end %>
-      <% end %>
+      </div>
     </div>
   </div>
-</div>
+<% end %>
 
-<%= render 'search', query: @query %>
-<%= render 'results', users: @users %>
+<%= render "results", users: @users %>

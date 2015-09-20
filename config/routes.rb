@@ -42,7 +42,7 @@ Rails.application.routes.draw do
 
   controller :users do
     post :resend_activation_email, as: :resend
-    post :index, path: "", as: :search
+    post :index, path: "search", as: :search
     post :log_in
     delete :log_out
     get :new, path: "register", as: :register

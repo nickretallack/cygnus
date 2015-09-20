@@ -121,8 +121,7 @@ loadFunctions.push(function(){
   }));
 
   $.each(hidable, function(index, element){
-    var hidable = $(element),
-        height = hidable.outerHeight();
+    var hidable = $(element);
     hidable.children(".hidable-title").css({
         float: "left",
         lineHeight: "19px",
@@ -137,4 +136,10 @@ loadFunctions.push(function(){
     minmax(hidable);
     $(window).resize(function(){ sizeHidable(hidable) });
   });
+
+  $.each(destroyable, function(index, element){
+    var destroyable = $(element);
+    sizeHidable(destroyable);
+    $(window).resize(function(){ sizeHidable(destroyable); });
+  })
 });
