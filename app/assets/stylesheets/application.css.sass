@@ -76,8 +76,25 @@
 =clickable-icon
   &
     color: black
+    display: inline
   &:hover
     color: #E045BF
+
+=pool-index-field
+  &
+    text-align: center
+    margin-top: 1rem
+    +block-centered
+    .col
+      display: inline
+      width: 100%
+      a
+        width: 170px
+        height: 170px
+        display: inline-block
+      i:hover
+        color: #E045BF
+
 
 //behavior
 
@@ -110,6 +127,9 @@
 
 .clickable-icon
   +clickable-icon
+
+.pool-index-field
+  +pool-index-field
 
 //very large
 @media only screen and (min-width: 1921px)
@@ -183,6 +203,8 @@
 
 //above small
 @media only screen and (min-width: 761px)
+  input[type = "submit"] + input[type = "submit"]
+    margin-left: 2%
 
 //below medium
 @media only screen and (max-width: 760px)
@@ -531,16 +553,16 @@ blockquote[class = "inline"]
 blockquote.link
   height: 2.32rem
   margin-top: 15px
-  padding-top: 3px
+  padding-top: .25rem
   overflow: hidden
   font-size: 140%
   a
     position: relative
-    top: 0
+    bottom: 15%
     vertical-align: text-top
   a:hover
-    top: -5px
-    margin-left: -8px
+    bottom: 32%
+    margin-left: -.2rem
   a~a:hover
     margin-left: 0
 

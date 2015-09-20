@@ -1,6 +1,6 @@
 <div class = "col s6">
   <% if can_watch? user %>
-    <% if watching? user %>
+    <% unless watching? user %>
       <blockquote class = "inline success link truncate"><%= link_to "Watch", watch_user_path(user) %></blockquote>
     <% else %>
       <blockquote class = "inline danger link truncate"><%= link_to "Unwatch", watch_user_path(user) %></blockquote>

@@ -1,4 +1,4 @@
-readyFunctions.push(function(){
+loadFunctions.push(function(){
   $(".nojs").hide();
   $(".js").show();
 

@@ -89,7 +89,7 @@ class UsersController < ApplicationController
   end
 
   def watch
-    if current_user.watching.include? @user.id
+    if watching? @user
       @user.watched_by.delete(current_user.id)
       @user.update_attribute(:watched_by, @user.watched_by)
       current_user.watching.delete(@user.id)
@@ -97,6 +97,7 @@ class UsersController < ApplicationController
     else
       @user.update_attribute(:watched_by, @user.watched_by << current_user.id)
       current_user.update_attribute(:watching, current_user.watching << @user.id)
+      activity_message(:watch, @user)
     end
     redirect_to :back
   end

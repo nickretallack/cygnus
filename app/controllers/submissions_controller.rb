@@ -56,12 +56,23 @@ class SubmissionsController < ApplicationController
     end
   end
 
-  private
-    def set_submission
-      @submission = Submission.find(params[:id])
+  def fav
+    if faved? @submission
+      @submission.faved_by.delete(current_user.id)
+      @submission.update_attribute(:faved_by, @submission.faved_by)
+      current_user.favs.delete(@submission.id)
+      current_user.update_attribute(:favs, current_user.favs)
+    else
+      @submission.update_attribute(:faved_by, @submission.faved_by << current_user.id)
+      current_user.update_attribute(:favs, current_user.favs << @submission.id)
+      activity_message(:fav, @submission)
     end
+    back
+  end
 
-    def submission_params_permitted
-      [:title, :adult, :file_id, :pool_id, :file]
-    end
+  private
+
+  def submission_params_permitted
+    [:title, :adult, :file_id, :pool_id, :file]
+  end
 end

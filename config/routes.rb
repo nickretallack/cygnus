@@ -15,7 +15,11 @@ Rails.application.routes.draw do
   resources :pools, only: [:index], path: "(:#{User.slug})/pools"
   resources :pools, only: [:create]
   resources :pools, except: [:index, :create, :edit]
-  resources :submissions, except: [:edit]
+  resources :submissions, except: [:edit] do
+    member do
+      get :fav
+    end
+  end
 
   scope path: "submission/:submission_#{Submission.slug}" do
     resources :messages, only: [:create], path: "comments", as: :comments
@@ -28,7 +32,7 @@ Rails.application.routes.draw do
       resources :cards, only: [:index], path: ""
       resources :cards, only: [:update, :destroy], path: ""
     end
-    resources :messages, only: [:index]
+    resources :messages, only: [:index], path: "activity"
     resources :messages, only: [:index], path: "(:recipient)/conversations", as: :pms
     resources :messages, only: [:create], path: ":recipient/conversations", as: :pms
     controller :pools do
@@ -38,7 +42,7 @@ Rails.application.routes.draw do
 
   controller :users do
     post :resend_activation_email, as: :resend
-    post :index, as: :search
+    post :index, path: "", as: :search
     post :log_in
     delete :log_out
     get :new, path: "register", as: :register

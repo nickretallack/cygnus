@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150913155610) do
+ActiveRecord::Schema.define(version: 20150919185211) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,8 +64,9 @@ ActiveRecord::Schema.define(version: 20150913155610) do
     t.boolean  "adult"
     t.integer  "file_id"
     t.integer  "pool_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.integer  "faved_by",   default: [],              array: true
   end
 
   create_table "uploads", force: :cascade do |t|
@@ -101,6 +102,7 @@ ActiveRecord::Schema.define(version: 20150913155610) do
     t.string   "artist_type"
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
+    t.integer  "favs",              default: [],                        array: true
   end
 
   add_index "users", ["tags_tsvector"], name: "index_users_on_tags_tsvector", using: :gin

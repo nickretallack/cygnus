@@ -35,12 +35,16 @@ module UsersHelper
     @can_watch ||= at_least(:admin) or (not anon? and not current_user? user)
   end
 
-  def watching? user
-    current_user.watching.include? user.id
+  def watching?(user)
+    @watching ||= current_user.watching.include? user.id
   end
 
-  def watched_by user
-  	current_user.watched_by.include? user.id
+  def can_fav?(submission)
+    @can_fav ||= (not anon? and not current_user? submission.pool.user)
+  end
+
+  def faved?(submission)
+    @faved ||= current_user.favs.include? submission.id
   end
 
   #insist_on

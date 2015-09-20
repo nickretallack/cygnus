@@ -64,6 +64,17 @@
 <% end %>
 
 <% content_for :footer do %>
+	<div class = "row hidable min" id = "favorites">
+		<div class = "row pool-index-field">
+			<div class = "col">
+				<% enum_for @user.favs.collect { |id| Submission.find(id) } do |submission| %>
+					<%= link_to submission_path(submission) do %>
+						<%= image_for :bordered, submission.file_id %>
+					<% end %>
+				<% end %>
+			</div>
+		</div>
+	</div>
 	Member Since: <%= Date.parse(@user.created_at.to_s).to_formatted_s(:long_ordinal) %><br />
 	<% if can_modify? @user %>
 		Last Login: <%=Date.parse(@user.created_at.to_s).to_formatted_s(:long_ordinal) %><br />

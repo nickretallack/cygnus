@@ -9,11 +9,11 @@ module MessagesHelper
     message = Message.new(user_id: -1, recipient_id: current_user.id)
     case type
     when :watch
-      message.content = "#{current_user.name} watched #{object.name}."
+      message.content = "#{current_user.name} watched #{view_context.link_to object.name, user_path(object)}."
     when :fav
-      message.content = "#{current_user.name} favorited #{object.user.name}'s submission titled #{object.title}."
+      message.content = "#{current_user.name} favorited #{object.pool.user.name}'s submission titled #{object.title}."
     when :new_submission
-      message.content = "#{current_user.name} uploaded a new #{view_context.link_to "submission", submission_path(object.id)}."
+      message.content = "#{current_user.name} uploaded a new #{view_context.link_to "submission", submission_path(object)}."
     when :work_request
       message.content = "#{current_user.name} ordered work from #{object.name}."
     when :workboard_update
@@ -21,7 +21,7 @@ module MessagesHelper
     when :commission_finished
       message.content = "#{current_user.name} finished a commission for #{object.name}."
     when :print_order
-      message.content = "#{current_user.name} ordered a print of #{object.user.name}'s #{view_context.link_to "submission", submission_path(object.id)}."
+      message.content = "#{current_user.name} ordered a print of #{object.user.name}'s #{view_context.link_to "submission", submission_path(object)}."
     when :status_change
       message.content = ""
       object.each.with_index do |(key, status), index|
