@@ -1,9 +1,0 @@
-<% unless anon? or User.find(recipient).nil? %>
-  <div class = "row new">
-    <%= form_for Message.new, url: pms_path(current_user.name, recipient) do |f| %>
-      <%= f.text_field :subject, placeholder: "Subject for PM" %>
-      <%= f.text_area :content, placeholder: "Message" %>
-      <%= f.submit "PM #{recipient}" %>
-    <% end %>
-  </div>
-<% end %>

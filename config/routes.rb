@@ -22,9 +22,11 @@ Rails.application.routes.draw do
   end
 
   scope path: "submission/:submission_#{Submission.slug}" do
-    resources :messages, only: [:create], path: "comments", as: :comments
-    resources :messages, only: [:new], path: "reply/:recipient_id", as: :comments
-    resources :messages, only: [:update, :destroy], path: "comments", as: :comments
+    controller :messages do
+      resources :messages, only: [:create], path: "comments", as: :comments
+      get :new, path: "reply/:message_id", as: :new_comment
+      resources :messages, only: [:update, :destroy], path: "comments", as: :comments
+    end
   end
 
   scope path: ":#{User.slug}" do
@@ -32,9 +34,12 @@ Rails.application.routes.draw do
       resources :cards, only: [:index], path: ""
       resources :cards, only: [:update, :destroy], path: ""
     end
-    resources :messages, only: [:index], path: "activity"
-    resources :messages, only: [:index], path: "(:recipient)/conversations", as: :pms
-    resources :messages, only: [:create], path: ":recipient/conversations", as: :pms
+    controller :messages do
+      resources :messages, only: [:index], path: "conversations/(:recipient)", as: :pms
+      resources :messages, only: [:create], path: "conversations/(:recipient)", as: :pms
+      get :new, path: "reply/:message_id", as: :new_pm
+      resources :messages, only: [:index], path: "activity"
+    end
     controller :pools do
       get :show, path: "gallery", as: :gallery
     end

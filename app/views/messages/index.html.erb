@@ -1,5 +1,21 @@
-<% provide :header, link_to(@user.name, user_path(@user))+"'s Activity" %>
+<% if current_page? messages_path %>
 
-<% enum_for @messages do |message| %>
-  <%= render "show", message: message %>
+  <% provide :header, link_to(@user.name, user_path(@user))+"'s Activity" %>
+
+  <% enum_for @messages do |message| %>
+    <div class = "row message">
+      <%= format_message(message) %>
+    </div>
+  <% end %>
+
+<% else %>
+
+  <% provide :header, "Conversations" %>
+
+  <%= render "new", recipient: @recipient if @recipient %>
+
+  <% enum_for @pms do |message| %>
+    <%= render "show", message: message %>
+  <% end %>
+
 <% end %>

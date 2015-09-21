@@ -5,10 +5,8 @@ class User < ActiveRecord::Base
   has_many :pools
   has_one :card
   has_many :messages, -> { where "user_id = ?", -1 }, foreign_key: :recipient_id
-  has_many :comments_recieved, -> { where("messages.submission_id IS NOT NULL") }, class_name: "Message", foreign_key: :recipient_id
-  has_many :comments_made, -> { where("submission_id IS NOT NULL") }, class_name: "Message"
   has_many :pms_received, -> { where("submission_id IS NULL AND user_id > ?", -1) }, class_name: "Message", foreign_key: :recipient_id
-  has_many :pms_sent, -> { where("submission_id IS NULL") }, class_name: "Message"
+  has_many :pms_sent, -> { where("submission_id IS NULL AND message_id is NULL") }, class_name: "Message"
   has_many :order_forms
   belongs_to :upload, foreign_key: :avatar 
 

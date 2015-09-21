@@ -1,2 +1,2 @@
-$("#"+"<%=j params[:recipient_id] %>").find(".reply").html("<%=j render 'new_comment', recipient_id: params[:recipient_id] %>");
-ready();
+$("#"+"<%=j params[:message_id] %>").find(".reply").html("<%=j render 'new', message_id: params[:message_id] %>");
+hideAndShow();

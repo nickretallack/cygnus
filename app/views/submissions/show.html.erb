@@ -15,7 +15,9 @@
 
 </div>
 <div class = "row">
-  <%= render "messages/index_comments", comments: @submission.comments %>
+  <% @comments.each do |comment| %>
+    <%= render "messages/show", message: comment %>
+  <% end %>
   <hr />
-  <%= render "messages/new_comment" %>
+  <%= render "messages/new" %>
 </div>

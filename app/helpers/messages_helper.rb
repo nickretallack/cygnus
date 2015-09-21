@@ -1,5 +1,23 @@
 module MessagesHelper
 
+  def pm_direction(pm)
+    unless current_user.id == pm.user_id
+      "received"
+    else
+      "sent"
+    end
+  end
+
+  def comment_direction(comment)
+    if current_user.comments_made.include? comment
+      "sent"
+    elsif current_user.comments_received.include? comment
+      "received"
+    else
+      ""
+    end
+  end
+
   #generates a new activity message correlating to a user's action and saves it in the database
   #example:
   #

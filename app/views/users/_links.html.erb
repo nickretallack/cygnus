@@ -9,7 +9,7 @@
 </div>
 <div class = "col s6">
   <% if current_user? user %>
-    <blockquote class = "inline link"><%= link_to "PMs", pms_path(current_user.name) %></blockquote>
+    <blockquote class = "inline link"><%= link_to "Conversations", pms_path(current_user.name) %></blockquote>
   <% else %>
     <blockquote class = "inline link"><%= link_to "PM", pms_path(current_user.name, user.name) %></blockquote>
   <% end %>

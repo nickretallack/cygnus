@@ -1,3 +1,27 @@
-<div class = "row message">
-  <%= format_message(message) %>
+<% indent ||= 0 %>
+<div class = "row comment indent-<%= indent %> <%= pm_direction(message) unless @comments %>" id = <%= message.id %> >
+  <div class = "col s6 m4 l3 hc">
+    <%= link_to user_path(message.user) do %>
+      <%= avatar_for message.user %>
+    <% end %>
+  </div>
+  <div class = "col s6 m8 l9">
+    <h5 class = "truncate"><%= message.user.name %></h5>
+    <div class = "col s4">
+      <blockquote class = "inline link"><%= link_to "Reply", @comments.nil?? new_pm_path(@user.name, message.id) : new_comment_path(@submission.id, message.id), remote: true %></blockquote>
+    </div>
+    <div class = "col s4">
+      <blockquote class = "inline link"><%= link_to "Expand" %></blockquote>
+    </div>
+    <div class = "col s4">
+      <blockquote class = "inline link"><%= link_to "Quote" %></blockquote>
+    </div>
+  </div>
+  <div class = "col s12 m8 l9">
+    <blockquote class = "inline"><%= render_markdown message.content %></blockquote>
+  </div>
+  <div class = "reply"></div>
 </div>
+<% message.replies.each do |reply| %>
+  <%= render "messages/show", message: reply, indent: indent+1 %>
+<% end %>

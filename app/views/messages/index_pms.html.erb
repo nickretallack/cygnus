@@ -1,9 +1,0 @@
-<% provide :header, @header %>
-
-<%= @box_link %>
-
-<%= render "new_pm", recipient: @recipient if @recipient %>
-
-<% enum_for @pms do |pm| %>
-  <%= render "show_pm", pm: pm %>
-<% end %>

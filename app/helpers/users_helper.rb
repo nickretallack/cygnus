@@ -86,7 +86,7 @@ module UsersHelper
       end
     when :permission
       unless can_modify? user
-        flash[:danger] = "you are not allowed to modify that record"
+        flash[:danger] = "you are not allowed to view and/or modify that record"
         back
       end
     when :existence

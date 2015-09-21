@@ -1,6 +1,21 @@
-<% provide(:header, @header) %>
+<% provide(:header, @query) %>
 
-<%= render "search", query: @query %>
+<div class = "row">
+  <div class = "input-field col s12 m10">
+    <%= form_for :terms, url: search_path do |f| %>
+      <i class = "material-icons prefix">search</i>
+      <%= f.text_field :tags, placeholder: "Artists who do...", value: @query %>
+      <%= f.submit "Search" %>
+      <div class = "row hidable max">
+        <div class = "hidable-title">Search by</div>
+        <div class = "input-field">
+          <%= f.label :status %>
+          <%= f.select "statuses[0]", select_options_for(:status), { selected: @status || CONFIG[:activity_icons].keys.index(:accepting) }, { class: "btn button-with-icon" } %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
 
 <% unless @searching %>
   <hr />
@@ -18,4 +33,28 @@
   </div>
 <% end %>
 
-<%= render "results", users: @users %>
+<% enum_for @users do |user| %>
+  <div class = "row">
+    <hr />
+    <div class = "row">
+      <div class = "col s12 m6 mt">
+        <div class = "fl col s6 m12 l5 fh">
+          <%= link_to avatar_for(user, :bordered), user_path(user) %>
+        </div>
+        <div class = "col s6 m12 l6">
+          <div class = "row">
+            <h5 class = "truncate"><%= link_to user.name, user_path(user) %></h5>
+            <h4><%= statuses user, :condensed %></h4>
+          </div>
+        </div>
+      </div>
+      <div class = "col s12 m6 l6">
+        <%= render "links", user: user %>
+      </div>
+        <div class = "col s12 m6 l12">
+          <blockquote class = "inline"><%= message_for price: user.price %></blockquote>
+          <blockquote class = "inline"><%= message_for tags: user.tags %></blockquote>
+        </div>
+    </div>
+  </div>
+<% end %>
