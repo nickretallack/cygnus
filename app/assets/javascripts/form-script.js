@@ -65,7 +65,7 @@ function addItem(src) {
         fr.onloadend = function() {img.src = fr.result;};
         fr.readAsDataURL(file);
       };
-      var img = createElement("img", {src:"images/icon.png", title:"Click to change", onclick:function(){this.previousElementSibling.click()}, onerror:function(){this.src="images/icon.png"}}, item);
+      var img = createElement("img", {src:"/image/icon_thumb", title:"Click to change", onclick:function(){this.previousElementSibling.click()}, onerror:function(){this.src="images/icon.png"}}, item);
       createElement("div", {innerHTML:"Click to change", onclick:function(){this.previousElementSibling.click()}}, item);
       break;
 
