@@ -63,7 +63,7 @@ Rails.application.routes.draw do
       member do
         get :watch
         get :activate, path: "activate/:activation", as: :activate
-        resources :orders
+        resources :order_forms
       end
     end
   end

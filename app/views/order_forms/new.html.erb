@@ -1,38 +1,55 @@
-
-<% provide(:extrascript, 
-javascript_include_tag('form-common', 'data-turbolinks-track' => true)+
-javascript_include_tag('form-dnd', 'data-turbolinks-track' => true)+
-javascript_include_tag('form-gen', 'data-turbolinks-track' => true)
+<% provide(:extrascript,
+javascript_include_tag('v-workspace', 'data-turbolinks-track' => true)+
+javascript_include_tag('form-script', 'data-turbolinks-track' => true)
 																	) %>
 <% provide(:header, 'Create Form') %>
 
 <%# render 'shared/error_messages', error: @order_form %>
-<div id="body" onMouseUp="dndEnd()" onMouseMove="dndMove(event)">
-    <fieldset>
-      <legend>Add components</legend>
-      <input type="button" onClick="addComponent(0)" value="Text" />
-      <input type="button" onClick="addComponent(1)" value="Button" />
-      <input type="button" onClick="addComponent(2)" value="Single option list" />
-      <input type="button" onClick="addComponent(3)" value="Multiple option list" />
-      <input type="button" onClick="addComponent(4)" value="Image" /> |
-      <input type="button" onClick="saveForm()" value="Save" />
+
+
+<div onLoad="initFormGenerator()">
+
+    <!-- Form creator -->
+    <fieldset class="controls">
+      <!-- Controls for normal screens -->
+      <legend class="hide-on-small-and-down">Add</legend>
+      <div class="hide-on-small-and-down">
+        <div onClick="addItem(event.target)">
+          <button class="btn no-effects" name="text"><i class="material-icons">text_format</i>Text</button>
+          <button class="btn no-effects" name="multiline"><i class="material-icons">reorder</i>Multiline text</button>
+          <button class="btn no-effects" name="linklist"><i class="material-icons">link</i>Link</button>
+          <button class="btn no-effects" name="chooser"><i class="material-icons">radio_button_checked</i>Single option list</button>
+          <button class="btn no-effects" name="selector"><i class="material-icons">check_box</i>Multiple option list</button>
+          <button class="btn no-effects" name="image"><i class="material-icons">image</i>Image</button>
+          <button class="btn no-effects" name="fileup"><i class="material-icons"> file_upload</i>File upload</button>
+          <button class="btn no-effects" name="saveform"><i class="material-icons">save</i>Save</button>
+        </div>
+      </div>
+
+      <!-- Controls for smaller displays -->
+      <select class="btn no-effects hide-on-med-and-up" onChange="addItem(this.value); this.value=''">
+        <option value="">Add</option>
+        <option value="text">Text</option>
+        <option value="multiline">Multiline text</option>
+        <option value="linklist">Link</option>
+        <option value="chooser">Single option list</option>
+        <option value="selector">Multiple option list</option>
+        <option value="image">Image</option>
+        <option value="fileup">File upload</option>
+        <option disabled>-----</option>
+        <option value="saveform">Save</option>
+      </select>
     </fieldset>
 
       <!-- Template --
-      <div class="item">
+      <div class="item workspace_element" name="A">
         <div class="handle"></div>
-        <div class="title" title="Click to edit" contentEditable>Item Contents</div>
-        <div class="content">
-          
-        </div>
-      </div-->
-    <div id="form"></div>
+        <div class="content">Item A</div>
+        <div class="remove">&#10006;</div>
+      </div -->
+    <div id="form_generator" class="workspace"></div>
 
-    <div id="output">
-      <div class="close" title="Close" onClick="this.parentNode.style.display='none'">&#10006;</div>
-      <span>JSON Representation of the form. Saved in the localStorage as "formData"</span>
-	  <%= form_for @order_form, :html => { :id => "saveform", :multipart => true } do |f| %>
-		<%= f.text_area :content, :id => "formdata" %>
-	  <% end %>
-    </div>
-  </div>
+    <form id="formcreator_result" action="form/create" method="POST">
+      <input type="hidden" id="formdata" name="generatedFormData" />
+    </form>
+</div>

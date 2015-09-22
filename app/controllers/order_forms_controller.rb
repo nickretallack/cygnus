@@ -4,7 +4,7 @@ class OrderFormsController < ApplicationController
   
   def index
   	@user = User.find(params[User.slug])
-    @order_forms = current_user.order_forms
+    @order_forms = @user.order_forms
   end
 
   def show

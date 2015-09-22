@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(version: 20150920041127) do
     t.integer  "submission_id"
   end
 
-  create_table "orders", force: :cascade do |t|
+  create_table "order_forms", force: :cascade do |t|
     t.json     "content",    null: false
     t.integer  "user_id"
     t.datetime "created_at", null: false

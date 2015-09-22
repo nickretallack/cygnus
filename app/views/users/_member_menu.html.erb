@@ -1,7 +1,7 @@
 <li><%= link_to "Activity", messages_path(current_user) %></li>
 <li><%= link_to "Conversations", pms_path(current_user) %></li>
 <li><%= link_to "Financial" %></li>
-<li><%= link_to "Orders", orders_path(current_user) %></li>
+<li><%= link_to "Order Forms", order_forms_path(current_user) %></li>
 <hr />
 <li><%= link_to current_user.pools.first.title, gallery_path(current_user) if current_user.pools.any? %></li>
 <li><%= link_to "Pools", pools_path(current_user) %></li>
