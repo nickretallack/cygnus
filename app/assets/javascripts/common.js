@@ -33,5 +33,5 @@ function hideAndShow(){
 readyFunctions.push(hideAndShow);
 
 readyFunctions.push(function(){
-  $(".image").children("img").addClass("materialboxed").attr("height", "400");
+  $(".expandable").find("img").addClass("materialboxed").attr("height", "400").css("max-height", "none");
 });

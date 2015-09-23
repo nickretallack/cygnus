@@ -45,14 +45,14 @@ class UsersController < ApplicationController
   end
 
   def update
+    #raise "break"
     @user.avatar = Upload.render(params[:user][:upload][:picture], params[:user][:upload][:explicit]) unless params[:user][:upload][:picture].nil?
     @user.view_adult = true if params[:user][:upload][:explicit]
-    @user.artist_type = format_artist_type(params[:user][:artist_types].values) unless params[:user][:artist_type][0] == "0"
     @user.statuses = params[:user][:statuses].values
     if @user.update_attributes(user_params)
-      #Submission.new(title: "Avatar", pool_id: params[:user][:upload][:pool].to_i, file_id: @user.avatar).save! unless @user.avatar.nil? or params[:user][:upload][:pool] == "0"
+      @user.update_attribute(:artist_type, @user.artist_type + "#{", " unless @user.artist_type.blank?}" + format_artist_type(params[:user][:artist_types].values)) if params[:user][:artist_types].values[0].to_i > -1
       flash[:success] = "profile updated"
-      redirect_to :back
+      back
     else
       back_with_errors
     end
@@ -157,7 +157,7 @@ class UsersController < ApplicationController
   private
 
   def user_params_permitted
-    [:name, :email, :password, :password_confirmation, :tags, :price, :details, :gallery, :view_adult]
+    [:name, :email, :password, :password_confirmation, :tags, :price, :details, :gallery, :view_adult, :artist_type]
   end
 
   def reset_params

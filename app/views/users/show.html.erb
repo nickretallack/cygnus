@@ -42,8 +42,8 @@
 			<%= f.text_field :gallery, placeholder: "Offsite Gallery" %>
 			<hr />
 			<%= f.fields_for "user[artist_types][]" do %>
-				<% if @user.artist_type %>
-					<blockquote class = "inline js list"><%= @user.artist_type %></blockquote>
+				<% unless @user.artist_type.blank? %>
+					<blockquote class = "inline js taglist" id = "user[artist_type]"><%= @user.artist_type %></blockquote><br />
 				<% end %>
 				<%= link_to "Add Artist Type(s)", "", class: "js", remote: true %>
 				<div class = "input-field js">
