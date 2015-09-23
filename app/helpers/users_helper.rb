@@ -85,8 +85,9 @@ module UsersHelper
         back
       end
     when :permission
+      user ||= User.new(name: params[User.slug] || "any other user")
       unless can_modify? user
-        flash[:danger] = "you are not allowed to view and/or modify that record"
+        flash[:danger] = "you are #{current_user.name} and are not allowed to view or modify #{user.name}'s records."
         back
       end
     when :existence

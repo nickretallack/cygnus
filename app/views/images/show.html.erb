@@ -17,10 +17,10 @@
   <% html = image_tag(image_path("image_disabled#{suffix}".to_sym)) %>
 <% end %>
 <% if type == :bordered %>
-  <div class = 'thumbnail <%= @image.explicit?? "danger" : "success" %>'><%= html %></div>
+  <div class = "thumbnail <%= @image.explicit?? "danger" : "success" %>"><%= html %></div>
 <% else %>
   <% if type == :full %>
-    <div class = 'image'><%= html %></div>
+    <div class = "image"><%= html %></div>
   <% else %>
     <%= html %>
   <% end %>

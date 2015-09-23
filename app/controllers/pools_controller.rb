@@ -1,4 +1,8 @@
 class PoolsController < ApplicationController
+  before_filter only: [:create] do
+    @user = User.find(params[User.slug])
+    insist_on :permission, @user
+  end
 
   def index
     if params[User.slug]
@@ -17,50 +21,27 @@ class PoolsController < ApplicationController
     @submissions = Submission.where(pool_id: @pool.id)
   end
 
-  def new
-    @pool = Pool.new
-    @pool.user = current_user
-  end
-
-  def edit
-    @pool = Pool.find(params[:id])
-    @user = @pool.user
-  end
-
   def create
-    @new_pool.user_id = current_user.id #we don't trust the outside world
-    respond_to do |format|
-      if @new_pool.save
-        format.html { redirect_to @new_pool, notice: 'Pool was successfully created.' }
-        format.json { render :show, status: :created, location: @new_pool }
-      else
-        format.html { render :new }
-        format.json { render json: @new_pool.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  def update
-    @pool = Pool.find(params[:id])
-    respond_to do |format|
-      if @pool.update(pool_params)
-        format.html { redirect_to @pool, notice: 'Pool was successfully updated.' }
-        format.json { render :show, status: :ok, location: @pool }
-      else
-        format.html { render :edit }
-        format.json { render json: @pool.errors, status: :unprocessable_entity }
-      end
+    @new_pool.user_id = @user.id
+    if @new_pool.save
+      flash[:success] = "created a new pool for #{current_user.name} titled #{title_for pool: @new_pool}"
+      back
+    else
+      back_with_errors
     end
   end
 
   def destroy
-    raise "break"
     @pool = Pool.find(params[:id])
+    flash[:success] = "#{@pool.title} destroyed"
+    @user = @pool.user
     @pool.destroy
-    respond_to do |format|
-      format.html { redirect_to pools_url, notice: 'Pool was successfully destroyed.' }
-      format.json { head :no_content }
+    if @user.pools.any?
+      flash[:danger] = "the first pool on your pools list has now become your main gallery"
+    else
+      flash[:danger] = "you now have no pools. You may create one at any time by visiting your pools page. The first one you create will be linked from artist searches as your main gallery"
     end
+    back
   end
 
   private

@@ -175,11 +175,15 @@ module ApplicationHelper
 
   def title_for(*args)
     key, value = args.first.first
-    if value.title.blank?
-      "Untitled #{key.to_s.gsub("_", " ").titleize}"
-    else
-      value.title
-    end
+    @title ||= ->(key, value) {
+      if value.nil? or not value.respond_to? :title
+        "Untitled"
+      elsif value.title.blank?
+        "Untitled #{key.to_s.gsub("_", " ").titleize}"
+      else
+        value.title
+      end
+      }.call(key, value)
   end
 
   def select_options_for(type)

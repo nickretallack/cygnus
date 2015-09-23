@@ -10,12 +10,6 @@
     <div class = "col s4">
       <blockquote class = "inline link"><%= link_to "Reply", @comments.nil?? new_pm_path(@user.name, message.id) : new_comment_path(@submission.id, message.id), remote: true %></blockquote>
     </div>
-    <div class = "col s4">
-      <blockquote class = "inline link"><%= link_to "Expand" %></blockquote>
-    </div>
-    <div class = "col s4">
-      <blockquote class = "inline link"><%= link_to "Quote" %></blockquote>
-    </div>
   </div>
   <div class = "col s12 m8 l9">
     <blockquote class = "inline"><%= render_markdown message.content %></blockquote>

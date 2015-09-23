@@ -427,15 +427,12 @@ span:not(.inline)
     display: inline !important
 
 .hidable
-  background-color: azure
+  background-color: #DBFFE7
   margin: 10px 0 !important
   border-radius: 14px
   border: 2px solid grey
   padding: 10px
   padding-bottom: 20px
-  .input-field
-    padding-top: 0
-    padding-bottom: 0
 
 .input-field
   padding-top: 10px
@@ -499,7 +496,6 @@ img
   display: block
   position: relative
   max-width: 100%
-  max-height: 100%
   box-sizing: content-box
 
 .limit-height
@@ -526,6 +522,10 @@ form
     height: 398px
     col
       height: 100%
+
+table
+  a:hover
+    font-size: 100%
 
 .material-icons
   vertical-align: middle
@@ -785,9 +785,9 @@ div#main
   font-size: 1rem !important
   display: inline-block
   line-height: 2rem !important
-  height: 2rem !important
+  height: auto !important
   padding: 0 2rem !important
-  margin: 8px auto
+  margin: 0
 
 .submit:hover
   font-size: 1.2rem !important

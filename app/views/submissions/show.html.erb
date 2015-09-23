@@ -1,18 +1,28 @@
-<% provide :header, @submission.title %>
+<% provide :header, title_for(submission: @submission) %>
+
+<% if can_modify? @submission.pool.user %>
+  <div class = "row hidable max">
+    <div class = "hidable-title">Edit <%= title_for submission: @submission %></div>
+    <%= render "fields", submission: @submission, upload: @picture %>
+  </div>
+<% end %>
 
 <div class = "row hc">
   <span>
     <%= link_to "Pool", pool_path(@submission.pool.id) %>
     <div class = "vdiv"></div>
-    <%= link_to "Download", download_path(@submission.file_id) %>
+    <%= link_to "Download", download_path(@picture.id) %>
     <%= render "favorite_link" %>
   </span>
 </div>
 <div class = "row hc limit-height">
-  <%= image_for :full, @submission.file_id %>
+  <%= image_for :full, @picture.id %>
 </div>
-<div class = "row">
-
+<div class = "row hidable max">
+  <div class = "hidable-title">Description</div>
+  <div class = "col s12">
+    <%= @submission.description %>
+  </div>
 </div>
 <div class = "row">
   <% @comments.each do |comment| %>

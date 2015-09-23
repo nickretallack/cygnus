@@ -1,29 +1,26 @@
-<% if @user %>
-  <% provide :header, @user.name+"'s pools" %>
-<% else %>
-  <% provide :header, "All pools" %>
-<% end %>
+<% provide :header, @user.nil?? "All Pools" : @user.name+"'s pools" %>
 
 <% if can_modify? @user %>
-  <%= form_for Pool.new do |f| %>
-    <div class="form-group field">
-      <%= f.text_field :title, placeholder: "Title" %>
-      <%= hidden_field_tag "pool[user_id]", params[:user_id] %>
-      <%= f.submit "New Pool", class: "btn btn-primary" %>
+  <%= form_for Pool.new, url: pools_path(current_user) do |f| %>
+    <div class="form-group field new">
+      <%= f.text_field :title, placeholder: "Title for New Pool" %>
+      <%= f.submit "Create Pool", class: "btn btn-primary" %>
     </div>
   <% end %>
 <% end %>
 
 <table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>User</th>
-    </tr>
-  </thead>
+  <% if @pools.any? %>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>User</th>
+      </tr>
+    </thead>
+  <% end %>
 
   <tbody>
-    <% enum_for @pools do |pool| %>
+    <% enum_for @pools, "pools" do |pool| %>
       <tr>
         <td><%= link_to pool.title, pool %></td>
         <td><%= pool.user.name %></td>

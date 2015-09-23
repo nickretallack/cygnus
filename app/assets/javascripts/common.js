@@ -31,3 +31,7 @@ function hideAndShow(){
 }
 
 readyFunctions.push(hideAndShow);
+
+readyFunctions.push(function(){
+  $(".image").children("img").addClass("materialboxed").attr("height", "400");
+});
