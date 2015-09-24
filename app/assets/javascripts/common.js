@@ -25,13 +25,14 @@ function pauseEvent(event){
   event.returnValue = false;
 }
 
-function hideAndShow(){
-  $(".nojs").hide();
-  $(".js").show();
+function hideAndShow(element){
+  if(element === undefined){
+    $(".nojs").hide();
+    $(".js").show();
+  }else{
+    element.find(".nojs").hide();
+    element.find(".js").show();
+  }
 }
 
 readyFunctions.push(hideAndShow);
-
-readyFunctions.push(function(){
-  $(".expandable").find("img").addClass("materialboxed").attr("height", "400").css("max-height", "none");
-});

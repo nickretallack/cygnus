@@ -8,15 +8,14 @@ readyFunctions.push(function(){
         image.load(function(){
           pic = $(this)[0]
           div.children("#flash").show();
-          div.children("img").remove();
           if(div.hasClass("thumb-preview")){
             div.html($("<div />", {
               class: "thumbnail success"
             }).append(image));
           }else{
-            div.html(image);
+            div.find("img").replaceWith(image);
           }
-          $("label[for $='_upload_explicit']").addClass("danger");
+          $("label[for $= '_upload_explicit']").addClass("danger");
         });
       }
       reader.readAsDataURL(this.files[0]);

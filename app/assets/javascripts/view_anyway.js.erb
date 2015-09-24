@@ -1,14 +1,38 @@
 readyFunctions.push(function(){
+  
+});
+
+readyFunctions.push(function(){
+  var expandableFunc = function(image){
+    image.addClass("materialboxed").materialbox();
+    setInterval(function(){
+      if($("#materialbox-overlay").length){
+        image.parents(".expandable").css({
+          zIndex: 1000
+        });
+      }else{
+        image.parents(".expandable").css({
+          zIndex: 0
+        });
+      }
+    }, 50);
+    return image;
+  };
+
+  $.each($(".expandable").find("img"), function(index, element){
+    expandableFunc($(element));
+  });
+
   var images = $(".adult");
 
   $.each(images, function(index, image){
     var image = $(image);
-    var container = image.parent(),
+    var container = image.parents(".material-placeholder, .thumbnail"),
         cover = $("<div />", {
           class: "cover"
         }).css({
           backgroundColor: "rgba(47, 79, 79, .8)",
-          position: "absolute",
+          position: "relative",
           color: "#D2FFC7",
           textShadow: "0px 0px 35px black"
         }).append($("<span />", {
@@ -23,37 +47,31 @@ readyFunctions.push(function(){
         fontSize: image.width()/10,
         height: image.height(),
         width: image.width()
-      }).on("click", function(event){
+      }).on("click.view_anyway", function(event){
         pauseEvent(event);
         if(container.hasClass("thumbnail")){
-          $(image).replaceWith("<img src='/image/thumb/"+$(image).attr("id")+"'></img>");
+          image.replaceWith($("<img />", {
+            src: "/image/thumb/"+$(image).attr("id")
+          }));
         }else{
-          $(image).replaceWith("<img src='/image/full/"+$(image).attr("id")+"'></img>");
+          image.replaceWith(expandableFunc($("<img />", {
+            src: "/image/full/"+$(image).attr("id")
+          })));
         }
         $(this).trigger("mouseleave");
       })).on("mouseleave", function(){
-        cover.detach();
+        cover.remove();
       });
-      if(container.css("position") === "relative" || container.parent().css("position") === "relative"){
-        if(container.hasClass("vc") || container.parent().parent().hasClass("fh")){
-          cover.css({
-            top: "-50%",
-            left: 0,
-            position: "relative"
-          });
-        }else{
-          cover.css({
-            top: 0,
-            left: 0,
-            position: "absolute"
-          });
-        }
+      if(container.hasClass("material-placeholder")){
+        cover.css({
+          marginTop: -image.height(),
+          transform: "none"
+        });
       }else{
         cover.css({
-          top: image.offset().top,
-          left: image.offset().left,
-          position: "absolute"
-        })
+          top: "-100%",
+          transform: "none"
+        });
       }
       $(window).scroll(function(){
         container.trigger("mouseleave");

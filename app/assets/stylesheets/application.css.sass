@@ -184,6 +184,10 @@
     top: 0
   .thumb-large
     margin-top: 0 !important
+  blockquote a:hover
+    font-size: 100% !important
+    bottom: 15% !important
+    margin-left: 0 !important
 
 //medium
 @media only screen and (min-width: 761px) and (max-width: 992px)
@@ -212,8 +216,8 @@
     width: 100%
   span
     +block-centered
-  input[type = "submit"]
-    margin-bottom: 10px
+  .submit, input[type = "submit"]
+    margin-bottom: 10px !important
   .top-card .card
     width: 100%
   .pool-index-field
@@ -222,6 +226,11 @@
       transform: none
       top: 0
       margin: 5% auto
+  .limit-height
+    height: auto !important
+  .limit-height>.col
+    top: 0 !important
+    transform: none !important
 
 //small
 @media only screen and (min-width: 364px) and (max-width: 760px)
@@ -230,12 +239,10 @@
   .comment
     .col.s6
       +block-centered
-      blockquote
-        text-align: center
-        border: none
+      text-align: left
       blockquote:not(.link)
         font-size: 100% !important
-    .col.s3
+    .col.s4
       width: 100%
     .hc
       margin-top: 6%
@@ -254,9 +261,11 @@
     margin-top: 0 !important
     text-align: center
     width: 100% !important
-    *:not(.row):not(i):not(input):not(.thumbnail):not(.vdiv):not(a):not(span):not(blockquote):not(label):not(form):not(select)
+    *:not(.row):not(i):not(input):not(.thumbnail):not(.vdiv):not(a):not(span):not(blockquote):not(label):not(form):not(select):not(#favorite)
       +block-centered
       width: 100%
+    blockquote, blockquote *
+      text-align: left !important
 
 //mod defaults
 html
@@ -388,11 +397,18 @@ li
   margin-bottom: 6px !important
   width: 75%
   margin-left: 25% !important
-  blockquote.inline
+  blockquote.inline:not(.link)
     margin-top: 0 !important
-    max-height: 200%
-  .hc
-    margin-top: 1%
+    max-height: none
+  .col.hc
+    margin-bottom: 2%
+  .col:not(.hc)
+    padding: 0
+    margin-top: 0 !important
+    margin-bottom: 1%
+  h5
+    line-height: 2rem
+    margin-top: 1.8%
 
 @for $i from 0 through 4
   .indent-#{$i}
@@ -468,6 +484,9 @@ span:not(.inline)
 .col input
   margin-bottom: 0 !important
 
+.row>.col:not(.expandable)
+  margin-top: 2%
+
 .button-with-icon
   padding: 0
   text-shadow: 0px 2px 1px darkslategrey !important
@@ -496,16 +515,23 @@ img
   display: block
   position: relative
   max-width: 100%
-  max-height: 100%
   box-sizing: content-box
+
+.expandable
+  //z-index: 1000
+  img
+    max-height: 400px
+    z-index: 0
+
+.materialboxed.initialized.active
+  max-height: none !important
+  max-width: none !important
 
 .limit-height
   height: 400px
-  .preview
-    max-height: 400px
 
 .limit-height>.col
-  height: 400px
+  +vertical-center
 
 .btn:hover
   font-size: 110%
@@ -564,7 +590,7 @@ blockquote.inline
   margin-bottom: 0
 
 blockquote[class = "inline"]
-  margin-left: 5px
+  //margin-left: 5px
 
 blockquote.link
   height: 2.32rem
@@ -572,6 +598,7 @@ blockquote.link
   padding-top: .25rem
   overflow: hidden
   font-size: 140%
+  white-space: nowrap
   a
     position: relative
     bottom: 15%
@@ -717,11 +744,8 @@ div#main
     border: 3px outset aquamarine
     border-left-style: none
     border-right-style: none
-  
   .danger-button
     background-color: $danger-color
-  .col
-    padding: 5px
     h4
       margin: 3% 0
       a:hover
@@ -741,11 +765,6 @@ div#main
 .gallery
   text-align: center
 
-.image
-  width: auto
-  //display: inline-block !important
-  height: 100%
-
 .thumbnail-block
   +block-centered
   margin-top: 2%
@@ -762,6 +781,7 @@ div#main
   border-radius: 4px
   box-sizing: content-box
   overflow: hidden
+  position: relative
   img
     max-height: none
     max-width: none
@@ -854,15 +874,17 @@ input:focus:-ms-input-placeholder, textarea:focus:-ms-input-placeholder
     border-bottom: 1px solid black
     padding: 2px 0 2px 10px
 
-.comm-inactive
-  color: coral
-.comm-accepting
-  color: forestgreen
-.comm-accepting_few
-  color: gold
-.comm-backlogged
+//icons
+
+i.medium-small
+  font-size: 2.4rem
+  padding-bottom: .2rem
+a
+  i
+    cursor: pointer !important
+.comm-not_interested, .comm-closed
   color: lightslategrey
-.comm-open_soon
-  color: sandybrown
-.comm-on_vacation
-  color: lightpurple
+.comm-open, .comm-one_day_only
+  color: lightgreen
+.comm-long_wait, .comm-make_a_pitch, .comm-friends_only
+  color: gold

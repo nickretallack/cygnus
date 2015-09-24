@@ -3,7 +3,6 @@ class UsersController < ApplicationController
   before_filter -> { insist_on :existence, @user }, only: [:show]
   before_filter -> { insist_on :permission, @user }, only: [:update, :destroy]
   before_filter -> {
-    @user = User.find(params[User.slug])
     insist_on do
       can_watch? @user
     end
@@ -50,6 +49,7 @@ class UsersController < ApplicationController
     @user.view_adult = true if params[:user][:upload][:explicit]
     @user.statuses = params[:user][:statuses].values
     if @user.update_attributes(user_params)
+      @user.update_attribute(:view_adult, true) unless not params[:user][:upload][:explicit] or @user.view_adult
       @user.update_attribute(:artist_type, @user.artist_type + "#{", " unless @user.artist_type.blank?}" + format_artist_type(params[:user][:artist_types].values)) if params[:user][:artist_types].values[0].to_i > -1
       flash[:success] = "profile updated"
       back
@@ -88,6 +88,7 @@ class UsersController < ApplicationController
   end
 
   def watch
+    #raise "break"
     if watching? @user
       current_user.update_attribute(:watching, current_user.watching.delete_if { |id| id == @user.id })
     else

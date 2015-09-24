@@ -136,7 +136,7 @@ module UsersHelper
 			for i in 0..user.statuses.length-1
 				html << "<div class = 'row'>"
 				html << "<div class = 'col s6'>"
-				html << "<i class = 'small material-icons'>#{CONFIG[:commission_icons].values[i]}</i> #{CONFIG[:commission_icons].keys[i].capitalize}:"
+				html << "<i class = 'medium-small material-icons comm-status'>#{CONFIG[:commission_icons].values[i]}</i> #{CONFIG[:commission_icons].keys[i].capitalize}:"
 				html << "</div>"
 				status = user.statuses[i]
 				html << "<div class = 'col s6'>"
@@ -147,19 +147,39 @@ module UsersHelper
 					end
 					html << "</select>"
 				else
-					html << "<i class = 'small material-icons comm-#{CONFIG[:activity_icons].keys[status]}'>#{CONFIG[:activity_icons].values[status]}</i> #{CONFIG[:activity_icons].keys[status].capitalize}"
+					html << "<i class = 'medium-small material-icons comm-#{CONFIG[:activity_icons].keys[status]}'>#{CONFIG[:activity_icons].values[status]}</i> #{CONFIG[:activity_icons].keys[status].to_s.capitalize.gsub("_", " ")}"
 				end
 				html << "</div>"
 				html << "</div>"
 			end
 		when :condensed
 			CONFIG[:commission_icons].each do |key, icon|
-				html << "<i class = 'small material-icons' title = '#{key.capitalize}'>"+icon+"</i>"
+				html << "<i class = 'medium-small material-icons comm-status' title = '#{key.capitalize}'>"+icon+"</i>"
 			end
 			html << "<br />"
 			user.statuses.each do |status|
-				html << "<i class = 'small material-icons comm-#{CONFIG[:activity_icons].keys[status]}' title = '#{CONFIG[:activity_icons].keys[status].to_s.gsub("_", " ").titleize}'>#{CONFIG[:activity_icons].values[status]}</i>"
+				html << "<i class = 'medium-small material-icons comm-#{CONFIG[:activity_icons].keys[status]}' title = '#{CONFIG[:activity_icons].keys[status].to_s.gsub("_", " ").titleize}'>#{CONFIG[:activity_icons].values[status]}</i>"
 			end
+    when :search
+      CONFIG[:commission_icons].each_with_index do |(key, value), index|
+        html << "<div class = 'row'>"
+        html << "<div class = 'col s1'>"
+        html << "<input name = 'terms[use_statuses][#{index}]' type = 'hidden' value = '0'><input type = 'checkbox' value = '1' name = 'terms[use_statuses][#{index}]' id = 'terms_use_statuses_#{index}' #{"checked" unless not params[:terms] or params[:terms][:use_statuses][index.to_s].to_i < 1}><label for = 'terms_use_statuses_#{index}'></label>"
+        html << "</div>"
+        html << "<div class = 'col s5'>"
+        html << "<i class = 'medium-small material-icons comm-status'>#{value}</i> #{key.capitalize}:"
+        html << "</div>"
+        status = 2
+        status = params[:terms][:statuses][index.to_s].to_i if params[:terms]
+        html << "<div class = 'col s6'>"
+        html << "<select name = 'terms[statuses][#{index}]' class = 'btn button-with-icon'>"
+        CONFIG[:activity_icons].each_with_index do |(key, value), index|
+          html << "<option class = 'comm-#{key}' value = #{index} #{"selected = 'selected'" if status == index}>#{key.to_s.gsub("_", " ")}</option>"
+        end
+        html << "</select>"
+        html << "</div>"
+        html << "</div>"
+      end
 		end
 		html.html_safe
 	end

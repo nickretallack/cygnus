@@ -1,7 +1,6 @@
 <% provide(:header, @user.name) %>
 
 <%= form_for @user, method: :patch, url: user_path(@user) do |f| %>
-	
 	<div class="row <%= "limit-height" unless can_modify? @user %>">
 		<% if can_modify? @user %>
 			<div class = "col s12 m3">
@@ -19,22 +18,20 @@
 			    <% end %>
 		    </div>
 		  </div>
-			<div class = "col s12 m3 preview hc">
+			<div class = "col s12 m3 hc expandable preview">
 				<div class = "danger nojs" id = "flash">
 					Please mark adult avatars explicit before saving.
 				</div>
 				<%= avatar_for @user, :full %>
 			</div>
 		<% else %>
-			<div class = "col s12 m6 l7 preview">
+			<div class = "col s12 m6 l7 expandable preview">
 				<%= avatar_for @user, :full %>
 			</div>
 		<% end %>
-		<div class = "col s12 m6 l5">
-			<div class = "row <%= can_modify?(@user)? "new" : "vc" %>">
-				<%= statuses @user %>
-				<%= render "links", user: @user unless can_modify? @user %>
-			</div>
+		<div class = "col s12 m6 l5 <%= "new" if can_modify?(@user) %>">
+			<%= statuses @user %>
+			<%= render "links", user: @user unless can_modify? @user %>
 		</div>
 	</div>
 	<div class = "row">
@@ -57,10 +54,11 @@
 			<%= f.text_area :details, placeholder: "Profile Text" %>
 			<%= f.submit "Update Profile" %>
 		<% else %>
-			<% if @user.gallery %><blockquote class = "inline link"><%= link_to @user.gallery %></blockquote><% end %>
-			<% if @user.price %><blockquote class = "inline"><%= @user.price %></blockquote><% end %>
-			<% if @user.tags %><blockquote class = "inline"><%= @user.tags %></blockquote><% end %>
-			<% if @user.details %><blockquote class = "inline"><%= render_markdown @user.details %></blockquote><% end %>
+			<% unless @user.artist_type.blank? %><blockquote class = "inline"><%= @user.artist_type %></blockquote><% end %>
+			<% unless @user.gallery.blank? %><blockquote class = "inline link"><%= link_to @user.gallery %></blockquote><% end %>
+			<% unless @user.price.blank? %><blockquote class = "inline"><%= @user.price %></blockquote><% end %>
+			<% unless @user.tags.blank? %><blockquote class = "inline"><%= @user.tags %></blockquote><% end %>
+			<% unless @user.details.blank? %><blockquote class = "inline"><%= render_markdown @user.details %></blockquote><% end %>
 		<% end %>
 	</div>
 <% end %>

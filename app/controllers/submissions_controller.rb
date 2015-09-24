@@ -33,6 +33,7 @@ class SubmissionsController < ApplicationController
   def update
     if @submission.update(submission_params)
       @submission.update_attribute(:file_id, Upload.render(params[:submission][:upload][:picture], params[:submission][:upload][:explicit])) if params[:submission][:upload][:picture]
+      @user.update_attribute(:view_adult, true) unless not params[:submission][:upload][:explicit] or @user.view_adult
       back
     else
       back_with_errors

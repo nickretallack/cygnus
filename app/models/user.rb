@@ -50,15 +50,15 @@ class User < ActiveRecord::Base
       else
         return "tags_tsvector @@ #{sanitize_sql_array(["to_tsquery('english', ?)", terms[:tags].gsub(/\s/, "+")])} AND "
       end
-    }.call(terms[:tags]) + ->(statuses) { #prepared to receive a hash of commission statuses like "statuses" => {"0" => "1", "1" => "4"} for convenient selecting
+    }.call(terms[:tags]) + ->(statuses, use_statuses) { #prepared to receive a hash of commission statuses like "statuses" => {"0" => "1", "1" => "4"} for convenient selecting
       append = ""
+      statuses = statuses.reject { |key, value| use_statuses[key].to_i < 1 }
       statuses.collect { |key, value| sanitize_sql_array(["statuses[#{key.to_i+1}] = %d", value.to_i]) }.each_with_index do |statement, index|
         append << "#{statement}"
         append << " AND " if index < statuses.length - 1
       end
       append
-    }.call(terms[:statuses]) )
-    #raise "break"
+    }.call(terms[:statuses], terms[:use_statuses]))
   end
   
   def User.digest(string)

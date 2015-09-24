@@ -1,2 +1,2 @@
-$("#watch").html("<%=j render "watch_link", user: @user %>");
-hideAndShow();
+$("#"+"<%=j @user.name %>").find("#watch").html("<%=j render "watch_link", user: @user %>");
+hideAndShow($("#"+"<%=j @user.name %>").find("#watch"));

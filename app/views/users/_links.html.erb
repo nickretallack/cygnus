@@ -1,5 +1,7 @@
 <div class = "col s6">
-  <%= render "watch_link", user: user %>
+  <div id = "watch">
+    <%= render "watch_link", user: user %>
+  </div>
   <% if user.pools.any? %>
     <blockquote class = "inline link"><%= link_to "Gallery", gallery_path(user) %><%= link_to "(ies)", pools_path(user) %></blockquote>
   <% else %>

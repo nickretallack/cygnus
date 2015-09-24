@@ -9,14 +9,26 @@
 
 <div class = "row hc">
   <span>
-    <%= link_to "Pool", pool_path(@submission.pool.id) %>
+    <%= link_to user_path(@submission.pool.user.name), title: "User Profile" do %>
+      <i class = "material-icons medium-small"><%= CONFIG[:submission_icons][:profile] %></i>
+    <% end %>
     <div class = "vdiv"></div>
-    <%= link_to "Download", download_path(@picture.id) %>
-    <%= render "favorite_link" %>
+    <%= link_to pool_path(@submission.pool.id), title: "Submission Pool" do %>
+      <i class = "material-icons medium-small"><%= CONFIG[:submission_icons][:pool] %></i>
+    <% end %>
+    <div class = "vdiv"></div>
+    <%= link_to download_path(@picture.id), title: "Download" do %>
+      <i class = "material-icons medium-small"><%= CONFIG[:submission_icons][:download] %></i>
+    <% end %>
+    <div id = "favorite">
+      <%= render "favorite_link" %>
+    </div>
   </span>
 </div>
-<div class = "row hc limit-height expandable">
-  <%= image_for :full, @picture.id %>
+<div class = "row limit-height">
+  <div class = "col expandable hc">
+    <%= image_for :full, @picture.id %>
+  </div>
 </div>
 <div class = "row hidable max">
   <div class = "hidable-title">Description</div>
