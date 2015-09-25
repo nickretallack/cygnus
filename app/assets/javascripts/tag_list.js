@@ -4,7 +4,6 @@ readyFunctions.push(function(){
   $.each(tagList, function(index, list){
     list = $(list);
     var text = list.text();
-    console.log(text, text.split(", "));
     list.text("");
     $.each(text.split(", "), function(index, tag){
       $("<span />", {
@@ -20,7 +19,7 @@ loadFunctions.push(function(){
 
   $.each(tagList, function(index, list){
     list = $(list);
-    var field = list.nextAll("[name = '"+list.attr("id")+"']");
+    var field = $("[name = '"+list.attr("id")+"']");
     $.each(list.children().children(".button-table"), function(index, table){
       table = $(table);
       table.css({

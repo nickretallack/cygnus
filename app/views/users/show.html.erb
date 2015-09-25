@@ -38,17 +38,17 @@
 		<% if can_modify? @user %>
 			<%= f.text_field :gallery, placeholder: "Offsite Gallery" %>
 			<hr />
-			<%= f.fields_for "user[artist_types][]" do %>
+			<%= f.fields_for "user[artist_type][]" do %>
+				<%= text_field "user[artist_type]", "0", placeholder: "Artist Type", class: "nojs", value: @user.artist_type %>
 				<% unless @user.artist_type.blank? %>
-					<blockquote class = "inline js taglist" id = "user[artist_type]"><%= @user.artist_type %></blockquote><br />
+					<blockquote class = "inline js taglist" id = "user[artist_type][0]"><%= @user.artist_type %></blockquote><br />
 				<% end %>
 				<%= link_to "Add Artist Type(s)", "", class: "js", remote: true %>
 				<div class = "input-field js">
-					<%= select "user[artist_types]", "0", select_options_for(:artist_type), {}, { class: "btn button-with-icon addable" } %>
+					<%= select "user[artist_types]", "1", select_options_for(:artist_type), {}, { class: "btn button-with-icon addable categorized(/)", id: "user[artist_type][1]" } %>
 				</div>
 				<hr />
 			<% end %>
-			<%= f.text_field :artist_type, placeholder: "Artist Type", class: "nojs" %>
 			<%= f.text_area :price, placeholder: "Commission rates" %>
 			<%= f.text_area :tags, placeholder: "Tags" %>
 			<%= f.text_area :details, placeholder: "Profile Text" %>

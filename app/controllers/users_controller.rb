@@ -48,9 +48,10 @@ class UsersController < ApplicationController
     @user.avatar = Upload.render(params[:user][:upload][:picture], params[:user][:upload][:explicit]) unless params[:user][:upload][:picture].nil?
     @user.view_adult = true if params[:user][:upload][:explicit]
     @user.statuses = params[:user][:statuses].values
+    @user.artist_type = params[:user][:artist_type].values.reject { |value| value.length == 0 }.join(", ")
     if @user.update_attributes(user_params)
       @user.update_attribute(:view_adult, true) unless not params[:user][:upload][:explicit] or @user.view_adult
-      @user.update_attribute(:artist_type, @user.artist_type + "#{", " unless @user.artist_type.blank?}" + format_artist_type(params[:user][:artist_types].values)) if params[:user][:artist_types].values[0].to_i > -1
+      #@user.update_attribute(:artist_type, @user.artist_type + "#{", " unless @user.artist_type.blank?}" + format_artist_type(params[:user][:artist_types].values)) if params[:user][:artist_types].values[0].to_i > -1
       flash[:success] = "profile updated"
       back
     else

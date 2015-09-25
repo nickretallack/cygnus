@@ -10,6 +10,7 @@ readyFunctions.push(function(){
 
 function addableFunc(addable){
   if(typeof addable === "undefined") addable = $(".addable");
+  var clonable = addable.parent().clone();
   addable.css({
     width: "calc(100% - 2.1rem)"
   }).after($("<i />", {
@@ -29,15 +30,16 @@ function addableFunc(addable){
       marginLeft: ".3rem",
       fontSize: "150%"
     });
-  }).on("click", function(event){
+  }).on("click.addable", function(event){
     pauseEvent(event);
     $(this).remove();
-    var newAddable = addable.parent().clone();
+    var newAddable = clonable.clone();
     newAddable.insertAfter(addable.parent());
     var name = $(".addable").attr("name").replace(/]/g, "").split("[");
     var index = parseInt(name[2]);
     newAddable.children().attr("name", addable.attr("name").replace(index.toString(), (index+1).toString()));
-    newAddable.children().attr("id", name.join("_").replace(index.toString(), (index+1).toString()));
+    newAddable.children().attr("id", addable.attr("id").replace(index.toString(), (index+1).toString()));
     addableFunc(newAddable.children());
+    categorizeForm(newAddable.children("[class *= categorized]"));
   }));
 };
