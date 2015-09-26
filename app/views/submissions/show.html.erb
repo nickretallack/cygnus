@@ -37,9 +37,6 @@
   </div>
 </div>
 <div class = "row">
-  <% @comments.each do |comment| %>
-    <%= render "messages/show", message: comment %>
-  <% end %>
+  <%= cell(:message, collection: @comments) %>
   <hr />
-  <%= render "messages/new" %>
 </div>

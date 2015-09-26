@@ -13,9 +13,9 @@ class MessagesController < ApplicationController
     @new_message.message_id = params[:message][:message_id]
     @new_message.content = view_context.sanitize(params[:message][:content])
     if @new_message.save
-      redirect_to :back
+      # redirect_to :back
     else
-      back_with_errors
+      # back_with_errors
     end
   end
 
@@ -29,9 +29,12 @@ class MessagesController < ApplicationController
   end
 
   def index
+    raise "break"
     @user = User.find(params[User.slug])
     if view_context.current_page? messages_path
       @messages = @user.messages
+    elsif view_context.current_page? submission_path
+      @comments = @submission.comments
     else
       @pms = current_user.pms_received + current_user.pms_sent
       @recipient = params[:recipient]

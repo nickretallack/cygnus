@@ -24,7 +24,8 @@ module ImagesHelper
   #
   #
   def image_for(type = :full, id = nil)
-    render template: "images/show", locals: { type: type, id: id }
+    #render template: "images/show", locals: { type: type, id: id }
+    cell(:image, Upload.find(:id) || Upload.new, type: type)
   end
 
   #avatar_for

@@ -369,6 +369,7 @@ Make.extend(Array.prototype, {
         this.scrollTop = 999999;
       });
     }
+    
   });
 
 })(jQuery);
