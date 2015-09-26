@@ -27,7 +27,7 @@
 </div>
 <div class = "row limit-height">
   <div class = "col expandable hc">
-    <%= image_for :full, @picture.id %>
+    <%= cell(:image).(:show, type: :full, id: @picture.id) %>
   </div>
 </div>
 <div class = "row hidable max">
@@ -36,7 +36,8 @@
     <%= @submission.description %>
   </div>
 </div>
-<div class = "row">
-  <%= cell(:message, collection: @comments) %>
+<div class = "row" id = "comments">
+  <%= cell(:message, @comments).(:index) %>
   <hr />
 </div>
+<%= render "messages/new" %>

@@ -12,7 +12,7 @@
     <div class = "thumbnail-block">
       <%= link_to submission do %>
         <%= title_for submission: submission %>
-        <%= image_for :bordered, submission.file_id %>
+        <%= cell(:image).(:show, type: :bordered, id: submission.file_id) %>
         <% if can_modify? submission.pool.user %>
           <h5><%= link_to "Destroy", submission, method: :delete, data: { confirm: "Are you sure?" } %></h5>
         <% end %>

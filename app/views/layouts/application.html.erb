@@ -11,7 +11,7 @@
   <body>
     <div class = "widthTester hide"></div>
     <header>
-      <%= image_for :banner %>
+      <%= cell(:image).(:show, type: :banner) %>
       <%= render "layouts/navigation" %>
     </header>
     <div class = "container <%= "fw" if controller_name == "cards" %>">

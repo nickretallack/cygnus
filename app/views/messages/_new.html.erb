@@ -1,6 +1,6 @@
 <% unless anon? %>
   <div class = "row new">
-    <%= form_for Message.new, url: @submission.nil?? pms_path(current_user.name, defined?(recipient)? recipient : nil) : comments_path(@submission.id) do |f| %>
+    <%= form_for Message.new, url: @submission.nil?? pms_path(current_user.name, defined?(recipient)? recipient : nil) : comments_path(@submission.id), remote: true do |f| %>
       <%= f.text_area :content, placeholder: @submission.nil?? "Message Body" : "Comment" %>
       <div class = "preview"></div>
       <%= f.hidden_field :message_id, value: message_id if defined? message_id %>

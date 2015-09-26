@@ -1,0 +1,20 @@
+<div class = "row comment indent-<%= @indent %> <%= @background %>" id = <%= @model.id %> >
+  <div class = "col s6 m4 l3 hc">
+    <%= link_to @parent_controller.user_path(@model.user) do %>
+      <%= cell(:image).(:show, type: :bordered, id: @model.user.avatar) %>
+    <% end %>
+  </div>
+  <div class = "col s6 m8 l9">
+    <h5 class = "truncate"><%= @model.user.name %></h5>
+    <div class = "col s4">
+      <blockquote class = "inline link"><%= link_to "Reply", @reply_path, remote: true %></blockquote>
+    </div>
+  </div>
+  <div class = "col s12 m8 l9">
+    <blockquote class = "inline"><%= @parent_controller.render_markdown @model.content %></blockquote>
+  </div>
+  <div class = "reply"></div>
+</div>
+<% @model.replies.each do |reply| %>
+  <%= cell(:message, reply).(:show, indent: indent+1) %>
+<% end %>

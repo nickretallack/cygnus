@@ -26,6 +26,7 @@ class SubmissionsController < ApplicationController
   end
 
   def show
+    @submission = Submission.find(params[Submission.slug])
     @comments = @submission.comments
     @picture = Upload.find(@submission.file_id)
   end

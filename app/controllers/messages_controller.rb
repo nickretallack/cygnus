@@ -1,4 +1,5 @@
 class MessagesController < ApplicationController
+  include ActionController::Live
   before_filter -> { insist_on :logged_in }, only: [:new, :create, :index, :index_pms]
   before_filter -> { insist_on :permission, @message.user }, only: [:update, :destroy]
   before_filter only: [:index_pms] do
@@ -13,9 +14,11 @@ class MessagesController < ApplicationController
     @new_message.message_id = params[:message][:message_id]
     @new_message.content = view_context.sanitize(params[:message][:content])
     if @new_message.save
-      # redirect_to :back
+      respond_to do |format|
+        format.js
+      end
     else
-      # back_with_errors
+      back_with_errors
     end
   end
 
@@ -44,6 +47,20 @@ class MessagesController < ApplicationController
   def destroy
     @message.destroy
     back
+  end
+
+  def listener
+    response.headers["Content-Type"] = "text/event-stream"
+    sse = SSE.new(response.stream)
+    begin
+      Message.on_change do |id|
+        sse.write(cell(:message, Message.find(id)).(:show))
+      end
+    rescue IOError
+    ensure
+      sse.close
+    end
+    render nothing: true
   end
 
   private

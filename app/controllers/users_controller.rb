@@ -1,15 +1,22 @@
 class UsersController < ApplicationController
+  
   before_filter :check_expiration, only: [:reset_return, :reset_return_confirm]
-  before_filter -> { insist_on :existence, @user }, only: [:show]
-  before_filter -> { insist_on :permission, @user }, only: [:update, :destroy]
-  before_filter -> {
+
+  before_filter only: [:show] do
+    insist_on :existence, @user
+  end
+
+  before_filter only: [:update, :destroy] do
+    insist_on :permission, @user
+  end
+
+  before_filter only: [:watch] do
     insist_on do
       can_watch? @user
     end
-  }, only: [:watch]
+  end
 
   def index
-    # handles search; if we are just indexing, @users is already set
     if params[:terms]
       @query = params[:terms][:tags]
       @status = params[:terms][:status]
@@ -44,14 +51,11 @@ class UsersController < ApplicationController
   end
 
   def update
-    #raise "break"
     @user.avatar = Upload.render(params[:user][:upload][:picture], params[:user][:upload][:explicit]) unless params[:user][:upload][:picture].nil?
     @user.view_adult = true if params[:user][:upload][:explicit]
     @user.statuses = params[:user][:statuses].values
     @user.artist_type = params[:user][:artist_type].values.reject { |value| value.length == 0 }.join(", ")
     if @user.update_attributes(user_params)
-      @user.update_attribute(:view_adult, true) unless not params[:user][:upload][:explicit] or @user.view_adult
-      #@user.update_attribute(:artist_type, @user.artist_type + "#{", " unless @user.artist_type.blank?}" + format_artist_type(params[:user][:artist_types].values)) if params[:user][:artist_types].values[0].to_i > -1
       flash[:success] = "profile updated"
       back
     else
@@ -103,6 +107,7 @@ class UsersController < ApplicationController
   end
 
   def activate
+    @user = User.find(params[User.slug])
     if @user and @user.at_level :unactivated and @user.authenticated? :activation, params[:activation]
       @user.update_attribute(:level, :member)
       @user.update_attribute(:activated_at, Time.zone.now)

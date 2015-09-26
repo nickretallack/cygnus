@@ -7,6 +7,10 @@ Rails.application.routes.draw do
     get :static, path: "pages/:page_name"
   end
 
+  controller :messages do
+    get "message_listener", to: "messages#listener", as: :listener
+  end
+
   controller :images do
     get "image/:type(/:#{Upload.slug})", to: "images#show", as: :image
     get "download/:#{Upload.slug}", to: "images#download", as: :download
@@ -21,7 +25,7 @@ Rails.application.routes.draw do
     end
   end
 
-  scope path: "submission/:submission_#{Submission.slug}" do
+  scope path: "submissions/:submission_#{Submission.slug}" do
     controller :messages do
       resources :messages, only: [:create], path: "comments", as: :comments
       get :new, path: "reply/:message_id", as: :new_comment
