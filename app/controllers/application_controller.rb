@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
-  before_filter :setter, except: [:show, :listener]
+  before_filter :setter, except: [:show, :listener, :poller]
 
   #require all helper modules
    Dir["#{File.dirname(__FILE__)}/../helpers/*.rb"].collect { |file| include File.basename(file).gsub(".rb", "").split("_").collect { |part| part.capitalize }.join("").constantize }

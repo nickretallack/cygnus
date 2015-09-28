@@ -1,0 +1,31 @@
+<% if @new_message.message_id %>
+  var message = $("#<%=j @new_message.message_id.to_s %>");
+  (function(message){
+    var newMessage = "<%=j cell(:message, @new_message).(:show) %>";
+    var replies = message.nextUntil(".top").filter(".reply-"+parseInt(message.attr("id")).toString()).last();
+    if(replies.length === 0){
+      message.after(newMessage);
+    }else{
+      replies.after(newMessage);
+    }
+  })(message);
+  var newMessage = $("#<%=j @new_message.id.to_s %>");
+  var getIndent = function(element){
+    if(element.is(newMessage)) return "indent-"+(parseInt(/indent-\d+/.exec(message.attr("class"))[0].replace("indent-", ""))+1).toString();
+    return /indent-\d+/.exec(element.attr("class"))[0];
+  };
+  newMessage.attr("class", function(index, className){
+    return className.replace(/indent-\d+/, getIndent($(".reply-"+message.attr("id"))));
+  });
+<% else %>
+  $("#messages").append("<%=j cell(:message, @new_message).(:show) %>");
+  var newMessage = $("#<%=j @new_message.id.to_s %>");
+<% end %>
+newMessage.addClass("fade-in");
+$("#main").children(".progress").replaceWith("<%=j cell(:message).(:new, submission_id: @new_message.submission_id) %>");
+replyButton(newMessage.find(".reply"));
+var form = $("#main").children(".new").children("form");
+doRemote(form);
+postMessage(form);
+previewButton(form.find("[name = preview]"));
+//if(poller === undefined) pollNow();

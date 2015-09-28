@@ -1,0 +1,10 @@
+<% unless @parent_controller.anon? %>
+  <div class = "row new">
+    <%= form_for Message.new, url: @url, html: { class: "new_message remote" } do |f| %>
+      <%= f.text_area :content, placeholder: @content_placeholder %>
+      <div class = "preview"></div>
+      <%= f.submit "Post as #{@parent_controller.current_user.name}", name: "post" %>
+      <%= f.submit "Preview", name: "preview", class: "js" %>
+    <% end %>
+  </div>
+<% end %>

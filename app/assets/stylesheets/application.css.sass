@@ -18,9 +18,21 @@
 @import "materialize.min"
 @import "theme"
 
+//font
+
 @font-face
   font-family: "Blogger"
   src: url("Blogger_Sans-Medium.otf")
+
+//animations
+
+@keyframes fade-in
+  from
+    opacity: 0
+  to
+    opacity: 1
+
+//mixins
 
 =block-centered
   margin-left: auto
@@ -131,6 +143,11 @@
 .pool-index-field
   +pool-index-field
 
+.fade-in
+  animation-name: fade-in
+  animation-duration: 2s
+  opacity: 1
+
 //very large
 @media only screen and (min-width: 1921px)
   .widthTester
@@ -176,6 +193,9 @@
       margin-right: .76%
     .list:nth-of-type(3n-1)
       clear: left
+  .message
+    .col:not(.hc)
+      margin-top: -.5% !important
 
 //below large
 @media only screen and (max-width: 992px)
@@ -188,6 +208,9 @@
     font-size: 100% !important
     bottom: 15% !important
     margin-left: 0 !important
+  .message
+    .col:not(.hc)
+      margin-top: 1% !important
 
 //medium
 @media only screen and (min-width: 761px) and (max-width: 992px)
@@ -271,6 +294,10 @@
 html
   font-family: "Blogger"
   background-color: $background-color
+
+hr
+  margin-top: 2%
+  margin-bottom: 2%
 
 .side-nav
   max-width: 80%
@@ -391,20 +418,18 @@ li
   a
     color: inherit
 
-.comment
+.message
   box-shadow: 0px 3px 15px #488E8E
-  margin-top: 6px !important
-  margin-bottom: 6px !important
+  margin-top: 1% !important
   width: 75%
   margin-left: 25% !important
-  blockquote.inline:not(.link)
-    margin-top: 0 !important
+  blockquote.inline
+    margin-top: 2% !important
     max-height: none
   .col.hc
     margin-bottom: 2%
   .col:not(.hc)
-    padding: 0
-    margin-top: 0 !important
+    padding: 0W
     margin-bottom: 1%
   h5
     line-height: 2rem
@@ -416,7 +441,7 @@ li
     width: 100% - $indent
     margin-left: $indent + 0% !important
 
-.message
+.message.minimal
   margin: 10px 0 !important
   padding: 0 5px
   outline: 2px solid green

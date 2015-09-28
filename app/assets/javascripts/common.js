@@ -36,3 +36,13 @@ function hideAndShow(element){
 }
 
 readyFunctions.push(hideAndShow);
+
+function doRemote(element){
+  if(element === undefined){
+    $(".remote").attr("data-remote", "true")
+  }else{
+    if(element.hasClass("remote")) element.attr("data-remote", "true");
+  }
+}
+
+readyFunctions.push(doRemote);

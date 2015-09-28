@@ -21,17 +21,4 @@ readyFunctions.push(function(){
       reader.readAsDataURL(this.files[0]);
     }
   });
-
-  $(".preview-button").off("click");
-
-  $(".preview-button").on("click", function(event){
-    pauseEvent(event);
-    var message = $($(this).prevAll("textarea")[0]),
-        previewArea = $($(message.next(".preview")[0]));
-    previewArea.html($("<div />", {
-      class: "card"
-    }).append($("<div />", {
-      class: "card-content"
-    }).append(markdown.toHTML(message.val()))));
-  });
 });

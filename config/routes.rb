@@ -8,7 +8,10 @@ Rails.application.routes.draw do
   end
 
   controller :messages do
-    get "message_listener", to: "messages#listener", as: :listener
+    #sse route
+    #get "message_listener", to: "messages#listener", as: :listener
+    #poller route
+    get "message_poller", to: "messages#poller", as: :poller
   end
 
   controller :images do

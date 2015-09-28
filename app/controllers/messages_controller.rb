@@ -15,6 +15,7 @@ class MessagesController < ApplicationController
     @new_message.content = view_context.sanitize(params[:message][:content])
     if @new_message.save
       respond_to do |format|
+        format.html { back }
         format.js
       end
     else
@@ -49,7 +50,7 @@ class MessagesController < ApplicationController
     back
   end
 
-  def listener
+  def listener #sse
     response.headers["Content-Type"] = "text/event-stream"
     sse = SSE.new(response.stream)
     begin
@@ -59,6 +60,14 @@ class MessagesController < ApplicationController
     rescue IOError
     ensure
       sse.close
+    end
+    render nothing: true
+  end
+
+  def poller
+    if Message.where(submission_id: params[:submission_id]).count > params[:count].to_i
+      @messages = Message.where(submission_id: params[:submission_id])
+      send_data cell(:message, @messages).(:index)
     end
     render nothing: true
   end

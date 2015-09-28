@@ -36,8 +36,8 @@
     <%= @submission.description %>
   </div>
 </div>
-<div class = "row" id = "comments">
+<div class = "row" id = "messages">
   <%= cell(:message, @comments).(:index) %>
-  <hr />
 </div>
-<%= render "messages/new" %>
+<hr />
+<%= cell(:message).(:new) %>
