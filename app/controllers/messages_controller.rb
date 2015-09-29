@@ -66,8 +66,8 @@ class MessagesController < ApplicationController
 
   def poller
     if Message.where(submission_id: params[:submission_id]).count > params[:count].to_i
-      @messages = Message.where(submission_id: params[:submission_id])
-      send_data cell(:message, @messages).(:index)
+      @message = Message.where(submission_id: params[:submission_id]).last
+      send_data cell(:message, @message).(:show)
     end
     render nothing: true
   end

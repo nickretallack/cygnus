@@ -22,10 +22,14 @@ readyFunctions.push(function(){
       },
       function(data){
         if(data !== ""){
-          $("#messages").html(data);
+          var newMessage = $(data);
+          placeMessage((function(){
+            if(!newMessage.is("[class *= reply]")) return undefined;
+            return $("#"+/reply-\d+/.exec(newMessage.attr("class"))[0].replace("reply-", ""));
+          })(), newMessage);
         }
       });
-    //poller = setTimeout(pollNow, 1000);
+    poller = setTimeout(pollNow, 1000);
   };
 
   if(poller === undefined) pollNow();
@@ -50,9 +54,11 @@ readyFunctions.push(function(){
     previewButton(button);;
   });
 
+  clonableNewMessage = $("#messages").nextAll(".new").clone();
+
   replyButton = function(reply){
     reply = $(reply);
-    var clonable = $("#messages").nextAll(".new").children("form").clone();
+    
     reply.css({
       cursor: "pointer"
     });
@@ -63,7 +69,7 @@ readyFunctions.push(function(){
           class: "col s12"
         }).css({
           marginBottom: 10
-        }).append(clonable)).find("[name = post]").attr("value", function(index, value){
+        }).append(clonableNewMessage.clone())).find("[name = post]").attr("value", function(index, value){
           return "Reply to "+message.find("h5").text()+" "+(value.replace("Post ", "").wrap("("));
         }).before($("<input />", {
           type: "hidden",
@@ -99,3 +105,35 @@ readyFunctions.push(function(){
   });
 
 });
+
+function placeMessage(message, newMessage){
+  if(!newMessage.is("[class *= reply]")){
+    $("#messages").append(newMessage);
+    $("#main").children(".progress").replaceWith(clonableNewMessage.clone());
+  }else{
+    var getIndent = function(element){
+      return parseInt(/indent-\d+/.exec(element.attr("class"))[0].replace("indent-", ""));
+    };
+    var setIndent = function(className, indentLevel){
+      return className.replace(/indent-\d+/, "indent-"+indentLevel.toString());
+    };
+    newMessage.attr("class", function(index, className){
+      return setIndent(className, getIndent(message)+1);
+    });
+    var nonReplies = message.nextAll(".message").filter(function(){
+      return getIndent($(this)) === getIndent(message);
+    });
+    if(nonReplies.length === 0){
+      $("#messages").append(newMessage);
+    }else{
+      nonReplies.first().before(newMessage);
+    }
+    message.find(".progress").parent().remove();
+  }
+  newMessage.addClass("fade-in");
+  replyButton(newMessage.find(".reply"));
+  var form = $("#main").children(".new").children("form");
+  doRemote(form);
+  postMessage(form);
+  previewButton(form.find("[name = preview]"));
+}

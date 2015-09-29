@@ -17,7 +17,6 @@ class MessageCell < Cell::ViewModel
   def show(options = {})
     #raise "break"
     #@reply_path = @comments.nil?? new_pm_path(@user.name, @model.id) : new_comment_path(@submission.id, @model.id)
-    @reply = "top"
     @reply = "reply-#{@model.message_id}" if @model.message_id
     @indent = options[:indent] || 0
     render
