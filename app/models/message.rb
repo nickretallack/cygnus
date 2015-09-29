@@ -4,6 +4,16 @@ class Message < ActiveRecord::Base
   #after_create :notify_added
   
   validates :content, format: { with: /\S+/, message: "must have some content." }
+  validate do
+    if message_id
+      message = Message.find(message_id)
+      if message.nil?
+        errors.add(:message_id, "##{message_id} does not exist.")
+      elsif not submission_id == message.submission_id
+        errors.add(:message_id, "##{message_id} is in another castle.")
+      end
+    end
+  end
 
   def replies
     self.class.where(message_id: id)

@@ -29,7 +29,7 @@ readyFunctions.push(function(){
           })(), newMessage);
         }
       });
-    poller = setTimeout(pollNow, 1000);
+    //poller = setTimeout(pollNow, 1000);
   };
 
   if(poller === undefined) pollNow();
@@ -55,6 +55,8 @@ readyFunctions.push(function(){
   });
 
   clonableNewMessage = $("#messages").nextAll(".new").clone();
+  clonableNewMessage.find("[name = 'message[accept_text_reply]']").remove();
+  $("#messages").nextAll(".new").replaceWith(clonableNewMessage);
 
   replyButton = function(reply){
     reply = $(reply);
@@ -64,6 +66,7 @@ readyFunctions.push(function(){
     });
     reply.on("click.reply", function(){
       var message = reply.parents(".message");
+      message.find(".errors").remove();
       if(message.find("form").length === 0){
         message.append($("<div />", {
           class: "col s12"
@@ -92,7 +95,7 @@ readyFunctions.push(function(){
     form = $(form);
     form.on("submit.message", function(event){
       clearTimeout(poller);
-      form.parent(".new").replaceWith($("<div />", {
+      form.parent(".new").before($("<div />", {
         class: "progress"
       }).append($("<div />", {
         class: "indeterminate"
@@ -109,7 +112,8 @@ readyFunctions.push(function(){
 function placeMessage(message, newMessage){
   if(!newMessage.is("[class *= reply]")){
     $("#messages").append(newMessage);
-    $("#main").children(".progress").replaceWith(clonableNewMessage.clone());
+    $("#main").children(".progress").remove();
+    $("#main").find(".new").find("[name = 'message[content]']").val("");
   }else{
     var getIndent = function(element){
       return parseInt(/indent-\d+/.exec(element.attr("class"))[0].replace("indent-", ""));
@@ -128,12 +132,14 @@ function placeMessage(message, newMessage){
     }else{
       nonReplies.first().before(newMessage);
     }
-    message.find(".progress").parent().remove();
+    message.find(".new").parent().remove();
   }
+  hideAndShow(newMessage);
   newMessage.addClass("fade-in");
   replyButton(newMessage.find(".reply"));
   var form = $("#main").children(".new").children("form");
   doRemote(form);
   postMessage(form);
   previewButton(form.find("[name = preview]"));
+  poller = setTimeout(pollNow, 1000);
 }

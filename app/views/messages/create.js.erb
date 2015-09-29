@@ -1,2 +1,24 @@
-placeMessage($("#<%=j @new_message.message_id.to_s %>"), $("<%=j cell(:message, @new_message).(:show) %>"));
-//if(poller === undefined) pollNow();
+<% if @new_message.new_record? %>
+  var errors = "<%=j @new_message.errors.full_messages.join(", ") %>";
+  var reply = <%= !@new_message.message_id.nil? %>;
+  var errorDiv = $("<div />", {
+    class: "errors"
+  }).css({
+    marginBottom: 10
+  });
+  $.each(errors.split(", "), function(index, error){
+    errorDiv.append($("<li />", {
+      text: error
+    }));
+  });
+  if(reply){
+    var message = $("#<%=j @new_message.message_id.to_s %>");
+    message.find(".errors").remove();
+    message.find(".progress").replaceWith(errorDiv);
+  }else{
+    $("#main").find(".errors").remove();
+    $("#main").find(".progress").replaceWith(errorDiv);
+  }
+<% else %>
+  placeMessage($("#<%=j @new_message.message_id.to_s %>"), $("<%=j cell(:message, @new_message).(:show) %>"));
+<% end %>

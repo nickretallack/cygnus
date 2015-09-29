@@ -11,15 +11,24 @@ class MessagesController < ApplicationController
     @new_message.user_id = current_user.id
     @new_message.submission_id = params[:submission_id]
     @new_message.recipient_id = params[:recipient_id]
-    @new_message.message_id = params[:message][:message_id]
-    @new_message.content = view_context.sanitize(params[:message][:content])
+    @new_message.content = params[:message][:content]
+    if params[:message][:accept_text_reply]
+      @new_message.message_id = params[:message][:content][/>>\d+/].gsub(">>", "").to_i
+      @new_message.content = @new_message.content.gsub(/>>\d+\s*/, "")
+    else
+      @new_message.message_id = params[:message][:message_id]
+    end
+    @new_message.content = view_context.sanitize(@new_message.content)
     if @new_message.save
       respond_to do |format|
         format.html { back }
         format.js
       end
     else
-      back_with_errors
+      respond_to do |format|
+        format.html { back_with_errors }
+        format.js
+      end
     end
   end
 

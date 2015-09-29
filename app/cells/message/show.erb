@@ -10,7 +10,8 @@
   </div>
   <% unless @parent_controller.anon? %>
     <div class = "col s6">
-      <blockquote class = "inline link"><a class = "reply">Reply</a></blockquote>
+      <blockquote class = "inline link js"><a class = "reply">Reply</a></blockquote>
+      <blockquote class = "inline help nojs" title = '<%= "To reply, include >>#{@model.id} in your message. The first reply marker like this given is the one that will be used." %>' ><%= ">>#{@model.id}" %></blockquote>
     </div>
     <% end %>
   <div class = "col s12 m8 l9">

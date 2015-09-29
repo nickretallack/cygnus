@@ -12,6 +12,6 @@ class Submission < ActiveRecord::Base
   end
 
   def comments
-    @comments ||= Message.where(submission_id: id, message_id: nil)
+    @comments ||= Message.where(submission_id: id)
   end
 end
