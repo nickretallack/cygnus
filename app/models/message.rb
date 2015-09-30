@@ -14,6 +14,14 @@ class Message < ActiveRecord::Base
       end
     end
   end
+  validate do
+    if recipient_id
+      user = User.find_by(id: recipient_id)
+      if user.nil?
+        errors.add(:user_id, "does not exist.")
+      end
+    end
+  end
 
   def replies
     self.class.where(message_id: id)

@@ -54,9 +54,10 @@ readyFunctions.push(function(){
     previewButton(button);;
   });
 
-  clonableNewMessage = $("#messages").nextAll(".new").clone();
+  var originalNewMessage = $("#main").children(".new");
+  clonableNewMessage = originalNewMessage.clone();
   clonableNewMessage.find("[name = 'message[accept_text_reply]']").remove();
-  $("#messages").nextAll(".new").replaceWith(clonableNewMessage);
+  if(/conversations/.test(window.location.pathname) && !/conversations\/./.test(window.location.pathname)) originalNewMessage.remove();
 
   replyButton = function(reply){
     reply = $(reply);
@@ -73,13 +74,14 @@ readyFunctions.push(function(){
         }).css({
           marginBottom: 10
         }).append(clonableNewMessage.clone())).find("[name = post]").attr("value", function(index, value){
-          return "Reply to "+message.find("h5").text()+" "+(value.replace("Post ", "").wrap("("));
+          return "Reply to "+message.find("h5").text()+" "+(value.replace(/Post\s/, "").wrap("("));
         }).before($("<input />", {
           type: "hidden",
           name: "message[message_id]",
           id: "message_message_id",
           value: message.attr("id")
         }));
+        message.find("[name = 'message[subject]']").remove();
         previewButton(message.find("[name = preview]"));
         postMessage(message.find("form"));
         doRemote(message.find("form"));
@@ -110,6 +112,7 @@ readyFunctions.push(function(){
 });
 
 function placeMessage(message, newMessage){
+  console.log(newMessage);
   if(!newMessage.is("[class *= reply]")){
     $("#messages").append(newMessage);
     $("#main").children(".progress").remove();
@@ -128,7 +131,11 @@ function placeMessage(message, newMessage){
       return getIndent($(this)) === getIndent(message);
     });
     if(nonReplies.length === 0){
-      $("#messages").append(newMessage);
+      var element = (function(){
+        if($(".hidable").length === 0) return $("#messages");
+        return message.parents(".hidable");
+      })();
+      element.append(newMessage);
     }else{
       nonReplies.first().before(newMessage);
     }

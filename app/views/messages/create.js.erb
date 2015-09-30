@@ -20,5 +20,5 @@
     $("#main").find(".progress").replaceWith(errorDiv);
   }
 <% else %>
-  placeMessage($("#<%=j @new_message.message_id.to_s %>"), $("<%=j cell(:message, @new_message).(:show) %>"));
+  placeMessage($("#<%=j @new_message.message_id.to_s %>"), $("<%=j cell(:message, @new_message).(:full) %>"));
 <% end %>

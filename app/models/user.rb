@@ -5,8 +5,6 @@ class User < ActiveRecord::Base
   has_many :pools
   has_one :card
   has_many :messages, -> { where "user_id = ?", -1 }, foreign_key: :recipient_id
-  has_many :pms_received, -> { where("submission_id IS NULL AND user_id > ?", -1) }, class_name: "Message", foreign_key: :recipient_id
-  has_many :pms_sent, -> { where("submission_id IS NULL AND message_id is NULL") }, class_name: "Message"
   has_many :order_forms
   belongs_to :upload, foreign_key: :avatar 
 
@@ -17,6 +15,10 @@ class User < ActiveRecord::Base
   validates :email, presence: true, length: { maximum: 255 }, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
   
   validates :password, length: { minimum: 6 }, allow_blank: true
+
+  def pms
+    @pms ||= Message.where("submission_id IS NULL AND user_id > 0 AND (user_id = ? OR recipient_id = ?)", id, id)
+  end
   
   def named_routes
     Rails.application.routes.named_routes.helpers.map(&:to_s).collect{ |route| route.gsub(/_path|_url/, "") }

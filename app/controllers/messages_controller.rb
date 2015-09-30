@@ -10,14 +10,17 @@ class MessagesController < ApplicationController
   def create
     @new_message.user_id = current_user.id
     @new_message.submission_id = params[:submission_id]
-    @new_message.recipient_id = params[:recipient_id]
+    recipient = User.find(params[:recipient])
+    @new_message.recipient_id = recipient.id if recipient
     @new_message.content = params[:message][:content]
-    if params[:message][:accept_text_reply]
-      @new_message.message_id = params[:message][:content][/>>\d+/].gsub(">>", "").to_i
-      @new_message.content = @new_message.content.gsub(/>>\d+\s*/, "")
+    if params[:message][:accept_text_reply] and params[:message][:content][/>>[^\s\D]+/]
+      @new_message.message_id = params[:message][:content][/>>[^\s\D]+/].gsub(">>", "").to_i
+      @new_message.content = @new_message.content.gsub(/>>[^\s\D]+\s*/, "")
     else
       @new_message.message_id = params[:message][:message_id]
     end
+    @new_message.recipient_id = nil if @new_message.message_id or @new_message.submission_id
+    @new_message.subject = view_context.sanitize(@new_message.subject)
     @new_message.content = view_context.sanitize(@new_message.content)
     if @new_message.save
       respond_to do |format|
@@ -42,15 +45,15 @@ class MessagesController < ApplicationController
   end
 
   def index
-    raise "break"
-    @user = User.find(params[User.slug])
     if view_context.current_page? messages_path
-      @messages = @user.messages
-    elsif view_context.current_page? submission_path
-      @comments = @submission.comments
+      @user = User.find(params[User.slug])
+      @unread_messages = current_user.unread_messages
+      @header = "#{view_context.link_to(params[User.slug], user_path(params[User.slug]))}'s Activity"
+      @html = cell(:message, @user.messages.reverse).(:index, type: :stub, mark_read: (current_user? @user))
     else
-      @pms = current_user.pms_received + current_user.pms_sent
-      @recipient = params[:recipient]
+      @header = "Conversations"
+      @new = cell(:message).(:new, recipient: params[:recipient])
+      @html = cell(:message, current_user.pms.where(message_id: nil)).(:index, type: :full)
     end
   end
 

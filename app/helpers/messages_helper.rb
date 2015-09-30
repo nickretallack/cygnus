@@ -51,12 +51,13 @@ module MessagesHelper
     end
     message.content = view_context.sanitize(message.content)
     message.save!
+    current_user.update_attribute(:unread_messages, current_user.unread_messages+1)
   end
 
   #prepares an activity message for display
   def format_message(message)
     message.content = message.content.gsub(current_user.name, "You").gsub("has", "have").gsub("their", "your") if current_user?(User.find_by(id: message.recipient_id))
     message.content = message.content.gsub(/(#{CONFIG[:activity_icons].keys.join("|")})/, "<span class = 'inline comm-#{'\1'}'>#{'\1'}</span>")
-    "#{message.created_at.strftime("%A %B %e, %Y at %l:%M%P %Z").gsub("  ", " ")}: #{message.content}".html_safe
+    "#{message.timestamp(:created)}: #{message.content}".html_safe
   end
 end
