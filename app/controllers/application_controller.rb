@@ -52,6 +52,7 @@ class ApplicationController < ActionController::Base
 
   def activate_session(user)
     session[:username] = user.name
+    session[:unread_messages] = current_user.unread_messages
   end
 
   def deactivate_session

@@ -50,6 +50,8 @@ class MessagesController < ApplicationController
       @unread_messages = current_user.unread_messages
       @header = "#{view_context.link_to(params[User.slug], user_path(params[User.slug]))}'s Activity"
       @html = cell(:message, @user.messages.reverse).(:index, type: :stub, mark_read: (current_user? @user))
+      current_user.update_attribute(:unread_messages, 0)
+      session[:unread_messages] = 0
     else
       @header = "Conversations"
       @new = cell(:message).(:new, recipient: params[:recipient])
@@ -79,7 +81,12 @@ class MessagesController < ApplicationController
   def poller
     if Message.where(submission_id: params[:submission_id]).count > params[:count].to_i
       @message = Message.where(submission_id: params[:submission_id]).last
-      send_data cell(:message, @message).(:show)
+      send_data ActiveSupport::JSON.encode({message: cell(:message, @message).(:show)})
+    end
+    activity_count = current_user.unread_messages - session[:unread_messages]
+    if activity_count > 0
+      session[:unread_messages] += 1
+      send_data ActiveSupport::JSON.encode({message: cell(:message, Message.where(user_id: -1, recipient_id: current_user.id).order("id desc").limit(activity_count).reverse.first).(:stub), pollAgain: (activity_count-1 > 0)})
     end
     render nothing: true
   end

@@ -1,4 +1,4 @@
-<% unless @reply %>
+<% if not @reply and not @model.submission_id %>
   <div class = "row hidable max">
     <div class = "hidable-title"><%= @model.subject || "Conversation initiated by #{@model.user.name}" %></div>
 <% end %>
@@ -24,6 +24,6 @@
 <% @model.replies.each do |reply| %>
   <%= cell(:message, reply).(:full, indent: @indent+1) %>
 <% end %>
-<% unless @reply %>
+<% if not @reply and not @model.submission_id %>
   </div>
 <% end %>

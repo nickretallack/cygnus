@@ -22,14 +22,25 @@ readyFunctions.push(function(){
       },
       function(data){
         if(data !== ""){
-          var newMessage = $(data);
-          placeMessage((function(){
-            if(!newMessage.is("[class *= reply]")) return undefined;
-            return $("#"+/reply-\d+/.exec(newMessage.attr("class"))[0].replace("reply-", ""));
-          })(), newMessage);
+          data = JSON.parse(data);
+          var newMessage = $(data.message);
+          if(newMessage.is(".minimal")){
+            Materialize.toast(newMessage.text(), 4000);
+            if(/Activity$/.test($(".header").text())) $("#messages").prepend(newMessage.clone().addClass("fade-in"));
+            $(".circular-button").find("div").text(parseInt($(".circular-button").find("div").text())+1)
+            poller = setTimeout(pollNow, data.pollAgain? 2000 : 10000);
+          }else{
+            placeMessage((function(){
+              if(!newMessage.is("[class *= reply]")) return undefined;
+              return $("#"+/reply-\d+/.exec(newMessage.attr("class"))[0].replace("reply-", ""));
+            })(), newMessage);
+            poller = setTimeout(pollNow, 10000);
+          }
+        }else{
+          console.log("polled");
+          poller = setTimeout(pollNow, 10000);
         }
       });
-    //poller = setTimeout(pollNow, 1000);
   };
 
   if(poller === undefined) pollNow();
@@ -148,5 +159,5 @@ function placeMessage(message, newMessage){
   doRemote(form);
   postMessage(form);
   previewButton(form.find("[name = preview]"));
-  poller = setTimeout(pollNow, 1000);
+  if(newMessage.is(".hidable")) initHidable(newMessage);
 }

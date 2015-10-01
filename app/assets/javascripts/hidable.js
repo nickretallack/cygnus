@@ -115,26 +115,28 @@ loadFunctions.push(function(){
         }
       };
 
-  hidable.prepend(buttonTable.clone().append(minimizeButton.clone()).append(closeButton.clone()));
   destroyable.append(buttonTable.clone().append(closeButton.clone()).css({
     marginTop: 2
   }));
 
-  $.each(hidable, function(index, element){
-    var hidable = $(element);
+  initHidable = function(hidable){
     hidable.children(".hidable-title").css({
-        float: "left",
-        lineHeight: "19px",
-        fontSize: "18px",
-        paddingLeft: 10,
-        marginTop: -5,
-        userSelect: "none",
-        cursor: "default"
-      });
-    
+      float: "left",
+      lineHeight: "19px",
+      fontSize: "18px",
+      paddingLeft: 10,
+      marginTop: -5,
+      userSelect: "none",
+      cursor: "default"
+    });
+    hidable.prepend(buttonTable.clone().append(minimizeButton.clone()).append(closeButton.clone()));
     sizeHidable(hidable);
     minmax(hidable);
     $(window).resize(function(){ sizeHidable(hidable) });
+  }
+
+  $.each(hidable, function(index, element){
+    initHidable($(element));
   });
 
   $.each(destroyable, function(index, element){

@@ -23,7 +23,7 @@ module MessagesHelper
   #
   # Message.system_message(:watch, user)
   #
-  def activity_message(type, object)
+  def activity_message(type, object = nil)
     message = Message.new(user_id: -1, recipient_id: current_user.id)
     case type
     when :watch

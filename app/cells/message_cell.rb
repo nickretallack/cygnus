@@ -30,8 +30,12 @@ class MessageCell < Cell::ViewModel
   end
 
   def stub
-    @unread = @parent_controller.instance_variable_get("@unread_messages") > 0
-    @parent_controller.instance_variable_set("@unread_messages", @parent_controller.instance_variable_get("@unread_messages")-1)
+    if @parent_controller.instance_variable_get("@unread_messages")
+      @unread = @parent_controller.instance_variable_get("@unread_messages") > 0
+      @parent_controller.instance_variable_set("@unread_messages", @parent_controller.instance_variable_get("@unread_messages")-1)
+    else
+      @unread = true
+    end
     render
   end
 

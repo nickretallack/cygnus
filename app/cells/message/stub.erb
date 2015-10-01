@@ -1,3 +1,3 @@
-<div class = "col s12 message minimal <%= "unread" if @unread %>">
+<div class = "col s12 message minimal <%= "unread" if @unread %>" id = "<%= @model.id %>">
   <%= @parent_controller.format_message(@model) %>
 </div>

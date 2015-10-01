@@ -16,14 +16,10 @@
     <div class = "separator"></div>
   </nav>
   <ul class = "js dropdown-content" id = "reg-menu">
-    <%= render "users/log_in" %>
-    <hr />
-    <%= render "users/register" %>
+    <%= render "anon_menu" %>
   </ul>
   <ul class = "side-nav" id = "mobile-reg-menu">
-    <%= render "users/log_in" %>
-    <hr />
-    <%= render "users/register" %>
+    <%= render "anon_menu" %>
   </ul>
 
 <% else %>
@@ -34,6 +30,11 @@
         <%= cell(:image).(:show, type: :logo_thumb) %>
       <% end %>
       <ul class = "right hide-on-med-and-down js">
+        <li class = "circular-button">
+          <%= link_to messages_path(current_user) do %>
+            <div><%= current_user.unread_messages %></div>
+          <% end %>
+        </li>
         <li>
           <a class = "dropdown-button" data-activates = "nav-menu">
             <div class = "vc">
