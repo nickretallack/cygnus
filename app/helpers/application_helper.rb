@@ -165,7 +165,7 @@ module ApplicationHelper
     #
   def message_for(*args)
     key, value = args.first.first
-    key = key.to_s.gsub("_", " ")
+    key.to_s.gsub("_", " ")
     if value.blank?
       "No #{key} specified."
     else
@@ -175,7 +175,7 @@ module ApplicationHelper
 
   def title_for(*args)
     key, value = args.first.first
-    @title ||= ->(key, value) {
+    ->(key, value) {
       if value.nil? or not value.respond_to? :title
         "Untitled"
       elsif value.title.blank?
@@ -183,7 +183,7 @@ module ApplicationHelper
       else
         value.title
       end
-      }.call(key, value)
+    }.call(key, value)
   end
 
   def select_options_for(type)

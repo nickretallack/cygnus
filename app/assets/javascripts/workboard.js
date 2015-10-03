@@ -24,12 +24,21 @@ function switchToWorklistMode(toMode){
 
 function viewWorklist(){
   topCard.children(".card-content").css({
-    paddingTop: "5px"
+    paddingTop: 5
+  });
+}
+
+function editWorklist(){
+  topCard.children(".card-content").css({
+    paddingTop: 20
   });
 }
 
 function reorderWorklist(){
-  $(".top-card").find(".card").on("mouseenter", function(){
+  topCard.children(".card-content").css({
+    paddingTop: 5
+  });
+  topCard.find(".card").on("mouseenter", function(){
     hover = $(this);
     hover.find("h4", "h5").css({
       cursor: "default"

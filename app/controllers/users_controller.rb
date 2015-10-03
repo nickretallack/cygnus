@@ -23,6 +23,7 @@ class UsersController < ApplicationController
       @users = User.search(params[:terms])
       @searching = true
     end
+    render "index"
   end
 
   def create

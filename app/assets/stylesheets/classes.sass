@@ -1,0 +1,245 @@
+//etc
+
+.new
+  border: 4px dotted #9DD0B4
+  padding: 5px
+  border-radius: 15px
+
+.hidable + .row
+  margin-top: 10px !important
+
+.container .row
+  margin: 0
+
+.col .col
+  padding: 0
+
+.header
+  margin-bottom: 10px
+  margin-top: 30px
+  a
+    color: inherit
+
+.console
+  max-height: 75px !important
+  *
+    display: inline !important
+
+.search
+  & > .row
+    margin-left: 3rem
+    width: calc(100% - 3rem)
+  i
+    margin-left: 0
+    width: auto
+
+.input-field
+  padding-top: 10px
+  padding-bottom: 5px
+  margin: 0
+  display: inline-block
+  width: 100%
+  label
+    font-size: 17px
+    margin-top: -6px
+  label + select
+    width: 65%
+    float: right
+
+.row>.col:not(.expandable)
+  margin-top: 2%
+
+.button-with-icon
+  padding: 0
+  text-shadow: 0px 2px 1px darkslategrey !important
+  option
+    text-shadow: 0px 2px 1px darkslategrey !important
+  i.right
+    margin-left: 10px
+  span:before
+    width: 30px
+    height: 30px
+    position: absolute
+    top: 0
+    left: 0
+    background-color: red
+
+.button-with-icon:hover
+  text-decoration: none
+
+.expandable
+  img
+    max-height: 400px
+    z-index: 0
+
+.materialboxed.initialized.active
+  max-height: none !important
+  max-width: none !important
+
+.limit-height
+  height: 400px
+  & > .col
+    +vertical-center
+
+.btn:hover
+  font-size: 110%
+
+.material-icons
+  vertical-align: middle
+  cursor: default
+
+.new
+  input[type = "text"],
+  input[type = "email"],
+  input[type = "password"]
+    padding-left: 5px
+    width: calc(100% - 5px)
+
+.js
+  display: none
+
+.file-field
+  display: table
+  .btn
+    float: none
+
+.edit-mode
+  text-align: left
+
+//images
+
+.preview
+  +block-centered
+  position: relative
+  text-align: left
+  #flash
+    box-shadow: none
+    margin-bottom: 10px
+    padding: 0
+
+.gallery
+  text-align: center
+
+.thumbnail-block
+  +block-centered
+  margin-top: 2%
+  width: 200px
+  display: inline-block
+  a:hover
+    font-size: 100%
+
+.thumbnail
+  +block-centered
+  width: $thumb-size
+  height: $thumb-size
+  border: 4px dashed black
+  border-radius: 4px
+  box-sizing: content-box
+  overflow: hidden
+  position: relative
+  img
+    max-height: none
+    max-width: none
+    left: -25%
+    +full-center
+
+.thumb-preview
+  .thumbnail
+    img
+      max-height: 100%
+      max-width: 100%
+
+//input
+
+.submit
+  @extend .btn
+  text-shadow: 0px 2px 1px darkslategrey !important
+  -moz-appearance: none !important
+  -webkit-appearance: none !important
+  color: white !important
+  transition: .2s ease-out !important
+  font-size: 1rem !important
+  display: inline-block
+  line-height: 2rem !important
+  height: auto !important
+  padding: 0 2rem !important
+  margin: 0
+
+.submit:hover
+  font-size: 1.2rem !important
+  color: white !important
+  text-decoration: none !important
+
+input[type = "submit"]
+  @extend .submit
+
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder
+  +placeholder
+input:-moz-placeholder, textarea:-moz-placeholder
+  +placeholder
+input::-moz-placeholder, textarea::-moz-placeholder
+  +placeholder
+input:-ms-input-placeholder, textarea:-ms-input-placeholder
+  +placeholder
+
+input:focus:hover::-webkit-input-placeholder, textarea:focus:hover::-webkit-input-placeholder
+  +placeholder-focus-hover
+input:focus:hover:-moz-placeholder, textarea:focus:hover:-moz-placeholder
+  +placeholder-focus-hover
+input:focus:hover::-moz-placeholder, textarea:focus:hover::-moz-placeholder
+  +placeholder-focus-hover
+input:focus:hover:-ms-input-placeholder, textarea:focus:hover:-ms-input-placeholder
+  +placeholder-focus-hover
+
+input:focus::-webkit-input-placeholder, textarea:focus::-webkit-input-placeholder
+  +placeholder-focus
+input:focus:-moz-placeholder, textarea:focus:-moz-placeholder
+  +placeholder-focus
+input:focus::-moz-placeholder, textarea:focus::-moz-placeholder
+  +placeholder-focus
+input:focus:-ms-input-placeholder, textarea:focus:-ms-input-placeholder
+  +placeholder-focus
+
+//messages
+#flash
+  margin-bottom: 25px
+  font-size: 125%
+  padding-left: 10px
+  padding-right: 10px
+  border-radius: 10px
+  border: 2px dashed black
+  box-shadow: -1px 2px 15px rgba(0, 0, 0, 0.5)
+  background-color: $flash-background-color
+  width: 100%
+  box-shadow: none
+
+.success
+  color: $success-color !important
+  border-color: $success-color !important
+.danger
+  color: $danger-color !important
+  border-color: $danger-color !important
+
+.errors
+  background-color: $danger-color
+  border-radius: 2px
+  padding-top: 2px
+  li
+    line-height: 26px
+    border-bottom: 1px solid black
+    padding: 2px 0 2px 10px
+
+//icons
+
+i.medium-small
+  font-size: 2.4rem
+  padding-bottom: .2rem
+a
+  i
+    cursor: pointer !important
+.comm-not_interested, .comm-closed
+  color: lightslategrey
+.comm-open, .comm-one_day_only
+  color: mediumspringgreen
+.comm-long_wait, .comm-make_a_pitch, .comm-friends_only
+  color: gold

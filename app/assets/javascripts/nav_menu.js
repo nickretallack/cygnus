@@ -38,11 +38,11 @@ loadFunctions.push(function(){
     menu.children("hr").remove();
   }
 
-  columnize($(".dropdown-content"));
-  columnize($(".side-nav").css({
-    padding: 0,
-    paddingTop: "20px"
-  }));
+  // columnize($(".dropdown-content"));
+  // columnize($(".side-nav").css({
+  //   padding: 0,
+  //   paddingTop: "20px"
+  // }));
 
   $(window).keydown(function(event){
     if(event.keyCode === 27) $(".button-collapse").sideNav("hide");

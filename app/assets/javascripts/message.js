@@ -43,7 +43,7 @@ readyFunctions.push(function(){
       });
   };
 
-  if(poller === undefined) pollNow();
+  //if(poller === undefined) pollNow();
 });
 
 readyFunctions.push(function(){

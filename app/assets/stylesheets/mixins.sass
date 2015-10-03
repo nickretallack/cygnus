@@ -1,0 +1,315 @@
+//font
+
+@font-face
+  font-family: "Blogger"
+  src: url("Blogger_Sans-Medium.otf")
+
+//animations
+
+@keyframes fade-in
+  from
+    opacity: 0
+  to
+    opacity: 1
+
+//mixins
+
+=block-centered
+  margin-left: auto
+  margin-right: auto
+  text-align: center
+
+=vertical-center
+  position: relative
+  top: 50%
+  transform: translateY(-50%)
+
+=horizontal-center
+  position: relative
+  left: 50%
+  transform: translateX(-50%)
+
+=full-center
+  position: relative
+  top: 50%
+  left: 50%
+  transform: translateX(-50%) translateY(-50%)
+
+=float-left
+  float: left
+  span
+    text-align: center
+    width: 100%
+
+=placeholder
+  color: $placeholder-color
+  text-shadow: 0px 0px 5px $placeholder-text-shadow-color
+  padding-left: 5px
+  opacity: 1
+
+=placeholder-focus-hover
+  opacity: 0.3
+
+=placeholder-focus
+  opacity: 0.5
+  text-shadow: none
+
+=vertical-divider
+  height: 1.8rem
+  margin: 0.15rem 5px 0 5px
+  border: 1px solid #ABC7AB
+  border-top-style: none
+  border-bottom-style: none
+
+=full-width
+  max-width: 98%
+  width: 98%
+
+=clickable-icon
+  &
+    color: black
+    display: inline
+  &:hover
+    color: #E045BF
+
+=pool-index-field
+  &
+    text-align: center
+    margin: 2rem auto auto 0 !important
+    +block-centered
+    .col
+      display: inline
+      width: 100%
+      a
+        width: 170px
+        height: 170px
+        display: inline-block
+      i:hover
+        color: #E045BF
+
+=help
+  &
+    cursor: help
+
+=circular-button
+  &
+    +vertical-center
+    transform: scale(1.1) translateY(-45%)
+    height: 65% !important
+    border-radius: 50%
+    border: 2px dashed snow
+    line-height: 2rem
+    text-shadow: 0 2px 2px darkslategrey
+    margin-left: 10px
+    margin-right: 10px
+    a:hover
+      text-decoration: none
+      font-size: 100% !important
+  &:hover
+    cursor: pointer
+    transform: scale(1.3) translateY(-38%)
+
+=message
+  &
+    box-shadow: 0px 3px 15px #488E8E
+    margin-top: 1% !important
+    padding-top: 2% !important
+    padding-bottom: 1% !important
+    width: 75%
+    margin-left: 25% !important
+    blockquote.inline
+      margin-top: 2% !important
+      max-height: none
+    .col.hc
+      margin-bottom: 2%
+    .col:not(.hc)
+      padding: 0W
+      margin-bottom: 1%
+    h5
+      line-height: 2rem
+
+  @for $i from 0 through 4
+    &.indent-#{$i}
+      $indent: (5*$i)
+      width: 100% - $indent
+      margin-left: $indent + 0% !important
+
+  &.minimal
+    margin: 10px 0 !important
+    padding: 0 5px !important
+    outline: 2px solid green
+
+  &.sent
+    background-color: floralwhite
+
+  &.received
+    background-color: honeydew
+
+  &.unread
+    background-color: pink
+
+=hidable
+  background-color: #DBFFE7
+  margin-top: 10px !important
+  margin-bottom: 10px !important
+  border-radius: 14px
+  border: 2px solid grey
+  padding: 10px
+  padding-bottom: 20px
+
+=blockquote
+  &
+    @extend .flow-text
+    font-size: 90%
+    border-left-color: $nav-background-color
+    ul li
+      list-style-type: disc
+
+  &.inline
+    text-align: left !important
+    max-height: 3.6rem
+    padding-right: 8px
+    overflow-x: hidden
+    overflow-y: auto
+    margin-bottom: 0
+
+  &.link
+    height: 2.32rem
+    margin-top: 15px
+    padding-top: .25rem
+    overflow: hidden
+    font-size: 140%
+    white-space: nowrap
+    a
+      position: relative
+      bottom: 15%
+      vertical-align: text-top
+    a:hover
+      bottom: 32%
+      margin-left: -.2rem
+    a~a:hover
+      margin-left: 0
+
+=card1
+  background-color: #EEFFE1
+  color: #EEFFE1
+  .card-content
+    .card-title
+      color: #11A2A9
+    .card-action
+
+=card2
+  background-color: #DEE4BD
+  color: #DEE4BD
+  .card-content
+    .card-title
+      color: #1F7B3B
+
+=top-card
+  &
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 15px 30px 0 rgba(0, 0, 0, 0.12)
+    background-color: #C5F992
+    text-align: left
+    input[type = "text"]
+      text-shadow: 0px 0px 4px black
+      color: whitesmoke
+    input[type = "submit"]
+      margin-bottom: 10px !important
+    textarea
+      font-size: 1rem
+      line-height: 2rem
+      height: auto
+    h5
+      margin-bottom: -5%
+    .thumbnail
+      position: inherit
+      top: auto
+      transform: none
+    .card
+      @extend .col
+      .card-content
+        padding-top: 0 !important
+      .card-action
+        padding: 0
+        font-size: 1.2rem
+        line-height: 1.2rem
+        border: none
+        margin-top: -10px
+        text-align: left !important
+        .view-mode
+          margin-top: 12%
+        .thumbnail
+          float: left
+          margin-right: 5px
+        span
+          display: inline
+      .card
+        @extend .m12
+        @extend .l12
+    .card:nth-of-type(odd)
+      +card1
+      .card:nth-child(even)
+        +card2
+      .card:nth-child(odd)
+        +card1
+    .card:nth-of-type(even)
+      +card2
+      .card:nth-child(even)
+        +card1
+      .card:nth-child(odd)
+        +card2
+
+//behavior
+
+.vc
+  +vertical-center
+
+.hc
+  width: 100%
+  text-align: center
+  *
+    +block-centered
+    display: block
+
+.fh
+  height: 10rem
+  a
+    display: inherit
+    height: inherit
+  div
+    +vertical-center
+
+.fl
+  +float-left
+
+.vdiv
+  +vertical-divider
+
+.fw
+  +full-width
+
+.clickable-icon
+  +clickable-icon
+
+.pool-index-field
+  +pool-index-field
+
+.fade-in
+  animation-name: fade-in
+  animation-duration: 2s
+  opacity: 1
+
+.help
+  +help
+
+.circular-button
+  +circular-button
+
+.message
+  +message
+
+.hidable
+  +hidable
+
+.top-card
+  +top-card

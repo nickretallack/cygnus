@@ -77,7 +77,7 @@
                                     </div>
                                   <% end %>
                                   <div class = "js thumb-preview">
-                                    <%= image_for :bordered, card.file_id if card.file_id %>
+                                    <%= cell(:image).(:show, type: :bordered, id: card.file_id) if card.file_id %>
                                   </div>
                                 </div>
                                 <%= f.submit "Save Card" %>
@@ -87,7 +87,7 @@
                           <% end %>
                           <div class = "card-action">
                             <div class = "view-mode">
-                              <%= image_for :bordered, card.file_id if card.file_id %>
+                              <%= cell(:image).(:show, type: :bordered, id: card.file_id) if card.file_id %>
                               <span><%= message_for description: card.description %></span>
                             </div>
                           </div>

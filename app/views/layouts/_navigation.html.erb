@@ -6,12 +6,21 @@
         <%= cell(:image).(:show, type: :logo_thumb) %>
       <% end %>
       <ul class = "right hide-on-med-and-down js">
-        <li><a class = "dropdown-button" data-activates = "reg-menu"><div class = "vc">Log In / Register<i class = "material-icons right">arrow_drop_down</i></div></a></li>
+        <li>
+          <a class = "dropdown-button" data-activates = "reg-menu">
+            <div>
+              Log In / Register
+              <i class = "material-icons right">arrow_drop_down</i>
+            </div>
+          </a>
+        </li>
       </ul>
       <div class = "right hide-on-med-and-down nojs">
         <%= render "users/log_in" %>
       </div>
-      <a data-activates="mobile-reg-menu" class="button-collapse"><i class="material-icons">menu</i></a>
+      <a data-activates="mobile-reg-menu" class="button-collapse">
+        <i class="material-icons">menu</i>
+      </a>
     </div>
     <div class = "separator"></div>
   </nav>
@@ -37,7 +46,7 @@
         </li>
         <li>
           <a class = "dropdown-button" data-activates = "nav-menu">
-            <div class = "vc">
+            <div>
               <%= current_user.name %>
               <i class = "material-icons right">arrow_drop_down</i>
             </div>
@@ -47,7 +56,9 @@
       <div class = "right hide-on-med-and-down nojs">
         <%= render "users/member_menu" %>
       </div>
-      <a data-activates="mobile-nav-menu" class="button-collapse"><i class="material-icons">menu</i></a>
+      <a data-activates="mobile-nav-menu" class="button-collapse">
+        <i class="material-icons">menu</i>
+      </a>
     </div>
     <div class = "separator"></div>
   </nav>
