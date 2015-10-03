@@ -92,20 +92,22 @@ loadFunctions.push(function(){
         if(parseInt(widthTester.css("width")) < 363){
           buttonTable.hide();
           hidableTitle.css({
-            paddingLeft: 0
+            paddingLeft: 0,
+            width: "100%"
           });
-          hidableTitle.off("click").on("click", function(event){ minmax(element); });
           minimizeButton.off("click");
           closeButton.off("click");
         }else{
           buttonTable.show();
           hidableTitle.css({
-            paddingLeft: 10
+            paddingLeft: 10,
+            width: "calc(100% - 49px)"
           });
           hidableTitle.off("click");
           minimizeButton.off("click").on("click", function(event){ minmax(element); });
           closeButton.off("click").on("click", function(event){ destroy(element); });
         }
+        hidableTitle.off("click").on("click", function(event){ minmax(element); });
       },
       minmax = function(element){
         if((element).hasClass("max")){
@@ -127,7 +129,7 @@ loadFunctions.push(function(){
       paddingLeft: 10,
       marginTop: -5,
       userSelect: "none",
-      cursor: "default"
+      cursor: "default",
     });
     hidable.prepend(buttonTable.clone().append(minimizeButton.clone()).append(closeButton.clone()));
     sizeHidable(hidable);

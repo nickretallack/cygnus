@@ -22,11 +22,11 @@
 				<div class = "danger nojs" id = "flash">
 					Please mark adult avatars explicit before saving.
 				</div>
-				<%= avatar_for @user, :full %>
+				<%= cell(:image).(:show, type: :full, id: @user.avatar) %>
 			</div>
 		<% else %>
 			<div class = "col s12 m6 l7 expandable preview">
-				<%= avatar_for @user, :full %>
+				<%= cell(:image).(:show, type: :full, id: @user.avatar) %>
 			</div>
 		<% end %>
 		<div class = "col s12 m6 l5 <%= "new" if can_modify?(@user) %>">
