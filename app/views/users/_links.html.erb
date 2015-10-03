@@ -15,6 +15,10 @@
   <% else %>
     <blockquote class = "inline link"><%= link_to "PM", pms_path(current_user.name, user.name) %></blockquote>
   <% end %>
-  <blockquote class = "inline link"><%= link_to "Order" %></blockquote>
+  <% if user.default_order_form and not current_user? user %>
+    <blockquote class = "inline link success"><%= link_to "Order", order_form_path(user, user.default_order_form) %></blockquote>
+  <% else %>
+    <blockquote class = "inline link danger">Order</blockquote>
+  <% end %>
   <blockquote class = "inline link"><%= link_to "Activity", messages_path(user) %></blockquote>
 </div>

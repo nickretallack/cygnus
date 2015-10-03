@@ -50,6 +50,9 @@ Rails.application.routes.draw do
     controller :pools do
       get :show, path: "gallery", as: :gallery
     end
+    controller :order_forms do
+      get :set_default, path: "order_forms/:#{OrderForm.slug}/default", as: :default_order_form
+    end
   end
 
   controller :users do
@@ -70,7 +73,9 @@ Rails.application.routes.draw do
       member do
         get :watch
         get :activate, path: "activate/:activation", as: :activate
-        resources :order_forms
+        controller :order_forms do
+          resources :order_forms, except: [:new, :edit, :update]
+        end
       end
     end
   end

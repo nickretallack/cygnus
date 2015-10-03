@@ -9,6 +9,33 @@ header
   a:hover
     cursor: pointer
     font-size: 1rem
+  .side-nav
+    max-width: 80%
+  #reg-menu
+    min-width: 300px
+    max-height: 800px
+  #mobile-reg-menu
+    max-width: 60% !important
+    input[type = "submit"]
+      width: 100%
+    li
+      text-align: center
+      float: left
+      width: 100%
+  #nav-menu
+    width: 600px
+    a
+      text-shadow: none
+    a:hover
+      font-size: 1.2rem
+    li
+      text-align: right
+  #mobile-nav-menu
+    a
+      text-shadow: none
+      font-size: 150%
+      color: yellowgreen
+      background-color: whitesmoke
   .separator
     height: $separator-height
     background: linear-gradient(to bottom, $background-color, $background-color-transparent)
@@ -19,6 +46,7 @@ header
     .nav-wrapper
       padding: 0
     .brand-logo
+      +vertical-center
       top: 35%
       position: absolute
     ul>li
@@ -47,30 +75,6 @@ header
         line-height: inherit !important
     .button-collapse:hover
       text-decoration: none
-    .side-nav
-      max-width: 80%
-    #reg-menu
-      min-width: 300px
-      max-height: 800px
-    #mobile-reg-menu
-      li
-        text-align: center
-        float: left
-        width: 100%
-    #nav-menu
-      width: 600px
-      a
-        text-shadow: none
-      a:hover
-        font-size: 1.2rem
-      li
-        text-align: right
-    #mobile-nav-menu
-      a
-        text-shadow: none
-        font-size: 150%
-        color: yellowgreen
-        background-color: whitesmoke
     .right.js
       height: 100%
       .dropdown-content

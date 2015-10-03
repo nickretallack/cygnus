@@ -90,7 +90,7 @@ class UsersController < ApplicationController
   def log_out
     deactivate_session
     flash[:info] = "logged out"
-    redirect_to :back
+    redirect_to :root
   end
 
   def watch

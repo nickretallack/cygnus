@@ -1,0 +1,48 @@
+<%= form_for OrderForm.new, url: order_forms_path(current_user), html: { id: "formcreator_result" } do |f| %>
+  <%= f.text_field :title, placeholder: "Title for form (only you will see this)" %>
+  <%= f.hidden_field :content, id: "formdata" %>
+<% end %>
+
+<div onLoad="initFormGenerator()" id = "new_order_form">
+
+  <!-- Form creator -->
+  <fieldset class="controls">
+    <!-- Controls for normal screens -->
+    <legend class="hide-on-small-and-down">Add</legend>
+    <div class="hide-on-small-and-down">
+      <div onClick="addItem(event.target)">
+        <button class="btn no-effects" name="text"><i class="material-icons">text_format</i>Text</button>
+        <button class="btn no-effects" name="multiline"><i class="material-icons">reorder</i>Multiline text</button>
+        <button class="btn no-effects" name="linklist"><i class="material-icons">link</i>Link</button>
+        <button class="btn no-effects" name="chooser"><i class="material-icons">radio_button_checked</i>Single option list</button>
+        <button class="btn no-effects" name="selector"><i class="material-icons">check_box</i>Multiple option list</button>
+        <button class="btn no-effects" name="image"><i class="material-icons">image</i>Image</button>
+        <button class="btn no-effects" name="fileup"><i class="material-icons"> file_upload</i>File upload</button>
+        <button class="btn no-effects" name="saveform"><i class="material-icons">save</i>Save</button>
+      </div>
+    </div>
+
+    <!-- Controls for smaller displays -->
+    <select class="btn no-effects hide-on-med-and-up" onChange="addItem(this.value); this.value=''">
+      <option value="">Add</option>
+      <option value="text">Text</option>
+      <option value="multiline">Multiline text</option>
+      <option value="linklist">Link</option>
+      <option value="chooser">Single option list</option>
+      <option value="selector">Multiple option list</option>
+      <option value="image">Image</option>
+      <option value="fileup">File upload</option>
+      <option disabled>-----</option>
+      <option value="saveform">Save</option>
+    </select>
+  </fieldset>
+
+    <!-- Template --
+    <div class="item workspace_element" name="A">
+      <div class="handle"></div>
+      <div class="content">Item A</div>
+      <div class="remove">&#10006;</div>
+    </div -->
+  <div id="form_generator" class="workspace"></div>
+
+</div>
