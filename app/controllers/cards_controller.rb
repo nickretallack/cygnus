@@ -1,4 +1,14 @@
 class CardsController < ApplicationController
+
+  before_filter only: [:index] do
+    insist_on :logged_in
+  end
+
+  before_filter only: [:update, :destroy] do
+    @user = User.find(params[User.slug])
+    insist_on :permission, @user
+  end
+
   def index
     @user = User.find(params[User.slug])
     @top_card = @user.card
@@ -17,7 +27,6 @@ class CardsController < ApplicationController
         card = Card.find(key)
         card.update_attribute(:cards, value) if can_modify? User.find_by(id: Card.find(order.keys[0]).user_id)
       end
-      #raise "break"
       back and return
     when /Create.*/
       @new_card = Card.new(title: params[:card][:title])
@@ -52,7 +61,6 @@ class CardsController < ApplicationController
   end
 
   def destroy
-    @user = User.find(params[User.slug])
     @card = Card.find(params[Card.slug])
     not_found and return unless @card
     case @card.level

@@ -1,4 +1,5 @@
 class SubmissionsController < ApplicationController
+  
   before_filter only: [:create] do
     @pool = Pool.find(params[:submission][:pool_id])
     unless @pool
@@ -8,7 +9,16 @@ class SubmissionsController < ApplicationController
     @user = @pool.user
     insist_on :permission, @user
   end
-  before_filter -> { insist_on :permission, @submission.pool.user }, only: [:update, :destroy]
+
+  before_filter only: [:update, :destroy] do
+    insist_on :permission, @submission.pool.user
+  end
+
+  before_filter only: [:fav] do
+    insist_on do
+      can_fav? @submission
+    end
+  end
 
   def create
 	if params[:submission][:upload][:picture].blank?
@@ -17,7 +27,7 @@ class SubmissionsController < ApplicationController
 	end
     @new_submission.file_id = Upload.render(params[:submission][:upload][:picture], params[:submission][:upload][:explicit])
     if @new_submission.save
-      @user.update_attribute(:view_adult, true) unless not params[:submission][:upload][:explicit] or @user.view_adult
+      @new_submission.pool.user.update_attribute(:view_adult, true) unless not params[:submission][:upload][:explicit] or @new_submission.pool.user.view_adult
       activity_message(:new_submission, @new_submission)
       back
     else
@@ -34,7 +44,7 @@ class SubmissionsController < ApplicationController
   def update
     if @submission.update(submission_params)
       @submission.update_attribute(:file_id, Upload.render(params[:submission][:upload][:picture], params[:submission][:upload][:explicit])) if params[:submission][:upload][:picture]
-      @user.update_attribute(:view_adult, true) unless not params[:submission][:upload][:explicit] or @user.view_adult
+      @submission.pool.user.update_attribute(:view_adult, true) unless not params[:submission][:upload][:explicit] or @submission.pool.user.view_adult
       back
     else
       back_with_errors

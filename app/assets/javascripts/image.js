@@ -3,7 +3,7 @@ readyFunctions.push(function(){
     if(this.files && this.files[0]){
       var reader = new FileReader();
       reader.onload = function(event){
-        var div = $("[class$='preview']"),
+        var div = $(".preview"),
             image = $("<img />", { src: event.target.result });
         image.load(function(){
           pic = $(this)[0]
@@ -13,7 +13,11 @@ readyFunctions.push(function(){
               class: "thumbnail success"
             }).append(image));
           }else{
-            div.find("img").replaceWith(image);
+            if(div.find("img").length < 1){
+              div.append(image);
+            }else{
+              div.find("img").replaceWith(image);
+            }
           }
           $("label[for $= '_upload_explicit']").addClass("danger");
         });

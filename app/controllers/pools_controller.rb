@@ -1,6 +1,10 @@
 class PoolsController < ApplicationController
-  before_filter only: [:create] do
-    @user = User.find(params[User.slug])
+  before_filter only: [:create, :destroy] do
+    if @pool
+      @user = @pool.user
+    else
+      @user = User.find(params[User.slug])
+    end
     insist_on :permission, @user
   end
 
@@ -15,7 +19,6 @@ class PoolsController < ApplicationController
 
   def show
     @user = User.find(params[User.slug])
-    @pool = Pool.find(params[Pool.slug])
     @pool = @user.pools.first if @user and not @pool
     not_found and return unless @pool
     @submissions = Submission.where(pool_id: @pool.id)
@@ -34,10 +37,9 @@ class PoolsController < ApplicationController
   def destroy
     @pool = Pool.find(params[:id])
     flash[:success] = "#{@pool.title} destroyed"
-    @user = @pool.user
     @pool.destroy
     if @user.pools.any?
-      flash[:danger] = "the first pool on your pools list has now become your main gallery"
+      flash[:danger] = "the first pool on your pools list (#{@user.pools.first.title}) has now become your main gallery"
     else
       flash[:danger] = "you now have no pools. You may create one at any time by visiting your pools page. The first one you create will be linked from artist searches as your main gallery"
     end

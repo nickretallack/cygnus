@@ -28,8 +28,9 @@
               <%= f.submit "Create List" %>
             <% end %>
           </div>
+        <% else %>
+          <div></div> <!--makes wrapping work on others' workboards-->
         <% end %>
-        <p>
           <% @top_card.cards.collect { |card_id| Card.find(card_id) }.each do |list| %>
             <div class = "card list" id = "'<%= list.id %>'" >
               <div class = "card-content">

@@ -8,13 +8,13 @@
         <%= f.text_field :tags, placeholder: "Artists who do...", value: @query %>
         <%= f.submit "Search" %>
       </div>
-    <% end %>
-    <div class = "row hidable max">
+      <div class = "row hidable max">
       <div class = "hidable-title">Search by</div>
       <div class = "input-field">
         <%= statuses @users, :search %>
       </div>
     </div>
+    <% end %>
   </div>
 </div>
 <hr />
@@ -55,6 +55,7 @@
         <%= render "links", user: user %>
       </div>
         <div class = "col s12 m6 l12">
+          <blockquote class = "inline"><%= message_for artist_types: user.artist_type %></blockquote>
           <blockquote class = "inline"><%= message_for price: user.price %></blockquote>
           <blockquote class = "inline"><%= message_for tags: user.tags %></blockquote>
         </div>

@@ -82,23 +82,23 @@ module UsersHelper
     when :logged_in
       if anon?
         flash[:danger] = "please sign in first"
-        back
+        redirect_to :root
       end
     when :permission
       user ||= User.new(name: params[User.slug] || "any other user")
       unless can_modify? user
-        flash[:danger] = "you are #{current_user.name} and are not allowed to view or modify #{user.name}'s records."
-        back
+        flash[:danger] = "you are #{current_user.name} and are not allowed to view or modify #{user.name}'s personal records"
+        redirect_to :root
       end
     when :existence
       unless user
         flash[:danger] = "no such user"
-        back
+        redirect_to :root
       end
     else
       unless Proc.new.call
         flash[:danger] = "you do not have permission to do that"
-        back
+        redirect_to :root
       end
     end
   end
@@ -142,12 +142,14 @@ module UsersHelper
 				html << "<div class = 'col s6'>"
 				if can_modify? user
 					html << "<select name = 'user[statuses][#{i}]' class = 'btn button-with-icon'>"
-					CONFIG[:activity_icons].each_with_index do |(key, value), index|
-						html << "<option class = 'comm-#{CONFIG[:activity_icons].keys[index]}' value = #{index} #{"selected = 'selected'" if status == index}>#{key.to_s.gsub("_", " ")}</option>"
+					CONFIG[:activity_icons].each do |key, value|
+						html << "<option class = 'comm-#{key}' value = #{key} #{"selected = 'selected'" if status == key.to_s}>#{key.to_s.gsub("_", " ")}</option>"
 					end
 					html << "</select>"
 				else
-					html << "<i class = 'medium-small material-icons comm-#{CONFIG[:activity_icons].keys[status]}'>#{CONFIG[:activity_icons].values[status]}</i> #{CONFIG[:activity_icons].keys[status].to_s.capitalize.gsub("_", " ")}"
+          key = status
+          value = CONFIG[:activity_icons][status.to_sym]
+          html << "<i class = 'medium-small material-icons comm-#{key}'>#{value}</i> #{key.to_s.capitalize.gsub("_", " ")}"
 				end
 				html << "</div>"
 				html << "</div>"
@@ -158,23 +160,27 @@ module UsersHelper
 			end
 			html << "<br />"
 			user.statuses.each do |status|
-				html << "<i class = 'medium-small material-icons comm-#{CONFIG[:activity_icons].keys[status]}' title = '#{CONFIG[:activity_icons].keys[status].to_s.gsub("_", " ").titleize}'>#{CONFIG[:activity_icons].values[status]}</i>"
+				html << "<i class = 'medium-small material-icons comm-#{status}' title = '#{status.to_s.gsub("_", " ").titleize}'>#{CONFIG[:activity_icons][status.to_sym]}</i>"
 			end
     when :search
-      CONFIG[:commission_icons].each_with_index do |(key, value), index|
+      CONFIG[:commission_icons].each do |key, value|
         html << "<div class = 'row'>"
         html << "<div class = 'col s1'>"
-        html << "<input name = 'terms[use_statuses][#{index}]' type = 'hidden' value = '0'><input type = 'checkbox' value = '1' name = 'terms[use_statuses][#{index}]' id = 'terms_use_statuses_#{index}' #{"checked" unless not params[:terms] or params[:terms][:use_statuses][index.to_s].to_i < 1}><label for = 'terms_use_statuses_#{index}'></label>"
+        html << "<input name = 'terms[use_statuses][#{key}]' type = 'hidden' value = '0'><input type = 'checkbox' value = '1' name = 'terms[use_statuses][#{key}]' id = 'terms_use_statuses_#{key}' #{"checked" unless not params[:terms] or params[:terms][:use_statuses][key] == "0"}><label for = 'terms_use_statuses_#{key}'></label>"
         html << "</div>"
         html << "<div class = 'col s5'>"
         html << "<i class = 'medium-small material-icons comm-status'>#{value}</i> #{key.capitalize}:"
         html << "</div>"
-        status = 2
-        status = params[:terms][:statuses][index.to_s].to_i if params[:terms]
+        status = "all open statuses"
+        status = params[:terms][:statuses][key] if params[:terms]
         html << "<div class = 'col s6'>"
-        html << "<select name = 'terms[statuses][#{index}]' class = 'btn button-with-icon'>"
-        CONFIG[:activity_icons].each_with_index do |(key, value), index|
-          html << "<option class = 'comm-#{key}' value = #{index} #{"selected = 'selected'" if status == index}>#{key.to_s.gsub("_", " ")}</option>"
+        html << "<select name = 'terms[statuses][#{key}]' class = 'btn button-with-icon'>"
+        {open: "all open statuses", long_wait: "all maybe statuses", closed: "all closed statuses"}.each do |key, value|
+          html << "<option class = 'comm-#{key}' value = '#{value}' #{"selected = 'selected'" if status == key}>#{value.to_s.gsub("_", " ")}</option>"
+        end
+        html << "<hr />"
+        CONFIG[:activity_icons].each do |key, value|
+          html << "<option class = 'comm-#{key}' value = '#{key}' #{"selected = 'selected'" if status == key}>#{key.to_s.gsub("_", " ")}</option>"
         end
         html << "</select>"
         html << "</div>"

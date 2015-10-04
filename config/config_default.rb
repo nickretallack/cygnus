@@ -1,7 +1,7 @@
 CONFIG = {
   thumbnail_width: 150,
   thumbnail_height: 150,
-  email_required: true,
+  email_required: false,
   host: "bleatr.cloudapp.net",
   name: "Bleatr",
   copyright: "&copy;2015 Lunar Gryphon",
@@ -20,19 +20,28 @@ CONFIG = {
   password_reset_shelf_life: 2.hours,
 
   commission_icons: {
-    commissions: "loyalty",
+    commissions: "local_atm",
     trades: "repeat",
-    requests: "comment",
-    collaborations: "supervisor_account"
+    requests: "chat_bubble_outline",
+    collaborations: "people_outline"
   },
 
   activity_icons: {
-    inactive: "not_interested",
-    accepting: "play_circle_outline",
-    accepting_few: "error_outline",
-    backlogged: "toll",
-    open_soon: "schedule",
-    vacation: "pause_circle_outline"
+    open: "play_circle_outline",
+    one_day_only: "error_outline",
+    long_wait: "schedule",
+    make_a_pitch: "info_outline",
+    friends_only: "mood",
+    closed: "pause_circle_outline",
+    not_interested: "highlight_off"
+  },
+
+  submission_icons: {
+    unfaved: "favorite_border",
+    faved: "favorite",
+    download: "file_download",
+    profile: "account_circle",
+    pool: "view_comfy"
   },
 
   user_levels: [

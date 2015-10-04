@@ -20,14 +20,7 @@ function addItem(src) {
   if(src === "saveform") {// Save the form
     var formdata = [], items = main_workspace.children;
     for(var i = 0; i < items.length; i++){
-      var item = $(items[i]);
-      if(item.is(".image")){
-        var j = JSON.parse(items[i].dataset.json);
-        j["data"] = item.find("img").attr("src");
-        items[i].dataset.json = JSON.stringify(j);
-      }
       formdata.push(items[i].dataset.json);
-      console.log(formdata)
     }
     document.getElementById("formdata").value = "[" + formdata.join(", ") + "]";
     document.getElementById("formcreator_result").submit();

@@ -1,6 +1,51 @@
 <% provide :header, "About" %>
 
 <blockquote>
+  Welcome to <%= CONFIG[:name] %> Beta! <%= CONFIG[:name] %> is for commissioners and commission artists. It provides tools to streamline the process, a place to connect, and the opportunity to display the work you do and the work that's been done for you. You can search for artists by tags (the kind of artwork they do) and by commission statuses (open, closed, etc.). If you're an artist, you can be searched by potential commissioners in the same way.
+
+  <p>
+  We're currently in beta mode, so look forward to (fairly) frequent updates!
+  <p>
+
+  <p>
+  Some things you can do right now, once you've registered:
+  <p>
+
+  <ul>
+    <li>Set up your profile: set an avatar, prices, tags, statuses, and other nice things.</li>
+    <li>Search by tag and status for users who have already set up their profiles.</li>
+    <li>Upload pictures as submissions to your gallery or other pools.</li>
+    <li>Comment on submissions and send PMs.</li>
+    <li>Use our built-in <%= link_to "kanban workboard", "https://en.wikipedia.org/wiki/Kanban_board" %> as an intelligent commission queue.</li>
+  </ul>
+
+  <p>
+  Some things that are coming in the near future:
+  </p>
+
+  <ul>
+    <li>The ability to custom build an order form and then allow commissioners to fill it in with their details when they commission you.</li>
+    <li>A significant upgrate of the workboard system that will make it a true all-in-one system for handling your workload.</li>
+  </ul>
+
+  <p>
+  Further things we have planned:
+  </p>
+
+  <ul>
+    <li>Hooking up with <%= link_to "InkedFur", CONFIG[:inkedfur] %> as a print provider.</li>
+    <li>Handling credit cards so commissions can be ordered and paid for on the same site.</li>
+    <li>A Patreon-like system for contributing to artists--but better designed--and possibly a Kickstarter-like system for bigger projects.</li>
+    <li>A realtime chat, forum, and profile widgets like a poll maker and an auction center.</li>
+  </ul>
+
+  <p>
+  We hope you enjoy yourself!
+  </p>
+
+</blockquote>
+
+<!--<blockquote>
   <%= CONFIG[:name] %> is for commissioners and commission artists. It provides tools to streamline the process, a place to connect, and the opportunity to display the work you do and the work that's been done for you.
 
   <p>
@@ -28,6 +73,4 @@
     <p>
     We hope you enjoy yourself and your time here. Feedback is welcome! Please register or sign in and PM the <%= CONFIG[:name] %> Feedback account with your comments and suggestions.
     </p>
-</blockquote>
-
-<%= render "messages/new_pm", recipient: CONFIG[:feedback_account_name] %>
+</blockquote>-->

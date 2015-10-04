@@ -3,10 +3,10 @@
     <%= form_for Message.new, url: @url, html: { class: "new_message remote js" } do |f| %>
       <%= f.text_field :subject, placeholder: "Conversation Subject", value: "To #{@recipient}", class: "js" if @subject %>
       <%= f.text_area :content, placeholder: @content_placeholder %>
-      <div class = "preview"></div>
+      <div class = "message-preview"></div>
       <%= f.hidden_field :accept_text_reply, value: "true" %>
       <%= f.submit @submit_text, name: "post" %>
-      <%= f.submit "Preview", name: "preview", class: "js" %>
+      <%= f.submit "Preview", name: "preview", class: "preview-button js" %>
     <% end %>
   </div>
 <% end %>

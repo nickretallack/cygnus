@@ -54,9 +54,11 @@ class UsersController < ApplicationController
   def update
     @user.avatar = Upload.render(params[:user][:upload][:picture], params[:user][:upload][:explicit]) unless params[:user][:upload][:picture].nil?
     @user.view_adult = true if params[:user][:upload][:explicit]
+    @old_statuses = @user.statuses
     @user.statuses = params[:user][:statuses].values
     @user.artist_type = params[:user][:artist_type].values.reject { |value| value.length == 0 }.join(", ")
     if @user.update_attributes(user_params)
+      activity_message(:status_change, params[:user][:statuses]) if @old_statuses != @user.statuses
       flash[:success] = "profile updated"
       back
     else
@@ -94,7 +96,6 @@ class UsersController < ApplicationController
   end
 
   def watch
-    #raise "break"
     if watching? @user
       current_user.update_attribute(:watching, current_user.watching.delete_if { |id| id == @user.id })
     else

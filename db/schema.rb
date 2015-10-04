@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151003181428) do
+ActiveRecord::Schema.define(version: 20151004104825) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,11 +38,11 @@ ActiveRecord::Schema.define(version: 20151003181428) do
     t.string   "subject"
     t.text     "content"
     t.integer  "user_id"
-    t.integer  "recipient_id"
     t.integer  "message_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.integer  "submission_id"
+    t.integer  "recipient_ids", default: [],              array: true
   end
 
   create_table "order_forms", force: :cascade do |t|
@@ -88,7 +88,6 @@ ActiveRecord::Schema.define(version: 20151003181428) do
     t.string   "gallery"
     t.string   "price"
     t.text     "details"
-    t.integer  "statuses",           default: [0, 0, 0, 0],              array: true
     t.string   "tags"
     t.string   "string"
     t.tsvector "tags_tsvector"
@@ -97,13 +96,14 @@ ActiveRecord::Schema.define(version: 20151003181428) do
     t.string   "activation_digest"
     t.datetime "activated_at"
     t.datetime "reset_sent_at"
-    t.integer  "watching",           default: [],                        array: true
+    t.integer  "watching",           default: [],                                                                                    array: true
     t.string   "artist_type"
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
-    t.integer  "favs",               default: [],                        array: true
+    t.datetime "created_at",                                                                                            null: false
+    t.datetime "updated_at",                                                                                            null: false
+    t.integer  "favs",               default: [],                                                                                    array: true
     t.integer  "unread_messages",    default: 0
     t.integer  "default_order_form"
+    t.string   "statuses",           default: ["not_interested", "not_interested", "not_interested", "not_interested"],              array: true
   end
 
   add_index "users", ["tags_tsvector"], name: "index_users_on_tags_tsvector", using: :gin

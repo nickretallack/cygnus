@@ -15,8 +15,8 @@ class Message < ActiveRecord::Base
     end
   end
   validate do
-    if recipient_id
-      user = User.find_by(id: recipient_id)
+    if recipient_ids != [] #[] is the default value--not nil
+      user = User.find_by(id: recipient_ids[0])
       if user.nil?
         errors.add(:user_id, "does not exist.")
       end

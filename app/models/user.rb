@@ -4,24 +4,27 @@ class User < ActiveRecord::Base
   attr_accessor  :activation_token, :reset_token
   has_many :pools
   has_one :card
-  has_many :messages, -> { where "user_id = ?", -1 }, foreign_key: :recipient_id
   has_many :order_forms
   belongs_to :upload, foreign_key: :avatar 
 
   before_save { self.email = email.downcase }
-  validates :name, presence: true, length: { maximum: 50 }, uniqueness: { case_sensitive: false }, exclusion: { in: :named_routes }
+  validates :name, presence: true, length: { maximum: 50 }, uniqueness: { case_sensitive: false }, exclusion: { in: :lead_paths }
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence: true, length: { maximum: 255 }, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
   
   validates :password, length: { minimum: 6 }, allow_blank: true
 
+  def messages
+    @messages ||= Message.where("user_id = ? AND ? = ANY (recipient_ids)", -1, id)
+  end
+
   def pms
-    @pms ||= Message.where("submission_id IS NULL AND user_id > 0 AND (user_id = ? OR recipient_id = ?)", id, id)
+    @pms ||= Message.where("submission_id IS NULL AND user_id > 0 AND (user_id = ? OR ? = ANY (recipient_ids))", id, id)
   end
   
-  def named_routes
-    Rails.application.routes.named_routes.helpers.map(&:to_s).collect{ |route| route.gsub(/_path|_url/, "") }
+  def lead_paths
+    Rails.application.routes.routes.collect {|r| r.path.spec.to_s }.collect {|path| if (match = /^\/([^\/\(:]+)/.match(path)); match[1]; else; ""; end;}.compact.uniq
   end
 
   def watched_by
@@ -47,17 +50,36 @@ class User < ActiveRecord::Base
 
   def self.search(terms)
     @result = User.where(->(tags) { #returns all instead of none if no search tags are given
-      if tags == ""
+      if tags.blank?
         return ""
       else
-        return "tags_tsvector @@ #{sanitize_sql_array(["to_tsquery('english', ?)", terms[:tags].gsub(/\s/, "+")])} AND "
+        return "tags_tsvector @@ #{sanitize_sql_array(["to_tsquery('english', ?)", terms[:tags].gsub(/\s/, "+")])} AND ("
       end
-    }.call(terms[:tags]) + ->(statuses, use_statuses) { #prepared to receive a hash of commission statuses like "statuses" => {"0" => "1", "1" => "4"} for convenient selecting
+    }.call(terms[:tags]) + ->(statuses, use_statuses) { #prepared to receive a hash of commission statuses like "statuses" => {"commissions" => "open", "trades" => "closed"} for convenient selecting
       append = ""
-      statuses = statuses.reject { |key, value| use_statuses[key].to_i < 1 }
-      statuses.collect { |key, value| sanitize_sql_array(["statuses[#{key.to_i+1}] = %d", value.to_i]) }.each_with_index do |statement, index|
+      statuses = statuses.reject { |key, value| use_statuses[key] == "0" }
+      statuses.collect { |key, value|
+        case value
+        when "all open statuses"
+          "("+sanitize_sql_array(["statuses[#{CONFIG[:commission_icons].keys.index(key.to_sym)}+1] = 'open'"])+" OR "+
+          sanitize_sql_array(["statuses[#{CONFIG[:commission_icons].keys.index(key.to_sym)}+1] = 'one_day_only'"])+")"
+        when "all maybe statuses"
+          "("+sanitize_sql_array(["statuses[#{CONFIG[:commission_icons].keys.index(key.to_sym)}+1] = 'long_wait'"])+" OR "+
+          sanitize_sql_array(["statuses[#{CONFIG[:commission_icons].keys.index(key.to_sym)}+1] = 'make_a_pitch'"])+" OR "+
+          sanitize_sql_array(["statuses[#{CONFIG[:commission_icons].keys.index(key.to_sym)}+1] = 'friends_only'"])+")"
+        when "all closed statuses"
+          "("+sanitize_sql_array(["statuses[#{CONFIG[:commission_icons].keys.index(key.to_sym)}+1] = 'not_interested'"])+" OR "+
+          sanitize_sql_array(["statuses[#{CONFIG[:commission_icons].keys.index(key.to_sym)}+1] = 'closed'"])+")"
+        else
+          sanitize_sql_array(["statuses[#{CONFIG[:commission_icons].keys.index(key.to_sym)}+1] = %s", value])
+        end
+      }.each_with_index do |statement, index|
         append << "#{statement}"
-        append << " AND " if index < statuses.length - 1
+        if index < statuses.length - 1
+          append << " AND "
+        else
+          append << ")" unless terms[:tags].blank?
+        end
       end
       append
     }.call(terms[:statuses], terms[:use_statuses]))

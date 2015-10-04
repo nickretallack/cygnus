@@ -25,25 +25,29 @@ readyFunctions.push(function(){
           data = JSON.parse(data);
           var newMessage = $(data.message);
           if(newMessage.is(".minimal")){
-            Materialize.toast(newMessage.text(), 4000);
+            if(newMessage.text().contains("commissions status")){
+              var text = newMessage.text().replace(/set their commissions status.*/, "updated their commission statuses.");
+            }else{
+              var text = newMessage.text();
+            }
+            Materialize.toast(text, 4000);
             if(/Activity$/.test($(".header").text())) $("#messages").prepend(newMessage.clone().addClass("fade-in"));
             $(".circular-button").find("div").text(parseInt($(".circular-button").find("div").text())+1)
-            poller = setTimeout(pollNow, data.pollAgain? 2000 : 10000);
+            poller = setTimeout(pollNow, data.pollAgain? Math.rndint(2000, 10000) : 60000);
           }else{
             placeMessage((function(){
               if(!newMessage.is("[class *= reply]")) return undefined;
               return $("#"+/reply-\d+/.exec(newMessage.attr("class"))[0].replace("reply-", ""));
             })(), newMessage);
-            poller = setTimeout(pollNow, 10000);
+            poller = setTimeout(pollNow, 60000);
           }
         }else{
-          console.log("polled");
-          poller = setTimeout(pollNow, 10000);
+          poller = setTimeout(pollNow, 60000);
         }
       });
   };
 
-  //if(poller === undefined) pollNow();
+  if(poller === undefined && $("[href = '/log_out']").length > 0) pollNow();
 });
 
 readyFunctions.push(function(){
@@ -52,7 +56,7 @@ readyFunctions.push(function(){
     button.on("click.preview", function(event){
       pauseEvent(event);
       var message = $(button.prevAll("textarea")[0]),
-          previewArea = $($(message.nextAll(".preview")[0]));
+          previewArea = $($(message.nextAll(".message-preview")[0]));
       previewArea.html($("<div />", {
         class: "card"
       }).append($("<div />", {
@@ -123,7 +127,6 @@ readyFunctions.push(function(){
 });
 
 function placeMessage(message, newMessage){
-  console.log(newMessage);
   if(!newMessage.is("[class *= reply]")){
     $("#messages").append(newMessage);
     $("#main").children(".progress").remove();
@@ -139,11 +142,11 @@ function placeMessage(message, newMessage){
       return setIndent(className, getIndent(message)+1);
     });
     var nonReplies = message.nextAll(".message").filter(function(){
-      return getIndent($(this)) === getIndent(message);
+      return getIndent($(this)) <= getIndent(message);
     });
     if(nonReplies.length === 0){
       var element = (function(){
-        if($(".hidable").length === 0) return $("#messages");
+        if(message.parents(".hidable").length === 0) return $("#messages");
         return message.parents(".hidable");
       })();
       element.append(newMessage);
@@ -160,4 +163,5 @@ function placeMessage(message, newMessage){
   postMessage(form);
   previewButton(form.find("[name = preview]"));
   if(newMessage.is(".hidable")) initHidable(newMessage);
+  $(".message-preview").html("");
 }

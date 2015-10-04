@@ -1,17 +1,33 @@
 class MessagesController < ApplicationController
-  include ActionController::Live
-  before_filter -> { insist_on :logged_in }, only: [:new, :create, :index, :index_pms]
-  before_filter -> { insist_on :permission, @message.user }, only: [:update, :destroy]
-  before_filter only: [:index_pms] do
-    @user = User.find(params[User.slug])
-    insist_on :permission, @user
+  
+  #include ActionController::Live
+  
+  before_filter only: [:create] do
+    insist_on :logged_in
+  end
+
+  before_filter only: [:index] do
+    if view_context.current_page? messages_path
+      insist_on :logged_in
+    else
+      @user = User.find(params[User.slug])
+      insist_on :permission, @user
+    end
+  end
+  
+  before_filter only: [:destroy] do
+    insist_on :permission, @message.user
+  end
+
+  before_filter only: [:listener, :poller] do
+    insist_on :logged_in
   end
 
   def create
     @new_message.user_id = current_user.id
     @new_message.submission_id = params[:submission_id]
     recipient = User.find(params[:recipient])
-    @new_message.recipient_id = recipient.id if recipient
+    @new_message.recipient_ids = [recipient.id] if recipient
     @new_message.content = params[:message][:content]
     if params[:message][:accept_text_reply] and params[:message][:content][/>>[^\s\D]+/]
       @new_message.message_id = params[:message][:content][/>>[^\s\D]+/].gsub(">>", "").to_i
@@ -19,10 +35,12 @@ class MessagesController < ApplicationController
     else
       @new_message.message_id = params[:message][:message_id]
     end
-    @new_message.recipient_id = nil if @new_message.message_id or @new_message.submission_id
+    @new_message.recipient_ids = [] if @new_message.message_id or @new_message.submission_id
     @new_message.subject = view_context.sanitize(@new_message.subject)
     @new_message.content = view_context.sanitize(@new_message.content)
     if @new_message.save
+      activity_message(:comment, @new_message) if @new_message.submission
+      activity_message(:pm, @new_message) if @new_message.user_id > -1 and not @new_message.submission_id
       respond_to do |format|
         format.html { back }
         format.js
@@ -31,15 +49,6 @@ class MessagesController < ApplicationController
       respond_to do |format|
         format.html { back_with_errors }
         format.js
-      end
-    end
-  end
-
-  def update
-    respond_to do |format|
-      if @message.update(message_params)
-
-      else
       end
     end
   end
@@ -86,9 +95,10 @@ class MessagesController < ApplicationController
     activity_count = current_user.unread_messages - session[:unread_messages]
     if activity_count > 0
       session[:unread_messages] += 1
-      send_data ActiveSupport::JSON.encode({message: cell(:message, Message.where(user_id: -1, recipient_id: current_user.id).order("id desc").limit(activity_count).reverse.first).(:stub), pollAgain: (activity_count-1 > 0)})
+      send_data ActiveSupport::JSON.encode({message: cell(:message, Message.where("user_id = -1 AND ? = ANY (recipient_ids)", current_user.id).order("id desc").limit(activity_count).reverse.first).(:stub), pollAgain: (activity_count-1 > 0)})
+    else
+      render nothing: true
     end
-    render nothing: true
   end
 
   private

@@ -3,7 +3,7 @@ class ImagesController < ApplicationController
   skip_before_filter :setter
 
   before_filter do
-    @image = Upload.find(params[:id]) || Upload.new
+    @image ||= Upload.find(params[:id]) || Upload.new
 
     expires_in CONFIG[:image_shelf_life], public: true
   end
