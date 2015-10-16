@@ -56,7 +56,7 @@ class UsersController < ApplicationController
     @user.view_adult = true if params[:user][:upload][:explicit]
     @old_statuses = @user.statuses
     @user.statuses = params[:user][:statuses].values
-    @user.artist_type = params[:user][:artist_type].values.reject { |value| value.length == 0 }.join(", ")
+    @user.artist_type = params[:user][:artist_type].values[0].split(", ").uniq.join(", ")
     if @user.update_attributes(user_params)
       activity_message(:status_change, params[:user][:statuses]) if @old_statuses != @user.statuses
       flash[:success] = "profile updated"

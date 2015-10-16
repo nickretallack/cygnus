@@ -70,7 +70,7 @@
 			<div class = "col">
 				<% enum_for @user.favs.collect { |id| Submission.find(id) } do |submission| %>
 					<%= link_to submission_path(submission) do %>
-						<%= image_for :bordered, submission.file_id %>
+						<%= cell(:image).(:show, type: :bordered, id: submission.file_id) %>
 					<% end %>
 				<% end %>
 			</div>

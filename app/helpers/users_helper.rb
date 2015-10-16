@@ -28,11 +28,11 @@ module UsersHelper
   end
 
   def can_modify?(user)
-    @can_modify ||= at_least(:mod) or current_user? user
+    at_least(:mod) or current_user? user
   end
 
   def can_watch?(user)
-    @can_watch ||= at_least(:admin) or (not anon? and not current_user? user)
+    at_least(:admin) or (not anon? and not current_user? user)
   end
 
   def watching?(user)
@@ -40,7 +40,7 @@ module UsersHelper
   end
 
   def can_fav?(submission)
-    @can_fav ||= (not anon? and not current_user? submission.pool.user)
+    not anon? and not current_user? submission.pool.user
   end
 
   def faved?(submission)
@@ -176,11 +176,11 @@ module UsersHelper
         html << "<div class = 'col s6'>"
         html << "<select name = 'terms[statuses][#{key}]' class = 'btn button-with-icon'>"
         {open: "all open statuses", long_wait: "all maybe statuses", closed: "all closed statuses"}.each do |key, value|
-          html << "<option class = 'comm-#{key}' value = '#{value}' #{"selected = 'selected'" if status == key}>#{value.to_s.gsub("_", " ")}</option>"
+          html << "<option class = 'comm-#{key}' value = '#{value}' #{"selected = 'selected'" if status == value}>#{value.to_s.gsub("_", " ")}</option>"
         end
         html << "<hr />"
         CONFIG[:activity_icons].each do |key, value|
-          html << "<option class = 'comm-#{key}' value = '#{key}' #{"selected = 'selected'" if status == key}>#{key.to_s.gsub("_", " ")}</option>"
+          html << "<option class = 'comm-#{key}' value = '#{key}' #{"selected = 'selected'" if status == key.to_s}>#{key.to_s.gsub("_", " ")}</option>"
         end
         html << "</select>"
         html << "</div>"

@@ -75,7 +75,7 @@ module MessagesHelper
 
   #prepares an activity message for display
   def format_message(message)
-    message.content = message.content.gsub(/(#{CONFIG[:activity_icons].keys.join("|")})/, "<span class = 'inline comm-#{'\1'}'>#{'\1'}</span>")
+    message.content = message.content.gsub(/(#{CONFIG[:activity_icons].keys.join("|")})/){ |match| "<span class = 'inline comm-#{match}'>#{match.gsub("_", " ")}</span>" }
     "#{message.timestamp(:created)}: #{message.content}".gsub("\n", "<br />").html_safe
   end
 end

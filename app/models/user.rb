@@ -49,40 +49,7 @@ class User < ActiveRecord::Base
   end
 
   def self.search(terms)
-    @result = User.where(->(tags) { #returns all instead of none if no search tags are given
-      if tags.blank?
-        return ""
-      else
-        return "tags_tsvector @@ #{sanitize_sql_array(["to_tsquery('english', ?)", terms[:tags].gsub(/\s/, "+")])} AND ("
-      end
-    }.call(terms[:tags]) + ->(statuses, use_statuses) { #prepared to receive a hash of commission statuses like "statuses" => {"commissions" => "open", "trades" => "closed"} for convenient selecting
-      append = ""
-      statuses = statuses.reject { |key, value| use_statuses[key] == "0" }
-      statuses.collect { |key, value|
-        case value
-        when "all open statuses"
-          "("+sanitize_sql_array(["statuses[#{CONFIG[:commission_icons].keys.index(key.to_sym)}+1] = 'open'"])+" OR "+
-          sanitize_sql_array(["statuses[#{CONFIG[:commission_icons].keys.index(key.to_sym)}+1] = 'one_day_only'"])+")"
-        when "all maybe statuses"
-          "("+sanitize_sql_array(["statuses[#{CONFIG[:commission_icons].keys.index(key.to_sym)}+1] = 'long_wait'"])+" OR "+
-          sanitize_sql_array(["statuses[#{CONFIG[:commission_icons].keys.index(key.to_sym)}+1] = 'make_a_pitch'"])+" OR "+
-          sanitize_sql_array(["statuses[#{CONFIG[:commission_icons].keys.index(key.to_sym)}+1] = 'friends_only'"])+")"
-        when "all closed statuses"
-          "("+sanitize_sql_array(["statuses[#{CONFIG[:commission_icons].keys.index(key.to_sym)}+1] = 'not_interested'"])+" OR "+
-          sanitize_sql_array(["statuses[#{CONFIG[:commission_icons].keys.index(key.to_sym)}+1] = 'closed'"])+")"
-        else
-          sanitize_sql_array(["statuses[#{CONFIG[:commission_icons].keys.index(key.to_sym)}+1] = %s", value])
-        end
-      }.each_with_index do |statement, index|
-        append << "#{statement}"
-        if index < statuses.length - 1
-          append << " AND "
-        else
-          append << ")" unless terms[:tags].blank?
-        end
-      end
-      append
-    }.call(terms[:statuses], terms[:use_statuses]))
+    @result = User.where(terms[:tags].blank?? "" : "tags_tsvector @@ #{sanitize_sql_array(["to_tsquery('english', ?)", terms[:tags].gsub(/\s/, "+")])}").where(terms[:statuses].reject { |status, value| terms[:use_statuses][status] == "0" }.collect { |status, value| status = status.to_sym; (value.include?("statuses") and CONFIG[:status_categories].keys.include?(value.split[1].to_sym))? "statuses[#{CONFIG[:commission_icons].keys.index(status)+1}] = ANY('{#{CONFIG[:status_categories][terms[:statuses][status].split[1].to_sym].collect {|key| key.to_s}.join(", ")}}'::varchar[])" : sanitize_sql_array(["statuses[#{CONFIG[:commission_icons].keys.index(status)}+1] = '%s'", value]) }.join(" AND "))
   end
   
   def User.digest(string)

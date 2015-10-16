@@ -164,7 +164,6 @@
     border-left-color: $nav-background-color
     ul li
       list-style-type: disc
-      
 
   &.inline
     text-align: left !important
@@ -173,6 +172,8 @@
     overflow-x: hidden
     overflow-y: auto
     margin-bottom: 0
+    p:first-child
+      margin-top: 0
 
   &.link
     height: 2.32rem
@@ -191,6 +192,9 @@
       font-size: 120% !important
     a~a:hover
       margin-left: 0
+    span
+      position: relative
+      bottom: 6%
 
 =card1
   background-color: #EEFFE1
