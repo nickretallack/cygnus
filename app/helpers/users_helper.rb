@@ -166,7 +166,7 @@ module UsersHelper
       CONFIG[:commission_icons].each do |key, value|
         html << "<div class = 'row'>"
         html << "<div class = 'col s1'>"
-        html << "<input name = 'terms[use_statuses][#{key}]' type = 'hidden' value = '0'><input type = 'checkbox' value = '1' name = 'terms[use_statuses][#{key}]' id = 'terms_use_statuses_#{key}' #{"checked" unless not params[:terms] or params[:terms][:use_statuses][key] == "0"}><label for = 'terms_use_statuses_#{key}'></label>"
+        html << "<input name = 'terms[use_statuses][#{key}]' type = 'hidden' value = '0'><input type = 'checkbox' value = '1' name = 'terms[use_statuses][#{key}]' id = 'terms_use_statuses_#{key}' #{"checked" unless not params[:terms][:use_statuses][key] or params[:terms][:use_statuses][key] == "0"}><label for = 'terms_use_statuses_#{key}'></label>"
         html << "</div>"
         html << "<div class = 'col s5'>"
         html << "<i class = 'medium-small material-icons comm-status'>#{value}</i> #{key.capitalize}:"

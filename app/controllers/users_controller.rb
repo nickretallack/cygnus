@@ -17,12 +17,11 @@ class UsersController < ApplicationController
   end
 
   def index
-    if params[:terms]
-      @query = params[:terms][:tags]
-      @status = params[:terms][:status]
-      @users = User.search(params[:terms])
-      @searching = true
-    end
+    params[:terms] ||= { use_statuses: { commissions: "1" }, statuses: { commissions: "all open statuses"} }
+    @query = params[:terms][:tags]
+    @status = params[:terms][:status]
+    @users = User.search(params[:terms])
+    @searching = params[:terms][:statuses][:trades]
     render "index"
   end
 
