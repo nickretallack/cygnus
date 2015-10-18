@@ -1,8 +1,8 @@
 CONFIG = {
   thumbnail_width: 150,
   thumbnail_height: 150,
-  email_required: false,
-  host: "bleatr.cloudapp.net",
+  email_required: true,
+  host: "bleatr.com",
   name: "Bleatr",
   copyright: "&copy;2015 Lunar Gryphon",
   image_path: Rails.root.join("app", "assets", "images"),
@@ -19,7 +19,7 @@ CONFIG = {
   image_shelf_life: 5.hours,
   password_reset_shelf_life: 2.hours,
 
-  commission_icons: {
+  commission_icons: { #do not change the order of entries without updating everyone's records; db sees an array of statuses
     commissions: "local_atm",
     trades: "repeat",
     requests: "chat_bubble_outline",
@@ -34,6 +34,12 @@ CONFIG = {
     friends_only: "mood",
     closed: "pause_circle_outline",
     not_interested: "highlight_off"
+  },
+
+  status_categories: {
+    open: [:open, :one_day_only],
+    maybe: [:long_wait, :make_a_pitch, :friends_only],
+    closed: [:closed, :not_interested]
   },
 
   submission_icons: {
