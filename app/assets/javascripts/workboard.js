@@ -14,7 +14,7 @@ readyFunctions.push(function(){
 
 function switchToWorklistMode(toMode){
   if(typeof mode !== "undefined"){
-    topCard.find("."+mode+"-mode").hide();
+    topCard.find("[class *= -mode]").hide();
     topCard.find(".card").off();
   }
   mode = toMode;

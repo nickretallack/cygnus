@@ -11,11 +11,12 @@ class CardsController < ApplicationController
 
   def index
     @user = User.find(params[User.slug])
-    @top_card = @user.card
     unless @user.card
       Card.new(user_id: @user.id).save!
       redirect_to request.path
     end
+    @top_card = @user.card
+    @lists = @top_card.cards.collect { |card_id| Card.find(card_id) }
   end
 
   def update
@@ -53,7 +54,10 @@ class CardsController < ApplicationController
     #   index = [0, @kanban_list.cards.index(@kanban_card.id)-order.to_i, @kanban_list.cards.length-1].sort[1]
     #   @kanban_list.cards.delete(@kanban_card.id)
     #   @kanban_list.update_attribute(:cards, @kanban_list.cards.insert(index, @kanban_card.id))
-      back
+      respond_to do |format|
+        format.html { back }
+        format.js
+      end
     else
       flash[:danger] = "error updating item"
       back
@@ -63,15 +67,16 @@ class CardsController < ApplicationController
   def destroy
     @card = Card.find(params[Card.slug])
     not_found and return unless @card
-    case @card.level
-    when :list
+    if @user.card.cards.include? @card.id
       @card.cards.collect { |card_id| Card.find(card_id) }.each do |card|
         card.delete
       end
-      @user.card.update_attribute(:cards, @user.card.cards) if @user.card.cards.delete @card.id
-    when :card
+      @user.card.cards.delete @card.id
+      @user.card.update_attribute(:cards, @user.card.cards)
+    else
       @user.card.cards.collect { |list_id| Card.find(list_id) }.each do |list|
-        list.update_attribute(:cards, list.cards) if list.cards.delete @card.id
+        list.cards.delete @card.id
+        list.update_attribute(:cards, list.cards)
       end
     end
     @card.destroy

@@ -12,7 +12,7 @@
   </div>
 <% end %>
 <div class = "row">
-  <div class = "card top-card" id = "'<%= @top_card.id %>'">
+  <div class = "card top-card" id = <%= @top_card.id %> >
     <div class = "card-content">
       <div class = "card-title">
         <% if can_modify? @user %>
@@ -25,80 +25,16 @@
           <div class = "new edit-mode">
             <%= form_for @top_card, url: card_path(@user, @top_card), method: :patch do |f| %>
               <%= f.text_field :title, placeholder: "Title for New List" %>
-              <%= f.submit "Create List" %>
+              <div class = "button-area">
+                <%= f.submit "Create List", id: "save" %>
+              </div>
             <% end %>
           </div>
         <% else %>
           <div></div> <!--makes wrapping work on others' workboards-->
         <% end %>
-          <% @top_card.cards.collect { |card_id| Card.find(card_id) }.each do |list| %>
-            <div class = "card list" id = "'<%= list.id %>'" >
-              <div class = "card-content">
-                <div class = "card-title">
-                  <div class = "hc view-mode reorder-mode">
-                    <h4 id = "title"><%= title_for list: list %></h4>
-                    <hr />
-                  </div>
-                  <% if can_modify? @user %>
-                    <div class = "edit-mode">
-                      <%= form_for list, url: card_path(@user, list), method: :patch do |f| %>
-                        <%= f.text_field :title, placeholder: "List Title" %>
-                        <%= f.submit "Save List" %>
-                      <% end %>
-                      <%= button_to "Delete List", card_path(@user, list), method: :delete %>
-                    </div>
-                    <div class = "new edit-mode">
-                      <%= form_for list, url: card_path(@user, list), method: :patch do |f| %>
-                        <%= f.text_field :title, placeholder: "Title for New Card", value: "" %>
-                        <%= f.submit "Create Card" %>
-                      <% end %>
-                    </div>
-                  <% end %>
-                  <% list.cards.collect { |card_id| Card.find(card_id) }.each do |card| %>
-                    <div class = "card" id = "'<%= card.id %>'">
-                      <div class = "card-content">
-                        <div class = "card-title">
-                          <div class = "hc view-mode reorder-mode">
-                            <h5 id = "title"><%= title_for workcard: card %></h5>
-                            <hr />
-                          </div>
-                          <% if can_modify? @user %>
-                            <div class = "edit-mode">
-                              <%= form_for card, url: card_path(@user, card), method: :patch do |f| %>
-                                <%= f.text_field :title, placeholder: "Card Title" %>
-                                <%= f.text_area :description, placeholder: "Description" %>
-                                <div class = "new">
-                                  <%= f.fields_for card.file_id.nil?? Upload.new : Upload.find(card.file_id), multipart: true do |u| %>
-                                    <div class = "input-field"><%= u.check_box :explicit %><%= u.label :explicit, "Explicit Attachment" %></div>
-                                    <div class = "row file-field input-field">
-                                      <div class = "submit">
-                                        <span>Attachment</span>
-                                        <%= u.file_field :picture %>
-                                      </div>
-                                    </div>
-                                  <% end %>
-                                  <div class = "js thumb-preview">
-                                    <%= cell(:image).(:show, type: :bordered, id: card.file_id) if card.file_id %>
-                                  </div>
-                                </div>
-                                <%= f.submit "Save Card" %>
-                              <% end %>
-                              <%= button_to "Delete Card", card_path(@user, card), method: :delete %>
-                            </div>
-                          <% end %>
-                          <div class = "card-action">
-                            <div class = "view-mode">
-                              <%= cell(:image).(:show, type: :bordered, id: card.file_id) if card.file_id %>
-                              <span><%= message_for description: card.description %></span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  <% end %>
-                </div>
-              </div>
-            </div>
+          <% @lists.each do |list| %>
+            <%= cell(:card, list).(:list, user: @user) %>
           <% end %>
         </p>
       </div>

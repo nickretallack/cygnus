@@ -1,0 +1,30 @@
+<div class = "card list" id = <%= @model.id %> >
+  <div class = "card-content">
+    <div class = "card-title">
+      <div class = "hc view-mode reorder-mode">
+        <h4 id = "title"><%= controller.title_for list: @model %></h4>
+        <hr />
+      </div>
+      <% if controller.can_modify? @user %>
+        <div class = "edit-mode">
+          <%= form_for @model, url: card_path(@user, @model), method: :patch do |f| %>
+            <%= f.text_field :title, placeholder: "List Title" %>
+          <div class = "button-area">
+              <%= f.submit "Save List", id: "save" %>
+            <% end %>
+            <%= button_to "Delete List", card_path(@user, @model), method: :delete, form: { id: "delete" } %>
+          </div>
+        </div>
+        <div class = "new edit-mode">
+          <%= form_for @model, url: card_path(@user, @model), method: :patch do |f| %>
+            <%= f.text_field :title, placeholder: "Title for New Card", value: "" %>
+            <%= f.submit "Create Card" %>
+          <% end %>
+        </div>
+      <% end %>
+      <% @cards.each do |card| %>
+        <%= cell(:card, card).(:card, user: @user) %>
+      <% end %>
+    </div>
+  </div>
+</div>

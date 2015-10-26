@@ -1,0 +1,40 @@
+<div class = "card" id = <%= @model.id %> >
+  <div class = "card-content">
+    <div class = "card-title">
+      <div class = "hc view-mode reorder-mode">
+        <h5 id = "title"><%= title_for workcard: @model %></h5>
+        <hr />
+      </div>
+      <% if can_modify? @user %>
+        <div class = "edit-mode">
+          <%= form_for @model, url: card_path(@user, @model), method: :patch do |f| %>
+            <%= f.text_field :title, placeholder: "Card Title" %>
+            <%= f.text_area :description, placeholder: "Description" %>
+            <div class = "new">
+              <%= f.fields_for @model.file_id.nil?? Upload.new : Upload.find(@model.file_id), multipart: true do |u| %>
+                <div class = "input-field"><%= u.check_box :explicit %><%= u.label :explicit, "Explicit Attachment" %></div>
+                <div class = "row file-field input-field">
+                  <div class = "submit">
+                    <span>Attachment</span>
+                    <%= u.file_field :picture %>
+                  </div>
+                </div>
+              <% end %>
+              <div class = "js thumb-preview">
+                <%= cell(:image).(:show, type: :bordered, id: @model.file_id) if @model.file_id %>
+              </div>
+            </div>
+            <%= f.submit "Save Card" %>
+          <% end %>
+          <%= button_to "Delete Card", card_path(@user, @model), method: :delete %>
+        </div>
+      <% end %>
+      <div class = "card-action">
+        <div class = "view-mode">
+          <%= cell(:image).(:show, type: :bordered, id: @model.file_id) if @model.file_id %>
+          <span><%= message_for description: @model.description %></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
