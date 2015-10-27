@@ -1,0 +1,5 @@
+var card = $("#"+'<%= @card.id %>');
+card.addClass("fade-out");
+setTimeout(function(){
+  card.remove();
+}, 1000);

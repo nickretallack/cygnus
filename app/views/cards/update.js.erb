@@ -1,5 +1,0 @@
-$("#"+'<%=j params[:id] %>').append('<%=j cell(:card, @new_card).(:list, user: @user) %>');
-var newCard = $("#"+'<%= @new_card.id %>');
-newCard.addClass("fade-in")
-switchToWorklistMode("edit");
-$.each(newCard.find(".button-area"), function(index, element){initButtonArea($(element));})

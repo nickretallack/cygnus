@@ -1,11 +1,5 @@
-readyFunctions.push(function(){
+loadFunctions.push(function(){
   topCard = $(".top-card");
-  if(topCard === []){
-    delete topCard;
-    return;
-  }
-  topCard.find("[class$='-mode']").hide();
-  topCard.find
   $(".trigger").on("click", function(){
     switchToWorklistMode($(this).html().toLowerCase().replace(" mode", ""));
   });
@@ -13,10 +7,9 @@ readyFunctions.push(function(){
 });
 
 function switchToWorklistMode(toMode){
-  if(typeof mode !== "undefined"){
-    topCard.find("[class *= -mode]").hide();
-    topCard.find(".card").off();
-  }
+  topCard.find("[class *= -mode]").hide();
+  topCard.find(".button-area").hide();
+  topCard.find(".card").off();
   mode = toMode;
   topCard.find($("."+mode+"-mode")).show();
   if(typeof window[mode+"Worklist"] === "function") window[mode+"Worklist"]();
@@ -32,6 +25,7 @@ function editWorklist(){
   topCard.children(".card-content").css({
     paddingTop: 20
   });
+  topCard.find(".button-area").show();
 }
 
 function reorderWorklist(){

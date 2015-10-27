@@ -4,15 +4,14 @@ class CardCell < Cell::ViewModel
   include ActionView::Helpers::UrlHelper
   include ActionView::Helpers::CaptureHelper
 
-  def list(options)
+  def show(options)
     @user = options[:user]
-    @cards = @model.cards.collect { |card_id| Card.find(card_id) }
-    render
-  end
-
-  def card(options)
-    @user = options[:user]
-    render
+    if @user.card.cards.include? @model.id
+      @cards = @model.cards.collect { |card_id| Card.find(card_id) }
+      render "list"
+    else
+      render "card"
+    end
   end
 
 end

@@ -2,19 +2,19 @@
   <div class = "card-content">
     <div class = "card-title">
       <div class = "hc view-mode reorder-mode">
-        <h5 id = "title"><%= title_for workcard: @model %></h5>
+        <h5 id = "title"><%= controller.title_for workcard: @model %></h5>
         <hr />
       </div>
-      <% if can_modify? @user %>
-        <div class = "edit-mode">
+      <% if controller.can_modify? @user %>
+        <div class = "edit-mode buttons">
           <%= form_for @model, url: card_path(@user, @model), method: :patch do |f| %>
             <%= f.text_field :title, placeholder: "Card Title" %>
             <%= f.text_area :description, placeholder: "Description" %>
             <div class = "new">
               <%= f.fields_for @model.file_id.nil?? Upload.new : Upload.find(@model.file_id), multipart: true do |u| %>
                 <div class = "input-field"><%= u.check_box :explicit %><%= u.label :explicit, "Explicit Attachment" %></div>
-                <div class = "row file-field input-field">
-                  <div class = "submit">
+                <div class = "row file-field input-field buttons">
+                  <div class = "submit upload">
                     <span>Attachment</span>
                     <%= u.file_field :picture %>
                   </div>
@@ -24,15 +24,17 @@
                 <%= cell(:image).(:show, type: :bordered, id: @model.file_id) if @model.file_id %>
               </div>
             </div>
-            <%= f.submit "Save Card" %>
+            <%= f.submit "Save Card", id: "save" %>
           <% end %>
-          <%= button_to "Delete Card", card_path(@user, @model), method: :delete %>
+          <%= form_for @model, url: card_path(@user, @model), method: :delete do |f| %>
+            <%= f.submit "Delete List", id: "delete" %>
+          <% end %>
         </div>
       <% end %>
       <div class = "card-action">
         <div class = "view-mode">
           <%= cell(:image).(:show, type: :bordered, id: @model.file_id) if @model.file_id %>
-          <span><%= message_for description: @model.description %></span>
+          <span><%= controller.message_for description: @model.description %></span>
         </div>
       </div>
     </div>

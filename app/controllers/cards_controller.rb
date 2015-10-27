@@ -33,10 +33,12 @@ class CardsController < ApplicationController
       @new_card = Card.new(title: params[:card][:title])
       @new_card.save!
       @card.cards << @new_card.id
+      view_template = "create"
     when /Save.*/
       @card.title = params[:card][:title]
       @card.description = params[:card][:description]
       @card.file_id = Upload.render(params[:card][:upload][:picture], params[:card][:upload][:explicit]) if params[:card][:upload] and params[:card][:upload][:picture]
+      view_template = "save"
     end
     if @card.update_attributes(@card.attributes)
     # @kanban_card.file_id = Upload.render(params[:kanban_card][:upload][:picture], params[:kanban_card][:upload][:explicit]) unless params[:kanban_card][:upload][:picture].nil?
@@ -56,7 +58,7 @@ class CardsController < ApplicationController
     #   @kanban_list.update_attribute(:cards, @kanban_list.cards.insert(index, @kanban_card.id))
       respond_to do |format|
         format.html { back }
-        format.js
+        format.js { render view_template }
       end
     else
       flash[:danger] = "error updating item"
@@ -80,7 +82,10 @@ class CardsController < ApplicationController
       end
     end
     @card.destroy
-    back
+    respond_to do |format|
+      #format.html { back }
+      format.js
+    end
   end
 
   private
