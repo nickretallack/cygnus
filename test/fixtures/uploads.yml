@@ -1,9 +1,0 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-fileone:
-  file: "Hotdog"
-  md5: 555
-
-filetwo:
-  file: "notdog"
-  md5: 666

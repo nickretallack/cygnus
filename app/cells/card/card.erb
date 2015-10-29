@@ -6,29 +6,18 @@
         <hr />
       </div>
       <% if controller.can_modify? @user %>
-        <div class = "edit-mode buttons">
-          <%= form_for @model, url: card_path(@user, @model), method: :patch do |f| %>
-            <%= f.text_field :title, placeholder: "Card Title" %>
-            <%= f.text_area :description, placeholder: "Description" %>
-            <div class = "new">
-              <%= f.fields_for @model.file_id.nil?? Upload.new : Upload.find(@model.file_id), multipart: true do |u| %>
-                <div class = "input-field"><%= u.check_box :explicit %><%= u.label :explicit, "Explicit Attachment" %></div>
-                <div class = "row file-field input-field buttons">
-                  <div class = "submit upload">
-                    <span>Attachment</span>
-                    <%= u.file_field :picture %>
-                  </div>
-                </div>
-              <% end %>
-              <div class = "js thumb-preview">
-                <%= cell(:image).(:show, type: :bordered, id: @model.file_id) if @model.file_id %>
-              </div>
-            </div>
-            <%= f.submit "Save Card", id: "save" %>
-          <% end %>
-          <%= form_for @model, url: card_path(@user, @model), method: :delete do |f| %>
-            <%= f.submit "Delete List", id: "delete" %>
-          <% end %>
+        <div class = "edit-mode">
+          <div class = "buttons">
+            <%= form_for @model, url: card_path(@user, @model), method: :patch do |f| %>
+              <%= f.text_field :title, placeholder: "Card Title" %>
+              <%= f.text_area :description, placeholder: "Description" %>
+              <%= f.submit "Save Card", id: "save" %>
+            <% end %>
+            <%= form_for @model, url: card_path(@user, @model), method: :delete do |f| %>
+              <%= f.submit "Delete Card", id: "delete" %>
+            <% end %>
+          </div>
+          <%= cell(:attachment).(:show, kind: :image, user: @user) %>
         </div>
       <% end %>
       <div class = "card-action">

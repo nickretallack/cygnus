@@ -1,0 +1,21 @@
+<% if controller.can_modify? @user %>
+  <div class = "new">
+    <div class = "buttons">
+      <%= form_for @model, url: attachments_path("image") do |f| %>
+        <%= f.fields_for @upload, multipart: true do |u| %>
+          <div class = "input-field">
+            <%= u.check_box :explicit %><%= u.label :explicit, "Adult Image" %>
+          </div>
+          <div class = "file-field image-preview bordered hc">
+            <div class = "submit">
+              <span>Image</span>
+              <%= u.file_field :image %>
+            </div>
+          </div>
+        <% end %>
+        <%= f.submit "Create Attachment", id: :save %>
+      <% end %>
+    </div>
+  </div>
+<% else %>
+<% end %>

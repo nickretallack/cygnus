@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :cogs
   default_url_options host: CONFIG[:host]
 
   root controller: :users, action: :index
@@ -17,6 +18,10 @@ Rails.application.routes.draw do
   controller :images do
     get "image/:type(/:#{Upload.slug})", to: "images#show", as: :image
     get "download/:#{Upload.slug}", to: "images#download", as: :download
+  end
+
+  controller :attachments do
+    post "attachments/:kind", to: "attachments#create", as: :attachments
   end
 
   resources :pools, only: [:index], path: "(:#{User.slug})/pools"

@@ -1,4 +1,4 @@
-function buttonIcons(){
+function initButtonArea(){
   buttonIcons = JSON.parse('<%= CONFIG[:button_icons].to_json %>');
   $(".buttons").each(function(){ buttonArea($(this)); });
 }
@@ -30,4 +30,4 @@ function buttonArea(area){
   });
 }
 
-loadFunctions.push(buttonIcons);
+loadFunctions.push(initButtonArea);
