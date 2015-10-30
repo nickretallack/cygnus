@@ -30,24 +30,6 @@ function imagePreviewArea(area){
     if(this.files && this.files[0]){
       var reader = new FileReader();
       reader.onload = function(event){
-      //   var div = $(".preview"),
-      //       image = $("<img />", { src: event.target.result });
-      //   image.load(function(){
-      //     div.children("#flash").show();
-      //     if(div.hasClass("thumb-preview")){
-      //       div.html($("<div />", {
-      //         class: "thumbnail success"
-      //       }).append(image));
-      //     }else{
-      //       if(div.find("img").length < 1){
-      //         div.append(image);
-      //       }else{
-      //         div.find("img").replaceWith(image);
-      //       }
-      //     }
-      //     $("label[for $= '_upload_explicit']").addClass("danger");
-      //   });
-      // }
       area.find(".thumbnail").html($("<img />", {
         src: event.target.result
       }));

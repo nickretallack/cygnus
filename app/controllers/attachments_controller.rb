@@ -1,10 +1,10 @@
 class AttachmentsController < ApplicationController
 
   def create
-    @new_attachment.kind = params[:kind]
-    case @new_attachment.kind
+    @new_attachment.child_model = @new_attachment.child_model.downcase
+    case @new_attachment.child_model
     when "image"
-      @new_attachment.attachment_id = Upload.render(params[:attachment][:upload][:image], params[:attachment][:upload][:explicit])
+      @new_attachment.child_id = Upload.render(params[:attachment][:upload][:image], params[:attachment][:upload][:explicit])
       @new_attachment.confirmed = true
       @new_attachment.decided = true
     end
@@ -19,10 +19,18 @@ class AttachmentsController < ApplicationController
     end
   end
 
+  def destroy
+    @attachment.destroy
+    respond_to do |format|
+      format.html { back }
+      format.js
+    end
+  end
+
   private
 
   def attachment_params_permitted
-    [:kind, :upload]
+    [:parent_model, :parent_id, :child_model]
   end
   
 end

@@ -20,10 +20,7 @@ Rails.application.routes.draw do
     get "download/:#{Upload.slug}", to: "images#download", as: :download
   end
 
-  controller :attachments do
-    post "attachments/:kind", to: "attachments#create", as: :attachments
-  end
-
+  resources :attachments, only: [:create, :destroy]
   resources :pools, only: [:index], path: "(:#{User.slug})/pools"
   resources :pools, only: [:create], path: ":#{User.slug}/pools"
   resources :pools, except: [:new, :index, :create, :edit]

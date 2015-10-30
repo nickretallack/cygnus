@@ -4,14 +4,13 @@ class AttachmentCell < Cell::ViewModel
   include ActionView::Helpers::UrlHelper
   include ActionView::Helpers::CaptureHelper
 
-  def show(options)
-    @user = options[:user]
-    @model ||= Attachment.new
-    case options[:kind]
-    when :image
-      @upload = Upload.find(@model.attachment_id) || Upload.new
-    end
-    render options[:kind]
+  def new(options)
+    @options = options
+    render "new/#{options[:child_model]}"
+  end
+
+  def show
+    render "show/#{@model.child_model}"
   end
 
 end

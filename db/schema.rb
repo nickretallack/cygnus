@@ -17,12 +17,14 @@ ActiveRecord::Schema.define(version: 20151029193851) do
   enable_extension "plpgsql"
 
   create_table "attachments", force: :cascade do |t|
-    t.string   "kind"
-    t.integer  "attachment_id"
-    t.boolean  "confirmed",     default: false
-    t.boolean  "decided",       default: false
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.string   "parent_model"
+    t.integer  "parent_id"
+    t.string   "child_model"
+    t.integer  "child_id"
+    t.boolean  "confirmed",    default: false
+    t.boolean  "decided",      default: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
   create_table "cards", force: :cascade do |t|

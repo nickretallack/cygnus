@@ -17,7 +17,10 @@
               <%= f.submit "Delete Card", id: "delete" %>
             <% end %>
           </div>
-          <%= cell(:attachment).(:show, kind: :image, user: @user) %>
+          <%= cell(:attachment).(:new, parent_model: "card", parent_id: @model.id, child_model: "image" ) %>
+          <% @image_attachments.each do |attachment| %>
+            <%= cell(:attachment, attachment).(:show) %>
+          <% end %>
         </div>
       <% end %>
       <div class = "card-action">
