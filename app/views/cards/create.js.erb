@@ -1,5 +1,5 @@
 $($("#"+'<%=j params[:id] %>').find(".card-title")[0]).append('<%=j cell(:card, @new_card).(:show, user: @user) %>');
 var newCard = $("#"+'<%= @new_card.id %>');
 newCard.addClass("fade-in");
-buttonArea($(newCard.find(".buttons")));
+initButtonAreas($(newCard.find(".button-submit")));
 switchToWorklistMode("edit");

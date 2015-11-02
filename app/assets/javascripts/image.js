@@ -1,8 +1,6 @@
-function imagePreviewAreas(){
-  $(".image-preview").each(function(){ imagePreviewArea($(this)) });
+function initImagePreviewAreas(areas){
+  areas.each(function(){ imagePreviewArea($(this)) });
 }
-
-loadFunctions.push(imagePreviewAreas);
 
 function imagePreviewArea(area){
   if(area.is(".bordered")){
@@ -39,3 +37,5 @@ function imagePreviewArea(area){
   });
   }
 }
+
+loadFunctions.push(function(){ initImagePreviewAreas($(".image-preview")); });

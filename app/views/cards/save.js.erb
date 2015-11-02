@@ -1,6 +1,6 @@
 $("#"+'<%=j params[:id] %>').replaceWith('<%=j cell(:card, @card).(:show, user: @user) %>');
 var card = $("#"+'<%= @card.id %>');
-buttonArea($(card.find(".buttons")));
+initButtonAreas($(card.find(".button-submit")));
 switchToWorklistMode("edit");
 var saveButton = $(card.find("[title = Save]"))
 saveButton.css("color", "green");

@@ -372,6 +372,14 @@ Make.extend(Array.prototype, {
         }
         this.scrollTop = 999999;
       });
+    },
+
+    selectionMenu: function(options){
+      console.log(this);
+      $.each(options, function(name, callback){
+        if(typeof callback !== "function") return;
+
+      });
     }
     
   });

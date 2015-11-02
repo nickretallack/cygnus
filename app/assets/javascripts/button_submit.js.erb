@@ -1,16 +1,17 @@
-function initButtonArea(){
+function initButtonIcons(){
   buttonIcons = JSON.parse('<%= CONFIG[:button_icons].to_json %>');
-  $(".buttons").each(function(){ buttonArea($(this)); });
 }
 
-function buttonArea(area){
-  var buttonArea = $("<div />", {
-    class: "button-area"
-  }).insertAfter(area);
+function initButtonAreas(forms){
+  forms.each(function(){ buttonArea($(this)); });
+}
+
+function buttonArea(form){
+  var buttonArea = form.siblings(".button-area");
+  if(buttonArea.length === 0) return;
   $.each(buttonIcons, function(name, icon){
-    var button = area.find("#"+name);
+    var button = form.children("#"+name);
     if(button.length === 0) return;
-    var form = button.parents("form");
     form.attr("data-remote", true);
     button.hide();
     buttonArea.append($("<i />", {
@@ -30,4 +31,5 @@ function buttonArea(area){
   });
 }
 
-loadFunctions.push(initButtonArea);
+loadFunctions.push(initButtonIcons);
+loadFunctions.push(function(){ initButtonAreas($(".button-submit")) });

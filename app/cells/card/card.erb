@@ -7,17 +7,18 @@
       </div>
       <% if controller.can_modify? @user %>
         <div class = "edit-mode">
-          <div class = "buttons">
-            <%= form_for @model, url: card_path(@user, @model), method: :patch do |f| %>
-              <%= f.text_field :title, placeholder: "Card Title" %>
-              <%= f.text_area :description, placeholder: "Description" %>
-              <%= f.submit "Save Card", id: "save" %>
-            <% end %>
-            <%= form_for @model, url: card_path(@user, @model), method: :delete do |f| %>
-              <%= f.submit "Delete Card", id: "delete" %>
-            <% end %>
+          <%= form_for @model, url: card_path(@user, @model), method: :patch, html: { class: "button-submit" } do |f| %>
+            <%= f.text_field :title, placeholder: "Card Title" %>
+            <%= f.text_area :description, placeholder: "Description" %>
+            <%= f.submit "Save Card", id: "save" %>
+          <% end %>
+          <%= form_for @model, url: card_path(@user, @model), method: :delete, html: { class: "button-submit" } do |f| %>
+            <%= f.submit "Delete Card", id: "delete" %>
+          <% end %>
+          <div class = "button-area"></div>
+          <div class = "addable-attachment-area" id = "card-<%= @model.id %>" >
+            <div id = "image"></div>
           </div>
-          <%= cell(:attachment).(:new, parent_model: "card", parent_id: @model.id, child_model: "image" ) %>
           <% @image_attachments.each do |attachment| %>
             <%= cell(:attachment, attachment).(:show) %>
           <% end %>

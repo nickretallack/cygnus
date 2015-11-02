@@ -23,12 +23,11 @@
             </div>
           <% end %>
           <div class = "new edit-mode">
-            <div class = "buttons">
-              <%= form_for @top_card, url: card_path(@user, @top_card), method: :patch do |f| %>
-                <%= f.text_field :title, placeholder: "Title for New List" %>
-                <%= f.submit "Create List", id: "save" %>
-              <% end %>
-            </div>
+            <%= form_for @top_card, url: card_path(@user, @top_card), method: :patch, html: { class: "button-submit" } do |f| %>
+              <%= f.text_field :title, placeholder: "Title for New List" %>
+              <%= f.submit "Create List", id: "save" %>
+            <% end %>
+            <div class = "button-area"></div>
           </div>
         <% else %>
           <div></div> <!--makes wrapping work on others' workboards-->

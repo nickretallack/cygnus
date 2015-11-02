@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :cogs
   default_url_options host: CONFIG[:host]
 
   root controller: :users, action: :index
@@ -12,7 +11,7 @@ Rails.application.routes.draw do
     #sse route
     #get "message_listener", to: "messages#listener", as: :listener
     #poller route
-    get "message_poller", to: "messages#poller", as: :poller
+    get "message_poller", action: :poller, as: :poller
   end
 
   controller :images do
@@ -20,7 +19,10 @@ Rails.application.routes.draw do
     get "download/:#{Upload.slug}", to: "images#download", as: :download
   end
 
-  resources :attachments, only: [:create, :destroy]
+  controller :attachments do
+    resources :attachments, only: [:create, :destroy]
+    get "attachments/new", action: :new, as: "new_attachment"
+  end
   resources :pools, only: [:index], path: "(:#{User.slug})/pools"
   resources :pools, only: [:create], path: ":#{User.slug}/pools"
   resources :pools, except: [:new, :index, :create, :edit]

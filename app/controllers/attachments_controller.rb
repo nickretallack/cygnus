@@ -1,5 +1,9 @@
 class AttachmentsController < ApplicationController
 
+  def new
+    send_data {attachment: cell(:attachment).(:new, parent_model: params[:parent_model], parent_id: params[:parent_id], child_model: params[:type]}.to_json
+  end
+
   def create
     @new_attachment.child_model = @new_attachment.child_model.downcase
     case @new_attachment.child_model
