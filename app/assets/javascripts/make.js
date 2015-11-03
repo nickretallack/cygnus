@@ -82,6 +82,10 @@ Make.extend(String.prototype, {
 
   capitalize: function(){
     return this.slice(0, 1).toUpperCase() + this.slice(1);
+  },
+
+  humanize: function(){
+    return this.replace(/([a-z])([A-Z])/g, '$1'+" "+'$2').replace(/([A-Z])([A-Z])([a-z])/g, '$1'+" "+'$2'+'$3').replace(/([A-Z])(I|A)(?=\s)/g, '$1'+" "+'$2');
   }
 
 });
@@ -375,13 +379,56 @@ Make.extend(Array.prototype, {
     },
 
     selectionMenu: function(options){
-      console.log(this);
-      $.each(options, function(name, callback){
-        if(typeof callback !== "function") return;
-
+      var button = $(this);
+      var initMenu = $("<div />", {
+        css: {
+          position: "absolute",
+          width: 200,
+          height: 200,
+          backgroundColor: "white"
+        }
       });
+      button.on("click.selectionMenu", function(event){
+        var menu = initMenu.clone();
+        menu.css({
+          top: event.pageY - 5,
+          left: event.pageX - 5
+        }).on("mouseleave.selectionMenu", function(){
+          $(this).remove();
+        }).appendTo($(document.body));
+        $.each(options, function(name, callback){
+          if(typeof callback !== "function") return;
+          $("<span />", {
+            text: name.humanize().capitalize(),
+            css: {
+              marginLeft: 5,
+              cursor: "pointer"
+            }
+          }).appendTo($("<div />", {
+            css: {
+              width: 200,
+              fontSize: 16,
+              border: "2px solid black",
+              borderCollapse: "collapse",
+              cursor: "pointer"
+            }
+          }).on("mouseenter.selectionMenu", function(){
+            $(this).css({
+              backgroundColor: "lightblue",
+              color: "white"
+            });
+          }).on("mouseleave.selectionMenu", function(){
+            $(this).css({
+              backgroundColor: "white",
+              color: "black"
+            });
+          }).on("click.selectionMenu", function(){
+            callback();
+          }).appendTo(menu));
+        });
+      });
+      return button;
     }
-    
   });
 
 })(jQuery);

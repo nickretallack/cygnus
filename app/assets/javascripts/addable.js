@@ -15,15 +15,20 @@ function initAddableAttachmentAreas(areas){
 }
 
 function addableAttachmentArea(area){
+  var parent = area.attr("id").split("-");
   area.prepend(addableIcon.clone().selectionMenu({
-    image: function(){
-      
+    imageAttachment: function(){
+      $.get("/attachments/new", {
+        "parent_model": parent[0],
+        "parent_id": parent[1],
+        "child_model": "image"
+      },
+      function(data){
+        data = JSON.parse(data);
+        $(data.attachment).appendTo(area.children("#image"));
+      })
     }
   }));
-  area.children("div").each(function(){
-    var div = $(this);
-    console.log(div);
-  });
 }
 
 loadFunctions.push(initAddableIcons);

@@ -1,7 +1,7 @@
 class AttachmentsController < ApplicationController
 
   def new
-    send_data {attachment: cell(:attachment).(:new, parent_model: params[:parent_model], parent_id: params[:parent_id], child_model: params[:type]}.to_json
+    send_data ActiveSupport::JSON.encode({attachment: cell(:attachment).(:new, parent_model: params[:parent_model], parent_id: params[:parent_id], child_model: params[:child_model])})
   end
 
   def create
