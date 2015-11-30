@@ -1,3 +1,5 @@
+widthTester = $(".widthTester");
+
 var readyFunctions = [],
     loadFunctions = [];
 

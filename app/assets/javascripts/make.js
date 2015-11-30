@@ -2,8 +2,6 @@
 * Relies:
 *
 * Jquery
-* Underscore
-* Ring
 *
 */
 
@@ -21,7 +19,17 @@
       configurable: true,
       enumerable: false
     });
-  }
+  };
+
+  Make.create = function(name){
+    window[name] = function(){
+      console.log(this);
+      Make.extend(this.prototype, "name", name);
+      Make.extend(this.prototype, arguments);
+      if(typeof this.prototype.initialize === "undefined") Make.extend(this.prototype, "initialize", function(){});
+      this.initialize.apply(this, arguments);
+    };
+  };
 
   window.Make = Make;
 })();
