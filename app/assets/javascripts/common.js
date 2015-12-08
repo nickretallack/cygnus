@@ -1,5 +1,3 @@
-widthTester = $(".widthTester");
-
 var readyFunctions = [],
     loadFunctions = [];
 
@@ -48,3 +46,33 @@ function doRemote(element){
 }
 
 readyFunctions.push(doRemote);
+
+readyFunctions.push(function(){
+  Screen = {
+    widthTester: $(".widthTester")
+  }
+
+  $.extend(Screen, {
+
+    tiny: function(){
+      return Screen.widthTester.css("width") === "0px";
+    },
+
+    small: function(){
+      return Screen.widthTester.css("width") === "363px";
+    },
+
+    medium: function(){
+      return Screen.widthTester.css("width") === "601px";
+    },
+
+    large: function(){
+      return Screen.widthTester.css("width") === "993px";
+    },
+
+    huge: function(){
+      return Screen.widthTester.css("width") === "1921px";
+    },
+
+  }
+});
