@@ -8,7 +8,7 @@
         <%= f.text_field :tags, placeholder: "Artists who do...", value: @query, id: "search-tags" %>
         <%= f.submit "Search" %>
       </div>
-      <div class = "row hidable max" associated-field = "search-tags">
+      <div class = "row hidable min" associated-field = "search-tags">
       <div class = "hidable-title">Search by</div>
       <div class = "input-field">
         <%= statuses @users, :search %>
@@ -20,7 +20,7 @@
 <hr />
 
 <% unless @searching %>
-  <div class = "row hidable min">
+  <div class = "row hidable max">
     <div class = "hidable-title">Recent Submissions</div>
     <div class = "row pool-index-field">
       <div class = "col">

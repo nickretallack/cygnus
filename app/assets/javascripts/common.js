@@ -63,7 +63,7 @@ readyFunctions.push(function(){
     },
 
     medium: function(){
-      return Screen.widthTester.css("width") === "601px";
+      return Screen.widthTester.css("width") === "801px";
     },
 
     large: function(){
@@ -74,5 +74,5 @@ readyFunctions.push(function(){
       return Screen.widthTester.css("width") === "1921px";
     },
 
-  }
+  });
 });

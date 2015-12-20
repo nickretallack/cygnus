@@ -1,5 +1,4 @@
 loadFunctions.push(function(){
-  $(".brand-logo").width($("nav").height()*1.6);
 
   $(".dropdown-button").dropdown({
     belowOrigin: true,
@@ -39,12 +38,6 @@ loadFunctions.push(function(){
     row.appendTo(menu);
     menu.children("hr").remove();
   }
-
-  // columnize($(".dropdown-content"));
-  // columnize($(".side-nav").css({
-  //   padding: 0,
-  //   paddingTop: "20px"
-  // }));
 
   $(window).keydown(function(event){
     if(event.keyCode === 27) $(".button-collapse").sideNav("hide");

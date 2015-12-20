@@ -1,5 +1,8 @@
 loadFunctions.push(function(){
 
+  var hidables = $(".hidable"),
+      destroyables = $(".destroyable");  
+
   Hidable = (function(){
 
     var Hidable = function(element, minimizable){
@@ -13,6 +16,8 @@ loadFunctions.push(function(){
     Make.extend(Hidable.prototype, {
 
       initialize: function(){
+
+        var self = this;
 
         $.extend(this, {
 
@@ -54,15 +59,16 @@ loadFunctions.push(function(){
             verticalAlign: "middle"
           })
 
-        };
+        });
 
         if(this.minimizable){
-          this.hidableTitle = hidable.children(".hidable-title").css(this.titleCss);
+          this.hidableTitle = this.hidable.children(".hidable-title").css(this.titleCss);
           this.hidable.prepend(this.buttonTable);
           this.buttonTable.append(this.minimizeButton);
           this.buttonTable.append(this.closeButton);
+          this.content = this.buttonTable.nextAll(":not(.hidable-title)");
           this.size();
-          $(window).on("resize.hidable", this.size);
+          $(window).on("resize.hidable", function(){ self.size(); });
           this.resize();
           this.initializeAssociatedField();
         }else{
@@ -72,7 +78,7 @@ loadFunctions.push(function(){
           this.hidable.append(this.buttonTable);
           this.buttonTable.append(this.closeButton);
           this.size();
-          $(window).on("resize.hidable", this.size);
+          $(window).on("resize.hidable", function(){ self.size(); });
         }
       },
 
@@ -88,101 +94,95 @@ loadFunctions.push(function(){
         this.minimizeButton.css({
           verticalAlign: "sub"
         });
-        this.buttonTable.nextAll(":not(.hidable-title)").hide();
+        this.content.hide();
         this.hidable.animate({
           height: 29
         });
-        if(parseInt(widthTester.css("width")) < 363){
+        if(Screen.tiny()){
           this.hidableTitle.off("click.hidable");
-          this.hidableTitle.on("click.hidable", self.maximize);
+          this.hidableTitle.on("click.hidable", function(){ self.maximize(); });
         }else{
           this.minimizeButton.off("click.hidable");
-          this.minimizeButton.on("click.hidable", self.maximize });
+          this.minimizeButton.on("click.hidable", function(){ self.maximize(); });
         }
       },
 
-      maximize: function(element){
-        element.removeClass("min").addClass("max");
-        var buttonTable = element.children(".button-table"),
-            hidableTitle = element.children(".hidable-title");
-        var closeButton = buttonTable.children(".close-button"),
-            minimizeButton = buttonTable.children(".minimize-button"),
-            content = element.children(":not(.hidable-title):not(.button-table)");
-        buttonTable.css({
+      maximize: function(){
+        var self = this;
+        this.hidable.removeClass("min").addClass("max");
+        this.buttonTable.css({
           marginTop: -7
         })
-        closeButton.css({
+        this.closeButton.css({
           verticalAlign: "sub"
         });
-        minimizeButton.css({
+        this.minimizeButton.css({
           verticalAlign: "middle"
         });
-        buttonTable.nextAll().show();
-        element.animate({
-          height: 29+content.outerHeight()
+        this.content.show();
+        this.hidable.animate({
+          height: 29 + this.content.outerHeight()
         }, 1000, "easeOutExpo");
-        if(parseInt(widthTester.css("width")) < 363){
-          hidableTitle.off("click");
-          hidableTitle.on("click", function(event){ minimize(element); });
+        if(Screen.tiny()){
+          this.hidableTitle.off("click.hidable");
+          this.hidableTitle.on("click.hidable", function(){ self.minimize(); });
         }else{
-          minimizeButton.off("click");
-          minimizeButton.on("click", function(){ minimize(element); });
+          this.minimizeButton.off("click.hidable");
+          this.minimizeButton.on("click.hidable", function(){ self.minimize(); });
         }
       },
 
-      destroy: function(element){
-        element.remove();
+      destroy: function(){
+        this.hidable.remove();
       },
 
-      size = function(element){
-        var buttonTable = element.children(".button-table"),
-            hidableTitle = element.children(".hidable-title");
-        var closeButton = buttonTable.children(".close-button"),
-            minimizeButton = buttonTable.children(".minimize-button");
-        if(parseInt(widthTester.css("width")) < 363){
-          buttonTable.hide();
-          hidableTitle.css({
+      size: function(){
+        var self = this;
+        if(Screen.tiny()){
+          this.buttonTable.hide();
+          this.hidableTitle.css({
             paddingLeft: 0,
             width: "100%"
           });
-          minimizeButton.off("click");
-          closeButton.off("click");
+          this.minimizeButton.off("click.hidable");
+          this.closeButton.off("click.hidable");
         }else{
-          buttonTable.show();
-          hidableTitle.css({
+          this.buttonTable.show();
+          this.hidableTitle.css({
             paddingLeft: 10,
             width: "calc(100% - 49px)"
           });
-          hidableTitle.off("click");
-          minimizeButton.off("click").on("click", function(event){ minmax(element); });
-          closeButton.off("click").on("click", function(event){ destroy(element); });
+          this.hidableTitle.off("click.hidable");
+          this.minimizeButton.off("click.hidable").on("click.hidable", function(){ self.switch(); });
+          this.closeButton.off("click.hidable").on("click.hidable", function(){ self.destroy(); });
         }
-        hidableTitle.off("click").on("click", function(event){ minmax(element); });
-        resize(element);
+        this.hidableTitle.off("click.hidable").on("click.hidable", function(){ self.switch(); });
+        this.resize();
       },
 
-      switch: function(element){
-        if((element).hasClass("max")){
-          minimize(element);
-        }else if(element.hasClass("min")){
-          maximize(element);
+      switch: function(){
+        console.log(this);
+        if(this.hidable.hasClass("max")){
+          this.minimize();
+        }else if(this.hidable.hasClass("min")){
+          this.maximize();
         }
       },
 
-      resize: function(element){
-        if((element).hasClass("min")){
-          minimize(element);
-        }else if(element.hasClass("max")){
-          maximize(element);
+      resize: function(){
+        if(this.hidable.hasClass("min")){
+          this.minimize();
+        }else if(this.hidable.hasClass("max")){
+          this.maximize();
         }
       },
 
       initializeAssociatedField: function(){
         var self = this;
-        if(hidable.is("[associated-field]")){
-          $("#"+hidable.attr("associated-field")).on("keyup.hidable", function(event){
+        if(this.hidable.is("[associated-field]")){
+          $("#"+this.hidable.attr("associated-field")).on("keyup.hidable", function(event){
             pauseEvent(event);
-            if(event.keyCode !== 13 && hidable.hasClass("min")){
+            if(event.keyCode !== 13 && self.hidable.hasClass("min")){
               self.maximize();
             }
           })
@@ -195,7 +195,7 @@ loadFunctions.push(function(){
 
   })();
 
-  $(".hidable").each(function(index, element){ new Hidable(element, true); });
-  $(".destroyable").each(function(index, element){  new Hidable(element, false); });
+  $(".hidable").each(function(index, element){ new Hidable($(element), true); });
+  $(".destroyable").each(function(index, element){  new Hidable($(element), false); });
 
 });
