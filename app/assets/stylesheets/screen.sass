@@ -34,6 +34,8 @@
 
 //above medium
 @media only screen and (min-width: 993px)
+  .brand-logo
+    transform: translateY(-50%) !important
   .submit
     padding: 0 1rem
   .top-card
@@ -50,16 +52,13 @@
 //below large
 @media only screen and (max-width: 992px)
   .brand-logo
-    transform: translate(-50% -50%)
+    transform: translateX(-50%) translateY(-50%) !important
     top: 0
   .thumb-large
     margin-top: 0 !important
   .message
     .col:not(.hc)
       margin-top: 1% !important
-  .brand-logo
-    transform: translateX(-50%) translateY(-50%) !important
-    left: 51% !important
 
 //medium
 @media only screen and (min-width: 801px) and (max-width: 992px)
@@ -83,7 +82,7 @@
     margin-left: 2%
 
 //below medium
-@media only screen and(max-width: 800px)
+@media only screen and (max-width: 800px)
   .brand-logo
     padding-left: 5%
   .btn
@@ -96,7 +95,6 @@
     width: 100%
   .pool-index-field
     .col
-      width: 100% !important
       transform: none
       top: 0
       margin: 5% auto
@@ -105,6 +103,8 @@
   .limit-height>.col
     top: 0 !important
     transform: none !important
+  .s6
+    margin-top: 10px
 
 //small
 @media only screen and (min-width: 364px) and (max-width: 800px)

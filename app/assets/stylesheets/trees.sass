@@ -4,7 +4,7 @@ header
     width: 100%
     z-index: 1
   a
-    text-shadow: 0px 2px 0 black
+    text-shadow: 0px 2px 0 $text-shadow-color
     z-index: 2
   a:hover
     cursor: pointer
@@ -34,8 +34,8 @@ header
     a
       text-shadow: none
       font-size: 150%
-      color: yellowgreen
-      background-color: whitesmoke
+      color: $menu-text-color
+      background-color: $menu-background-color
   .separator
     height: $separator-height
     background: linear-gradient(to bottom, $background-color, $background-color-transparent)
@@ -43,17 +43,13 @@ header
   nav
     background-color: $nav-background-color
     z-index: 1
-    height: 88px
+    height: $nav-height
     .nav-wrapper
       padding: 0
     .brand-logo
-      +vertical-center
-      top: 20%
-      position: absolute
+      top: 20% !important
       img
-        +horizontal-center
-        width: 70%
-        margin-left: -10%
+        width: $logo-width
     ul>li
       +vertical-center
       height: 100%
@@ -121,7 +117,7 @@ header
       .col
         float: left !important
       form
-        background-color: transparent
+        background-color: $form-background-color
         li
           float: left
           margin-right: 15px
@@ -129,15 +125,15 @@ header
           box-shadow: 0 -2px 5px #4A9A6D inset
           border-radius: 50px
           padding-left: 10px
-          text-shadow: 0px 0px 1px black
+          text-shadow: 0px 0px 1px $text-shadow-color
         input[type = "submit"]
           border-radius: 30px
-          background-color: transparent
+          background-color: $in-nav-menu-button-background-color
           padding-left: 0
 
 div#main
   .header
-    border: 3px outset aquamarine
+    border: 3px outset $title-border-color
     border-left-style: none
     border-right-style: none
   .danger-button

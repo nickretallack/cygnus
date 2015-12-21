@@ -5,8 +5,10 @@
 <% if flash.any? %>
   <% flash.each do |type, message| %>
     <% if message.is_a? String %>
-      <%= content_tag :div, id: "flash", class:"#{type} destroyable" do %>
-        <%= format_flash message, type %>
+      <%= content_tag :div, id: "flash", class:"#{type} destroyable max" do %>
+        <div class = "hidable-title">
+          <%= format_flash message, type %>
+        </div>
       <% end %>
     <% end %>
   <% end %>

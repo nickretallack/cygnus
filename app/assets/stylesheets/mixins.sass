@@ -26,20 +26,20 @@
   text-align: center
 
 =vertical-center
-  position: relative
-  top: 50%
-  transform: translateY(-50%)
+  position: relative !important
+  top: 50% !important
+  transform: translateY(-50%) !important
 
 =horizontal-center
-  position: relative
-  left: 50%
-  transform: translateX(-50%)
+  position: relative !important
+  left: 50% !important
+  transform: translateX(-50%) !important
 
 =full-center
-  position: relative
-  top: 50%
-  left: 50%
-  transform: translateX(-50%) translateY(-50%)
+  position: relative !important
+  top: 50% !important
+  left: 50% !important
+  transform: translateX(-50%) translateY(-50%) !important
 
 =float-left
   float: left
@@ -63,7 +63,7 @@
 =vertical-divider
   height: 1.8rem
   margin: 0.15rem 5px 0 5px
-  border: 1px solid #ABC7AB
+  border: 1px solid $vdiv-color
   border-top-style: none
   border-bottom-style: none
 
@@ -73,10 +73,10 @@
 
 =clickable-icon
   &
-    color: black
+    color: $icon-color
     display: inline
   &:hover
-    color: #E045BF
+    color: $icon-hover-color
 
 =pool-index-field
   &
@@ -90,7 +90,7 @@
         height: 170px
         display: inline-block
       i:hover
-        color: #E045BF
+        color: $icon-hover-color
 
 =help
   &
@@ -102,9 +102,9 @@
     transform: scale(1.1) translateY(-45%)
     height: 65% !important
     border-radius: 50%
-    border: 2px dashed snow
+    border: 2px dashed $placeholder-text-shadow-color
     line-height: 2rem
-    text-shadow: 0 2px 2px darkslategrey
+    text-shadow: 0 2px 2px $text-shadow-color
     margin-left: 10px
     margin-right: 10px
     a:hover
@@ -116,7 +116,7 @@
 
 =message
   &
-    box-shadow: 0px 3px 15px #488E8E
+    box-shadow: 0px 3px 15px $message-box-shadow-color
     margin-top: 1% !important
     padding-top: 2% !important
     padding-bottom: 1% !important
@@ -142,23 +142,23 @@
   &.minimal
     margin: 10px 0 !important
     padding: 0 5px !important
-    outline: 2px solid green
+    outline: 2px solid $success-color
 
   &.sent
-    background-color: floralwhite
+    background-color: $message-sent-color
 
   &.received
-    background-color: honeydew
+    background-color: $message-received-color
 
   &.unread
-    background-color: #92B9AB
+    background-color: $message-unread-color
 
 =hidable
-  background-color: #DBFFE7
+  background-color: $success-background-color
   margin-top: 10px !important
   margin-bottom: 10px !important
   border-radius: 14px
-  border: 2px solid grey
+  border: 2px solid $text-shadow-color
   padding: 10px
   height: auto
 
@@ -202,28 +202,25 @@
       bottom: 6%
 
 =card1
-  background-color: #EEFFE1
-  color: #EEFFE1
+  background-color: $workboard-card1-background-color
   .card-content
     .card-title
-      color: #11A2A9
-    .card-action
+      color: $workboard-card1-title-color
 
 =card2
-  background-color: #DEE4BD
-  color: #DEE4BD
+  background-color: $workboard-card2-background-color
   .card-content
     .card-title
-      color: #1F7B3B
+      color: $workboard-card2-title-color
 
 =top-card
   &
     box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 15px 30px 0 rgba(0, 0, 0, 0.12)
-    background-color: #C5F992
+    background-color: $workboard-background-color
     text-align: left
     input[type = "text"]
-      text-shadow: 0px 0px 4px black
-      color: whitesmoke
+      text-shadow: 0px 0px 4px $text-shadow-color
+      color: $placeholder-color
     input[type = "submit"]
       margin-bottom: 10px !important
     textarea
