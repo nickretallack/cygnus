@@ -69,6 +69,7 @@ class CardsController < ApplicationController
   def destroy
     @card = Card.find(params[Card.slug])
     not_found and return unless @card
+    not_found and return if @card == @user.card
     if @user.card.cards.include? @card.id
       @card.cards.collect { |card_id| Card.find(card_id) }.each do |card|
         card.delete

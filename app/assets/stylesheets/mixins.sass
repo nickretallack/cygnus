@@ -219,7 +219,7 @@
     background-color: $workboard-background-color
     text-align: left
     input[type = "text"]
-      text-shadow: 0px 0px 4px $text-shadow-color
+      //text-shadow: 0px 0px 4px $text-shadow-color
       color: $placeholder-color
     input[type = "submit"]
       margin-bottom: 10px !important
@@ -234,7 +234,7 @@
       top: auto
       transform: none
     .card
-      @extend .col
+      float: left
       .card-content
         padding-top: 0 !important
       .card-action
@@ -252,8 +252,7 @@
         span
           display: inline
       .card
-        @extend .m12
-        @extend .l12
+        width: 100%
     .card:nth-of-type(odd)
       +card1
       .card:nth-child(even)

@@ -11,10 +11,15 @@
 .container .row
   margin: 0
 
-.col .col
-  padding: 0
+.col
+  padding: 5px 6px !important
+  margin: 0 !important
+
+.col .row .col
+  margin: 0 !important
 
 .header
+  width: 100%
   margin-bottom: 10px
   margin-top: 30px
   a
@@ -75,8 +80,6 @@
 
 .limit-height
   height: 400px
-  & > .col
-    +vertical-center
 
 .btn:hover
   font-size: 110%
@@ -96,6 +99,12 @@
 .js
   display: none
 
+.page-submit
+  position: fixed
+  bottom: 0
+  left: 0
+  width: auto
+
 .file-field
   display: table
   .btn
@@ -109,11 +118,6 @@
 .preview
   @extend .hc
   position: relative
-  text-align: left
-  #flash
-    box-shadow: none
-    margin-bottom: 10px
-    padding: 0
 
 .gallery
   text-align: center
@@ -165,6 +169,7 @@
 
 .submit:hover
   font-size: 1.2rem !important
+  line-height: 2.4rem !important
   color: white !important
   text-decoration: none !important
 

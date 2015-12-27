@@ -1,35 +1,51 @@
-function initButtonIcons(){
-  buttonIcons = JSON.parse('<%= CONFIG[:button_icons].to_json %>');
-}
+loadFunctions.push(function(){
 
-function initButtonAreas(forms){
-  forms.each(function(){ buttonArea($(this)); });
-}
+    var forms = $(".button-submit");
 
-function buttonArea(form){
-  var buttonArea = form.siblings(".button-area");
-  if(buttonArea.length === 0) return;
-  $.each(buttonIcons, function(name, icon){
-    var button = form.children("#"+name);
-    if(button.length === 0) return;
-    form.attr("data-remote", true);
-    button.hide();
-    buttonArea.append($("<i />", {
-      class: "material-icons medium-small",
-      text: icon,
-      title: name.capitalize(),
-      css: {
-        color: "black",
-        cursor: "pointer",
-        marginLeft: "3%",
-        marginRight: "3%"
-      }
-    }).on("click.submit", function(event){
-      pauseEvent(event);
-      button.trigger("click");
-    }));
-  });
-}
+    ButtonSubmit = (function(){
 
-loadFunctions.push(initButtonIcons);
-loadFunctions.push(function(){ initButtonAreas($(".button-submit")) });
+        var ButtonSubmit = function(element){
+
+            this.form = element;
+            this.area = element.siblings(".button-area");
+            this.icons = JSON.parse('<%= CONFIG[:button_icons].to_json %>');
+            this.buttonCss = {
+                color: "black",
+                cursor: "pointer",
+                marginLeft: "3%",
+                marginRight: "3%"
+            };
+            this.initialize();
+
+        };
+
+        Make.extend(ButtonSubmit.prototype, {
+
+            initialize: function(){
+                var self = this;
+                $.each(this.icons, function(name, icon){
+                    var button = self.form.children("#"+name);
+                    if(!button.exists()) return;
+                    self.form.attr("data-remote", true);
+                    self.area.append($("<i />", {
+                        class: "material-icons medium-small",
+                        text: icon,
+                        title: name.capitalize(),
+                        css: self.buttonCss
+                    }).on("click.submit", function(event){
+                        pauseEvent(event);
+                        button.trigger("click");
+                    }));
+                    button.hide();
+                })
+            }
+
+        });
+
+        return ButtonSubmit;
+
+    })();
+
+    forms.each(function(index, element){ new ButtonSubmit($(element)); });
+
+});

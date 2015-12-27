@@ -1,83 +1,93 @@
 <% provide(:header, @user.name) %>
 
 <%= form_for @user, method: :patch, url: user_path(@user) do |f| %>
-	<div class="row <%= "limit-height" unless can_modify? @user %>">
-		<% if can_modify? @user %>
-			<div class = "col s12 m3">
-				<div class = "col s12 new">
-					<div class = "input-field"><%= f.check_box :view_adult %><%= f.label :view_adult, "View Adult Images" %></div>
-					<%= f.fields_for @user.avatar.nil?? Upload.new : Upload.find(@user.avatar), multipart: true do |u| %>
-						<div class = "input-field"><%= u.check_box :explicit %><%= u.label :explicit, "Explicit Avatar" %></div>
-						<!--<div class = "input-field"><%#= select "user[upload]", :pool, select_options_for(:pool), {}, { class: "btn button-with-icon" } %></div>-->
-			      <div class = "row file-field input-field hc">
-			        <div class = "submit">
-			          <span>Change Avatar</span>
-			          <%= u.file_field :picture %>
-			        </div>
-			      </div>
-			    <% end %>
-		    </div>
-		  </div>
-			<div class = "col s12 m3 hc expandable preview">
-				<div class = "danger nojs" id = "flash">
-					Please mark adult avatars explicit before saving.
-				</div>
-				<%= cell(:image).(:show, type: :full, id: @user.avatar) %>
-			</div>
-		<% else %>
-			<div class = "col s12 m6 l7 expandable preview">
-				<%= cell(:image).(:show, type: :full, id: @user.avatar) %>
-			</div>
-		<% end %>
-		<div class = "col s12 m6 l5 <%= "new" if can_modify?(@user) %>">
-			<%= statuses @user %>
-			<%= render "links", user: @user unless can_modify? @user %>
-		</div>
-	</div>
-	<div class = "row">
-		<% if can_modify? @user %>
-			<%= f.text_field :gallery, placeholder: "Offsite Gallery" %>
-			<hr />
-			<%= f.fields_for "user[artist_type][]" do %>
-				<%= text_field "user[artist_type]", "0", placeholder: "Artist Type", class: "nojs", value: @user.artist_type %>
-				<% unless @user.artist_type.blank? %>
-					<blockquote class = "inline js taglist" id = "user[artist_type][0]"><%= @user.artist_type %></blockquote><br />
-				<% end %>
-				<%= link_to "Add Artist Type(s)", "", class: "js", remote: true %>
-				<div class = "input-field js">
-					<%= select "user[artist_types]", "1", select_options_for(:artist_type), {}, { class: "btn button-with-icon addable categorized(/)", id: "user[artist_type][1]" } %>
-				</div>
-				<hr />
-			<% end %>
-			<%= f.text_area :price, placeholder: "Commission rates" %>
-			<%= f.text_area :tags, placeholder: "Tags" %>
-			<%= f.text_area :details, placeholder: "Profile Text" %>
-			<%= f.submit "Update Profile" %>
-		<% else %>
-			<% unless @user.artist_type.blank? %><blockquote class = "inline"><%= @user.artist_type %></blockquote><% end %>
-			<% unless @user.gallery.blank? %><blockquote class = "inline link"><%= link_to @user.gallery %></blockquote><% end %>
-			<% unless @user.price.blank? %><blockquote class = "inline"><%= @user.price %></blockquote><% end %>
-			<% unless @user.tags.blank? %><blockquote class = "inline"><%= @user.tags %></blockquote><% end %>
-			<% unless @user.details.blank? %><blockquote class = "inline"><%= render_markdown @user.details %></blockquote><% end %>
-		<% end %>
-	</div>
+  <div class = "row">
+    <% if can_modify? @user %>
+      <div class = "col s12 m3">
+        <div class = "input-field"><%= f.check_box :view_adult %><%= f.label :view_adult, "View Adult Images Sitewide" %></div>
+        <%= f.fields_for @user.avatar.nil?? Upload.new : Upload.find(@user.avatar), multipart: true do |u| %>
+          <div class = "input-field"><%= u.check_box :explicit %><%= u.label :explicit, "Explicit Avatar", id: "explicit-avatar" %></div>
+          <div class = "row file-field input-field hc nojs">
+            <div class = "submit">
+              <span>Change Avatar</span>
+              <%= u.file_field :picture, id: "change-avatar" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class = "col s12 m3 hc preview" associated-field = "change-avatar" explicit-label = "explicit-avatar">
+        <%= cell(:image).(:show, type: :full, id: @user.avatar) %>
+        <span class = "js">Change Avatar</span>
+        <span class = "danger nojs">Please mark adult avatars explicit before saving.</span>
+      </div>
+    <% else %>
+      <div class = "col s12 m6 l7 expandable preview">
+        <%= cell(:image).(:show, type: :full, id: @user.avatar) %>
+      </div>
+    <% end %>
+    <div class = "col s12 m6 l5">
+      <%= statuses @user %>
+      <%= render "links", user: @user unless can_modify? @user %>
+    </div>
+  </div>
+  <div class = "row">
+    <% if can_modify? @user %>
+      <%= f.text_field :gallery, placeholder: "Offsite Gallery" %>
+      <hr class = "js" />
+      <%= f.fields_for "user[artist_type][]" do %>
+        <%= text_field "user[artist_type]", "0", placeholder: "Artist Type(s)", class: "nojs", value: @user.artist_type %>
+        <% unless @user.artist_type.blank? %>
+          <blockquote class = "inline js taglist" id = "user[artist_type][0]"><%= @user.artist_type %></blockquote><br />
+        <% end %>
+        <%= link_to "Add Artist Type(s)", "", class: "js", remote: true %>
+        <div class = "input-field js">
+          <%= select "user[artist_types]", "1", select_options_for(:artist_type), {}, { class: "btn button-with-icon addable categorized(/)", id: "user[artist_type][1]" } %>
+        </div>
+      <% end %>
+      <hr class = "js" />
+      <%= f.text_area :price, placeholder: "Commission rates" %>
+      <%= f.text_area :tags, placeholder: "Tags" %>
+      <%= f.text_area :details, placeholder: "Profile Text" %>
+      <%= f.submit "Update Profile", class: "page-submit" %>
+    <% else %>
+      <% unless @user.artist_type.blank? %><blockquote class = "inline"><%= @user.artist_type %></blockquote><% end %>
+      <% unless @user.gallery.blank? %><blockquote class = "inline link"><%= link_to @user.gallery %></blockquote><% end %>
+      <% unless @user.price.blank? %><blockquote class = "inline"><%= @user.price %></blockquote><% end %>
+      <% unless @user.tags.blank? %><blockquote class = "inline"><%= @user.tags %></blockquote><% end %>
+      <% unless @user.details.blank? %><blockquote class = "inline"><%= render_markdown @user.details %></blockquote><% end %>
+    <% end %>
+  </div>
 <% end %>
 
 <% content_for :footer do %>
-	<div class = "row hidable max">
-		<div class = "hidable-title"><%= @user.name %>'s favorites</div>
-		<div class = "row pool-index-field">
-			<div class = "col">
-				<% enum_for @user.favs.collect { |id| Submission.find(id) } do |submission| %>
-					<%= link_to submission_path(submission) do %>
-						<%= cell(:image).(:show, type: :bordered, id: submission.file_id) %>
-					<% end %>
-				<% end %>
-			</div>
-		</div>
-	</div>
-	Member Since: <%= Date.parse(@user.created_at.to_s).to_formatted_s(:long_ordinal) %><br />
-	<% if can_modify? @user %>
-		Last Login: <%=Date.parse(@user.created_at.to_s).to_formatted_s(:long_ordinal) %><br />
-	<% end %>
+  <div class = "row hidable min">
+    <div class = "hidable-title"><%= @user.name %>'s recent submissions</div>
+    <div class = "row pool-index-field">
+      <div class = "col">
+        <% enum_for @user.pools.first.submissions.order("id desc").limit(10).reverse do |submission| %>
+          <%= link_to submission_path(submission) do %>
+            <%= cell(:image).(:show, type: :bordered, id: submission.file_id) %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class = "row hidable min">
+    <div class = "hidable-title"><%= @user.name %>'s recent favorites</div>
+    <div class = "row pool-index-field">
+      <div class = "col">
+        <% enum_for @user.favs.reverse.take(10).collect { |id| Submission.find(id) } do |submission| %>
+          <%= link_to submission_path(submission) do %>
+            <%= cell(:image).(:show, type: :bordered, id: submission.file_id) %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class = "row">
+    Member Since: <%= Date.parse(@user.created_at.to_s).to_formatted_s(:long_ordinal) %><br />
+    <% if can_modify? @user %>
+      Last Login: <%=Date.parse(@user.created_at.to_s).to_formatted_s(:long_ordinal) %><br />
+    <% end %>
+  </div>
 <% end %>

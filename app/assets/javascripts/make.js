@@ -359,6 +359,11 @@ $.extend(window, {
 (function($){
 
   $.fn.extend({
+
+    exists: function(){
+      return this.length > 0;
+    },
+
     collidesWith: function($div2){
       var x1 = $(this).offset().left;
       var y1 = $(this).offset().top;

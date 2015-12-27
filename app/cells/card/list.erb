@@ -14,7 +14,7 @@
           <%= form_for @model, url: card_path(@user, @model), method: :delete, html: { class: "button-submit" } do |f| %>
             <%= f.submit "Delete List", id: "delete" %>
           <% end %>
-          <div class = "button-area">
+          <div class = "button-area"></div>
         </div>
         <div class = "new edit-mode">
           <%= form_for @model, url: card_path(@user, @model), method: :patch, html: { class: "button-submit" } do |f| %>
