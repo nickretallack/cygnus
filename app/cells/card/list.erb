@@ -7,19 +7,15 @@
       </div>
       <% if controller.can_modify? @user %>
         <div class = "edit-mode">
+          <%= form_for @model, url: card_path(@user, @model), method: :delete, html: { class: "button-submit" } do |f| %>
+            <%= f.submit "Delete List", id: "delete" %>
+          <% end %>
           <%= form_for @model, url: card_path(@user, @model), method: :patch, html: { class: "button-submit" } do |f| %>
             <%= f.text_field :title, placeholder: "List Title" %>
             <%= f.submit "Save List", id: "save" %>
           <% end %>
-          <%= form_for @model, url: card_path(@user, @model), method: :delete, html: { class: "button-submit" } do |f| %>
-            <%= f.submit "Delete List", id: "delete" %>
-          <% end %>
-          <div class = "button-area"></div>
-        </div>
-        <div class = "new edit-mode">
           <%= form_for @model, url: card_path(@user, @model), method: :patch, html: { class: "button-submit" } do |f| %>
-            <%= f.text_field :title, placeholder: "Title for New Card", value: "" %>
-            <%= f.submit "Create Card", id: "save" %>
+            <%= f.submit "Create Card", id: "create" %>
           <% end %>
           <div class = "button-area"></div>
         </div>

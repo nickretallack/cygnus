@@ -16,7 +16,7 @@
             <%= f.submit "Delete Card", id: "delete" %>
           <% end %>
           <div class = "button-area"></div>
-          <div class = "addable-attachment-area" id = "card-<%= @model.id %>" >
+          <div class = "attachment-area" id = "card-<%= @model.id %>" >
             <div id = "image"></div>
           </div>
           <% @image_attachments.each do |attachment| %>

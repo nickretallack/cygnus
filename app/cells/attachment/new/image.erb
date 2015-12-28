@@ -1,18 +1,25 @@
-<%= form_for Attachment.new, url: attachments_path, html: { class: "button-submit" } do |f| %>
-  <%= f.fields_for Upload.new, multipart: true do |u| %>
-    <div class = "input-field">
-      <%= u.check_box :explicit %><%= u.label :explicit, "Adult Image" %>
-    </div>
-    <div class = "file-field image-preview bordered hc">
-      <div class = "submit">
-        <span>Image</span>
-        <%= u.file_field :image %>
+<div class = "row new">
+  <%= form_for Attachment.new, url: attachments_path, html: { class: "button-submit" } do |f| %>
+    <%= f.fields_for Upload.new, multipart: true do |u| %>
+      <div class = "input-field">
+        <%= u.check_box :explicit %><%= u.label :explicit, "Adult Image", id: "explicit-attachment" %>
       </div>
-    </div>
+      <div class = "file-field input-field bordered hc">
+        <div class = "submit">
+          <span>Image</span>
+          <%= u.file_field :image, id: "change-attachment" %>
+        </div>
+      </div>
+    <% end %>
+    <%= f.hidden_field :child_model, value: @options[:child_model] %>
+    <%= f.hidden_field :parent_model, value: @options[:parent_model] %>
+    <%= f.hidden_field :parent_id, value: @options[:parent_id] %>
+    <%= f.submit "Create Attachment", id: "done" %>
   <% end %>
-  <%= f.hidden_field :child_model, value: @options[:child_model] %>
-  <%= f.hidden_field :parent_model, value: @options[:parent_model] %>
-  <%= f.hidden_field :parent_id, value: @options[:parent_id] %>
-  <%= f.submit "Create Attachment", id: :save %>
-<% end %>
-<div class = "button-area"></div>
+  <div class = "col s12 hc preview" associated-field = "change-attachment" explicit-label = "explicit-attachment">
+    <%= cell(:image).(:show, type: :full, id: -1) %>
+    <span class = "js">Change Image</span>
+    <span class = "danger nojs">Please mark adult images explicit before saving.</span>
+  </div>
+  <div class = "button-area"></div>
+</div>

@@ -126,16 +126,16 @@ function reorderWorklist(){
 function fillWorklistOrderField(){
   var lists = $(".list");
   $("#card_order").attr("value",
-  ("{"+$(".top-card").attr("id")+"=>["+[].fill(lists.length, function(index){
-      return lists.length > 0? lists[index].id : "";
+  ("{"+$(".top-card").attr("id").stringify()+":["+[].fill(lists.length, function(index){
+      return lists.length > 0? lists[index].id.stringify() : "";
     }).join(", ")+"]").replace(/'/g, "\"")+
   (function(){
     var append = "";
     $.each(lists, function(index, list){
       list = $(list);
       var cards = list.find(".card");
-      append += (", "+list.attr("id")+"=>["+[].fill(cards.length, function(index){
-          return cards.length > 0? cards[index].id : "";
+      append += (", "+list.attr("id").stringify()+":["+[].fill(cards.length, function(index){
+          return cards.length > 0? cards[index].id.stringify() : "";
         }).join(", ")+"]").replace(/'/g, "\"");
     });
     return append+"}";

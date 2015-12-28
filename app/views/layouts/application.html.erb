@@ -17,7 +17,7 @@
     <div class = "container <%= "fw" if controller_name == "cards" %>">
       <div id="main">
         <div class = "row stout">
-          <h2 class = "header truncate"><%= yield :header %></h2>
+          <h2 class = "header"><%= yield :header %></h2>
           <%= render "layouts/flash" %>
         </div>
         <%= yield %>

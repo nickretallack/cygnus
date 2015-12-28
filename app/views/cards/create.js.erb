@@ -2,4 +2,5 @@ $($("#"+'<%=j params[:id] %>').find(".card-title")[0]).append('<%=j cell(:card, 
 var newCard = $("#"+'<%= @new_card.id %>');
 newCard.addClass("fade-in");
 newCard.find(".button-submit").each(function(index, element){ new ButtonSubmit($(element)); });
+newCard.find(".attachment-area").each(function(index, element){ new AddableAttachment($(element)); });
 switchToWorklistMode("edit");

@@ -37,7 +37,11 @@ loadFunctions.push(function(){
                         button.trigger("click");
                     }));
                     button.hide();
-                })
+                });
+                var attachmentButton = this.area.children().filter(function(index, element){
+                    return $(element).prop("textContent") === '<%= CONFIG[:button_icons][:create] %>';
+                });
+                if(attachmentButton.exists()) attachmentButton.appendTo(this.area);
             }
 
         });

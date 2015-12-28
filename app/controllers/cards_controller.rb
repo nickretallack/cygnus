@@ -23,14 +23,17 @@ class CardsController < ApplicationController
     @card = Card.find(params[Card.slug])
     case params[:commit]
     when /.*Order/
+      if params[:card][:order].empty?
+        back and return
+      end
       order = JSON.parse(params[:card][:order].gsub("=>", ":")).inject({}) { |memo, (key, value)| memo[key.to_i>0? key.to_i : nil] = value.collect { |id| id.to_i>0? id.to_i : nil }; memo }
       order.each do |key, value|
         card = Card.find(key)
         card.update_attribute(:cards, value) if can_modify? User.find_by(id: Card.find(order.keys[0]).user_id)
       end
-      back and return
+      back and return #only here since we've already updated attributes
     when /Create.*/
-      @new_card = Card.new(title: params[:card][:title])
+      @new_card = Card.new(title: nil)
       @new_card.save!
       @card.cards << @new_card.id
       view_template = "create"

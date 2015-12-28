@@ -1,0 +1,100 @@
+loadFunctions.push(function(){
+
+  var attachmentAreas = $(".attachment-area");
+
+  AddableAttachment = (function(){
+
+    var AddableAttachment = function(element){
+
+      this.area = element;
+      this.icon = $("<i />", {
+        class: "material-icons medium-small",
+        text: '<%= CONFIG[:button_icons][:create] %>',
+        css: {
+          color: "black",
+          cursor: "pointer",
+          marginLeft: "3%",
+          marginRight: "3%"
+        }
+      });
+      this.initialize();
+
+    };
+
+    Make.extend(AddableAttachment.prototype, {
+
+      initialize: function(){
+
+        var self = this;
+
+        this.icon.appendTo(this.area.prevAll(".button-area"));
+        this.icon.selectionMenu({
+
+          imageAttachment: function(){
+            var parent = self.area.attr("id").split("-"),
+                imageArea = self.area.children("#image");
+            $.get("/attachments/new", {
+              "parent_model": parent[0],
+              "parent_id": parent[1],
+              "child_model": "image"
+            },
+            function(data){
+              data = JSON.parse(data);
+              $(data.attachment).appendTo(imageArea);
+              new ButtonSubmit($(imageArea.find("form")));
+              new ImagePreview($(imageArea.find(".preview")));
+              imageArea.find("i").css({
+                float: "right"
+              });
+            });
+          }
+
+        });
+
+      }
+
+    });
+
+    return AddableAttachment;
+
+  })();
+
+  attachmentAreas.each(function(index, element){ new AddableAttachment($(element)); });
+
+})
+
+// function initAddableIcons(){
+//   addableIcon = $("<i />", {
+//     class: "material-icons medium-small",
+//     text: "add",
+//     css: {
+//       marginLeft: ".3rem",
+//       cursor: "pointer",
+//       fontSize: "150%"
+//     }
+//   });
+// }
+
+// function initAddableAttachmentAreas(areas){
+//   areas.each(function(){ addableAttachmentArea($(this)); })
+// }
+
+// function addableAttachmentArea(area){
+//   var parent = area.attr("id").split("-");
+//   area.prepend(addableIcon.clone().selectionMenu({
+//     imageAttachment: function(){
+//       $.get("/attachments/new", {
+//         "parent_model": parent[0],
+//         "parent_id": parent[1],
+//         "child_model": "image"
+//       },
+//       function(data){
+//         data = JSON.parse(data);
+//         $(data.attachment).appendTo(area.children("#image"));
+//       })
+//     }
+//   }));
+// }
+
+// loadFunctions.push(initAddableIcons);
+// loadFunctions.push(function(){ initAddableAttachmentAreas($(".addable-attachment-area")); });
