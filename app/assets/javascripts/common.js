@@ -1,23 +1,3 @@
-var readyFunctions = [],
-    loadFunctions = [];
-
-$(document).on("page:load", function(){
-  ready();
-  load();
-});
-
-$(document).ready(ready);
-
-$(window).load(load);
-
-function ready(){
-  $.each(readyFunctions, function(index, func){ func(); });
-}
-
-function load(){
-  $.each(loadFunctions, function(index, func){ func(); });
-}
-
 function pauseEvent(event){
   if(event.stopPropagation) event.stopPropagation();
   if(event.preventDefault) event.preventDefault();
@@ -25,54 +5,42 @@ function pauseEvent(event){
   event.returnValue = false;
 }
 
-function hideAndShow(element){
-  if(element === undefined){
-    $(".nojs").hide();
-    $(".js").show();
-  }else{
-    element.find(".nojs").hide();
-    element.find(".js").show();
+Screen = {
+  widthTester: ".widthTester",
+  widths: {
+    tiny: 0,
+    small: 363,
+    medium: 801,
+    large: 993,
+    huge: 1921
   }
 }
 
-readyFunctions.push(hideAndShow);
-
-function doRemote(element){
-  if(element === undefined){
-    $(".remote").attr("data-remote", "true")
-  }else{
-    if(element.hasClass("remote")) element.attr("data-remote", "true");
+$.each(Screen.widths, function(key, value){
+  Screen[key] = function(){
+    return $(Screen.widthTester).css("width") === value + "px";
   }
-}
-
-readyFunctions.push(doRemote);
-
-readyFunctions.push(function(){
-  Screen = {
-    widthTester: $(".widthTester")
-  }
-
-  $.extend(Screen, {
-
-    tiny: function(){
-      return Screen.widthTester.css("width") === "0px";
-    },
-
-    small: function(){
-      return Screen.widthTester.css("width") === "363px";
-    },
-
-    medium: function(){
-      return Screen.widthTester.css("width") === "801px";
-    },
-
-    large: function(){
-      return Screen.widthTester.css("width") === "993px";
-    },
-
-    huge: function(){
-      return Screen.widthTester.css("width") === "1921px";
-    },
-
-  });
 });
+
+Init = {
+  js: {
+    ".nojs": function(elements){ elements.hide(); },
+    ".js": function(elements){ elements.show(); },
+    ".remote": function(elements){ elements.attr("data-remote", "true"); }
+  },
+  classes: {
+    AddableAttachment: ".attachment-area",
+    Destroyable: ".destroyable",
+    Hidable: ".hidable"
+  }
+};
+
+function initialize(element){
+  element = $(element);
+  $.each(Init.js, function(key, value){
+    value(element.find(key));
+  });
+  $.each(Init.classes, function(key, value){
+    new window[key](element.find(value))
+  });
+}

@@ -21,29 +21,8 @@
     });
   };
 
-  Make.create = function(name){
-    if(window[name] === undefined){
-      window[name] = function(){
-        this.name = name;
-      };
-      return window[name];
-    }else{
-      return window[name];
-    }
-  };
-
   window.Make = Make;
 })();
-
-Make.extend(Function.prototype, {
-
-  make: function(name){
-    var obj = new this();
-    obj.name = name;
-    return obj;
-  },
-
-});
 
 Make.extend(String.prototype, {
 
@@ -344,14 +323,6 @@ Make.extend(Array.prototype, {
       }while(++index<length);
     }
     return this;
-  }
-
-});
-
-$.extend(window, {
-
-  unless: function(boolean){
-    return !boolean;
   }
 
 });
