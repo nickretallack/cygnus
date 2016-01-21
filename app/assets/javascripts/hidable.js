@@ -19,8 +19,6 @@ Hidable = function(element){
 
     var hidable = new ActiveContainer(element);
 
-    console.log(hidable);
-
     hidable.hidable.prepend(hidable.buttonTable);
     hidable.buttonTable.append(hidable.minimizeButton);
     hidable.buttonTable.append(hidable.closeButton);
