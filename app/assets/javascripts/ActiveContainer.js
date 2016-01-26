@@ -6,10 +6,14 @@ Destroyable = function(){
         marginTop: 2
     });
     destroyable.content = destroyable.title;
+
     destroyable.hidable.append(destroyable.buttonTable);
     destroyable.buttonTable.append(destroyable.closeButton);
+
+    $(window).on("resize.destroyable", function(){
+        destroyable.size();
+    });
     destroyable.size();
-    $(window).on("resize.destroyable", function(){ destroyable.size(); });
 
     return destroyable;
 
@@ -22,14 +26,12 @@ Hidable = function(element){
     hidable.hidable.prepend(hidable.buttonTable);
     hidable.buttonTable.append(hidable.minimizeButton);
     hidable.buttonTable.append(hidable.closeButton);
-    hidable.buttonTable.css({
-        marginTop: -10
-    });
     hidable.content = hidable.buttonTable.nextAll(":not(.hidable-title)");
+
+    $(window).on("resize.hidable", function(){
+        hidable.size();
+    });
     hidable.size();
-    $(window).on("resize.hidable", function(){ hidable.size(); });
-    hidable.resize();
-    hidable.initializeAssociatedField();
 
     return hidable;
 
@@ -37,12 +39,45 @@ Hidable = function(element){
 
 ActiveContainer = (function(){
 
-    var ActiveContainer = function(element, minimizable){
+    var self;
 
-        this.hidable = $(element);
-        this.title = this.hidable.children(".hidable-title");
-        this.minimizable = minimizable;
-        this.initialize();
+    var ActiveContainer = function(element){
+
+        self = this;
+
+        self.hidable = element;
+        self.title = this.hidable.children(".hidable-title").safeAdd();
+
+        self.buttonTable =  $("<div />", {
+                                class: "button-table",
+                                css: {
+                                    display: "table",
+                                    float: "right",
+                                    overflow: "hidden",
+                                    userSelect: "none",
+                                    fontSize: "14px"
+                                }
+                            });
+
+        self.closeButton =  $("<i />", {
+                                class: "material-icons clickable-icon close-button",
+                                text: "clear",
+                                css: {
+                                    cursor: "pointer"
+                                }
+                            });
+
+        self.minimizeButton =   $("<i />", {
+                                    class: "material-icons clickable-icon minimize-button",
+                                    text: "remove",
+                                    css: {
+                                        cursor: "pointer",
+                                        position: "relative"
+                                    }
+                                });
+
+        self.initialize();
+        self.initializeAssociatedField();
 
     };
 
@@ -50,49 +85,14 @@ ActiveContainer = (function(){
 
         initialize: function(){
 
-            var self = this;
-
-            $.extend(this, {
-
-                titleCss: {
-                    float: "left",
-                    lineHeight: "9px",
-                    fontSize: "18px",
-                    paddingLeft: 10,
-                    userSelect: "none",
-                    cursor: "default",
-                    textAlign: "left"
-                },
-
-                buttonTable: $("<div />", {
-                    class: "button-table"
-                }).css({
-                    display: "table",
-                    float: "right"
-                }).css({
-                    overflow: "hidden",
-                    userSelect: "none",
-                    fontSize: "14px"
-                }),
-
-                closeButton: $("<i />", {
-                    class: "material-icons clickable-icon close-button",
-                    text: "clear"
-                }).css({
-                    cursor: "pointer"
-                }),
-
-                minimizeButton: $("<i />", {
-                    class: "material-icons clickable-icon minimize-button",
-                    text: "remove"
-                }).css({
-                    cursor: "pointer",
-                    position: "relative"
-                })
-
+            this.title.css({
+                float: "left",
+                lineHeight: "1rem",
+                paddingLeft: 10,
+                userSelect: "none",
+                cursor: "default",
+                textAlign: "left"
             });
-
-            this.title.css(this.titleCss);
 
             this.hidable.prepend($("<div />", {
                 class: "row"
@@ -108,7 +108,7 @@ ActiveContainer = (function(){
             });
             this.content.hide();
             this.hidable.animate({
-                height: 29
+                height: self.title.css("lineHeight")
             });
             if(Screen.tiny()){
                 this.title.off("click.hidable");
@@ -127,7 +127,7 @@ ActiveContainer = (function(){
             });
             this.content.show();
             this.hidable.animate({
-                height: 29 + this.content.outerHeight()
+                height: self.title.outerHeight() + this.content.outerHeight()
             }, 1000, "easeOutExpo");
             if(!this.minimizable){
                 this.title.addClass("vc");

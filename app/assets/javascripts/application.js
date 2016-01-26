@@ -16,4 +16,6 @@
 //= require make
 //= require_tree .
 
-initialize(window);
+$(window).on("load", function(){
+    initialize($("html"));
+});

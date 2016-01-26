@@ -39,10 +39,10 @@
         <% unless @user.artist_type.blank? %>
           <blockquote class = "inline js taglist" id = "user[artist_type][0]"><%= @user.artist_type %></blockquote><br />
         <% end %>
-        <%= link_to "Add Artist Type(s)", "", class: "js", remote: true %>
-        <div class = "input-field js">
-          <%= select "user[artist_types]", "1", select_options_for(:artist_type), {}, { class: "btn button-with-icon addable categorized(/)", id: "user[artist_type][1]" } %>
+        <div class = "input-field js addable-field">
+          <%= select "user[artist_types]", "1", select_options_for(:artist_type), {}, { class: "btn button-with-icon categorized(/)", id: "user[artist_type][1]", button: "add-artist-type" } %>
         </div>
+        <i class = "material-icons medium-small js" id = "add-artist-type"><%= CONFIG[:button_icons][:add] %></i>
       <% end %>
       <hr class = "js" />
       <%= f.text_area :price, placeholder: "Commission rates" %>
