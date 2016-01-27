@@ -5,5 +5,5 @@ class HelpfulCell < Cell::ViewModel
     include ActionView::Helpers::CaptureHelper
     
     #require all helper modules
-    Dir["#{File.dirname(__FILE__)}/../helpers/*.rb"].collect { |file| include File.basename(file).gsub(".rb", "").split("_").collect { |part| part.capitalize }.join("").constantize }
+    Dir["#{File.dirname(__FILE__)}/../app/helpers/*.rb"].collect { |file| include File.basename(file).gsub(".rb", "").split("_").collect { |part| part.capitalize }.join("").constantize }
 end

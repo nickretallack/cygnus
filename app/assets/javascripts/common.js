@@ -7,6 +7,7 @@ function pause(event){
 
 Key = {
     keys: {
+        "ret": 13,
         "esc": 27
     }
 }
@@ -40,17 +41,19 @@ Init = {
         ".js": function(elements){ elements.show(); },
         ".remote": function(elements){ elements.attr("data-remote", "true"); }
     },
-    classes: {
+    classes: { // in order of load
         AddableAttachment: ".attachment-area",
         AddableField: ".addable-field",
         ButtonSubmit: ".button-submit",
-        Destroyable: ".destroyable",
-        Hidable: ".hidable",
         ImagePreview: ".image-preview",
         IndexField: "[class *= index-field]",
         Nav: "nav",
         TagList: ".taglist",
-        ViewAnyway: "img.adult"
+        ViewAnyway: "img.adult",
+
+        // keep these last so contents are loaded already
+        Destroyable: ".destroyable",
+        Hidable: ".hidable"
     }
 };
 

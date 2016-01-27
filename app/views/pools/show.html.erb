@@ -1,11 +1,6 @@
 <% provide(:header, link_to(@pool.user.name, @pool.user)+"'s "+@pool.title) unless User.where(id: @pool.user_id).empty? %>
 
-<% if can_modify? @pool.user %>
-  <div class = "row new">
-    <%= render "submissions/fields", submission: Submission.new, upload: Upload.new %>
-  </div>
-  <hr />
-<% end %>
+<%= cell(:submission).(:new) %>
 
 <div class = "row gallery">
   <% enum_for @submissions do |submission| %>

@@ -1,14 +1,10 @@
-Destroyable = function(){
+Destroyable = function(element){
 
-    var destroyable = new ActiveContainer();
+    var destroyable = new ActiveContainer(element);
 
-    destroyable.hidable.css({
-        marginTop: 2
-    });
-    destroyable.content = destroyable.title;
-
-    destroyable.hidable.append(destroyable.buttonTable);
     destroyable.buttonTable.append(destroyable.closeButton);
+    destroyable.content = destroyable.title;
+    destroyable.maxHeight = destroyable.content.outerHeight();
 
     $(window).on("resize.destroyable", function(){
         destroyable.size();
@@ -23,10 +19,10 @@ Hidable = function(element){
 
     var hidable = new ActiveContainer(element);
 
-    hidable.hidable.prepend(hidable.buttonTable);
     hidable.buttonTable.append(hidable.minimizeButton);
     hidable.buttonTable.append(hidable.closeButton);
-    hidable.content = hidable.buttonTable.nextAll(":not(.hidable-title)");
+    hidable.content = hidable.top.nextAll();
+    hidable.maxHeight = hidable.top.outerHeight() + hidable.content.outerHeight();
 
     $(window).on("resize.hidable", function(){
         hidable.size();
@@ -46,7 +42,7 @@ ActiveContainer = (function(){
         self = this;
 
         self.hidable = element;
-        self.title = this.hidable.children(".hidable-title").safeAdd();
+        self.title = self.hidable.children(".hidable-title").safeAdd();
 
         self.buttonTable =  $("<div />", {
                                 class: "button-table",
@@ -54,8 +50,7 @@ ActiveContainer = (function(){
                                     display: "table",
                                     float: "right",
                                     overflow: "hidden",
-                                    userSelect: "none",
-                                    fontSize: "14px"
+                                    lineHeight: "1.5rem"
                                 }
                             });
 
@@ -76,6 +71,16 @@ ActiveContainer = (function(){
                                     }
                                 });
 
+        self.top =  $("<div />", {
+                        class: "row",
+                        css: {
+                            userSelect: "none",
+                            cursor: "default",
+                            width: "100%",
+                            paddingBottom: 5
+                        }
+                    });
+
         self.initialize();
         self.initializeAssociatedField();
 
@@ -85,18 +90,18 @@ ActiveContainer = (function(){
 
         initialize: function(){
 
-            this.title.css({
+            self.title.css({
+                lineHeight: "1.5rem",
                 float: "left",
-                lineHeight: "1rem",
-                paddingLeft: 10,
-                userSelect: "none",
-                cursor: "default",
-                textAlign: "left"
+                textAlign: "left",
+                paddingLeft: 10
             });
 
-            this.hidable.prepend($("<div />", {
-                class: "row"
-            }).append(this.buttonTable).append(this.title));
+            self.hidable.prepend(self.top);
+            self.top.append(self.title, self.buttonTable);
+
+            self.title.addClass("vc");
+            self.buttonTable.addClass("vc");
 
         },
 
@@ -127,12 +132,8 @@ ActiveContainer = (function(){
             });
             this.content.show();
             this.hidable.animate({
-                height: self.title.outerHeight() + this.content.outerHeight()
+                height: self.maxHeight
             }, 1000, "easeOutExpo");
-            if(!this.minimizable){
-                this.title.addClass("vc");
-                this.buttonTable.addClass("vc");
-            }
             if(Screen.tiny()){
                 this.title.off("click.hidable");
                 this.title.on("click.hidable", function(){ self.minimize(); });
@@ -159,7 +160,6 @@ ActiveContainer = (function(){
             }else{
                 this.buttonTable.show();
                 this.title.css({
-                    paddingLeft: 10,
                     width: "calc(100% - 49px)"
                 });
                 this.title.off("click.hidable");
@@ -190,8 +190,8 @@ ActiveContainer = (function(){
             var self = this;
             if(this.hidable.is("[associated-field]")){
                 $("#"+this.hidable.attr("associated-field")).on("keyup.hidable", function(event){
-                    pauseEvent(event);
-                    if(event.keyCode !== 13 && self.hidable.hasClass("min")){
+                    pause(event);
+                    if(!Key.ret(event) && self.hidable.hasClass("min")){
                         self.maximize();
                     }
                 })
