@@ -1,0 +1,8 @@
+<div class = "row new">
+  <%= form_for Message.new, url: pms_path(current_user.name, -2), html: { class: "new_message" } do |f| %>
+    <%= f.text_area :content, placeholder: "Sitewide Announcement (html)" %>
+    <div class = "message-preview"></div>
+    <%= f.submit "Post", name: "post" %>
+    <%= f.submit "Preview", name: "preview", class: "preview-button js" %>
+  <% end %>
+</div>

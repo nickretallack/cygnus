@@ -1,0 +1,6 @@
+<% if content_for? :instructions %>
+  <div class = "row hidable min">
+    <div class = "hidable-title">Instructions<%= ": #{yield :instructions_title}" if content_for? :instructions_title %></div>
+    <div class = "row"><%= yield :instructions %></div>
+  </div>
+<% end %>

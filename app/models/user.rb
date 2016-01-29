@@ -7,8 +7,12 @@ class User < ActiveRecord::Base
   has_many :order_forms
   belongs_to :upload, foreign_key: :avatar 
 
+  def User.lead_paths
+    Rails.application.routes.routes.collect {|r| r.path.spec.to_s }.collect {|path| if (match = /^\/([^\/\(:]+)/.match(path)); match[1]; else; ""; end;}.compact.uniq.push("-1", "-2")
+  end
+
   before_save { self.email = email.downcase }
-  validates :name, presence: true, length: { maximum: 50 }, uniqueness: { case_sensitive: false }, exclusion: { in: :lead_paths }
+  validates :name, presence: true, length: { maximum: 50 }, uniqueness: { case_sensitive: false }, exclusion: { in: User.lead_paths }
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence: true, length: { maximum: 255 }, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
@@ -23,9 +27,7 @@ class User < ActiveRecord::Base
     @pms ||= Message.where("submission_id IS NULL AND user_id > 0 AND (user_id = ? OR ? = ANY (recipient_ids))", id, id)
   end
   
-  def lead_paths
-    Rails.application.routes.routes.collect {|r| r.path.spec.to_s }.collect {|path| if (match = /^\/([^\/\(:]+)/.match(path)); match[1]; else; ""; end;}.compact.uniq
-  end
+  
 
   def watched_by
     User.where("? = ANY (watching)", id)

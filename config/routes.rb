@@ -40,6 +40,12 @@ Rails.application.routes.draw do
     end
   end
 
+  scope path: ":#{User.slug}/dashboard" do
+    controller :messages do
+      post :create_annoucement, path: "announcements", as: :announcements
+    end
+  end
+
   scope path: ":#{User.slug}" do
     scope path: "workboard" do
       resources :cards, only: [:index], path: ""
@@ -49,6 +55,7 @@ Rails.application.routes.draw do
       resources :messages, only: [:index], path: "conversations/(:recipient)", as: :pms
       resources :messages, only: [:create], path: "conversations/(:recipient)", as: :pms
       get :new, path: "reply/:message_id", as: :new_pm
+
       resources :messages, only: [:index], path: "activity"
     end
     controller :pools do
@@ -57,6 +64,9 @@ Rails.application.routes.draw do
     # controller :order_forms do
     #   get :set_default, path: "order_forms/:#{OrderForm.slug}/default", as: :default_order_form
     # end
+    controller :users do
+      get :dashboard
+    end
   end
 
   controller :users do

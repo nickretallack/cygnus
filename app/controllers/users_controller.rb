@@ -6,7 +6,7 @@ class UsersController < ApplicationController
     insist_on :existence, @user
   end
 
-  before_filter only: [:update, :destroy] do
+  before_filter only: [:dashboard, :update, :destroy] do
     insist_on :permission, @user
   end
 
@@ -160,6 +160,10 @@ class UsersController < ApplicationController
     else
       redirect_to :back
     end
+  end
+
+  def dashboard
+
   end
 
   private

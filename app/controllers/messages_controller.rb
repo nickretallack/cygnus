@@ -1,6 +1,12 @@
 class MessagesController < ApplicationController
   
   #include ActionController::Live
+
+  before_filter only: [:create_announcement] do
+    insist_on do
+      at_least :admin
+    end
+  end
   
   before_filter only: [:create] do
     insist_on :logged_in
@@ -23,11 +29,15 @@ class MessagesController < ApplicationController
     insist_on :logged_in
   end
 
+  def create_announcement
+
   def create
     @new_message.user_id = current_user.id
     @new_message.submission_id = params[:submission_id]
-    recipient = User.find(params[:recipient])
-    @new_message.recipient_ids = [recipient.id] if recipient
+    if User.lead_paths.exclude? params[:recipient]
+      recipient = User.find(params[:recipient])
+      @new_message.recipient_ids = [recipient.id] if recipient
+    end
     @new_message.content = params[:message][:content]
     if params[:message][:accept_text_reply] and params[:message][:content][/>>[^\s\D]+/]
       @new_message.message_id = params[:message][:content][/>>[^\s\D]+/].gsub(">>", "").to_i

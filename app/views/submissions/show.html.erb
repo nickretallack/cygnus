@@ -1,11 +1,6 @@
 <% provide :header, title_for(submission: @submission) %>
 
-<% if can_modify? @submission.pool.user %>
-  <div class = "row hidable max">
-    <div class = "hidable-title">Edit <%= title_for submission: @submission %></div>
-    <%= render "fields", submission: @submission, upload: @picture %>
-  </div>
-<% end %>
+<%= cell(:submission).(:new) %>
 
 <div class = "row hc">
   <span>

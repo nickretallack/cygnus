@@ -1,8 +1,4 @@
-class MessageCell < Cell::ViewModel
-  include ActionView::RecordIdentifier
-  include ActionView::Helpers::FormHelper
-  include ActionView::Helpers::UrlHelper
-  include ActionView::Helpers::CaptureHelper
+class MessageCell < HelpfulCell
 
   def index(options = {})
     #raise "break"
@@ -46,12 +42,16 @@ class MessageCell < Cell::ViewModel
       @content_placeholder = "Comment"
     else
       @recipient = options[:recipient]
-      @url = pms_path(@parent_controller.current_user.name, @recipient)
+      @url = pms_path(current_user.name, @recipient)
       @subject = true
       @content_placeholder = "Message Body"
     end
-    @submit_text = "Post as #{@parent_controller.current_user.name}"
+    @submit_text = "Post as #{current_user.name}"
     @message_id = options[:message_id]
+    render
+  end
+
+  def new_announcement
     render
   end
 

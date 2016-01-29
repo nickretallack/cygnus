@@ -5,6 +5,9 @@ Destroyable = function(element){
     destroyable.buttonTable.append(destroyable.closeButton);
     destroyable.content = destroyable.title;
     destroyable.maxHeight = destroyable.content.outerHeight();
+    destroyable.top.css({
+        top: ".65rem"
+    });
 
     $(window).on("resize.destroyable", function(){
         destroyable.size();
@@ -22,7 +25,10 @@ Hidable = function(element){
     hidable.buttonTable.append(hidable.minimizeButton);
     hidable.buttonTable.append(hidable.closeButton);
     hidable.content = hidable.top.nextAll();
-    hidable.maxHeight = hidable.top.outerHeight() + hidable.content.outerHeight();
+    hidable.maxHeight = hidable.title.outerHeight() + hidable.top.outerHeight() + hidable.content.outerHeight();
+    hidable.top.css({
+        top: ".15rem"
+    });
 
     $(window).on("resize.hidable", function(){
         hidable.size();
@@ -77,7 +83,8 @@ ActiveContainer = (function(){
                             userSelect: "none",
                             cursor: "default",
                             width: "100%",
-                            paddingBottom: 5
+                            height: "auto",
+                            position: "relative"
                         }
                     });
 

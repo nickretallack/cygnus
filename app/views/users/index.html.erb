@@ -9,11 +9,11 @@
         <%= f.submit "Search" %>
       </div>
       <div class = "row hidable min" associated-field = "search-tags">
-      <div class = "hidable-title">Search by...</div>
-      <div class = "input-field">
-        <%= statuses @users, :search %>
+        <div class = "hidable-title">Search by...</div>
+        <div class = "input-field">
+          <%= statuses @users, :search %>
+        </div>
       </div>
-    </div>
     <% end %>
   </div>
 </div>

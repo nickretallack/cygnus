@@ -1,7 +1,7 @@
 CONFIG = {
   thumbnail_width: 150,
   thumbnail_height: 150,
-  email_required: true,
+  email_required: false,
   host: "bleatr.com",
   name: "Bleatr",
   copyright: "&copy;2015 Lunar Gryphon",
@@ -34,6 +34,10 @@ CONFIG = {
     friends_only: "mood",
     closed: "pause_circle_outline",
     not_interested: "highlight_off"
+  },
+
+  button_icons: {
+    save: "save"
   },
 
   status_categories: {

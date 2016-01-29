@@ -1,4 +1,4 @@
-<% unless @parent_controller.anon? %>
+<% unless anon? %>
   <div class = "row new">
     <%= form_for Message.new, url: @url, html: { class: "new_message remote js" } do |f| %>
       <%= f.text_field :subject, placeholder: "Conversation Subject", value: "To #{@recipient}", class: "js" if @subject %>
