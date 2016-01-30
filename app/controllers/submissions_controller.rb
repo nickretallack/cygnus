@@ -3,9 +3,8 @@ class SubmissionsController < ApplicationController
   before_filter only: [:create] do
     @pool = Pool.find(params[:submission][:pool_id])
     unless @pool
-      flash[:danger] = "you must specify a pool and own it, sorry. We see through your wily ways"
+      flash[:danger] = "pool does not exist"
       back and return
-    end
     @user = @pool.user
     insist_on :permission, @user
   end
@@ -21,17 +20,13 @@ class SubmissionsController < ApplicationController
   end
 
   def create
-	if params[:submission][:upload][:picture].blank?
-		flash[:danger] = "you forgot to add an image"
-		back and return
-	end
-    @new_submission.file_id = Upload.render(params[:submission][:upload][:picture], params[:submission][:upload][:explicit])
-    if @new_submission.save
-      @new_submission.pool.user.update_attribute(:view_adult, true) unless not params[:submission][:upload][:explicit] or @new_submission.pool.user.view_adult
-      activity_message(:new_submission, @new_submission)
-      back
-    else
-      back_with_errors
+    @new_submission = Submission.new
+    respond_to do |format|
+      if @new_submission.save
+        format.html { back }
+      else
+        format.html { back_with_errors }
+      end
     end
   end
 
@@ -43,6 +38,7 @@ class SubmissionsController < ApplicationController
 
   def update
     if @submission.update(submission_params)
+      # activity_message(:new_submission, @new_submission)
       @submission.update_attribute(:file_id, Upload.render(params[:submission][:upload][:picture], params[:submission][:upload][:explicit])) if params[:submission][:upload][:picture]
       @submission.pool.user.update_attribute(:view_adult, true) unless not params[:submission][:upload][:explicit] or @submission.pool.user.view_adult
       back

@@ -11,20 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151029193851) do
+ActiveRecord::Schema.define(version: 20160130052039) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "attachments", force: :cascade do |t|
     t.string   "parent_model"
-    t.integer  "parent_id"
     t.string   "child_model"
-    t.integer  "child_id"
     t.boolean  "confirmed",    default: false
     t.boolean  "decided",      default: false
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
+    t.integer  "parent_id"
+    t.integer  "child_ids",    default: [],                 array: true
   end
 
   create_table "cards", force: :cascade do |t|
@@ -66,15 +66,12 @@ ActiveRecord::Schema.define(version: 20151029193851) do
 
   create_table "pools", force: :cascade do |t|
     t.string   "title"
-    t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "submissions", force: :cascade do |t|
     t.string   "title"
-    t.integer  "file_id"
-    t.integer  "pool_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.text     "description"

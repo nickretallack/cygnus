@@ -3,7 +3,9 @@ module UsersHelper
 	# current user
 
 	def first_log_in(user)
-    Pool.new(title: "Gallery", user_id: user.id).save!
+    pool = Pool.new(title: "Gallery")
+    pool.save!
+    Attachment.new(parent_model: "user", parent_id: user.id, child_model: "pool", child_ids: [pool.id]).save!
     activate_session user
     flash[:success] = "welcome to "+CONFIG[:name]
     session.delete(:email)

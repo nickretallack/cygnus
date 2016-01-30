@@ -2,7 +2,6 @@ class User < ActiveRecord::Base
   custom_slug :name, case_insensitive: true
   has_secure_password
   attr_accessor  :activation_token, :reset_token
-  has_many :pools
   has_one :card
   has_many :order_forms
   belongs_to :upload, foreign_key: :avatar 
@@ -19,6 +18,14 @@ class User < ActiveRecord::Base
   
   validates :password, length: { minimum: 6 }, allow_blank: true
 
+  def pools
+    unless @pools
+      attachment = Attachment.where(parent_model: "user", parent_id: id, child_model: "pool").first || Attachment.new
+      @pools = Pool.where("id = ANY (?)", "{"+attachment.child_ids.join(",")+"}")
+    end
+    @pools
+  end
+
   def messages
     @messages ||= Message.where("user_id = ? AND ? = ANY (recipient_ids)", -1, id)
   end
@@ -26,8 +33,6 @@ class User < ActiveRecord::Base
   def pms
     @pms ||= Message.where("submission_id IS NULL AND user_id > 0 AND (user_id = ? OR ? = ANY (recipient_ids))", id, id)
   end
-  
-  
 
   def watched_by
     User.where("? = ANY (watching)", id)

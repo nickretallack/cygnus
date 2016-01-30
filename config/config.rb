@@ -37,7 +37,8 @@ CONFIG = {
   },
 
   button_icons: {
-    save: "save"
+    save: "save",
+    add: "add_circle"
   },
 
   status_categories: {

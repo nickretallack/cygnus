@@ -1,16 +1,12 @@
 ButtonSubmit = (function(){
 
+    var self;
+
     var ButtonSubmit = function(element){
 
         this.form = element;
-        this.area = element.siblings(".button-area");
+        this.area = element.siblings(".button-area").safeAdd();
         this.icons = JSON.parse('<%= CONFIG[:button_icons].to_json %>');
-        this.buttonCss = {
-            color: "black",
-            cursor: "pointer",
-            marginLeft: "3%",
-            marginRight: "3%"
-        };
         this.initialize();
 
     };
@@ -22,14 +18,17 @@ ButtonSubmit = (function(){
             $.each(this.icons, function(name, icon){
                 var button = self.form.children("#"+name);
                 if(!button.exists()) return;
-                self.form.attr("data-remote", true);
                 self.area.append($("<i />", {
-                    class: "material-icons medium-small",
+                    class: "material-icons medium",
                     text: icon,
                     title: name.capitalize(),
-                    css: self.buttonCss
+                    css: {
+                        cursor: "pointer",
+                        marginLeft: "3%",
+                        marginRight: "3%"
+                    }
                 }).on("click.submit", function(event){
-                    pauseEvent(event);
+                    pause(event);
                     button.trigger("click");
                 }));
                 button.hide();

@@ -3,6 +3,10 @@ class AnonymousUser
     nil
   end
 
+  def pools
+    []
+  end
+
   def level
     :unactivated
   end

@@ -22,31 +22,30 @@ class UsersController < ApplicationController
     @status = params[:terms][:status]
     @users = User.search(params[:terms])
     @searching = params[:terms][:statuses][:trades]
-    render "index"
   end
 
   def create
+    @new_user = User.new(params.require(:user).permit([:name, :email, :password, :password_confirmation]))
     @new_user.ip_address = request.remote_ip
-    @new_user.avatar = Upload.render(params[:user][:picture])
-    @new_user.level = ->(email_required) {
-      if email_required
-        :unactivated
-      else
-        :member
-      end
-    }.call(CONFIG[:email_required])
-    if @new_user.save
-      if CONFIG[:email_required]
+    if CONFIG[:email_required]
+      @new_user.level = :unactivated
+      if @new_user.save
         session[:email] = @new_user.email
         @new_user.send_activation_email
         flash[:info] = "please check #{@new_user.email} to activate your account"
         redirect_to action: :new
       else
-        first_log_in @new_user
-        back
+        back_with_errors
       end
     else
-      back_with_errors
+      @new_user.level = :member
+      @new_user.activated_at = Time.zone.now
+      if @new_user.save
+        first_log_in @new_user
+        back
+      else
+        back_with_errors
+      end
     end
   end
 
@@ -122,13 +121,18 @@ class UsersController < ApplicationController
 
   def resend_activation_email
     @user = User.find_by(email: session[:email])
-    if @user.authenticate(params[:user][:password])
-      @user.send_activation_email
-      flash[:success] = "activation email resent to #{session[:email]}"
+    if @user
+      if @user.authenticate(params[:user][:password])
+        @user.send_activation_email
+        flash[:success] = "activation email resent to #{@user.email}"
+      else
+        flash[:danger] = "incorrect password for #{@user.name}"
+      end
+      redirect_to action: :new
     else
-      flash[:danger] = "incorrect password for @user.name"
+      flash[:danger] = "could not find user"
+      back
     end
-    redirect_to action: :new
   end
 
   def reset_confirm

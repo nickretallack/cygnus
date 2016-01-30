@@ -1,4 +1,5 @@
 class PoolsController < ApplicationController
+  
   before_filter only: [:create, :destroy] do
     if @pool
       @user = @pool.user
@@ -21,7 +22,7 @@ class PoolsController < ApplicationController
     @user = User.find(params[User.slug])
     @pool = @user.pools.first if @user and not @pool
     not_found and return unless @pool
-    @submissions = Submission.where(pool_id: @pool.id)
+    @submissions = @pool.submissions
   end
 
   def create

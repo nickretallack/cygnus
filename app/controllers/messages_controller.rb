@@ -30,6 +30,9 @@ class MessagesController < ApplicationController
   end
 
   def create_announcement
+    @new_message = Message.new
+    
+  end
 
   def create
     @new_message.user_id = current_user.id

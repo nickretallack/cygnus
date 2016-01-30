@@ -1,0 +1,5 @@
+<%= form_for @submission, url: submissions_path, html: { class: "button-submit" } do |f| %>
+  <%= f.hidden_field :pool_id, value: @pool.id  %>
+  <%= f.submit "New Submission", class: "float", id: "add" %>
+<% end %>
+<div class = "button-area float"></div>

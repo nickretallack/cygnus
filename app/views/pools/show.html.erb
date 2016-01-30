@@ -1,4 +1,4 @@
-<% provide(:header, link_to(@pool.user.name, @pool.user)+"'s "+@pool.title) unless User.where(id: @pool.user_id).empty? %>
+<% provide(:header, link_to(@pool.user.name, @pool.user)+"'s "+@pool.title) unless User.where(id: @pool.user.id).empty? %>
 
 <% provide :instructions_title, "Create a New Submission" if can_modify? @pool.user %>
 

@@ -27,6 +27,7 @@
 
 .console
   max-height: 75px !important
+  bottom: 100px !important
   *
     display: inline !important
 
@@ -208,9 +209,15 @@ input:focus:-ms-input-placeholder, textarea:focus:-ms-input-placeholder
 .button-area
   +block-centered
   i
+    color: black
     transition: 0.1s ease-out !important
   i:hover
-    font-size: 200%
+    color: $danger-color
+
+.button-area.float, input[type = "submit"].float
+  position: fixed
+  bottom: 5px
+  left: 5px
 
 //messages
 #flash
