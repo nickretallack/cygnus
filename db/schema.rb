@@ -11,38 +11,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160130052039) do
+ActiveRecord::Schema.define(version: 20160130031612) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "attachments", force: :cascade do |t|
+  create_table "associations", force: :cascade do |t|
     t.string   "parent_model"
     t.string   "child_model"
     t.boolean  "confirmed",    default: false
     t.boolean  "decided",      default: false
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
-    t.integer  "parent_id"
-    t.integer  "child_ids",    default: [],                 array: true
+    t.integer  "child_id"
+    t.integer  "parent_ids",   default: [],                 array: true
   end
 
   create_table "cards", force: :cascade do |t|
     t.string   "title"
     t.string   "description"
-    t.integer  "user_id"
     t.integer  "cards",       default: [],              array: true
-    t.integer  "file_id"
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
-  end
-
-  create_table "comments", force: :cascade do |t|
-    t.text     "content"
-    t.integer  "user_id"
-    t.integer  "submission_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
   end
 
   create_table "messages", force: :cascade do |t|
@@ -97,21 +87,19 @@ ActiveRecord::Schema.define(version: 20160130052039) do
     t.string   "price"
     t.text     "details"
     t.string   "tags"
-    t.string   "string"
     t.tsvector "tags_tsvector"
-    t.integer  "avatar"
-    t.boolean  "view_adult",         default: false
+    t.boolean  "view_adult",        default: false
     t.string   "activation_digest"
     t.datetime "activated_at"
     t.datetime "reset_sent_at"
-    t.integer  "watching",           default: [],                                                                                    array: true
+    t.integer  "watching",          default: [],                                                                                    array: true
     t.string   "artist_type"
-    t.datetime "created_at",                                                                                            null: false
-    t.datetime "updated_at",                                                                                            null: false
-    t.integer  "favs",               default: [],                                                                                    array: true
-    t.integer  "unread_messages",    default: 0
-    t.integer  "default_order_form"
-    t.string   "statuses",           default: ["not_interested", "not_interested", "not_interested", "not_interested"],              array: true
+    t.datetime "created_at",                                                                                           null: false
+    t.datetime "updated_at",                                                                                           null: false
+    t.integer  "favs",              default: [],                                                                                    array: true
+    t.integer  "unread_messages",   default: 0
+    t.string   "statuses",          default: ["not_interested", "not_interested", "not_interested", "not_interested"],              array: true
+    t.integer  "order_forms",       default: [],                                                                                    array: true
   end
 
   add_index "users", ["tags_tsvector"], name: "index_users_on_tags_tsvector", using: :gin

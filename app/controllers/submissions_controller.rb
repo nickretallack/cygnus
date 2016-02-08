@@ -65,10 +65,4 @@ class SubmissionsController < ApplicationController
       format.js
     end
   end
-
-  private
-
-  def submission_params_permitted
-    [:title, :description, :pool_id]
-  end
 end

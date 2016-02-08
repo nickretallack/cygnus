@@ -1,4 +1,4 @@
-module ImagesHelper
+module ImageHelper
 
   #image_for
   #
