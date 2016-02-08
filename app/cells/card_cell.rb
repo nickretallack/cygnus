@@ -1,8 +1,4 @@
-class CardCell < Cell::ViewModel
-  include ActionView::RecordIdentifier
-  include ActionView::Helpers::FormHelper
-  include ActionView::Helpers::UrlHelper
-  include ActionView::Helpers::CaptureHelper
+class CardCell < HelpfulCell
 
   def show(options)
     @user = options[:user]

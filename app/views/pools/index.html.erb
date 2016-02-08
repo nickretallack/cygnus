@@ -1,7 +1,7 @@
 <% provide :header, @user.nil?? "All Pools" : @user.name+"'s pools" %>
 
 <% if can_modify? @user %>
-  <%= form_for Pool.new, url: pools_path(current_user) do |f| %>
+  <%= form_for Pool.new, url: pools_path(current_user), html: { class: "remote" } do |f| %>
     <div class="form-group field new">
       <%= f.text_field :title, placeholder: "Title for New Pool" %>
       <%= f.submit "Create Pool", class: "btn btn-primary" %>
@@ -9,25 +9,4 @@
   <% end %>
 <% end %>
 
-<table>
-  <% if @pools.any? %>
-    <thead>
-      <tr>
-        <th>Title</th>
-        <th>User</th>
-      </tr>
-    </thead>
-  <% end %>
-
-  <tbody>
-    <% enum_for @pools, "pools" do |pool| %>
-      <tr>
-        <td><%= link_to pool.title, pool %></td>
-        <td><%= pool.user.name %></td>
-        <% if can_modify? pool.user %>
-          <td><%= link_to "Destroy", pool, method: :delete, data: { confirm: "Are you sure?" } %></td>
-        <% end %>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<%= cell(:pool).(:index) %>

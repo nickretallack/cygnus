@@ -16,7 +16,15 @@ ActiveRecord::Schema.define(version: 20160130031612) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "associations", force: :cascade do |t|
+  create_table "cards", force: :cascade do |t|
+    t.string   "title"
+    t.string   "description"
+    t.integer  "cards",       default: [],              array: true
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  create_table "lookups", force: :cascade do |t|
     t.string   "parent_model"
     t.string   "child_model"
     t.boolean  "confirmed",    default: false
@@ -25,14 +33,6 @@ ActiveRecord::Schema.define(version: 20160130031612) do
     t.datetime "updated_at",                   null: false
     t.integer  "child_id"
     t.integer  "parent_ids",   default: [],                 array: true
-  end
-
-  create_table "cards", force: :cascade do |t|
-    t.string   "title"
-    t.string   "description"
-    t.integer  "cards",       default: [],              array: true
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
   end
 
   create_table "messages", force: :cascade do |t|

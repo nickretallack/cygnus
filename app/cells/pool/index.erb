@@ -1,0 +1,22 @@
+<table id = "pools">
+  <% if @pools.any? %>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>User</th>
+      </tr>
+    </thead>
+  <% end %>
+
+  <tbody>
+    <% enum_for @pools, "pools" do |pool| %>
+      <tr>
+        <td><%= link_to pool.title, pool %></td>
+        <td><%= pool.user.name %></td>
+        <% if can_modify? pool.user %>
+          <td><%= link_to "Destroy", pool, method: :delete, data: { confirm: "Are you sure?" } %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

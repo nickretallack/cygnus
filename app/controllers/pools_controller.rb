@@ -26,12 +26,16 @@ class PoolsController < ApplicationController
   end
 
   def create
-    @new_pool.user_id = @user.id
-    if @new_pool.save
-      flash[:success] = "created a new pool for #{current_user.name} titled #{title_for pool: @new_pool}"
-      back
-    else
-      back_with_errors
+    @new_pool = Pool.new
+    respond_to do |format|
+      if @new_pool.save
+        new_lookup(user: @user.id, pool: @new_pool.id)
+        format.html { back }
+        format.js
+      else
+        format.html { back_with_errors }
+        format.js
+      end
     end
   end
 

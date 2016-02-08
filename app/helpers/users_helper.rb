@@ -1,11 +1,11 @@
 module UsersHelper
 
-	# current user
+  # current user
 
-	def first_log_in(user)
+  def first_log_in(user)
     pool = Pool.new(title: "Gallery")
     pool.save!
-    Attachment.new(parent_model: "user", parent_id: user.id, child_model: "pool", child_ids: [pool.id]).save!
+    new_lookup(user: user.id, pool: pool.id)
     activate_session user
     flash[:success] = "welcome to "+CONFIG[:name]
     session.delete(:email)
@@ -131,39 +131,39 @@ module UsersHelper
   # <% end %>
   #
   #
-	def statuses(user, verbosity = :verbose)
-		html = ""
-		case verbosity
-		when :verbose
-			for i in 0..user.statuses.length-1
-				html << "<div class = 'row'>"
-				html << "<div class = 'col s6'>"
-				html << "<i class = 'medium-small material-icons comm-status'>#{CONFIG[:commission_icons].values[i]}</i> #{CONFIG[:commission_icons].keys[i].capitalize}:"
-				html << "</div>"
-				status = user.statuses[i]
-				html << "<div class = 'col s6'>"
-				if can_modify? user
-					html << "<select name = 'user[statuses][#{i}]' class = 'btn button-with-icon'>"
-					CONFIG[:activity_icons].each do |key, value|
-						html << "<option class = 'comm-#{key}' value = #{key} #{"selected = 'selected'" if status == key.to_s}>#{key.to_s.gsub("_", " ")}</option>"
-					end
-					html << "</select>"
-				else
+  def statuses(user, verbosity = :verbose)
+    html = ""
+    case verbosity
+    when :verbose
+      for i in 0..user.statuses.length-1
+        html << "<div class = 'row'>"
+        html << "<div class = 'col s6'>"
+        html << "<i class = 'medium-small material-icons comm-status'>#{CONFIG[:commission_icons].values[i]}</i> #{CONFIG[:commission_icons].keys[i].capitalize}:"
+        html << "</div>"
+        status = user.statuses[i]
+        html << "<div class = 'col s6'>"
+        if can_modify? user
+          html << "<select name = 'user[statuses][#{i}]' class = 'btn button-with-icon'>"
+          CONFIG[:activity_icons].each do |key, value|
+            html << "<option class = 'comm-#{key}' value = #{key} #{"selected = 'selected'" if status == key.to_s}>#{key.to_s.gsub("_", " ")}</option>"
+          end
+          html << "</select>"
+        else
           key = status
           value = CONFIG[:activity_icons][status.to_sym]
           html << "<i class = 'medium-small material-icons comm-#{key}'>#{value}</i> #{key.to_s.capitalize.gsub("_", " ")}"
-				end
-				html << "</div>"
-				html << "</div>"
-			end
-		when :condensed
-			CONFIG[:commission_icons].each do |key, icon|
-				html << "<i class = 'medium-small material-icons comm-status' title = '#{key.capitalize}'>"+icon+"</i>"
-			end
-			html << "<br />"
-			user.statuses.each do |status|
-				html << "<i class = 'medium-small material-icons comm-#{status}' title = '#{status.to_s.gsub("_", " ").titleize}'>#{CONFIG[:activity_icons][status.to_sym]}</i>"
-			end
+        end
+        html << "</div>"
+        html << "</div>"
+      end
+    when :condensed
+      CONFIG[:commission_icons].each do |key, icon|
+        html << "<i class = 'medium-small material-icons comm-status' title = '#{key.capitalize}'>"+icon+"</i>"
+      end
+      html << "<br />"
+      user.statuses.each do |status|
+        html << "<i class = 'medium-small material-icons comm-#{status}' title = '#{status.to_s.gsub("_", " ").titleize}'>#{CONFIG[:activity_icons][status.to_sym]}</i>"
+      end
     when :search
       CONFIG[:commission_icons].each do |key, value|
         html << "<div class = 'row'>"
@@ -188,7 +188,7 @@ module UsersHelper
         html << "</div>"
         html << "</div>"
       end
-		end
-		html.html_safe
-	end
+    end
+    html.html_safe
+  end
 end

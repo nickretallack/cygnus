@@ -1,4 +1,4 @@
-class AttachmentsController < ApplicationController
+class LookupsController < ApplicationController
 
   def new
     send_data ActiveSupport::JSON.encode({attachment: cell(:attachment).(:new, parent_model: params[:parent_model], parent_id: params[:parent_id], child_model: params[:child_model])})
@@ -29,12 +29,6 @@ class AttachmentsController < ApplicationController
       format.html { back }
       format.js
     end
-  end
-
-  private
-
-  def attachment_params_permitted
-    [:parent_model, :parent_id, :child_model]
   end
   
 end

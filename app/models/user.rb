@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  include LookupHelper
+
   custom_slug :name, case_insensitive: true
   has_secure_password
   attr_accessor  :activation_token, :reset_token
@@ -19,11 +21,7 @@ class User < ActiveRecord::Base
   validates :password, length: { minimum: 6 }, allow_blank: true
 
   def pools
-    unless @pools
-      attachment = Attachment.where(parent_model: "user", parent_id: id, child_model: "pool").first || Attachment.new
-      @pools = Pool.where("id = ANY (?)", "{"+attachment.child_ids.join(",")+"}")
-    end
-    @pools
+    @pools ||= children(user: id, pool: "?")
   end
 
   def messages

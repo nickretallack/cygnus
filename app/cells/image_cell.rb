@@ -1,4 +1,4 @@
-class ImageCell < Cell::ViewModel
+class ImageCell < HelpfulCell
 
   def show(options)
     @image = Upload.find(options[:id]) || Upload.new
