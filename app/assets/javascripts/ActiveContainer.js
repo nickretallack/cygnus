@@ -27,7 +27,7 @@ Hidable = function(element){
     hidable.content = hidable.top.nextAll();
     hidable.maxHeight = hidable.title.outerHeight() + hidable.top.outerHeight() + hidable.content.outerHeight();
     hidable.top.css({
-        top: ".15rem"
+        top: ".1rem"
     });
 
     $(window).on("resize.hidable", function(){

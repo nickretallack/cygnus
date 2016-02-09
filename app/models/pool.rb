@@ -1,5 +1,4 @@
 class Pool < ActiveRecord::Base
-  include LookupHelper
 
   def users
     parents(user: "?", pool: id)

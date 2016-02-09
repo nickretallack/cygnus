@@ -17,9 +17,13 @@
     <div class = "container <%= "fw" if controller_name == "cards" %>">
       <div id="main">
         <div class = "row stout">
-          <h2 class = "header"><%= yield :header %></h2>
+          <% if cell_defined? %>
+            <%= cell(controller_name.singularize).(:header, params[:action].to_sym) %>
+          <% else %>
+            <h2 class = "header"><%= yield :header %></h2>
+          <% end %>
           <%= render "layouts/flash" %>
-          <%= render "layouts/instructions" %>
+          <%= cell(controller_name.singularize).(:instructions, params[:action].to_sym) if cell_defined? %>
         </div>
         <%= yield %>
       </div>

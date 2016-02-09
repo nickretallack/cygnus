@@ -4,8 +4,9 @@
   <li><%= link_to "Workboard", cards_path(current_user) %></li>
 </div>
 <div class = "col s4">
-  <li><%= link_to current_user.pools.first.title, gallery_path(current_user) if current_user.pools.any? %></li>
+  <li><%= link_to "Gallery", gallery_path(current_user) if current_user.pools.any? %></li>
   <li><%= link_to "Pools", pools_path(current_user) %></li>
+  <li><%= link_to "Order Forms" %></li>
 </div>
 <div class = "col s4">
   <li><%= link_to "Dashboard", dashboard_path(current_user) %></li>

@@ -1,54 +1,40 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
-  # before_filter :setter, except: [:listener, :poller]
-
   #require all helper modules
-   Dir["#{File.dirname(__FILE__)}/../helpers/*.rb"].collect { |file| include File.basename(file).gsub(".rb", "").split("_").collect { |part| part.capitalize }.join("").constantize }
+  Dir["#{File.dirname(__FILE__)}/../helpers/*.rb"].collect { |file| include File.basename(file).gsub(".rb", "").camelize.constantize }
 
-  #setter
-  #
-  #intended to automatically assign all useful instance variables in controller instances across the board
-  #does not yet work with nested resources
-  #example for UsersController:
-  #
-  # on index: @users = User.all.order(User.slug)
-  # on new: @user = User.new
-  # on create: @new_user = User.new(user_params)
-  #   user_params is created from an array of permitted params in the controller, e.g.
-  #   def user_params_permitted
-  #     [:name, :email, :password, :password_confirmation]
-  #   end
-  # on update: @user = User.find(params[User.slug])
-  #   user_params is defined as
-  #   params.require(:user).permit(user_params_permitted)
-  # on all other actions: @user = User.find(params[User.slug])
-  #
-  #
-  def setter
-    begin
-      klass = controller_name.classify.constantize
-    rescue
-      return
-    end
-    self.instance_exec do
-      case params[:action].to_sym
-      when :index
-        self.instance_variable_set("@"+controller_name, klass.all.order(klass.slug))
-      when :new
-        self.instance_variable_set("@"+controller_name.singularize, klass.new)
-      when :create
-        self.instance_variable_set("@new_"+controller_name.singularize, klass.new(params.require(controller_name.singularize.to_sym).permit(send(controller_name.singularize+"_params_permitted"))))
-      when :update
-        self.instance_variable_set("@"+controller_name.singularize, klass.find(params[klass.slug]))
-        self.class.send :define_method, controller_name.singularize+"_params" do
-          params.require(controller_name.singularize.to_sym).permit(send(controller_name.singularize+"_params_permitted"))
-        end
-      else        
-        self.instance_variable_set("@"+controller_name.singularize, klass.find(params[klass.slug]))
+  before_filter :get_user
+
+  before_filter only: [:create, :destroy] do
+    insist_on :permission, @user
+  end
+
+  before_filter only: [:show, :destroy, :update] do
+    klass = controller_name.classify.constantize
+    instance_variable_set("@#{controller_name.singularize}", klass.find(params[klass.slug])) if klass != User and klass.slug
+  end
+
+  before_filter only: [:create] do
+    instance_variable_set("@#{controller_name.singularize}", controller_name.classify.constantize.new)
+  end
+
+  define_method :index, proc{}
+  define_method :show, proc{}
+  define_method :create do
+    before_save if defined? "before_save"
+    respond_to do |format|
+      if instance_variable_get("@#{controller_name.singularize}").save
+        after_save if defined? "after_save"
+        format.html { back }
+        format.js
+      else
+        back_with_errors
       end
     end
   end
+  define_method :update, proc{}
+  define_method :destroy, proc{}
 
   def activate_session(user)
     session[:username] = user.name

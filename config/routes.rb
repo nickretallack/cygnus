@@ -25,7 +25,7 @@ Rails.application.routes.draw do
   end
   resources :pools, only: [:index], path: "(:#{User.slug})/pools"
   resources :pools, only: [:create], path: ":#{User.slug}/pools"
-  resources :pools, except: [:new, :index, :create, :edit]
+  resources :pools, only: [:show, :update, :destroy]
   resources :submissions, except: [:new, :edit] do
     member do
       get :fav

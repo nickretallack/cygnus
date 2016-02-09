@@ -20,7 +20,7 @@ module ActiveRecordExtensions
 
     def find(record, raise_error: false)
       if case_insensitive_slug
-        thing = where("lower(#{self.slug}) = ?", record.nil?? nil : record.downcase).first
+        thing = where("lower(#{slug}) = ?", record.nil?? nil : record.downcase).first
       else
         thing = find_by(slug => record)
       end
@@ -31,3 +31,4 @@ module ActiveRecordExtensions
 end
 
 ActiveRecord::Base.send :include, ActiveRecordExtensions
+ActiveRecord::Base.send :include, LookupHelper

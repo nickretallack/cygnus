@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
   validates :password, length: { minimum: 6 }, allow_blank: true
 
   def pools
-    @pools ||= children(user: id, pool: "?")
+    children(user: id, pool: "?")
   end
 
   def messages

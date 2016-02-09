@@ -1,5 +1,9 @@
 module ApplicationHelper
-  
+
+  def cell_defined?
+    Kernel.const_defined? "#{controller_name.classify}Cell"
+  end
+
   ###routing###
 
   def back

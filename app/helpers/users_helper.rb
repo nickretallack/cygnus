@@ -25,6 +25,10 @@ module UsersHelper
 
   # permission
 
+  def get_user
+    @user = User.find(params[User.slug]) if params[User.slug]
+  end
+
   def at_least(grade)
     User.level_for(current_user.level) >= User.level_for(grade)
   end
