@@ -1,5 +1,5 @@
 class Upload < ActiveRecord::Base
-  mount_uploader :file, ImagesUploader	
+  mount_uploader :file, ImagesUploader
   validates :md5, presence: true
   
   #builds an upload file and pushes certain params to DB for later calling. 

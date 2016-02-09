@@ -11,8 +11,10 @@ class ApplicationController < ActionController::Base
   end
 
   before_filter only: [:show, :destroy, :update] do
-    klass = controller_name.classify.constantize
-    instance_variable_set("@#{controller_name.singularize}", klass.find(params[klass.slug])) if klass != User and klass.slug
+    unless instance_of? ImagesController
+      klass = controller_name.classify.constantize
+      instance_variable_set("@#{controller_name.singularize}", klass.find(params[klass.slug])) if klass != User and klass.slug
+    end
   end
 
   before_filter only: [:create] do
