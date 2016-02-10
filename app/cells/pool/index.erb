@@ -4,8 +4,8 @@
       <tr>
         <th></th>
         <th>Title</th>
-        <th></th>
         <th>User</th>
+        <th></th>
       </tr>
     </thead>
   <% end %>
@@ -13,12 +13,29 @@
   <tbody>
     <% enum_for @pools, "pools" do |pool| %>
       <tr>
-        <td class = "danger"><%= "Main" if pool == @pools.first %></td>
-        <td><%= link_to title_for(pool: pool), pool %></td>
         <% if can_modify? pool.user %>
-          <td><%= link_to "Destroy", pool, method: :delete, data: { confirm: "Are you sure?" } %></td>
+          <td>
+            <%= form_for pool, html: { class: "button-submit", edit: "edit-#{pool.id}" } do |f| %>
+              <%= f.submit "Edit", id: "edit" %>
+              <%= f.submit "Save", id: "save" %>
+            <% end %>
+            <%= form_for pool, url: pool_path(pool), method: :delete, html: { class: "button-submit" } do |f| %>
+              <%= f.submit "Delete", id: "delete", data: { confirm: "Delete #{title_for pool: pool}?" } %>
+            <% end %>
+            <div class = "button-area"></div>
+          </td>
+          <td>
+            <%= form_for pool, url: pool_path(pool), method: :patch, html: { id: "edit-#{pool.id}"} do |f| %>
+              <%= f.text_field :title, placeholder: title_for(pool: nil), value: title_for(pool: pool), class: "on" %>
+              <%= link_to title_for(pool: pool), pool, class: "off" %>
+            <% end %>
+          </td>
+        <% else %>
+          <td></td>
+          <td><%= link_to title_for(pool: pool), pool %></td>
         <% end %>
         <td><%= link_to pool.user.name, pool.user %></td>
+        <td class = "danger"><%= "Main" if pool == @pools.first %></td>
       </tr>
     <% end %>
   </tbody>

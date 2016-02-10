@@ -18,4 +18,9 @@ class PoolsController < ApplicationController
     end
     back
   end
+
+  def update
+    @pool.update_attributes(params.require(:pool).permit([:title]))
+    back
+  end
 end

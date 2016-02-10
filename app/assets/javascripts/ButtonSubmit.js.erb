@@ -4,22 +4,48 @@ ButtonSubmit = (function(){
 
     var ButtonSubmit = function(element){
 
-        this.form = element;
-        this.area = element.siblings(".button-area").safeAdd();
-        this.icons = JSON.parse('<%= CONFIG[:button_icons].to_json %>');
-        this.initialize();
+        self = this;
+
+        self.form = element;
+        self.area = element.siblings(".button-area").safeAdd();
+        self.icons = JSON.parse('<%= CONFIG[:button_icons].to_json %>');
+        self.initialize();
 
     };
 
     Make.extend(ButtonSubmit.prototype, {
 
         initialize: function(){
-            var self = this;
-            $.each(this.icons, function(name, icon){
-                var button = self.form.children("#"+name);
+            $.each(self.icons, function(name, icon){
+                var button = self.form.children("#" + name);
                 if(!button.exists()) return;
+                var size = /small|medium-small|medium|large/.exec(button.attr("class"));
+                size = size === null? "medium-small" : size.first();
+                if(self.form.attr("edit")){
+                    var form = $("#" + self.form.attr("edit")).safeAdd();
+                    if(form !== undefined){
+                        switch(name){
+                            case "edit":
+                                var on = form.children(".on");
+                                var off = form.children(".off");
+                                on.hide();
+                                button.on("click.ButtonSubmit", function(event){
+                                    pause(event);
+                                    off.hide();
+                                    on.show();
+                                });
+                                break;
+                            case "save":
+                                button.on("click.ButtonSubmit", function(event){
+                                    pause(event);
+                                    form.submit();
+                                });
+                                break;
+                        }
+                    }
+                }
                 self.area.append($("<i />", {
-                    class: "material-icons medium",
+                    class: "material-icons " + size,
                     text: icon,
                     title: name.capitalize(),
                     css: {
@@ -33,10 +59,10 @@ ButtonSubmit = (function(){
                 }));
                 button.hide();
             });
-            var attachmentButton = this.area.children().filter(function(index, element){
+            var attachmentButton = self.area.children().filter(function(index, element){
                 return $(element).prop("textContent") === '<%= CONFIG[:button_icons][:create] %>';
             });
-            if(attachmentButton.exists()) attachmentButton.appendTo(this.area);
+            if(attachmentButton.exists()) attachmentButton.appendTo(self.area);
         }
 
     });

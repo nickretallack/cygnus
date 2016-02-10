@@ -38,6 +38,8 @@ CONFIG = {
 
   button_icons: {
     save: "save",
+    delete: "delete",
+    edit: "edit",
     add: "add_circle"
   },
 
