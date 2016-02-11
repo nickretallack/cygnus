@@ -1,7 +1,7 @@
 <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
 <title>
   <% if cell_defined? %>
-    <%= "#{CONFIG[:name]}" - cell(controller_name.singularize).(:header, action_name.to_sym) %>
+    <%= "#{CONFIG[:name]} - #{cell(controller_name.singularize).(:header, action_name.to_sym)}" %>
   <% else %>
     <%= CONFIG[:name] %>
   <% end %>

@@ -18,6 +18,7 @@ CONFIG = {
   banner: "banner.png", 
   image_shelf_life: 5.hours,
   password_reset_shelf_life: 2.hours,
+  search_placeholder: "Artists who do...",
 
   commission_icons: { #do not change the order of entries without updating everyone's records; db sees an array of statuses
     commissions: "local_atm",

@@ -15,7 +15,6 @@ class ImagesController < ApplicationController
       suffix = "_thumb"
     when :full
       file = @image.file.url
-      suffix = ""
     else
       begin
         file = File.join(CONFIG[:image_path], CONFIG[type])

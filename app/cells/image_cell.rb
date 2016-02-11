@@ -1,7 +1,7 @@
 class ImageCell < HelpfulCell
 
   def show(type, id = nil, suffix = "")
-    @image = Upload.find(id) || Upload.new
+    @image ||= Upload.find(id) || Upload.new
 
     if @image.enabled?
       if @image.explicit? and not current_user.view_adult?
@@ -15,7 +15,10 @@ class ImageCell < HelpfulCell
   end
 
   def full(id)
-    "<div class = 'image'>#{show(:full, id)}</div>"
+    show = show(:full, id)
+    div_for @image, class: "image" do
+      show
+    end
   end
 
   def thumb(id)
@@ -23,7 +26,10 @@ class ImageCell < HelpfulCell
   end
 
   def bordered(id)
-    "<div class = 'thumbnail #{@image.explicit?? 'danger' : 'success'}>#{show(:bordered, id, '_thumb')}</div>"
+    show = show(:bordered, id, '_thumb')
+    div_for @image, class: "thumbnail #{@image.explicit?? 'danger' : 'success'}" do
+      show
+    end
   end
 
 end

@@ -12,6 +12,10 @@ module LookupHelper
     result
   end
 
+  def lookup_for(**args)
+    lookups_for(args).first || Lookup.new
+  end
+
   def parents(**args)
     args.keys[0].to_s.classify.constantize.where("id = ANY (?)", "{" + lookups_for(args).map { |lookup| lookup.parent_ids.join(",") }.join(",") + "}")
   end

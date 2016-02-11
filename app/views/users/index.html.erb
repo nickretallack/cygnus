@@ -1,11 +1,9 @@
-<% provide(:header, @query || "Open Artists") %>
-
 <div class = "row">
   <div class = "input-field search col s12 m10">
     <%= form_for :terms, url: search_path do |f| %>
       <div class = "row">
         <i class = "material-icons prefix">search</i>
-        <%= f.text_field :tags, placeholder: "Artists who do...", value: @query, id: "search-tags" %>
+        <%= f.text_field :tags, placeholder: CONFIG[:search_placeholder], value: @query, id: "search-tags" %>
         <%= f.submit "Search" %>
       </div>
       <div class = "row hidable min" associated-field = "search-tags">
@@ -41,7 +39,7 @@
       <div class = "col s12 m6 mt">
         <div class = "fl col s6 m12 l5 fh">
           <%= link_to user_path(user) do %>
-            <%= cell(:image).(:show, type: :bordered, id: user.avatar) %>
+            <%= cell(:image).(:bordered, user.avatar) %>
           <% end %>
         </div>
         <div class = "col s6 m12 l6">

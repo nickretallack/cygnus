@@ -20,6 +20,10 @@ class User < ActiveRecord::Base
   
   validates :password, length: { minimum: 6 }, allow_blank: true
 
+  def avatar
+    lookup_for(user: id, image: "?").child_id
+  end
+
   def pools
     children(user: id, pool: "?")
   end

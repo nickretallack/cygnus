@@ -1,10 +1,5 @@
 module ApplicationHelper
 
-  def cell_defined?
-    klass = "#{controller_name.classify}Cell".constantize
-    klass && defined?(klass.header) && defined?(klass.instructions)
-  end
-
   ###routing###
 
   def back

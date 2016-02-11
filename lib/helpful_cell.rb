@@ -2,7 +2,7 @@ class HelpfulCell < Cell::ViewModel
   include ActionView::RecordIdentifier
   include ActionView::Helpers::FormHelper
   include ActionView::Helpers::UrlHelper
-  include Sprockets::Rails::Helper
+  include ActionView::Helpers::RecordTagHelper
   include Hooks
   
   #require all helper modules
