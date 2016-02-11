@@ -58,7 +58,16 @@ class User < ActiveRecord::Base
   end
 
   def self.search(terms)
-    @result = User.where(terms[:tags].blank?? "" : "tags_tsvector @@ #{sanitize_sql_array(["to_tsquery('english', ?)", terms[:tags].gsub(/\s/, "+")])}").where(terms[:statuses].reject { |status, value| terms[:use_statuses][status] == "0" }.collect { |status, value| status = status.to_sym; (value.include?("statuses") and CONFIG[:status_categories].keys.include?(value.split[1].to_sym))? "statuses[#{CONFIG[:commission_icons].keys.index(status)+1}] = ANY('{#{CONFIG[:status_categories][terms[:statuses][status].split[1].to_sym].collect {|key| key.to_s}.join(", ")}}'::varchar[])" : sanitize_sql_array(["statuses[#{CONFIG[:commission_icons].keys.index(status)}+1] = '%s'", value]) }.join(" AND "))
+    begin
+      terms[:tags] ||= ""
+      tags = terms[:tags].split(",").map { |tag| tag.strip }.join("+")
+      statuses = terms[:statuses].reject { |key, value| terms[:use_statuses][key] == "0" }
+      User
+      .where("tags_tsvector @@ #{sanitize_sql_array(["to_tsquery('english', ?)", tags])}")
+      #.where(terms[:statuses].reject { |status, value| terms[:use_statuses][status] == "0" }.collect { |status, value| status = status.to_sym; (value.include?("statuses") and CONFIG[:status_categories].keys.include?(value.split[1].to_sym))? "statuses[#{CONFIG[:commission_icons].keys.index(status)+1}] = ANY('{#{CONFIG[:status_categories][terms[:statuses][status].split[1].to_sym].collect {|key| key.to_s}.join(", ")}}'::varchar[])" : sanitize_sql_array(["statuses[#{CONFIG[:commission_icons].keys.index(status)}+1] = '%s'", value]) }.join(" AND "))
+    rescue
+      redirect_to :root
+    end
   end
   
   def User.digest(string)

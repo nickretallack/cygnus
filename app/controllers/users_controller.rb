@@ -55,7 +55,7 @@ class UsersController < ApplicationController
     @old_statuses = @user.statuses
     @user.statuses = params[:user][:statuses].values
     @user.artist_type = params[:user][:artist_type].values[0].split(", ").uniq.join(", ")
-    if @user.update_attributes(user_params)
+    if @user.update_attributes(params.require(:user).permit([:tags]))
       activity_message(:status_change, params[:user][:statuses]) if @old_statuses != @user.statuses
       flash[:success] = "profile updated"
       back
@@ -171,14 +171,6 @@ class UsersController < ApplicationController
   end
 
   private
-
-  def user_params_permitted
-    [:name, :email, :password, :password_confirmation, :tags, :price, :details, :gallery, :view_adult, :artist_type]
-  end
-
-  def reset_params
-    params.require(:user).permit(:password, :password_confirmation)
-  end
   
   def check_expiration
     @user = User.find_by id: params[:id]
