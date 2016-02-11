@@ -1,12 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
-    <title><%= content_for?(:header)? CONFIG[:name] +" - "+sanitize_title(yield(:header)) : CONFIG[:name] %></title> 
-    <meta name = "description" content = "<%= content_for?(:description)? yield(:description) : CONFIG[:name] %>">
-    <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
-    <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
-    <%= csrf_meta_tags %>
+    <%= render "layouts/head" %>
   </head>
   <body>
     <div class = "widthTester hide"></div>
@@ -16,15 +11,7 @@
     </header>
     <div class = "container <%= "fw" if controller_name == "cards" %>">
       <div id="main">
-        <div class = "row stout">
-          <% if cell_defined? %>
-            <%= cell(controller_name.singularize).(:header, params[:action].to_sym) %>
-          <% else %>
-            <h2 class = "header"><%= yield :header %></h2>
-          <% end %>
-          <%= render "layouts/flash" %>
-          <%= cell(controller_name.singularize).(:instructions, params[:action].to_sym) if cell_defined? %>
-        </div>
+        <%= render "layouts/notices" %>
         <%= yield %>
       </div>
     </div>

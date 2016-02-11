@@ -1,7 +1,8 @@
 module ApplicationHelper
 
   def cell_defined?
-    Kernel.const_defined? "#{controller_name.classify}Cell"
+    klass = "#{controller_name.classify}Cell".constantize
+    klass && defined?(klass.header) && defined?(klass.instructions)
   end
 
   ###routing###

@@ -1,0 +1,9 @@
+<div class = "row stout">
+  <% if cell_defined? %>
+    <%= cell(controller_name.singularize).(:header, action_name.to_sym) %>
+  <% else %>
+    <h2 class = "header"></h2>
+  <% end %>
+  <%= render "layouts/flash" %>
+  <%= cell(controller_name.singularize).(:instructions, action_name.to_sym) if cell_defined? %>
+</div>
