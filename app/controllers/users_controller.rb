@@ -17,11 +17,7 @@ class UsersController < ApplicationController
   end
 
   def index
-    params[:terms] ||= { use_statuses: { commissions: "1" }, statuses: { commissions: "all open statuses"} }
-    @query = params[:terms][:tags]
-    @status = params[:terms][:status]
-    @users = User.search(params[:terms])
-    @searching = params[:terms][:statuses][:trades]
+    @users = User.search(params[:terms] || CONFIG[:default_search_terms])
   end
 
   def create

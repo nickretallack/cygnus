@@ -3,11 +3,7 @@ class UserCell < HelpfulCell
   def header(action)
     case action
     when :index
-      if controller.instance_variable_get("@searching")
-        controller.instance_variable_get("@query")
-      else
-        "Open Artists"
-      end
+      controller.params[:terms] == CONFIG[:default_search_terms]? "Open Artists" : controller.params[:terms][:tags] || ""
     end
   end
 

@@ -20,6 +20,15 @@ CONFIG = {
   password_reset_shelf_life: 2.hours,
   search_placeholder: "Artists who do...",
 
+  default_search_terms: {
+    use_statuses: {
+      commissions: "1"
+    },
+    statuses: {
+      commissions: "all open statuses"
+    }
+  },
+
   commission_icons: { #do not change the order of entries without updating everyone's records; db sees an array of statuses
     commissions: "local_atm",
     trades: "repeat",

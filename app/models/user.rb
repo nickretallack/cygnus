@@ -60,13 +60,16 @@ class User < ActiveRecord::Base
   def self.search(terms)
     begin
       terms[:tags] ||= ""
-      tags = terms[:tags].split(",").map { |tag| tag.strip }.join("+")
-      statuses = terms[:statuses].reject { |key, value| terms[:use_statuses][key] == "0" }
-      User
-      .where("tags_tsvector @@ #{sanitize_sql_array(["to_tsquery('english', ?)", tags])}")
-      #.where(terms[:statuses].reject { |status, value| terms[:use_statuses][status] == "0" }.collect { |status, value| status = status.to_sym; (value.include?("statuses") and CONFIG[:status_categories].keys.include?(value.split[1].to_sym))? "statuses[#{CONFIG[:commission_icons].keys.index(status)+1}] = ANY('{#{CONFIG[:status_categories][terms[:statuses][status].split[1].to_sym].collect {|key| key.to_s}.join(", ")}}'::varchar[])" : sanitize_sql_array(["statuses[#{CONFIG[:commission_icons].keys.index(status)}+1] = '%s'", value]) }.join(" AND "))
+      tags = terms[:tags].split(" ").map { |tag| tag.strip.delete(",") }.join("&")
+      statuses = terms[:statuses].reject { |key, value| terms[:use_statuses][key] == "0" }.map { |key, value| [terms[:statuses].keys.index(key) + 1, value] }
+      result = /^\s*$/.match(tags)? User.all : User.where("tags_tsvector @@ #{sanitize_sql_array(["to_tsquery('english', ?)", tags])}")
+      statuses.each do |pair|
+        pair[1] = CONFIG[:status_categories][Regexp.new("(#{CONFIG[:status_categories].keys.join("|")})").match(pair[1])[0].to_sym].map { |status| status.to_s }.join(",") rescue pair[1]
+        result = result.where("statuses[?] = ANY (string_to_array(?, ','))", pair[0], pair[1])
+      end
+      result
     rescue
-      redirect_to :root
+      ActiveRecord::Relation.new
     end
   end
   
