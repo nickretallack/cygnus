@@ -6,10 +6,10 @@
         <%= f.text_field :tags, placeholder: CONFIG[:search_placeholder], value: @query, id: "search-tags" %>
         <%= f.submit "Search" %>
       </div>
-      <div class = "row hidable min" associated-field = "search-tags">
+      <div class = "row hidable max" associated-field = "search-tags">
         <div class = "hidable-title">Search by...</div>
         <div class = "input-field">
-          <%= statuses @users, :search %>
+          <%= cell(:user, @users).(:status, :search) %>
         </div>
       </div>
     <% end %>
@@ -44,8 +44,8 @@
         </div>
         <div class = "col s6 m12 l6">
           <div class = "row">
-            <h5 class = "truncate"><%= link_to user.name, user_path(user) %></h5>
-            <h4><%= statuses user, :condensed %></h4>
+            <h5 class = "truncate hc"><%= link_to user.name, user_path(user) %></h5>
+            <%= cell(:user, user).(:status, :condensed) %>
           </div>
         </div>
       </div>

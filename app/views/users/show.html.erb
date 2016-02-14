@@ -26,7 +26,7 @@
       </div>
     <% end %>
     <div class = "col s12 m6 l5">
-      <%= statuses @user %>
+      <%= cell(:user, @user).(:status, :verbose) %>
       <%= render "links", user: @user unless can_modify? @user %>
     </div>
   </div>

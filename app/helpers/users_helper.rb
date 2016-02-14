@@ -93,7 +93,7 @@ module UsersHelper
     when :permission
       user ||= User.new(name: params[User.slug] || "any other user")
       unless can_modify? user
-        flash[:danger] = "you are #{current_user.name} and are not allowed to view or modify #{user.name}'s personal records"
+        flash[:danger] = "you are #{anon?? "not signed in" : "signed in as #{current_user.name}"} and are not allowed to view or modify #{user.name}'s personal records"
         redirect_to :root
       end
     when :existence
@@ -109,90 +109,4 @@ module UsersHelper
     end
   end
 
-  ###commission status###
-
-  #statuses
-  #
-  #displays or allows modification of commission status for given user
-  #gotchas:
-  #
-  # verbose status on the current user assumes that we want to modify statuses and are inside a form for "user"
-  # in condensed status, icons are not in a table and will not display properly without fixed-width icons
-  #
-  #params:
-  #
-  # user means the user whose statuses we are displaying
-  # verbosity means the level of verbosity to display:
-  #   :verbose or (no argument) means icons and descriptive names are displayed side by side
-  #     if the statuses are those of the logged-in user, select menus will be displayed
-  #     allowing the user to modify his or her commission statuses
-  #   :condensed means icons only with tooltip descriptions are displayed
-  #
-  #examples:
-  #
-  # <% enum_for @users do |user| %>
-  #   <%= statuses user, :condensed %>
-  # <% end %>
-  #
-  #
-  def statuses(user, verbosity = :verbose)
-    html = ""
-    case verbosity
-    when :verbose
-      for i in 0..user.statuses.length-1
-        html << "<div class = 'row'>"
-        html << "<div class = 'col s6'>"
-        html << "<i class = 'medium-small material-icons comm-status'>#{CONFIG[:commission_icons].values[i]}</i> #{CONFIG[:commission_icons].keys[i].capitalize}:"
-        html << "</div>"
-        status = user.statuses[i]
-        html << "<div class = 'col s6'>"
-        if can_modify? user
-          html << "<select name = 'user[statuses][#{i}]' class = 'btn button-with-icon'>"
-          CONFIG[:activity_icons].each do |key, value|
-            html << "<option class = 'comm-#{key}' value = #{key} #{"selected = 'selected'" if status == key.to_s}>#{key.to_s.gsub("_", " ")}</option>"
-          end
-          html << "</select>"
-        else
-          key = status
-          value = CONFIG[:activity_icons][status.to_sym]
-          html << "<i class = 'medium-small material-icons comm-#{key}'>#{value}</i> #{key.to_s.capitalize.gsub("_", " ")}"
-        end
-        html << "</div>"
-        html << "</div>"
-      end
-    when :condensed
-      CONFIG[:commission_icons].each do |key, icon|
-        html << "<i class = 'medium-small material-icons comm-status' title = '#{key.capitalize}'>"+icon+"</i>"
-      end
-      html << "<br />"
-      user.statuses.each do |status|
-        html << "<i class = 'medium-small material-icons comm-#{status}' title = '#{status.to_s.gsub("_", " ").titleize}'>#{CONFIG[:activity_icons][status.to_sym]}</i>"
-      end
-    when :search
-      CONFIG[:commission_icons].each do |key, value|
-        html << "<div class = 'row'>"
-        html << "<div class = 'col s1'>"
-        html << "<input name = 'terms[use_statuses][#{key}]' type = 'hidden' value = '0'><input type = 'checkbox' value = '1' name = 'terms[use_statuses][#{key}]' id = 'terms_use_statuses_#{key}' #{"checked" unless not params[:terms][:use_statuses][key] or params[:terms][:use_statuses][key] == "0"}><label for = 'terms_use_statuses_#{key}'></label>"
-        html << "</div>"
-        html << "<div class = 'col s5'>"
-        html << "<i class = 'medium-small material-icons comm-status'>#{value}</i> #{key.capitalize}:"
-        html << "</div>"
-        status = "all open statuses"
-        status = params[:terms][:statuses][key] if params[:terms]
-        html << "<div class = 'col s6'>"
-        html << "<select name = 'terms[statuses][#{key}]' class = 'btn button-with-icon'>"
-        {open: "all open statuses", long_wait: "all maybe statuses", closed: "all closed statuses"}.each do |key, value|
-          html << "<option class = 'comm-#{key}' value = '#{value}' #{"selected = 'selected'" if status == value}>#{value.to_s.gsub("_", " ")}</option>"
-        end
-        html << "<hr />"
-        CONFIG[:activity_icons].each do |key, value|
-          html << "<option class = 'comm-#{key}' value = '#{key}' #{"selected = 'selected'" if status == key.to_s}>#{key.to_s.gsub("_", " ")}</option>"
-        end
-        html << "</select>"
-        html << "</div>"
-        html << "</div>"
-      end
-    end
-    html.html_safe
-  end
 end

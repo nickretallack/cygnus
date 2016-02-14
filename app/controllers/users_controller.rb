@@ -17,7 +17,8 @@ class UsersController < ApplicationController
   end
 
   def index
-    @users = User.search(params[:terms] || CONFIG[:default_search_terms])
+    params[:terms] ||= CONFIG[:default_search_terms]
+    @users = User.search(params[:terms])
   end
 
   def create

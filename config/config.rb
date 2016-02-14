@@ -21,11 +21,12 @@ CONFIG = {
   search_placeholder: "Artists who do...",
 
   default_search_terms: {
-    use_statuses: {
-      commissions: "1"
+    "tags" => "",
+    "use_statuses" => {
+      "commissions" => "1"
     },
-    statuses: {
-      commissions: "all open statuses"
+    "statuses" => {
+      "commissions" => "all open statuses"
     }
   },
 

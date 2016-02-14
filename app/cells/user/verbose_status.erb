@@ -1,0 +1,24 @@
+<% @model.statuses.each_with_index do |status, index| %>
+  <div class = "row list">
+    <div class = "col s6">
+      <label>
+        <i class = "material-icons medium-small comm-status"><%= CONFIG[:commission_icons].values[index] %></i>
+        <span><%= CONFIG[:commission_icons].keys[index].to_s.humanize.titleize %>:</span>
+      <label>
+    </div>
+    <div class = "col s6">
+      <% if can_modify? @model %>
+        <select name = "user[statuses][<%= index %>]" class = "btn button-with-icon">
+          <% CONFIG[:activity_icons].keys.each do |key| %>
+            <option class = "comm-<%= key %>" value = "<%= key %>" <%= "selected = 'selected'" if status == "#{key}" %>><%= key.to_s.humanize.titleize %></option>
+          <% end %>
+        </select>
+      <% else %>
+        <label>
+          <i class = "material-icons medium-small comm-<%= status %>"><%= CONFIG[:activity_icons][status.to_sym] %></i>
+          <span><%= status.humanize.titleize %></span>
+        </label>
+      <% end %>
+    </div>
+  </div>
+<% end %>

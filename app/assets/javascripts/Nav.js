@@ -25,7 +25,7 @@ Nav = (function(){
                     position: "fixed",
                     top: 0
                 });
-            }else if(scrollHeight === 0){
+            }else{
                 self.nav.css({
                     position: "relative",
                     top: "auto"
