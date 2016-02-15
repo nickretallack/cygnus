@@ -7,7 +7,7 @@ module UsersHelper
     pool.save!
     new_lookup(user: user.id, pool: pool.id)
     activate_session user
-    flash[:success] = "welcome to "+CONFIG[:name]
+    flash[:success] = "welcome to #{CONFIG[:name]}"
     session.delete(:email)
   end
 
@@ -53,36 +53,8 @@ module UsersHelper
     current_user.favs.include? submission.id
   end
 
-  #insist_on
-  #
-  #shunts an unqualified user to a safe path with the appropriate message
-  #could be modified to send emails to administrators for repeat offenses
-  #gotchas:
-  #
-  # must be used inside a separate method like a before_filter to avoid calling redirect twice in the same action
-  #
-  #examples:
-  #
-  # before_filter -> { insist_on :logged_in }, only: [:create]
-  #
-  # before_filter -> {
-  #   @user = User.find(params[User.slug])
-  #   insist_on :permission @user
-  # }, only: [:update, :destroy]
-  #
-  # before_filter -> {
-  #   @user = User.find(params[User.slug])
-  #   insist_on :existence @user
-  # }, only: [:show]
-  #
-  # before_filter -> {
-  #   @user = User.find(params[User.slug])
-  #   @comment = Messages.find(params[Message.slug])
-  #   insist_on do                         #
-  #     @user.comments.include? @comment   # shunt unless true block
-  #   end                                  #
-  # }, only: [:edit]
-  #
+  #insist_on must be used inside a separate method like a before_filter to avoid calling redirect twice in the same action
+
   def insist_on(type = nil, user = nil)
     case type
     when :logged_in

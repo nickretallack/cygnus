@@ -1,8 +1,12 @@
-<% provide(:header, link_to(@user.name, @user)+"'s Dashboard") %>
-
 <% if at_least :admin %>
   <%= cell(:message).(:new_announcement) %>
 <% end %>
 
-<%= form_for @user, method: :patch, url: user_path(@user) do |f| %>
+<%= form_for @user, method: :patch, url: user_path(@user), html: { class: "button-submit" } do |f| %>
+  <%= hidable "Images", true do %>
+    <%= f.check_box "view_adult" %>
+    <%= f.label "View adult images sitewide (by checking this box, you confirm you are of legal age in your region to do so)" %>
+  <% end %>
+  <%= f.submit "Save Settings", id: "save", class: "medium" %>
 <% end %>
+<div class = "button-area float"></div>

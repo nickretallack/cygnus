@@ -57,7 +57,7 @@ ButtonSubmit = (function(){
                     pause(event);
                     button.trigger("click");
                 }));
-                button.hide();
+                button.remove();
             });
             var attachmentButton = self.area.children().filter(function(index, element){
                 return $(element).prop("textContent") === '<%= CONFIG[:button_icons][:create] %>';

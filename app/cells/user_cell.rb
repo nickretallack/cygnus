@@ -8,7 +8,9 @@ class UserCell < HelpfulCell
       else
         params[:terms][:tags]
       end
-    end
+      when :dashboard
+        "#{link_to params[User.slug], user_path(params[User.slug])}'s dashboard"
+      end
   end
 
   def status(type)

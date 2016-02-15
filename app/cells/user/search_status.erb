@@ -1,20 +1,21 @@
-<% CONFIG[:commission_icons].each do |key, icon| %>
+<% CONFIG[:commission_icons].each do |status, icon| %>
   <div class = "row">
     <div class = "col s4">
-      <input name = "terms[use_statuses][<%= key %>]" type = "hidden" value = "0">
-      <input name = "terms[use_statuses][<%= key %>]" type = "checkbox" value = "1" id = "terms_use_statuses[<%= key %>]" <%= "checked" if params[:terms][:use_statuses][key] == "1" rescue false %>>
-      <label for = "terms_use_statuses[<%= key %>]">
+      <input name = "terms[use_statuses][<%= status %>]" type = "hidden" value = "0">
+      <input name = "terms[use_statuses][<%= status %>]" type = "checkbox" value = "1" id = "terms_use_statuses[<%= status %>]" <%= "checked" if params[:terms][:use_statuses][status] == "1" rescue false %>>
+      <label for = "terms_use_statuses[<%= status %>]">
         <i class = "material-icons medium-small comm-status"><%= icon %></i>
-        <span><%= key.to_s.humanize.titleize %>:</span>
+        <span><%= status.to_s.humanize.titleize %>:</span>
       </label>
     </div>
     <div class = "col s8">
-      <select name = "terms[statuses][<%= key %>]" class = "btn btn-with-icon">
+      <select name = "terms[statuses][<%= status %>]" class = "btn btn-with-icon">
         <% CONFIG[:status_categories].each do |key, value| %>
-          <option class = "comm-<%= value[0] %>" value = "all_<%= key %>_statuses" <%= "selected = 'selected'" if params[:terms][:statuses][key] == "all #{key} statuses" rescue false %>>all <%= key %> statuses</option>
+          <option class = "comm-<%= value[0] %>" value = "all_<%= key %>_statuses" <%= "selected = 'selected'" if params[:terms][:statuses][status] == "all_#{key}_statuses" rescue false %>>all <%= key %> statuses</option>
         <% end %>
         <% CONFIG[:activity_icons].keys.each do |key| %>
-          <option class = "comm-<%= key %>" value = "<%= key %>" <%= "selected = 'selected'" if params[:terms][:statuses][key] == "#{key}" rescue false %>><%= "#{key}".humanize %></option>
+          <option class = "comm-<%= key %>" value = "<%= key %>" <%= "selected = 'selected'" if params[:terms][:statuses][status] == "#{key}" rescue false %>><%= "#{key}".humanize %></option>
+          <%= params[:terms][:statuses][key] %>,<%= key %>
         <% end %>
       </select>
     </div>

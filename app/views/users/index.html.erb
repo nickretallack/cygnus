@@ -6,7 +6,7 @@
         <%= f.text_field :tags, placeholder: CONFIG[:search_placeholder], value: @query, id: "search-tags" %>
         <%= f.submit "Search" %>
       </div>
-      <div class = "row hidable max" associated-field = "search-tags">
+      <div class = "row hidable min" associated-field = "search-tags">
         <div class = "hidable-title">Search by...</div>
         <div class = "input-field">
           <%= cell(:user, @users).(:status, :search) %>

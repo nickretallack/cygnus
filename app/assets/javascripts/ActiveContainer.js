@@ -1,6 +1,7 @@
 Destroyable = function(element){
 
     var destroyable = new ActiveContainer(element);
+    if(destroyable === undefined) return;
 
     destroyable.buttonTable.append(destroyable.closeButton);
     destroyable.content = destroyable.title;
@@ -21,10 +22,10 @@ Destroyable = function(element){
 Hidable = function(element){
 
     var hidable = new ActiveContainer(element);
+    if(hidable === undefined) return;
 
     hidable.buttonTable.append(hidable.minimizeButton);
     hidable.buttonTable.append(hidable.closeButton);
-    hidable.content = hidable.top.nextAll();
     hidable.maxHeight = hidable.title.outerHeight() + hidable.top.outerHeight() + hidable.content.outerHeight();
     hidable.top.css({
         top: ".1rem"
@@ -47,8 +48,10 @@ ActiveContainer = (function(){
 
         self = this;
 
-        self.hidable = element;
-        self.title = self.hidable.children(".hidable-title").safeAdd();
+        self.container = element;
+        self.title = self.container.children(".title").safeAdd();
+        self.content = self.container.children(".content").safeAdd();
+        if(self.title === undefined || self.content == undefined) return;
 
         self.buttonTable =  $("<div />", {
                                 class: "button-table",
@@ -101,10 +104,25 @@ ActiveContainer = (function(){
                 lineHeight: "1.5rem",
                 float: "left",
                 textAlign: "left",
-                paddingLeft: 10
+                paddingLeft: 10,
+                cursor: "pointer"
             });
 
-            self.hidable.prepend(self.top);
+            self.title.append($("<hr />", {
+                css: {
+                    margin: 0
+                }
+            }));
+
+            self.title.on("mouseenter.ActiveContainer", function(){
+                self.minimizeButton.addClass("icon-hover");
+            });
+
+            self.title.on("mouseleave.ActiveContainer", function(){
+                self.minimizeButton.removeClass("icon-hover");
+            });
+
+            self.container.prepend(self.top);
             self.top.append(self.title, self.buttonTable);
 
             self.title.addClass("vc");
@@ -114,12 +132,12 @@ ActiveContainer = (function(){
 
         minimize: function(){
             var self = this;
-            this.hidable.removeClass("max").addClass("min");
+            this.container.removeClass("max").addClass("min");
             this.minimizeButton.css({
                 top: -5
             });
             this.content.hide();
-            this.hidable.animate({
+            this.container.animate({
                 height: self.title.css("lineHeight")
             });
             if(Screen.tiny()){
@@ -133,12 +151,12 @@ ActiveContainer = (function(){
 
         maximize: function(){
             var self = this;
-            this.hidable.removeClass("min").addClass("max");
+            this.container.removeClass("min").addClass("max");
             this.minimizeButton.css({
                 top: 5
             });
             this.content.show();
-            this.hidable.animate({
+            this.container.animate({
                 height: self.maxHeight
             }, 1000, "easeOutExpo");
             if(Screen.tiny()){
@@ -151,7 +169,7 @@ ActiveContainer = (function(){
         },
 
         destroy: function(){
-            this.hidable.remove();
+            this.container.remove();
         },
 
         size: function(){
@@ -178,27 +196,27 @@ ActiveContainer = (function(){
         },
 
         switch: function(){
-            if(this.hidable.hasClass("max")){
+            if(this.container.hasClass("max")){
                 this.minimize();
-            }else if(this.hidable.hasClass("min")){
+            }else if(this.container.hasClass("min")){
                 this.maximize();
             }
         },
 
         resize: function(){
-            if(this.hidable.hasClass("min")){
+            if(this.container.hasClass("min")){
                 this.minimize();
-            }else if(this.hidable.hasClass("max")){
+            }else if(this.container.hasClass("max")){
                 this.maximize();
             }
         },
 
         initializeAssociatedField: function(){
             var self = this;
-            if(this.hidable.is("[associated-field]")){
-                $("#"+this.hidable.attr("associated-field")).on("keyup.hidable", function(event){
+            if(this.container.is("[associated-field]")){
+                $("#"+this.container.attr("associated-field")).on("keyup.hidable", function(event){
                     pause(event);
-                    if(!Key.ret(event) && self.hidable.hasClass("min")){
+                    if(!Key.ret(event) && self.container.hasClass("min")){
                         self.maximize();
                     }
                 })
