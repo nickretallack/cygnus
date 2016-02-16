@@ -1,22 +1,20 @@
 <div class = "row">
-  <div class = "input-field search col s12 m10">
-    <%= form_for :terms, url: search_path do |f| %>
-      <div class = "row">
-        <i class = "material-icons prefix">search</i>
-        <%= f.text_field :tags, placeholder: CONFIG[:search_placeholder], value: @query, id: "search-tags" %>
-        <%= f.submit "Search" %>
-      </div>
+  <%= form_for :terms, url: search_path do |f| %>
+    <div class = "col s12 m10 block search">
+      <i class = "material-icons small">search</i>
+      <%= f.text_field :tags, placeholder: CONFIG[:search_placeholder], value: @query, id: "search-tags" %>
+      <%= f.submit "Search" %>
       <%= hidable "Search by...", false, "search-tags" do %>
         <%= cell(:user, @users).(:status, :search) %>
       <% end %>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
 </div>
 <hr />
 
 <%= hidable "Recent Submissions", params[:terms] == CONFIG[:default_search_terms] do %>
   <div class = "row pool-index-field">
-    <div class = "col">
+    <div class = "col content">
       <% enum_for recent_submissions do |submission| %>
         <%= link_to submission_path(submission) do %>
           <%= cell(:image).(:show, type: :bordered, id: submission.file_id) %>
@@ -28,15 +26,15 @@
 <hr />
 
 <% enum_for @users do |user| %>
-  <div class = "row" id = <%= user.name %>>
+  <div class = "row block" id = <%= user.name %>>
     <div class = "row">
       <div class = "col s12 m6 mt">
-        <div class = "fl col s6 m12 l5 fh">
+        <div class = "fl col s6 m12 l5 fh full-small">
           <%= link_to user_path(user) do %>
             <%= cell(:image).(:bordered, user.avatar) %>
           <% end %>
         </div>
-        <div class = "col s6 m12 l6">
+        <div class = "col s6 m12 l6 full-small">
           <div class = "row">
             <h5 class = "truncate hc"><%= link_to user.name, user_path(user) %></h5>
             <%= cell(:user, user).(:status, :condensed) %>

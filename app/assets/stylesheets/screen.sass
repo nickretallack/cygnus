@@ -129,15 +129,9 @@
 @media only screen and (max-width: 363px)
   .widthTester
     width: 0px
-  .hidable-title
-    margin-bottom: 10px
-  .row
-    margin-top: 0 !important
-    text-align: center
-    //width: 100% !important
-    *:not(.row):not(i):not(input):not(.thumbnail):not(.vdiv):not(a):not(span):not(blockquote):not(label):not(form):not(select):not(#favorite)
-      +block-centered
-      width: 100%
+  .full-small
+    +block-centered
+    width: 100% !important
     blockquote, blockquote *
       text-align: left !important
   i[class *= "comm-"]

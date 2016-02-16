@@ -111,7 +111,7 @@ ActiveContainer = (function(){
                             width: "100%",
                             height: 0,
                             position: "relative",
-                            top: 2
+                            top: "0.1rem"
                         }
                     });
 

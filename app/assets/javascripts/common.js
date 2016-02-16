@@ -53,7 +53,7 @@ Init = {
 
         // keep these last so contents are loaded already
         Destroyable: ".destroyable",
-//        Hidable: ".hidable"
+        Hidable: ".hidable"
     }
 };
 

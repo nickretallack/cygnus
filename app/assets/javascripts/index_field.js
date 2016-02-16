@@ -2,10 +2,14 @@ IndexField = (function(){
 
   var IndexField = function(element){
 
-    this.indexField = element;
-    this.pool = this.indexField.children(".col");
-    this.iconWidth = 56;
-    this.initialize();
+    var self = this;
+
+    self.indexField = element;
+    self.pool = self.indexField.children(".content").safeAdd();
+    if(self.pool === undefined) return;
+    self.iconWidth = 56;
+    
+    self.initialize();
 
   };
 

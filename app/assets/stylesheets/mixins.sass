@@ -21,8 +21,8 @@
 //mixins
 
 =block-centered
-  margin-left: auto
-  margin-right: auto
+  margin-left: auto !important
+  margin-right: auto !important
   text-align: center
 
 =vertical-center
@@ -62,7 +62,8 @@
 
 =vertical-divider
   height: 1.8rem
-  margin: 0.15rem 5px 0 5px
+  margin-left: 5px !important
+  margin-right: 5px !important
   border: 1px solid $vdiv-color
   border-top-style: none
   border-bottom-style: none
@@ -161,6 +162,9 @@
   border: 2px solid $text-shadow-color
   padding: 10px
   height: auto
+  .content
+    +block-centered
+    width: 90%
 
 =icon-hover
   color: $danger-color

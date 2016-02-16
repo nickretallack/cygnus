@@ -9,16 +9,14 @@
       <%= cell(:image).(:show, :banner) %>
       <%= render "layouts/navigation" %>
     </header>
-    <div class = "container <%= "fw" if controller_name == "cards" %>">
-      <div id="main">
-        <div class = "row stout">
-          <h2 class = "header"><%= cell(controller_name.singularize).(:header, action_name.to_sym) if cell_header? %></h2>
-          <%= render "layouts/flash" %>
-          <%= cell(controller_name.singularize).(:instructions, action_name.to_sym) if cell_instructions? %>
-        </div>
-        <%= yield %>
+    <main>
+      <div class = "row stout">
+        <h2 class = "header full-small"><%= cell(controller_name.singularize).(:header, action_name.to_sym) if cell_header? %></h2>
+        <%= render "layouts/flash" %>
+        <%= cell(controller_name.singularize).(:instructions, action_name.to_sym) if cell_instructions? %>
       </div>
-    </div>
+      <%= yield %>
+    </main>
     <footer>
       <hr />
       <div class = "row hc">

@@ -8,12 +8,19 @@
 .hidable + .row
   margin-top: 10px !important
 
-.container .row
-  margin: 0
+.row:not(.hidable):not(.destroyable)
+  margin: 0 !important
 
 .row.list
   .col
     padding: 15px 0 !important
+  .col:nth-child(odd)
+    float: left
+  .col:nth-child(even)
+    float: right
+
+.row.block
+  padding: 15px 10px !important
 
 .col
   padding: 0 !important
@@ -36,12 +43,12 @@
     display: inline !important
 
 .search
-  form > .hidable
-    margin-left: 3rem
-    width: calc(100% - 3rem)
   i
-    margin-left: 0
-    width: auto
+    float: left
+  input, .hidable
+    width: calc(100% - 36px)
+  input[type = "submit"], .hidable
+    margin-left: 36px
 
 .input-field
   padding-top: 10px
@@ -172,7 +179,6 @@
   line-height: 2rem !important
   height: auto !important
   padding: 0 2rem !important
-  margin: 0
 
 .submit:hover
   font-size: 1.2rem !important
