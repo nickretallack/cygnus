@@ -58,8 +58,6 @@ form
 table
   a:hover
     font-size: 100%
-label
-  color: inherit
 
 span:not(.inline)
   display: table
@@ -77,8 +75,7 @@ input[type="checkbox"] + label
   padding-left: 2rem
   display: table
   color: black
-  top: -2px
-  margin-top: .6rem
+  top: 8px
   &:before
     width: 1.3rem
     height: 1.3rem
@@ -100,10 +97,11 @@ td, th
 i
   text-align: center
 
-i:hover
+i:hover, label:hover
   +icon-hover
 
 label
+  color: inherit
   *
     cursor: pointer !important
     float: left
@@ -114,3 +112,4 @@ label
 
 select
   margin-top: -5px
+  padding: 0 !important

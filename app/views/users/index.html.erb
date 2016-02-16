@@ -6,32 +6,26 @@
         <%= f.text_field :tags, placeholder: CONFIG[:search_placeholder], value: @query, id: "search-tags" %>
         <%= f.submit "Search" %>
       </div>
-      <div class = "row hidable min" associated-field = "search-tags">
-        <div class = "hidable-title">Search by...</div>
-        <div class = "input-field">
-          <%= cell(:user, @users).(:status, :search) %>
-        </div>
-      </div>
+      <%= hidable "Search by...", false, "search-tags" do %>
+        <%= cell(:user, @users).(:status, :search) %>
+      <% end %>
     <% end %>
   </div>
 </div>
 <hr />
 
-<% unless @searching %>
-  <div class = "row hidable max">
-    <div class = "hidable-title">Recent Submissions</div>
-    <div class = "row pool-index-field">
-      <div class = "col">
-        <% enum_for recent_submissions do |submission| %>
-          <%= link_to submission_path(submission) do %>
-            <%= cell(:image).(:show, type: :bordered, id: submission.file_id) %>
-          <% end %>
+<%= hidable "Recent Submissions", params[:terms] == CONFIG[:default_search_terms] do %>
+  <div class = "row pool-index-field">
+    <div class = "col">
+      <% enum_for recent_submissions do |submission| %>
+        <%= link_to submission_path(submission) do %>
+          <%= cell(:image).(:show, type: :bordered, id: submission.file_id) %>
         <% end %>
-      </div>
+      <% end %>
     </div>
   </div>
-  <hr />
 <% end %>
+<hr />
 
 <% enum_for @users do |user| %>
   <div class = "row" id = <%= user.name %>>

@@ -11,7 +11,11 @@
     </header>
     <div class = "container <%= "fw" if controller_name == "cards" %>">
       <div id="main">
-        <%= render "layouts/notices" %>
+        <div class = "row stout">
+          <h2 class = "header"><%= cell(controller_name.singularize).(:header, action_name.to_sym) if cell_header? %></h2>
+          <%= render "layouts/flash" %>
+          <%= cell(controller_name.singularize).(:instructions, action_name.to_sym) if cell_instructions? %>
+        </div>
         <%= yield %>
       </div>
     </div>
@@ -22,7 +26,7 @@
         <%= render "layouts/footer_links" %>
         <%= CONFIG[:copyright].html_safe %>
       </div>
-      <%= console %>
+      <%#= console %>
     </footer>
   </body>
 </html>

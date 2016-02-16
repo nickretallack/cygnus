@@ -6,11 +6,9 @@ Destroyable = function(element){
     destroyable.buttonTable.append(destroyable.closeButton);
     destroyable.content = destroyable.title;
     destroyable.maxHeight = destroyable.content.outerHeight();
-    destroyable.top.css({
-        top: ".65rem"
-    });
 
     $(window).on("resize.destroyable", function(){
+        destroyable.maxHeight = destroyable.content.outerHeight();
         destroyable.size();
     });
     destroyable.size();
@@ -26,15 +24,33 @@ Hidable = function(element){
 
     hidable.buttonTable.append(hidable.minimizeButton);
     hidable.buttonTable.append(hidable.closeButton);
-    hidable.maxHeight = hidable.title.outerHeight() + hidable.top.outerHeight() + hidable.content.outerHeight();
-    hidable.top.css({
-        top: ".1rem"
+
+    hidable.title.on("mouseenter.ActiveContainer", function(){
+        hidable.minimizeButton.addClass("icon-hover");
+    });
+
+    hidable.title.on("mouseleave.ActiveContainer", function(){
+        hidable.minimizeButton.removeClass("icon-hover");
+    });
+
+    hidable.minimizeButton.on("click.ActiveContainer", function(){
+        hidable.switch(true);
+    });
+    hidable.closeButton.on("click.ActiveContainer", function(){
+        hidable.destroy();
+    });
+    hidable.title.on("click.ActiveContainer", function(){
+        hidable.switch(true);
     });
 
     $(window).on("resize.hidable", function(){
+        //if(hidable.container.hasClass("max")) hidable.minimize();
         hidable.size();
+        hidable.same(false);
     });
+
     hidable.size();
+    hidable.same(true);
 
     return hidable;
 
@@ -42,16 +58,23 @@ Hidable = function(element){
 
 ActiveContainer = (function(){
 
-    var self;
-
     var ActiveContainer = function(element){
 
-        self = this;
+        var self = this;
 
         self.container = element;
         self.title = self.container.children(".title").safeAdd();
-        self.content = self.container.children(".content").safeAdd();
-        if(self.title === undefined || self.content == undefined) return;
+        self.content = self.container.children(".content");
+        if(self.title === undefined) return;
+
+        self.title.css  ({
+                            height: "1.5rem",
+                            float: "left",
+                            textAlign: "left",
+                            paddingLeft: 10,
+                            cursor: "pointer",
+                            marginTop: "0.4rem"
+                        });
 
         self.buttonTable =  $("<div />", {
                                 class: "button-table",
@@ -86,10 +109,18 @@ ActiveContainer = (function(){
                             userSelect: "none",
                             cursor: "default",
                             width: "100%",
-                            height: "auto",
-                            position: "relative"
+                            height: 0,
+                            position: "relative",
+                            top: 2
                         }
                     });
+
+        self.divider =  $("<hr />", {
+                            css: {
+                                margin: 0,
+                                display: "inline-block"
+                            }
+                        });
 
         self.initialize();
         self.initializeAssociatedField();
@@ -100,27 +131,9 @@ ActiveContainer = (function(){
 
         initialize: function(){
 
-            self.title.css({
-                lineHeight: "1.5rem",
-                float: "left",
-                textAlign: "left",
-                paddingLeft: 10,
-                cursor: "pointer"
-            });
+            var self = this;
 
-            self.title.append($("<hr />", {
-                css: {
-                    margin: 0
-                }
-            }));
-
-            self.title.on("mouseenter.ActiveContainer", function(){
-                self.minimizeButton.addClass("icon-hover");
-            });
-
-            self.title.on("mouseleave.ActiveContainer", function(){
-                self.minimizeButton.removeClass("icon-hover");
-            });
+            self.title.append(self.divider);
 
             self.container.prepend(self.top);
             self.top.append(self.title, self.buttonTable);
@@ -130,91 +143,93 @@ ActiveContainer = (function(){
 
         },
 
-        minimize: function(){
+        minimize: function(animate){
             var self = this;
-            this.container.removeClass("max").addClass("min");
-            this.minimizeButton.css({
+            self.container.removeClass("max").addClass("min");
+            self.minimizeButton.css({
                 top: -5
             });
-            this.content.hide();
-            this.container.animate({
-                height: self.title.css("lineHeight")
-            });
-            if(Screen.tiny()){
-                this.title.off("click.hidable");
-                this.title.on("click.hidable", function(){ self.maximize(); });
+            self.divider.hide();
+            self.title.css({
+                marginTop: 0
+            })
+            self.content.hide();
+            if(animate){
+                self.container.animate({
+                    height: "1.5rem"
+                });
             }else{
-                this.minimizeButton.off("click.hidable");
-                this.minimizeButton.on("click.hidable", function(){ self.maximize(); });
+                self.container.css({
+                    height: "1.5rem"
+                });
             }
         },
 
-        maximize: function(){
+        maximize: function(animate){
             var self = this;
-            this.container.removeClass("min").addClass("max");
-            this.minimizeButton.css({
+            self.container.removeClass("min").addClass("max");
+            self.minimizeButton.css({
                 top: 5
             });
-            this.content.show();
-            this.container.animate({
-                height: self.maxHeight
-            }, 1000, "easeOutExpo");
-            if(Screen.tiny()){
-                this.title.off("click.hidable");
-                this.title.on("click.hidable", function(){ self.minimize(); });
+            self.divider.show();
+            self.title.css({
+                marginTop: 1
+            })
+            self.content.show();
+            if(animate){
+                self.container.animate({
+                    height: self.title.outerHeight() + self.content.outerHeight()
+                }, 1000, "easeOutExpo");
             }else{
-                this.minimizeButton.off("click.hidable");
-                this.minimizeButton.on("click.hidable", function(){ self.minimize(); });
+                self.container.css({
+                    height: self.title.outerHeight() + self.content.outerHeight()
+                })
             }
         },
 
         destroy: function(){
-            this.container.remove();
+            var self = this;
+            self.container.remove();
         },
 
         size: function(){
             var self = this;
             if(Screen.tiny()){
-                this.buttonTable.hide();
-                this.title.css({
+                self.buttonTable.hide();
+                self.title.css({
                     paddingLeft: 0,
                     width: "100%"
                 });
-                this.minimizeButton.off("click.hidable");
-                this.closeButton.off("click.hidable");
             }else{
-                this.buttonTable.show();
-                this.title.css({
+                self.buttonTable.show();
+                self.title.css({
                     width: "calc(100% - 49px)"
                 });
-                this.title.off("click.hidable");
-                this.minimizeButton.off("click.hidable").on("click.hidable", function(){ self.switch(); });
-                this.closeButton.off("click.hidable").on("click.hidable", function(){ self.destroy(); });
-            }
-            this.title.off("click.hidable").on("click.hidable", function(){ self.switch(); });
-            this.resize();
-        },
-
-        switch: function(){
-            if(this.container.hasClass("max")){
-                this.minimize();
-            }else if(this.container.hasClass("min")){
-                this.maximize();
             }
         },
 
-        resize: function(){
-            if(this.container.hasClass("min")){
-                this.minimize();
-            }else if(this.container.hasClass("max")){
-                this.maximize();
+        switch: function(animate){
+            var self = this;
+            if(self.container.hasClass("max")){
+                self.minimize(animate);
+            }else if(self.container.hasClass("min")){
+                self.maximize(animate);
+            }
+        },
+
+        same: function(animate){
+            var self = this;
+            if(self.container.hasClass("min")){
+                self.minimize(animate);
+            }else if(self.container.hasClass("max")){
+                self.maximize(animate);
             }
         },
 
         initializeAssociatedField: function(){
             var self = this;
-            if(this.container.is("[associated-field]")){
-                $("#"+this.container.attr("associated-field")).on("keyup.hidable", function(event){
+            if(self.container.is("[associated-field]")){
+                $("#"+self.container.attr("associated-field")).on("keyup.ActiveContainer", function(event){
                     pause(event);
                     if(!Key.ret(event) && self.container.hasClass("min")){
                         self.maximize();

@@ -1,6 +1,6 @@
 <% CONFIG[:commission_icons].each do |status, icon| %>
-  <div class = "row">
-    <div class = "col s4">
+  <div class = "row list">
+    <div class = "col s5">
       <input name = "terms[use_statuses][<%= status %>]" type = "hidden" value = "0">
       <input name = "terms[use_statuses][<%= status %>]" type = "checkbox" value = "1" id = "terms_use_statuses[<%= status %>]" <%= "checked" if params[:terms][:use_statuses][status] == "1" rescue false %>>
       <label for = "terms_use_statuses[<%= status %>]">
@@ -8,7 +8,7 @@
         <span><%= status.to_s.humanize.titleize %>:</span>
       </label>
     </div>
-    <div class = "col s8">
+    <div class = "col s6">
       <select name = "terms[statuses][<%= status %>]" class = "btn btn-with-icon">
         <% CONFIG[:status_categories].each do |key, value| %>
           <option class = "comm-<%= value[0] %>" value = "all_<%= key %>_statuses" <%= "selected = 'selected'" if params[:terms][:statuses][status] == "all_#{key}_statuses" rescue false %>>all <%= key %> statuses</option>
