@@ -4,14 +4,27 @@ Destroyable = function(element){
     if(destroyable === undefined) return;
 
     destroyable.buttonTable.append(destroyable.closeButton);
-    destroyable.content = destroyable.title;
-    destroyable.maxHeight = destroyable.content.outerHeight();
 
-    $(window).on("resize.destroyable", function(){
-        destroyable.maxHeight = destroyable.content.outerHeight();
-        destroyable.size();
+    destroyable.top.css({
+        height: "1rem"
     });
-    destroyable.size();
+
+    destroyable.closeButton.on("click.ActiveContainer", function(){
+        destroyable.destroy();
+    });
+
+    $(window).on("resize.hidable", function(){
+        destroyable.maximize(false);
+        destroyable.title.css({
+            marginTop: "-0.15rem"
+        });
+    });
+
+    destroyable.maximize(false);
+
+    destroyable.title.css({
+        marginTop: "-0.15rem"
+    });
 
     return destroyable;
 
@@ -44,7 +57,6 @@ Hidable = function(element){
     });
 
     $(window).on("resize.hidable", function(){
-        //if(hidable.container.hasClass("max")) hidable.minimize();
         hidable.size();
         hidable.same(false);
     });

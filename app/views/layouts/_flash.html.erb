@@ -5,7 +5,7 @@
 <% if flash.any? %>
   <% flash.each do |type, message| %>
     <% if message.is_a? String %>
-      <div class = "<%= type %> destroyable", id: flash>
+      <div class = "<%= type %> destroyable max", id = "flash">
         <div class = "title"><%= format_flash message, type %></div>
       </div>
     <% end %>

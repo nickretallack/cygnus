@@ -60,9 +60,13 @@ Init = {
 function initialize(element){
     element = $(element);
     $.each(Init.js, function(key, value){
-        value(element.find(key));
+        if(element.is(key)) value(element);
+        element.find(key).each(function(index, element){
+            value($(element));
+        });
     });
     $.each(Init.classes, function(key, value){
+        if(element.is(value)) new window[key](element)
         element.find(value).each(function(index, element){
             new window[key]($(element));
         })

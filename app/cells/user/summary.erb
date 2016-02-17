@@ -1,0 +1,25 @@
+<div class = "row block" id = <%= @model.name %>>
+  <div class = "row">
+    <div class = "col s12 m6 mt">
+      <div class = "fl col s6 m12 l5 fh full-small">
+        <%= link_to user_path(@model) do %>
+          <%= cell(:image).(:bordered, @model.avatar) %>
+        <% end %>
+      </div>
+      <div class = "col s6 m12 l6 full-small">
+        <div class = "row">
+          <h5 class = "truncate hc"><%= link_to @model.name, user_path(@model) %></h5>
+          <%= cell(:user, @model).(:status, :condensed) %>
+        </div>
+      </div>
+    </div>
+    <div class = "col s12 m6 l6">
+      <%= cell(:user, @model).(:links) %>
+    </div>
+      <div class = "col s12 m6 l12">
+        <blockquote class = "inline"><%= message_for artist_types: @model.artist_type %></blockquote>
+        <blockquote class = "inline"><%= message_for price: @model.price %></blockquote>
+        <blockquote class = "inline"><%= message_for tags: @model.tags %></blockquote>
+      </div>
+  </div>
+</div>

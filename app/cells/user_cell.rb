@@ -17,4 +17,16 @@ class UserCell < HelpfulCell
     render "#{type}_status"
   end
 
+  def summary
+    render
+  end
+
+  def links
+    render
+  end
+
+  def watch
+    render
+  end
+
 end

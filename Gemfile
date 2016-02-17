@@ -18,6 +18,7 @@ gem "puma"
 gem "cells"
 gem "cells-erb"
 gem "hooks"
+gem "kaminari"
 
 group :development, :test do
   gem "byebug"

@@ -70,6 +70,7 @@ CONFIG = {
 
   user_levels: [
     "unactivated",
+    "banned",
     "blocked",
     "member",
     "privileged",

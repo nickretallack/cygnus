@@ -91,6 +91,7 @@ class UsersController < ApplicationController
   end
 
   def watch
+
     if watching? @user
       current_user.update_attribute(:watching, current_user.watching.delete_if { |id| id == @user.id })
     else

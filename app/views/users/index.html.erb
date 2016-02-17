@@ -26,30 +26,6 @@
 <hr />
 
 <% enum_for @users do |user| %>
-  <div class = "row block" id = <%= user.name %>>
-    <div class = "row">
-      <div class = "col s12 m6 mt">
-        <div class = "fl col s6 m12 l5 fh full-small">
-          <%= link_to user_path(user) do %>
-            <%= cell(:image).(:bordered, user.avatar) %>
-          <% end %>
-        </div>
-        <div class = "col s6 m12 l6 full-small">
-          <div class = "row">
-            <h5 class = "truncate hc"><%= link_to user.name, user_path(user) %></h5>
-            <%= cell(:user, user).(:status, :condensed) %>
-          </div>
-        </div>
-      </div>
-      <div class = "col s12 m6 l6">
-        <%= render "links", user: user %>
-      </div>
-        <div class = "col s12 m6 l12">
-          <blockquote class = "inline"><%= message_for artist_types: user.artist_type %></blockquote>
-          <blockquote class = "inline"><%= message_for price: user.price %></blockquote>
-          <blockquote class = "inline"><%= message_for tags: user.tags %></blockquote>
-        </div>
-    </div>
-  </div>
+  <%= cell(:user, user).(:summary) %>
   <%= content_tag :hr unless user == @users.last %>
 <% end %>

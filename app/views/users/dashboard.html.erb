@@ -2,10 +2,25 @@
   <%= cell(:message).(:new_announcement) %>
 <% end %>
 
+<% open = true #!@user.dashboard_minimized %>
 <%= form_for @user, method: :patch, url: user_path(@user), html: { class: "button-submit" } do |f| %>
-  <%= hidable "Images", true do %>
+  <%= hidable "Images", open do %>
     <%= f.check_box "view_adult" %>
     <%= f.label "View adult images sitewide (by checking this box, you confirm you are of legal age in your region to do so)" %>
+    <%= f.check_box "fit_to_width" %>
+    <%= f.label "Fit submission images to page width" %>
+  <% end %>
+  <%= hidable "Messages", open do %>
+    <%= f.check_box "activity_feed" %>
+    <%= f.label "Disable public activity feed" %>
+  <% end %>
+  <%= hidable "Hidable Boxes", open do %>
+    <%= f.check_box "minimize_dashboard" %>
+    <%= f.label "Minimize all settings categories by default" %>
+    <%= f.check_box "minimize_search_by" %>
+    <%= f.label "Don't open the \"Search by...\" box automatically when typing tags" %>
+  <% end %>
+  <%= hidable "Recent Submissions", open do %>
   <% end %>
   <%= f.submit "Save Settings", id: "save", class: "medium" %>
 <% end %>

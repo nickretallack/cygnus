@@ -1,2 +1,4 @@
-$("#"+"<%=j @user.name %>").find("#watch").html("<%=j render "watch_link", user: @user %>");
-hideAndShow($("#"+"<%=j @user.name %>").find("#watch"));
+var link = $("#"+"<%=j @user.name %>").find("#watch");
+console.log("<%=j @user.name %>", link);
+link.html("<%=j cell(:user, @user).(:watch) %>");
+initialize(link);

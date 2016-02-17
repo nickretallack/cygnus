@@ -1,5 +1,13 @@
 module ViewHelper
 
+  def readable(stringish)
+    unless stringish.is_a? Symbol or stringish.is_a? String
+      ""
+    else
+      stringish.to_s.humanize.titleize
+    end
+  end
+
   def format_artist_type(array)
     array.map { |index| CONFIG[:artist_types][index.to_i] }.collect { |type| type.split("/") }.collect { |type|
       ->(word) {
