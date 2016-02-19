@@ -11,25 +11,34 @@
   </div>
   <div class = "card-content">
     <div class = "card-title">
-      <% if can_modify? @user %>
-        <%= form_for @user.top_card, url: card_path(@user, @user.top_card), method: :patch do |f| %>
-          <%= f.hidden_field :order, value: "" %> <!-- :order is not a property, only works if value is explicitly specified -->
-          <div class = "js reorder-mode">
-            <%= f.submit "Finalize Order" %>
-          </div>
+
+      <div id = "lists">
+        <% @user.lists.each do |list| %>
+          <%= list.id %>
+          <%#= cell(:card, list).(:show, user: @user) %>
         <% end %>
-        <div class = "edit-mode">
+      </div>
+
+      <% if can_modify? @user %>
+        
+        <div class = "reorder-mode">
           <%= form_for @user.top_card, url: card_path(@user, @user.top_card), method: :patch, html: { class: "button-submit" } do |f| %>
-            <%= f.submit "Create List", id: "create" %>
+            <%= f.hidden_field :order, value: "" %> <!-- :order is not a property, only works if value is explicitly specified -->
+            <%= f.submit "Finalize Order", id: "save" %>
+          <% end %>
+          <div class = "button-area float"></div>
+        </div>
+
+        <div class = "edit-mode">
+          <%= form_for @user.top_card, url: new_list_path(@user), method: :patch, html: { class: "remote button-submit" } do |f| %>
+            <%= f.submit "Create List", id: "add" %>
           <% end %>
           <div class = "button-area"></div>
         </div>
+      
       <% else %>
         <div></div> <!--makes wrapping work on others' workboards-->
       <% end %>
-        <% @user.lists.each do |list| %>
-          <%#= cell(:card, list).(:show, user: @user) %>
-        <% end %>
     </div>
   </div>
 </div>

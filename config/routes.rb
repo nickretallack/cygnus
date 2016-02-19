@@ -48,8 +48,11 @@ Rails.application.routes.draw do
 
   scope path: ":#{User.slug}" do
     scope path: "workboard" do
-      resources :cards, only: [:index], path: ""
-      resources :cards, only: [:update, :destroy], path: ""
+      controller :cards do
+        resources :cards, only: [:index], path: ""
+        resources :cards, only: [:destroy], path: ""
+        patch :new_list, path: "", as: :new_list
+      end
     end
     controller :messages do
       resources :messages, only: [:index], path: "conversations/(:recipient)", as: :pms

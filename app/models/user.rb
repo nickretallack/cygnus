@@ -33,20 +33,19 @@ class User < ActiveRecord::Base
   end
 
   def top_card
-    @top_card ||= ->{
-      cards = children(:user, id, :card, "?")
-      if cards.empty?
-        card = Card.new
-        card.save!
-        new_lookup(:user, id, :card, card.id)
-      else
-        card = cards.first
-      end
-    }.call
+    cards = children(:user, id, :card, "?")
+    if cards.empty?
+      card = Card.new
+      card.save!
+      new_lookup(:user, id, :card, card.id)
+    else
+      card = cards.first
+    end
+    card
   end
 
   def lists
-    @lists ||= children(:card, top_card.id, :card, "?")
+    children(:card, top_card.id, :card, "?")
   end
 
   def messages

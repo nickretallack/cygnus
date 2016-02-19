@@ -7,8 +7,8 @@ function pause(event){
 
 Key = {
   keys: {
-    "ret": 13,
-    "esc": 27
+    ret: 13,
+    esc: 27
   }
 }
 

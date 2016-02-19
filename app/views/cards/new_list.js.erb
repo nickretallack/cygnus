@@ -1,0 +1,4 @@
+$("#lists").html("<% @user.lists.each do |list| %><%= list.id %><% end %>");
+var form = $("[value = '<%= params[:commit] %>']").parent();
+form.siblings(".button-area").html("");
+initialize(form);

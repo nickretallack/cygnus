@@ -4,9 +4,18 @@ class CardsController < ApplicationController
     insist_on :logged_in
   end
 
-  before_filter only: [:update, :destroy] do
-    @user = User.find(params[User.slug])
+  before_filter only: [:new_list, :destroy] do
     insist_on :permission, @user
+  end
+
+  def new_list
+    @card = Card.new
+    @card.save!
+    new_lookup(:card, @user.top_card.id, :card, @card.id)
+    respond_to do |format|
+      format.html { back }
+      format.js
+    end
   end
 
   def update
