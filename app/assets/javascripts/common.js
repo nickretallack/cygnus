@@ -50,6 +50,7 @@ Init = {
         Nav: "nav",
         TagList: ".taglist",
         ViewAnyway: "img.adult",
+       Workboard: ".top-card",
 
         // keep these last so contents are loaded already
         Destroyable: ".destroyable",

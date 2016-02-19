@@ -116,27 +116,28 @@ Make.extend(Object.prototype, {
 
     toArray: function(){
         if(!this.isDictionary()) return [this];
-        return this.values();
+        return $.map(this, function(value, key){
+            return [[key, value]];
+        });
     },
 
     has: function(property){
-        return typeof this[property] !== "undefined";
+        return this[property] !== "undefined";
     },
 
     keys: function(){
-        array = [];
+        var array = [];
         i=0;do{
-            array[i] = Object.keys(this)[i]
+            array[i] = Object.keys(this)[i];
         }while(++i<Object.keys(this).length);
         return array;
     },
 
     values: function(){
         if(!this.isDictionary()) return;
-        keys = this.keys();
-        values = [];
-        keys.forEach(function(key){
-            values.push(this[key]);
+        var values = [], self = this;
+        $.each(self.keys(), function(index, key){
+            values.push(self[key]);
         });
         return values;
     },
@@ -217,8 +218,14 @@ Make.extend(Array.prototype, {
     },
 
     where: function(rule){
-        which = [];
-        this.forEach(function(element){ if(rule(element)) which.push(element); });
+        if(typeof rule !== "function"){
+            console.log(rule + "is not a function");
+            return [];
+        }
+        var which = [];
+        $.each(this, function(index, element){
+            if(rule(element)) which.push(element);
+        });
         return which;
     },
 
@@ -305,10 +312,18 @@ Make.extend(Array.prototype, {
     },
 
     first: function(){
+        if(this.isEmpty()){
+            console.log("Array is empty, can't select first!");
+            return undefined;
+        }
         return this[0];
     },
 
     last: function(){
+        if(this.isEmpty()){
+            console.log("Array is empty, can't select last!");
+            return undefined;
+        }
         return this[this.length-1];
     },
 

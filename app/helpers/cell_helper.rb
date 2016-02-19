@@ -10,7 +10,7 @@ module CellHelper
   end
 
   def cell_instructions?
-    return false unless cell_defined?
+    return false unless cell_defined? and can_modify? @user
     @klass.instance_methods.include? :instructions
   end
 

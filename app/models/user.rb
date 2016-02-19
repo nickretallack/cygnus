@@ -21,11 +21,32 @@ class User < ActiveRecord::Base
   validates :password, length: { minimum: 6 }, allow_blank: true
 
   def avatar
-    lookup_for(user: id, image: "?").child_id
+    children(:user, id, :upload, "?").first
   end
 
   def pools
-    children(user: id, pool: "?")
+    children(:user, id, :pool, "?")
+  end
+
+  def gallery
+    pools.first
+  end
+
+  def top_card
+    @top_card ||= ->{
+      cards = children(:user, id, :card, "?")
+      if cards.empty?
+        card = Card.new
+        card.save!
+        new_lookup(:user, id, :card, card.id)
+      else
+        card = cards.first
+      end
+    }.call
+  end
+
+  def lists
+    @lists ||= children(:card, top_card.id, :card, "?")
   end
 
   def messages

@@ -44,19 +44,26 @@ ButtonSubmit = (function(){
                         }
                     }
                 }
-                self.area.append($("<i />", {
-                    class: "material-icons " + size,
-                    text: icon,
-                    title: name.capitalize(),
-                    css: {
-                        cursor: "pointer",
-                        marginLeft: "3%",
-                        marginRight: "3%"
-                    }
-                }).on("click.submit", function(event){
-                    pause(event);
-                    button.trigger("click");
-                }));
+                self.area.append($("<div />").append(
+                    $("<i />", {
+                        class: "material-icons " + size,
+                        id: button.attr("value"),
+                        text: icon,
+                        title: name.capitalize(),
+                        css: {
+                            cursor: "pointer",
+                            marginLeft: "3%",
+                            marginRight: "3%"
+                        }
+                    }).on("click.submit", function(event){
+                        pause(event);
+                        button.trigger("click");
+                    }),
+                    $("<label />", {
+                        for: button.attr("value"),
+                        text: button.attr("value")
+                    })
+                ));
                 button.remove();
             });
             var attachmentButton = self.area.children().filter(function(index, element){

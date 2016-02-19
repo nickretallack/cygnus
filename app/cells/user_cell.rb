@@ -1,7 +1,7 @@
 class UserCell < HelpfulCell
 
-  def header(action)
-    case action
+  def header(options)
+    case options[:action]
     when :index
       if params[:terms] == CONFIG[:default_search_terms]
         "Open Artists"

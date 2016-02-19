@@ -9,16 +9,6 @@ class CardsController < ApplicationController
     insist_on :permission, @user
   end
 
-  def index
-    @user = User.find(params[User.slug])
-    unless @user.card
-      Card.new(user_id: @user.id).save!
-      redirect_to request.path
-    end
-    @top_card = @user.card
-    @lists = @top_card.cards.collect { |card_id| Card.find(card_id) }
-  end
-
   def update
     @card = Card.find(params[Card.slug])
     case params[:commit]

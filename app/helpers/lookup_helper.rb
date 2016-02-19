@@ -1,27 +1,27 @@
 module LookupHelper
 
-  def new_lookup(**args)
-    Lookup.new(parent_model: args.keys[0].to_s, parent_ids: [args.values[0]], child_model: args.keys[1].to_s, child_id: args.values[1]).save!
+  def new_lookup(parent_model, parent_id, child_model, child_id)
+    Lookup.new(parent_model: parent_model.to_s, parent_ids: [parent_id], child_model: child_model.to_s, child_id: child_id).save!
   end
 
-  def lookups_for(**args)
-    terms = { parent_model: args.keys[0].to_s, parent_id: args.values[0], child_model: args.keys[1].to_s, child_id: args.values[1] }.reject { |key, value| value == "?" }
+  def lookups_for(parent_model, parent_id, child_model, child_id)
+    terms = { parent_model: parent_model.to_s, parent_id: parent_id, child_model: child_model.to_s, child_id: child_id }.reject { |key, value| value == "?" }
     result = Lookup.where(parent_model: terms[:parent_model], child_model: terms[:child_model])
     result = result.where("? = ANY(parent_ids)", terms[:parent_id]) if terms[:parent_id]
     result = result.where(child_id: terms[:child_id]) if terms[:child_id]
     result
   end
 
-  def lookup_for(**args)
-    lookups_for(args).first || Lookup.new
+  def lookup_for(parent_model, parent_id, child_model, child_id)
+    lookups_for(parent_model, parent_id, child_model, child_id).first || Lookup.new
   end
 
-  def parents(**args)
-    args.keys[0].to_s.classify.constantize.where("id = ANY (?)", "{" + lookups_for(args).map { |lookup| lookup.parent_ids.join(",") }.join(",") + "}")
+  def parents(parent_model, parent_id, child_model, child_id)
+    parent_model.to_s.classify.constantize.where("id = ANY (?)", "{" + lookups_for(parent_model, parent_id, child_model, child_id).map { |lookup| lookup.parent_ids.join(",") }.join(",") + "}")
   end
 
-  def children(**args)
-    args.keys[1].to_s.classify.constantize.where("id = ANY (?)", "{" + lookups_for(args).map { |lookup| lookup.child_id }.join(",") + "}")
+  def children(parent_model, parent_id, child_model, child_id)
+    child_model.to_s.classify.constantize.where("id = ANY (?)", "{" + lookups_for(parent_model, parent_id, child_model, child_id).map { |lookup| lookup.child_id }.join(",") + "}")
   end
 
 end
