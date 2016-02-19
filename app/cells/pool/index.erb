@@ -1,5 +1,5 @@
 <table id = "pools">
-  <% if @pools.any? %>
+  <% unless @user.pools.empty? %>
     <thead>
       <tr>
         <th></th>
@@ -11,7 +11,7 @@
   <% end %>
 
   <tbody>
-    <% enum_for @pools, "pools" do |pool| %>
+    <% enum_for @user.pools, "pools" do |pool| %>
       <tr>
         <% if can_modify? pool.user %>
           <td>
@@ -26,16 +26,16 @@
           </td>
           <td>
             <%= form_for pool, url: pool_path(pool), method: :patch, html: { id: "edit-#{pool.id}"} do |f| %>
-              <%= f.text_field :title, placeholder: title_for(pool: nil), value: title_for(pool: pool), class: "on" %>
-              <%= link_to title_for(pool: pool), pool, class: "off" %>
+              <%= f.text_field :title, placeholder: title_for(pool), value: title_for(pool), class: "on" %>
+              <%= link_to title_for(pool), pool, class: "off" %>
             <% end %>
           </td>
         <% else %>
           <td></td>
-          <td><%= link_to title_for(pool: pool), pool %></td>
+          <td><%= link_to title_for(pool), pool %></td>
         <% end %>
         <td><%= link_to pool.user.name, pool.user %></td>
-        <td class = "danger"><%= "Main" if pool == @pools.first %></td>
+        <td class = "danger"><%= "Main Gallery" if pool == @user.gallery %></td>
       </tr>
     <% end %>
   </tbody>

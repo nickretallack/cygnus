@@ -1,75 +1,76 @@
 function pause(event){
-    if(event.stopPropagation) event.stopPropagation();
-    if(event.preventDefault) event.preventDefault();
-    event.cancelBubble = true;
-    event.returnValue = false;
+  if(event.stopPropagation) event.stopPropagation();
+  if(event.preventDefault) event.preventDefault();
+  event.cancelBubble = true;
+  event.returnValue = false;
 }
 
 Key = {
-    keys: {
-        "ret": 13,
-        "esc": 27
-    }
+  keys: {
+    "ret": 13,
+    "esc": 27
+  }
 }
 
 $.each(Key.keys, function(key, value){
-    Key[key] = function(event){
-        return event.keyCode && event.keyCode === value;
-    }
+  Key[key] = function(event){
+    return event.keyCode && event.keyCode === value;
+  }
 });
 
 Screen = {
-    widthTester: ".widthTester",
-    widths: {
-        tiny: 0,
-        small: 363,
-        medium: 801,
-        large: 993,
-        huge: 1921
-    }
+  widthTester: ".widthTester",
+  widths: {
+    tiny: 0,
+    small: 363,
+    medium: 801,
+    large: 993,
+    huge: 1921
+  }
 }
 
 $.each(Screen.widths, function(key, value){
-    Screen[key] = function(){
-        return $(Screen.widthTester) && $(Screen.widthTester).css("width") === value + "px";
-    }
+  Screen[key] = function(){
+    return $(Screen.widthTester) && $(Screen.widthTester).css("width") === value + "px";
+  }
 });
 
 Init = {
-    js: {
-        ".nojs": function(elements){ elements.hide(); },
-        ".js": function(elements){ elements.show(); },
-        ".remote": function(elements){ elements.attr("data-remote", "true"); }
-    },
-    classes: { // in order of load
-        AddableAttachment: ".attachment-area",
-        AddableField: ".addable-field",
-        ButtonSubmit: ".button-submit",
-        ImagePreview: ".image-preview",
-        IndexField: "[class *= index-field]",
-        Nav: "nav",
-        TagList: ".taglist",
-        ViewAnyway: "img.adult",
-       Workboard: ".top-card",
+  js: {
+    ".nojs": function(elements){ elements.hide(); },
+    ".js": function(elements){ elements.show(); },
+    ".remote": function(elements){ elements.attr("data-remote", "true"); },
+    ".preloader-wrapper": function(elements){ elements.restoreFromSpinner(); }
+  },
+  classes: { // in order of load
+    AddableAttachment: ".attachment-area",
+    AddableField: ".addable-field",
+    ButtonSubmit: ".button-submit",
+    ImagePreview: ".image-preview",
+    IndexField: "[class *= index-field]",
+    Nav: "nav",
+    TagList: ".taglist",
+    ViewAnyway: "img.adult",
+    Workboard: ".top-card",
 
-        // keep these last so contents are loaded already
-        Destroyable: ".destroyable",
-        Hidable: ".hidable"
-    }
+    // keep these last so contents are loaded already
+    Destroyable: ".destroyable",
+    Hidable: ".hidable"
+  }
 };
 
 function initialize(element){
-    element = $(element);
-    $.each(Init.js, function(key, value){
-        if(element.is(key)) value(element);
-        element.find(key).each(function(index, element){
-            value($(element));
-        });
+  element = $(element);
+  $.each(Init.js, function(key, value){
+    if(element.is(key)) value(element);
+    element.find(key).each(function(index, element){
+      value($(element));
     });
-    $.each(Init.classes, function(key, value){
-        if(element.is(value)) new window[key](element)
-        element.find(value).each(function(index, element){
-            new window[key]($(element));
-        })
-    });
+  });
+  $.each(Init.classes, function(key, value){
+    if(element.is(value)) new window[key](element)
+    element.find(value).each(function(index, element){
+      new window[key]($(element));
+    })
+  });
 }

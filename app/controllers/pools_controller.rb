@@ -4,7 +4,7 @@ class PoolsController < ApplicationController
   end
 
   def after_save
-    new_lookup(user: @user.id, pool: @pool.id)
+    new_lookup(:user, @user.id, :pool, @pool.id)
   end
 
   def destroy

@@ -16,6 +16,7 @@ ButtonSubmit = (function(){
     Make.extend(ButtonSubmit.prototype, {
 
         initialize: function(){
+            self.area.addClass("row");
             $.each(self.icons, function(name, icon){
                 var button = self.form.children("#" + name);
                 if(!button.exists()) return;
@@ -44,27 +45,35 @@ ButtonSubmit = (function(){
                         }
                     }
                 }
-                self.area.append($("<div />").append(
-                    $("<i />", {
+                var div, icon;
+                self.area.append((div = $("<div />", {
+                    class: "col"
+                })).append(
+                    (icon = $("<i />", {
                         class: "material-icons " + size,
                         id: button.attr("value"),
                         text: icon,
                         title: name.capitalize(),
                         css: {
-                            cursor: "pointer",
-                            marginLeft: "3%",
-                            marginRight: "3%"
+                            cursor: "pointer"
                         }
-                    }).on("click.submit", function(event){
-                        pause(event);
-                        button.trigger("click");
-                    }),
+                    })),
                     $("<label />", {
-                        for: button.attr("value"),
-                        text: button.attr("value")
+                        text: button.attr("value"),
+                        css: {
+                            display: "block"
+                        }
                     })
-                ));
-                button.remove();
+                ).on("mouseenter.ButtonSubmit", function(){
+                    div.addClass("icon-hover");
+                }).on("mouseleave.ButtonSubmit", function(){
+                    div.removeClass("icon-hover");
+                }).on("click.ButtonSubmit", function(event){
+                    pause(event);
+                    icon.replaceWithSpinner();
+                    button.trigger("click");
+                }));
+                button.hide();
             });
             var attachmentButton = self.area.children().filter(function(index, element){
                 return $(element).prop("textContent") === '<%= CONFIG[:button_icons][:create] %>';

@@ -84,16 +84,15 @@ module ViewHelper
     end
   end
 
-  def title_for(*args)
-    ->(key, value) {
-      if value.nil? or not value.respond_to? :title
-        "Untitled"
-      elsif value.title.blank?
-        "Untitled #{key.to_s.gsub("_", " ").titleize}"
-      else
-        value.title
-      end
-    }.call(args.first.first)
+  def title_for(instance)
+    case true
+    when !(instance.respond_to? :title rescue false)
+      "Untitled"
+    when instance.title.blank?
+      "Untitled #{readable instance.class.name}"
+    else
+      instance.title
+    end
   end
 
   def select_options_for(type)

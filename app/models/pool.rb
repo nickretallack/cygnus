@@ -1,7 +1,7 @@
 class Pool < ActiveRecord::Base
 
   def users
-    parents(user: "?", pool: id)
+    parents(:user, "?", :pool, id)
   end
 
   def user
@@ -9,11 +9,11 @@ class Pool < ActiveRecord::Base
   end
 
   def submission_attachments
-    @submission_attachments ||= attachments_for(pool: id, submission: "?")
+    @submission_attachments ||= attachments_for(:pool, id, :submission, "?")
   end
 
   def submissions
-    children(pool: id, submission: "?")
+    children(:pool, id, :submission, "?")
     #@submissions ||= Submission.where("id = ANY (?)", "{" + submission_attachments.map { |submission| submission.parent_id }.join(",") + "}" )
   end
 
