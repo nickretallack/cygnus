@@ -1,34 +1,28 @@
-<div class = "card" id = <%= @model.id %> >
+<div class = "card card-card" id = <%= @model.id %> >
   <div class = "card-content">
     <div class = "card-title">
       <div class = "hc view-mode reorder-mode">
         <h5 id = "title"><%= controller.title_for workcard: @model %></h5>
         <hr />
       </div>
+
       <% if controller.can_modify? @user %>
+
         <div class = "edit-mode">
-          <%= form_for @model, url: card_path(@user, @model), method: :patch, html: { class: "button-submit" } do |f| %>
+          <%= form_for @model, url: update_card_path(@user, @model), method: :patch, html: { class: "button-submit" } do |f| %>
             <%= f.text_field :title, placeholder: "Card Title" %>
             <%= f.text_area :description, placeholder: "Description" %>
             <%= f.submit "Save Card", id: "save" %>
           <% end %>
-          <%= form_for @model, url: card_path(@user, @model), method: :delete, html: { class: "button-submit" } do |f| %>
+          <%= form_for @model, url: destroy_card_path(@user, @model), method: :delete, html: { class: "button-submit" } do |f| %>
             <%= f.submit "Delete Card", id: "delete" %>
           <% end %>
-          <div class = "button-area"></div>
-          <div class = "attachment-area" id = "card-<%= @model.id %>" >
-            <div id = "image"></div>
-          </div>
-          <% @image_attachments.each do |attachment| %>
-            <%= cell(:attachment, attachment).(:show) %>
-          <% end %>
+          <div class = "button-area centered"></div>
+
         </div>
+
       <% end %>
       <div class = "card-action">
-        <div class = "view-mode">
-          <%= cell(:image).(:show, type: :bordered, id: @model.file_id) if @model.file_id %>
-          <span><%= controller.message_for description: @model.description %></span>
-        </div>
       </div>
     </div>
   </div>

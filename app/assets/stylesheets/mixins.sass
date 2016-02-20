@@ -81,15 +81,22 @@
 
 =pool-index-field
   &
+    height: 100%
     +block-centered
     .col
+      position: relative
+      top: -10%
       display: inline
       width: 100%
       text-align: center !important
+      user-select: none
+      height: 100%
       a
         width: 170px
         height: 170px
         display: inline-block
+      *
+        +vertical-center
       i:hover
         color: $icon-hover-color
 
@@ -166,6 +173,7 @@
     +block-centered
     text-align: left
     width: 90%
+    height: auto
 
 =icon-hover
   color: $icon-hover-color
@@ -256,38 +264,42 @@
     .card-content
       .card-title
         color: black
-    .card
-      float: left
-      .card-content
-        padding-top: 0 !important
-      .card-action
-        padding: 0
-        font-size: 1.2rem
-        line-height: 1.2rem
-        border: none
-        margin-top: -10px
-        text-align: left !important
-        .view-mode
-          margin-top: 12%
-        .thumbnail
-          float: left
-          margin-right: 5px
-        span
-          display: inline
-      .card
-        width: 100%
-    .card:nth-of-type(odd)
-      +card1
-      .card:nth-child(even)
-        +card2
-      .card:nth-child(odd)
-        +card1
-    .card:nth-of-type(even)
+
+=list-card
+  &
+    float: left
+    input
+      margin-bottom: 5% !important
+    .card-action
+      padding: 0
+      font-size: 1.2rem
+      line-height: 1.2rem
+      border: none
+      margin-top: -10px
+      text-align: left !important
+      .view-mode
+        margin-top: 12%
+      .thumbnail
+        float: left
+        margin-right: 5px
+      span
+        display: inline
+  &:nth-of-type(odd)
+    +card1
+    .card-card:nth-child(even)
       +card2
-      .card:nth-child(even)
-        +card1
-      .card:nth-child(odd)
-        +card2
+    .card-card:nth-child(odd)
+      +card1
+  &:nth-of-type(even)
+    +card2
+    .card-card:nth-child(even)
+      +card1
+    .card-card:nth-child(odd)
+      +card2
+
+=card-card
+  &
+    width: 100%
 
 //behavior
 
@@ -348,6 +360,12 @@
 
 .top-card
   +top-card
+
+.list-card
+  +list-card
+
+.card-card
+  +card-card
 
 .icon-hover
   +icon-hover

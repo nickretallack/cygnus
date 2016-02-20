@@ -1,0 +1,10 @@
+<div class = "card card-card new" >
+  <div class = "card-content">
+    <div class = "card-title">
+      <%= form_for @model, url: new_card_path(@user, @model), method: :patch, html: { class: "remote button-submit" } do |f| %>
+        <%= f.submit "Add New Card To This List", id: "add" %>
+      <% end %>
+      <div class = "button-area centered"></div>
+    </div>
+  </div>
+</div>

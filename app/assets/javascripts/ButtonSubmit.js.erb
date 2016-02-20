@@ -1,95 +1,91 @@
 ButtonSubmit = (function(){
 
-    var self;
+  var ButtonSubmit = function(element){
 
-    var ButtonSubmit = function(element){
+    var self = this;
 
-        self = this;
+    self.form = element;
+    self.area = element.siblings(".button-area").safeAdd();
+    self.icons = JSON.parse('<%= CONFIG[:button_icons].to_json %>');
 
-        self.form = element;
-        self.area = element.siblings(".button-area").safeAdd();
-        self.icons = JSON.parse('<%= CONFIG[:button_icons].to_json %>');
-        self.initialize();
+  };
 
-    };
+  Make.extend(ButtonSubmit.prototype, {
 
-    Make.extend(ButtonSubmit.prototype, {
-
-        initialize: function(){
-            self.area.addClass("row");
-            $.each(self.icons, function(name, icon){
-                var button = self.form.children("#" + name);
-                if(!button.exists()) return;
-                var size = /small|medium-small|medium|large/.exec(button.attr("class"));
-                size = size === null? "medium-small" : size.first();
-                if(self.form.attr("edit")){
-                    var form = $("#" + self.form.attr("edit")).safeAdd();
-                    if(form !== undefined){
-                        switch(name){
-                            case "edit":
-                                var on = form.children(".on");
-                                var off = form.children(".off");
-                                on.hide();
-                                button.on("click.ButtonSubmit", function(event){
-                                    pause(event);
-                                    off.hide();
-                                    on.show();
-                                });
-                                break;
-                            case "save":
-                                button.on("click.ButtonSubmit", function(event){
-                                    pause(event);
-                                    form.submit();
-                                });
-                                break;
-                        }
-                    }
-                }
-                var div, icon;
-                self.area.append((div = $("<div />", {
-                    css: {
-                        float: "left"
-                    }
-                })).append(
-                    (icon = $("<i />", {
-                        class: "material-icons " + size,
-                        id: button.attr("value"),
-                        text: icon,
-                        title: name.capitalize(),
-                        css: {
-                            cursor: "pointer"
-                        }
-                    })),
-                    $("<label />", {
-                        text: button.attr("value"),
-                        css: {
-                            display: "block"
-                        }
-                    })
-                ).on("mouseenter.ButtonSubmit", function(){
-                    div.addClass("icon-hover");
-                }).on("mouseleave.ButtonSubmit", function(){
-                    div.removeClass("icon-hover");
-                }).on("click.ButtonSubmit", function(event){
-                    pause(event);
-                    icon.replaceWithSpinner();
-                    button.trigger("click");
-                }));
-                button.hide();
-            });
-            if(self.area.hasClass("centered")){
-                self.area.children().css({
-                    width: (100 / self.area.children().length)+"%"
+    initialize: function(){
+      var self = this;
+      self.area.addClass("row");
+      $.each(self.icons, function(name, icon){
+        var button = self.form.children("#" + name);
+        if(!button.exists()) return;
+        var size = /small|medium-small|medium|large/.exec(button.attr("class"));
+        size = size === null? "medium-small" : size.first();
+        if(self.form.attr("edit")){
+          var form = $("#" + self.form.attr("edit")).safeAdd();
+          if(form !== undefined){
+            switch(name){
+              case "edit":
+                var on = form.children(".on");
+                var off = form.children(".off");
+                on.hide();
+                button.on("click.ButtonSubmit", function(event){
+                  pause(event);
+                  off.hide();
+                  on.show();
                 });
+                break;
+              case "save":
+                button.on("click.ButtonSubmit", function(event){
+                  pause(event);
+                  form.submit();
+                });
+                break;
             }
-            var attachmentButton = self.area.children().filter(function(index, element){
-                return $(element).prop("textContent") === '<%= CONFIG[:button_icons][:create] %>';
-            });
-            if(attachmentButton.exists()) attachmentButton.appendTo(self.area);
+          }
         }
+        var div, icon;
+        self.area.append((div = $("<div />", {
+          css: {
+            float: "left",
+            cursor: "pointer"
+          }
+        })).append(
+          (icon = $("<i />", {
+            class: "material-icons " + size,
+            id: button.attr("value"),
+            text: icon,
+            title: name.capitalize()
+          })),
+          $("<label />", {
+            text: button.attr("value"),
+            css: {
+              display: "block"
+            }
+          })
+        ).on("mouseenter.ButtonSubmit", function(){
+          div.addClass("icon-hover");
+        }).on("mouseleave.ButtonSubmit", function(){
+          div.removeClass("icon-hover");
+        }).on("click.ButtonSubmit", function(event){
+          pause(event);
+          icon.replaceWithSpinner();
+          button.trigger("click");
+        }));
+        button.hide();
+      });
+      if(self.area.hasClass("centered")){
+        self.area.children().css({
+          width: (100 / self.area.children().length)+"%"
+        });
+      }
+      // var attachmentButton = self.area.children().filter(function(index, element){
+      //   return $(element).prop("textContent") === '<%= CONFIG[:button_icons][:create] %>';
+      // });
+      // if(attachmentButton.exists()) attachmentButton.appendTo(self.area);
+    }
 
-    });
+  });
 
-    return ButtonSubmit;
+  return ButtonSubmit;
 
 })();

@@ -8,6 +8,9 @@
 .hidable + .row
   margin-top: 10px !important
 
+.row
+  margin-bottom: 0 !important
+
 .row:not(.hidable):not(.destroyable):not(.button-area)
   margin: 0 !important
 
@@ -43,12 +46,15 @@
     display: inline !important
 
 .search
-  i
-    float: left
   input, .hidable
     width: calc(100% - 36px)
   input[type = "submit"], .hidable
-    margin-left: 36px
+    margin-top: 2% !important
+    margin-left: 36px !important
+
+.search > i
+  float: left
+  font-size: 36px
 
 .input-field
   padding-top: 10px
@@ -220,6 +226,17 @@ input:focus:-ms-input-placeholder, textarea:focus:-ms-input-placeholder
   +block-centered
   i
     transition: 0.1s ease-out !important
+  i + label
+    margin-top: 5%
+  div
+    cursor: pointer
+    i
+      cursor: pointer
+    label
+      cursor: pointer
+
+#cards
+  min-height: 15px
 
 .button-area.float, input[type = "submit"].float
   position: fixed

@@ -18,6 +18,12 @@ class CardsController < ApplicationController
     end
   end
 
+  def destroy_list
+    @card = Card.find(params[Card.slug])
+    
+    @card.destroy
+  end
+
   def new_card
     @card = Card.new
     @card.save!

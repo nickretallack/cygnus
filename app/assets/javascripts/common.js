@@ -55,28 +55,29 @@ Init = {
     // keep these last so contents are loaded already
     Destroyable: ".destroyable",
     Hidable: ".hidable"
+  },
+  reset: function(){
+    $(".button-area").html("");
   }
 };
 
-function initialize(element){
-  element = $(element);
+bleatr = [];
+
+function initialize(){
   $.each(Init.js, function(key, value){
-    if(element.is(key)) value(element);
-    element.find(key).each(function(index, element){
-      element = $(element);
-      value(element);
-    });
+    value($(key));
   });
-  element.find(".button-area").html("");
-  element.find(".button-submit").removeClass("objectified");
+  Init.reset();
   $.each(Init.classes, function(key, value){
-    if(element.is(value)) new window[key](element);
-    element.find(value).each(function(index, element){
+    $(value).each(function(index, element){
       element = $(element);
       if(!element.hasClass("objectified")){
-        new window[key](element);
+        bleatr.push(new window[key](element));
         element.addClass("objectified");
       }
-    })
+    });
+  });
+  $.each(bleatr, function(index, object){
+    if(object.has("initialize")) object.initialize();
   });
 }

@@ -49,10 +49,14 @@ Rails.application.routes.draw do
   scope path: ":#{User.slug}" do
     scope path: "workboard" do
       controller :cards do
-        resources :cards, only: [:index], path: ""
-        resources :cards, only: [:destroy], path: ""
-        patch :new_list, path: "", as: :new_list
-        patch :new_card, path: ":id", as: :new_card
+        get :index, path: "", as: :cards
+        patch :reorder_cards, path: "reorder"
+        patch :new_list, path: "new"
+        patch :update_list, path: ":#{Card.slug}"
+        delete :destroy_list, path: ":#{Card.slug}"
+        patch :new_card, path: "new/:#{Card.slug}"
+        patch :update_card, path: "card/:#{Card.slug}"
+        delete :destroy_card, path: "card/:#{Card.slug}"
       end
     end
     controller :messages do

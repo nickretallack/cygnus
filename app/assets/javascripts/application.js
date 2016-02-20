@@ -17,9 +17,9 @@
 //= require_tree .
 
 $(document).on("page:load", function(){
-    initialize($("html"));
+    initialize();
 });
 
 $(window).on("load", function(){
-    initialize($("html"));
+    initialize();
 });

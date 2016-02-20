@@ -1,3 +1,2 @@
-var card = $('<%=j cell(:card, @card).(:list) %>');
-$("#lists").append(card);
-initialize($(".top-card"));
+$("#lists").children("#new").before('<%=j cell(:card, @card).(:list) %>');
+initialize();

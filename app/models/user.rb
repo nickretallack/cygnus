@@ -35,13 +35,22 @@ class User < ActiveRecord::Base
   def top_card
     cards = children(:user, id, :card, "?")
     if cards.empty?
-      card = Card.new
-      card.save!
-      new_lookup(:user, id, :card, card.id)
+      top_card = Card.new
+      top_card.save!
+      new_lookup(:user, id, :card, top_card.id)
+      list_one = Card.new(title: "To Do")
+      list_one.save!
+      new_lookup(:card, top_card.id, :card, list_one.id)
+      list_two = Card.new(title: "Doing")
+      list_two.save!
+      new_lookup(:card, top_card.id, :card, list_two.id)
+      list_three = Card.new(title: "Done")
+      list_three.save!
+      new_lookup(:card, top_card.id, :card, list_three.id)
     else
-      card = cards.first
+      top_card = cards.first
     end
-    card
+    top_card
   end
 
   def lists

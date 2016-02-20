@@ -21,7 +21,17 @@ class CardCell < HelpfulCell
     render
   end
 
+  def new_list
+    @user = controller.instance_variable_get("@user")
+    render
+  end
+
   def card
+    @user = controller.instance_variable_get("@user")
+    render
+  end
+
+  def new_card
     @user = controller.instance_variable_get("@user")
     render
   end

@@ -3,7 +3,6 @@ Workboard = (function(){
   var Workboard = function(element){
 
     var self = this;
-    test = this;
 
     self.topCard = element;
     self.modeRegex = /view|edit|reorder/;
@@ -12,10 +11,16 @@ Workboard = (function(){
     self.triggers = {};
     self.divs = {};
 
-    self.initialize();
-    self.switchMode(self.triggers.values().where(function(element){
-      return element.is("[start]");
-    }).first().attr("name"));
+    self.topCard.find("a").filter(function(index, element){
+      return self.modeRegex.test($(element).attr("name"));
+    }).each(function(index, element){
+      self.triggers[$(element).attr("name")] = $(element);
+    });
+    $.each(self.triggers, function(key, value){
+      value.on("click.Workboard", function(){
+        self.switchMode(key);
+      });
+    });
 
   };
 
@@ -23,23 +28,8 @@ Workboard = (function(){
 
     initialize: function(){
       var self = this;
-      self.topCard.find("a").filter(function(index, element){
-        return self.modeRegex.test($(element).attr("name"));
-      }).each(function(index, element){
-        self.triggers[$(element).attr("name")] = $(element);
-      });
-      if(self.topCard.find("[name = can_modify]").attr("value") === "false"){
-        $.each(self.triggers.values(), function(index, element){
-          $("#triggers").hide();
-        });
-      }
       $.each(self.triggers.keys(), function(index, key){
         self.divs[key] = self.topCard.find("div."+key+"-mode");
-      });
-      $.each(self.triggers, function(key, value){
-        value.on("click.Workboard", function(){
-          self.switchMode(key);
-        });
       });
       self.topCard.find(".card-list").each(function(index, element){
         self.lists[$(element).attr("id")] = $(element);
@@ -47,6 +37,9 @@ Workboard = (function(){
       $.each(self.lists.values(), function(index, element){
         self.cards[$(element).attr("id")] = $(element).find(".card-card");
       });
+      self.switchMode(self.triggers.values().where(function(element){
+        return element.is("[start]");
+      }).first().attr("name"));
     },
 
     switchMode: function(mode){
@@ -56,20 +49,24 @@ Workboard = (function(){
       $.each(self.divs.values(), function(index, value){
         value.hide();
       });
+      $(".card.new").hide();
       self.topCard.find(".card").off();
       self.divs[mode[0]].show();
+      self[mode[0]]();
     },
 
     view: function(){
-
+      var self = this;
     },
 
     edit: function(){
-
+      var self = this;
+      $(".card.new").show();
     },
 
     reorder: function(){
-      topCard.find(".card").on("mouseenter", function(){
+      var self = this;
+      self.topCard.find(".card").on("mouseenter", function(){
         hover = $(this);
         hover.find("h4", "h5").css({
           cursor: "default"
@@ -78,7 +75,7 @@ Workboard = (function(){
         $(this).on("mousedown", function(event){
           held = $(this);
           var title = held.find("#title");
-          pauseEvent(event);
+          pause(event);
           $("<div />", {
             class: "card thing"
           }).css({
@@ -156,7 +153,7 @@ Workboard = (function(){
             }
           }
         }
-        fillWorklistOrderField();
+        self.generateOrderField();
       });
     },
 

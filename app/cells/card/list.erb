@@ -1,30 +1,33 @@
-<div class = "card list" id = <%= @model.id %> >
+<div class = "card list-card" id = <%= @model.id %> >
   <div class = "card-content">
     <div class = "card-title">
       <div class = "hc view-mode reorder-mode">
-        <h4 id = "title"><%= controller.title_for @model %></h4>
+        <h4 id = "title"><%= title_for @model %></h4>
         <hr />
       </div>
 
-      <% @model.cards.each do |card| %>
-        <%= cell(:card, card).(:card) %>
-      <% end %>
-
       <% if can_modify? @user %>
         <div class = "edit-mode">
-          <%= form_for @model, url: card_path(@user, @model), method: :delete, html: { class: "button-submit" } do |f| %>
-            <%= f.submit "Delete List", id: "delete" %>
-          <% end %>
-          <%= form_for @model, url: card_path(@user, @model), method: :patch, html: { class: "button-submit" } do |f| %>
-            <%= f.text_field :title, placeholder: "List Title" %>
-            <%= f.submit "Edit List", id: "edit" %>
+          <%= form_for @model, url: update_list_path(@user, @model), method: :patch, html: { class: "button-submit" } do |f| %>
+            <%= f.text_field :title, placeholder: "Input List Title" %>
             <%= f.submit "Save List", id: "save" %>
           <% end %>
-          <%= form_for @model, url: card_path(@user, @model), method: :patch, html: { class: "button-submit" } do |f| %>
-            <%= f.submit "Create Card", id: "add" %>
+          <%= form_for @model, url: destroy_list_path(@user, @model), method: :delete, html: { class: "button-submit" } do |f| %>
+            <%= f.submit "Delete List", id: "delete" %>
           <% end %>
           <div class = "button-area centered"></div>
         </div>
+
+        <div id = "cards">
+          <% @model.cards.each do |card| %>
+            <%= cell(:card, card).(:card) %>
+          <% end %>
+        </div>
+
+        <div class = "edit-mode">
+          <%= cell(:card, @model).(:new_card) %>
+        </div>
+
       <% end %>
     </div>
   </div>

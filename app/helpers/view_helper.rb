@@ -84,12 +84,12 @@ module ViewHelper
     end
   end
 
-  def title_for(instance)
+  def title_for(instance, name = nil)
     case true
     when !(instance.respond_to? :title rescue false)
       "Untitled"
     when instance.title.blank?
-      "Untitled #{readable instance.class.name}"
+      "Untitled #{name || readable(instance.class.name)}"
     else
       instance.title
     end

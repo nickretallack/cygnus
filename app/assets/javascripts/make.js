@@ -122,7 +122,7 @@ Make.extend(Object.prototype, {
   },
 
   has: function(property){
-    return this[property] !== "undefined";
+    return this[property] !== undefined;
   },
 
   keys: function(){
