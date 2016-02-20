@@ -1,4 +1,3 @@
-$("#lists").html("<% @user.lists.each do |list| %><%= list.id %><% end %>");
-var form = $("[value = '<%= params[:commit] %>']").parent();
-form.siblings(".button-area").html("");
-initialize(form);
+var card = $('<%=j cell(:card, @card).(:list) %>');
+$("#lists").append(card);
+initialize($(".top-card"));

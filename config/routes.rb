@@ -52,6 +52,7 @@ Rails.application.routes.draw do
         resources :cards, only: [:index], path: ""
         resources :cards, only: [:destroy], path: ""
         patch :new_list, path: "", as: :new_list
+        patch :new_card, path: ":id", as: :new_card
       end
     end
     controller :messages do

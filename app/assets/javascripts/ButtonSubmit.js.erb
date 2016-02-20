@@ -47,7 +47,9 @@ ButtonSubmit = (function(){
                 }
                 var div, icon;
                 self.area.append((div = $("<div />", {
-                    class: "col"
+                    css: {
+                        float: "left"
+                    }
                 })).append(
                     (icon = $("<i />", {
                         class: "material-icons " + size,
@@ -75,6 +77,11 @@ ButtonSubmit = (function(){
                 }));
                 button.hide();
             });
+            if(self.area.hasClass("centered")){
+                self.area.children().css({
+                    width: (100 / self.area.children().length)+"%"
+                });
+            }
             var attachmentButton = self.area.children().filter(function(index, element){
                 return $(element).prop("textContent") === '<%= CONFIG[:button_icons][:create] %>';
             });

@@ -39,8 +39,7 @@ Init = {
   js: {
     ".nojs": function(elements){ elements.hide(); },
     ".js": function(elements){ elements.show(); },
-    ".remote": function(elements){ elements.attr("data-remote", "true"); },
-    ".preloader-wrapper": function(elements){ elements.restoreFromSpinner(); }
+    ".remote": function(elements){ elements.attr("data-remote", "true"); }
   },
   classes: { // in order of load
     AddableAttachment: ".attachment-area",
@@ -64,13 +63,20 @@ function initialize(element){
   $.each(Init.js, function(key, value){
     if(element.is(key)) value(element);
     element.find(key).each(function(index, element){
-      value($(element));
+      element = $(element);
+      value(element);
     });
   });
+  element.find(".button-area").html("");
+  element.find(".button-submit").removeClass("objectified");
   $.each(Init.classes, function(key, value){
-    if(element.is(value)) new window[key](element)
+    if(element.is(value)) new window[key](element);
     element.find(value).each(function(index, element){
-      new window[key]($(element));
+      element = $(element);
+      if(!element.hasClass("objectified")){
+        new window[key](element);
+        element.addClass("objectified");
+      }
     })
   });
 }

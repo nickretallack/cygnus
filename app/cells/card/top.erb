@@ -14,8 +14,7 @@
 
       <div id = "lists">
         <% @user.lists.each do |list| %>
-          <%= list.id %>
-          <%#= cell(:card, list).(:show, user: @user) %>
+          <%= cell(:card, list).(:list) %>
         <% end %>
       </div>
 

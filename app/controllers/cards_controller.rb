@@ -18,6 +18,16 @@ class CardsController < ApplicationController
     end
   end
 
+  def new_card
+    @card = Card.new
+    @card.save!
+    new_lookup(:card, params[:id], :card, @card.id)
+    respond_to do |format|
+      format.html { back }
+      format.js
+    end
+  end
+
   def update
     @card = Card.find(params[Card.slug])
     case params[:commit]
