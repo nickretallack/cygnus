@@ -57,17 +57,36 @@
   font-size: 36px
 
 .input-field
-  padding-top: 10px
-  padding-bottom: 5px
+  padding-bottom: 10px
   margin: 0
-  display: inline-block
-  width: 100%
   label
     font-size: 17px
     margin-top: -6px
   label + select
     width: 65%
     float: right
+
+.checkbox-field
+  padding-right: 45px
+
+.addable-field
+  float: left
+  width: calc(100% - 75px)
+  select, input
+    width: 100%
+    margin-top: -4px
+    margin-bottom: 6px
+
+.addable-area
+  float: right
+  width: 75px
+  position: relative
+  i
+    +block-centered
+    width: 75px
+    position: absolute
+    bottom: 0
+    left: 0
 
 .button-with-icon
   padding: 0
@@ -97,7 +116,7 @@
   max-width: none !important
 
 .limit-height
-  height: 400px
+  height: 450px
 
 .btn:hover
   font-size: 110%
@@ -133,10 +152,6 @@
   text-align: left
 
 //images
-
-.preview
-  @extend .hc
-  position: relative
 
 .gallery
   text-align: center
@@ -238,10 +253,11 @@ input:focus:-ms-input-placeholder, textarea:focus:-ms-input-placeholder
 #cards
   min-height: 15px
 
-.button-area.float, input[type = "submit"].float
+.button-area.float
   position: fixed
   bottom: 5px
   left: 5px
+  background-color: $background-color
 
 //messages
 #flash

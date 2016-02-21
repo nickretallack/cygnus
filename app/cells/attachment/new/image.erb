@@ -1,25 +1,16 @@
-<div class = "row new">
-  <%= form_for Attachment.new, url: attachments_path, html: { class: "button-submit" } do |f| %>
-    <%= f.fields_for Upload.new, multipart: true do |u| %>
-      <div class = "input-field">
-        <%= u.check_box :explicit %><%= u.label :explicit, "Adult Image", id: "explicit-attachment" %>
+<%= fields_for Image.new, multipart: true do |i| %>
+  <div class = "input-field checkbox-field">
+    <%= i.check_box :explicit %><%= i.label :explicit, "Adult Image", id: "explicit-attachment" %>
+    <div class = "file-field input-field bordered">
+      <div class = "submit">
+        <span>Image</span>
+        <%= i.file_field :image, id: "change-attachment" %>
       </div>
-      <div class = "file-field input-field bordered hc">
-        <div class = "submit">
-          <span>Image</span>
-          <%= u.file_field :image, id: "change-attachment" %>
-        </div>
-      </div>
-    <% end %>
-    <%= f.hidden_field :child_model, value: @options[:child_model] %>
-    <%= f.hidden_field :parent_model, value: @options[:parent_model] %>
-    <%= f.hidden_field :parent_id, value: @options[:parent_id] %>
-    <%= f.submit "Create Attachment", id: "done" %>
-  <% end %>
-  <div class = "col s12 hc preview" associated-field = "change-attachment" explicit-label = "explicit-attachment">
-    <%= cell(:image).(:show, type: :full, id: -1) %>
-    <span class = "js">Change Image</span>
-    <span class = "danger nojs">Please mark adult images explicit before saving.</span>
+    </div>
   </div>
-  <div class = "button-area"></div>
-</div>
+  <div class = "image-preview" file-field = "change-attachment" explicit-label = "explicit-attachment">
+    <%= cell(:image).(:show, :full, (@model.id rescue -1)) %>
+    <span class = "inline js">Click image to change</span>
+    <span class = "inline danger nojs">Please mark adult images explicit before saving.</span>
+  </div>
+<% end %>

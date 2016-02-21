@@ -97,12 +97,6 @@ module ViewHelper
 
   def select_options_for(type)
     case type
-    when :pool
-      [["Add to pool", -1]].
-      concat(@user.pools.order(:id).
-      collect { |pool|
-        [pool.title, pool.id]
-      })
     when :artist_type
       [["Artist Type", -1]].
       concat(CONFIG[:artist_types].

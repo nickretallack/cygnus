@@ -5,7 +5,7 @@ ButtonSubmit = (function(){
     var self = this;
 
     self.form = element;
-    self.area = element.siblings(".button-area").safeAdd();
+    self.area = element.siblings(".button-area");
     self.icons = JSON.parse('<%= CONFIG[:button_icons].to_json %>');
 
   };
@@ -16,7 +16,7 @@ ButtonSubmit = (function(){
       var self = this;
       self.area.addClass("row");
       $.each(self.icons, function(name, icon){
-        var button = self.form.children("#" + name);
+        var button = self.form.find("#" + name);
         if(!button.exists()) return;
         var size = /small|medium-small|medium|large/.exec(button.attr("class"));
         size = size === null? "medium-small" : size.first();

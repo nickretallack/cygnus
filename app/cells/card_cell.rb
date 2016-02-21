@@ -13,27 +13,27 @@ class CardCell < HelpfulCell
 
   def top
     @user = controller.instance_variable_get("@user")
-    render
+    render "show/top"
   end
 
   def list
     @user = controller.instance_variable_get("@user")
-    render
+    render "show/list"
   end
 
   def new_list
     @user = controller.instance_variable_get("@user")
-    render
+    render "new/list"
   end
 
   def card
     @user = controller.instance_variable_get("@user")
-    render
+    render "show/card"
   end
 
   def new_card
     @user = controller.instance_variable_get("@user")
-    render
+    render "new/card"
   end
 
   def header(options)

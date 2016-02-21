@@ -307,6 +307,22 @@
   &
     width: 100%
 
+=image-preview
+  &
+    border: 2px solid black
+    border-radius: 8px
+    font-size: 18px
+    line-height: 18px
+    color: black
+    cursor: pointer
+    div
+      width: 100%
+    img
+      max-height: 399px
+  &:hover
+    span
+      color: $danger-color
+
 //behavior
 
 .vc
@@ -378,3 +394,6 @@
 
 .icon-hover
   +icon-hover
+
+.image-preview
+  +image-preview

@@ -84,6 +84,10 @@ Make.extend(String.prototype, {
 
   humanize: function(){
     return this.replace(/([a-z])([A-Z])/g, '$1'+" "+'$2').replace(/([A-Z])([A-Z])([a-z])/g, '$1'+" "+'$2'+'$3').replace(/([A-Z])(I|A)(?=\s)/g, '$1'+" "+'$2');
+  },
+
+  toArray: function(){
+    return this.replace(/]/g, "").split("[");
   }
 
 });
@@ -247,13 +251,6 @@ Make.extend(Array.prototype, {
     return which;
   },
 
-  modify: function(rule){
-    index=0;do{
-      this[index] = rule(this[index]);
-    }while(++index < this.length);
-    return this;
-  },
-
   modifyWhere: function(where, mod){
     return this.where(where).modify(mod);
   },
@@ -338,6 +335,12 @@ Make.extend(Array.prototype, {
       }while(++index<length);
     }
     return this;
+  },
+
+  parse: function(){
+    return this.map(function(element, index){
+      return index === 0? element : element+"]"
+    }).join("[");
   }
 
 });

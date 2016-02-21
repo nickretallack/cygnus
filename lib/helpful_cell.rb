@@ -1,6 +1,7 @@
 class HelpfulCell < Cell::ViewModel
   include ActionView::RecordIdentifier
   include ActionView::Helpers::FormHelper
+  include ActionView::Helpers::CaptureHelper
   include ActionView::Helpers::UrlHelper
   include ActionView::Helpers::RecordTagHelper
   include Hooks

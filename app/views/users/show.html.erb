@@ -1,44 +1,38 @@
-<%= form_for @user, method: :patch, url: user_path(@user) do |f| %>
-  <div class = "row">
+<%= form_for @user, method: :patch, url: user_path(@user), html: { class: "remote button-submit" } do |f| %>
+  <div class = "row limit-height">
     <% if can_modify? @user %>
-      <div class = "col s12 m3">
-        <!-- avatar form -->
-      </div>
-      <div class = "col s12 m3 hc preview" associated-field = "change-avatar" explicit-label = "explicit-avatar">
-        <%= cell(:image).(:show, type: :full, id: @user.avatar) %>
-        <span class = "js">Change Avatar (Any Size Image)</span>
-        <span class = "danger nojs">Please mark adult avatars explicit before saving.</span>
+      <div class = "col s6 hc">
+        <%= cell(:attachment, @user.avatar).(:new_image) %>
       </div>
     <% else %>
-      <div class = "col s12 m6 l7 expandable preview">
+      <div class = "col s6 expandable preview">
         <%= cell(:image).(:show, type: :full, id: @user.avatar) %>
       </div>
     <% end %>
-    <div class = "col s12 m6 l5">
+    <div class = "col s6 vc">
       <%= cell(:user, @user).(:status, :verbose) %>
       <%= render "links", user: @user unless can_modify? @user %>
     </div>
   </div>
-  <%= @user.gallery.user.name %>
   <div class = "row">
     <% if can_modify? @user %>
-      <%= f.text_field :offsite_gallery, placeholder: "Offsite Gallery" %>
       <hr class = "js" />
       <%= f.fields_for "user[artist_type][]" do %>
         <%= text_field "user[artist_type]", "0", placeholder: "Artist Type(s)", class: "nojs", value: @user.artist_type %>
         <% unless @user.artist_type.blank? %>
           <blockquote class = "inline js taglist" id = "user[artist_type][0]"><%= @user.artist_type %></blockquote><br />
         <% end %>
-        <div class = "input-field js addable-field">
-          <%= select "user[artist_types]", "1", select_options_for(:artist_type), {}, { class: "btn button-with-icon categorized(/)", id: "user[artist_type][1]", button: "add-artist-type" } %>
+        <div class = "js addable-field">
+          <%= select "user[artist_types]", "1", select_options_for(:artist_type), {}, { class: "btn button-with-icon", id: "user[artist_type][1]", button: "add-artist-type" } %>
         </div>
-        <i class = "material-icons medium-small js" id = "add-artist-type"><%= CONFIG[:button_icons][:add] %></i>
+        <div class ="addable-area"></div>
       <% end %>
       <hr class = "js" />
+      <%= f.text_area :offsite_gallery, placeholder: "Offsite Galleries" %>
       <%= f.text_area :price, placeholder: "Commission rates" %>
       <%= f.text_area :tags, placeholder: "Tags" %>
       <%= f.text_area :details, placeholder: "Profile Text" %>
-      <%= f.submit "Update Profile", class: "page-submit" %>
+      <%= f.submit "Update Profile", class: "float", id: "save" %>
     <% else %>
       <% unless @user.artist_type.blank? %><blockquote class = "inline"><%= @user.artist_type %></blockquote><% end %>
       <% unless @user.gallery.blank? %><blockquote class = "inline link"><%= link_to @user.gallery %></blockquote><% end %>
@@ -48,6 +42,7 @@
     <% end %>
   </div>
 <% end %>
+<div class = "button-area float"></div>
 
 <% content_for :footer do %>
   <div class = "row">
