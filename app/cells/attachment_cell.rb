@@ -1,4 +1,4 @@
-class AssociationCell < HelpfulCell
+class AttachmentCell < HelpfulCell
   def new(options)
     @options = options
     render "new/#{options[:child_model]}"

@@ -1,19 +1,8 @@
-<% provide(:header, @user.name) %>
-
 <%= form_for @user, method: :patch, url: user_path(@user) do |f| %>
   <div class = "row">
     <% if can_modify? @user %>
       <div class = "col s12 m3">
-        <div class = "input-field"><%= f.check_box :view_adult %><%= f.label :view_adult, "View Adult Images Sitewide" %></div>
-        <%= f.fields_for @user.avatar.nil?? Upload.new : Upload.find(@user.avatar), multipart: true do |u| %>
-          <div class = "input-field"><%= u.check_box :explicit %><%= u.label :explicit, "Explicit Avatar", id: "explicit-avatar" %></div>
-          <div class = "row file-field input-field hc nojs">
-            <div class = "submit">
-              <span>Change Avatar</span>
-              <%= u.file_field :picture, id: "change-avatar" %>
-            </div>
-          </div>
-        <% end %>
+        <!-- avatar form -->
       </div>
       <div class = "col s12 m3 hc preview" associated-field = "change-avatar" explicit-label = "explicit-avatar">
         <%= cell(:image).(:show, type: :full, id: @user.avatar) %>
@@ -30,9 +19,10 @@
       <%= render "links", user: @user unless can_modify? @user %>
     </div>
   </div>
+  <%= @user.gallery.user.name %>
   <div class = "row">
     <% if can_modify? @user %>
-      <%= f.text_field :gallery, placeholder: "Offsite Gallery" %>
+      <%= f.text_field :offsite_gallery, placeholder: "Offsite Gallery" %>
       <hr class = "js" />
       <%= f.fields_for "user[artist_type][]" do %>
         <%= text_field "user[artist_type]", "0", placeholder: "Artist Type(s)", class: "nojs", value: @user.artist_type %>
@@ -60,30 +50,6 @@
 <% end %>
 
 <% content_for :footer do %>
-  <div class = "row hidable min">
-    <div class = "hidable-title"><%= @user.name %>'s recent submissions</div>
-    <div class = "row pool-index-field">
-      <div class = "col">
-        <% enum_for @user.pools.first.submissions.order("id desc").limit(10).reverse do |submission| %>
-          <%= link_to submission_path(submission) do %>
-            <%= cell(:image).(:show, type: :bordered, id: submission.file_id) %>
-          <% end %>
-        <% end %>
-      </div>
-    </div>
-  </div>
-  <div class = "row hidable min">
-    <div class = "hidable-title"><%= @user.name %>'s recent favorites</div>
-    <div class = "row pool-index-field">
-      <div class = "col">
-        <% enum_for @user.favs.reverse.take(10).collect { |id| Submission.find(id) } do |submission| %>
-          <%= link_to submission_path(submission) do %>
-            <%= cell(:image).(:show, type: :bordered, id: submission.file_id) %>
-          <% end %>
-        <% end %>
-      </div>
-    </div>
-  </div>
   <div class = "row">
     Member Since: <%= Date.parse(@user.created_at.to_s).to_formatted_s(:long_ordinal) %><br />
     <% if can_modify? @user %>

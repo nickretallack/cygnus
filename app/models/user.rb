@@ -21,40 +21,33 @@ class User < ActiveRecord::Base
   validates :password, length: { minimum: 6 }, allow_blank: true
 
   def avatar
-    children(:user, id, :upload, "?").first
+    children("image").first
   end
 
   def pools
-    children(:user, id, :pool, "?")
+    children("pool")
   end
 
   def gallery
     pools.first
   end
 
-  def top_card
-    cards = children(:user, id, :card, "?")
+  def card
+    card = children("card")
     if cards.empty?
-      top_card = Card.new
-      top_card.save!
-      new_lookup(:user, id, :card, top_card.id)
       list_one = Card.new(title: "To Do")
       list_one.save!
-      new_lookup(:card, top_card.id, :card, list_one.id)
       list_two = Card.new(title: "Doing")
       list_two.save!
-      new_lookup(:card, top_card.id, :card, list_two.id)
       list_three = Card.new(title: "Done")
       list_three.save!
-      new_lookup(:card, top_card.id, :card, list_three.id)
+      top_card = Card.new(attachments: ["card-#{list_one.id}", "card-#{list_two.id}", "card-#{list_three.id}"])
+      top_card.save!
+      update_attribute(:attachments, attachments << "card-#{top_card.id}")
     else
-      top_card = cards.first
+      card
     end
-    top_card
-  end
-
-  def lists
-    children(:card, top_card.id, :card, "?")
+    card
   end
 
   def messages

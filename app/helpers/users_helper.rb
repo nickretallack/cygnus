@@ -5,7 +5,7 @@ module UsersHelper
   def first_log_in(user)
     pool = Pool.new(title: "Gallery")
     pool.save!
-    new_lookup(user: user.id, pool: pool.id)
+    user.update_attribute(:attachments, user.attachments << "pool-#{pool.id}")
     activate_session user
     flash[:success] = "welcome to #{CONFIG[:name]}"
     session.delete(:email)

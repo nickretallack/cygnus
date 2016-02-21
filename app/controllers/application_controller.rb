@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   before_filter :get_user
 
   before_filter only: [:create, :destroy] do
-    insist_on :permission, @user
+    insist_on :permission, @user unless controller_name == "users"
   end
 
   before_filter only: [:show, :destroy, :update] do

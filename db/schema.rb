@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160218004809) do
+ActiveRecord::Schema.define(version: 20160221043359) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,54 +19,20 @@ ActiveRecord::Schema.define(version: 20160218004809) do
   create_table "cards", force: :cascade do |t|
     t.string   "title"
     t.string   "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.string   "attachments", default: [],              array: true
   end
 
-  create_table "lookups", force: :cascade do |t|
-    t.string   "parent_model"
-    t.string   "child_model"
-    t.boolean  "confirmed",    default: false
-    t.boolean  "decided",      default: false
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
-    t.integer  "child_id"
-    t.integer  "parent_ids",   default: [],                 array: true
-  end
-
-  create_table "messages", force: :cascade do |t|
-    t.string   "subject"
+  create_table "comments", force: :cascade do |t|
     t.text     "content"
     t.integer  "user_id"
-    t.integer  "message_id"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
     t.integer  "submission_id"
-    t.integer  "recipient_ids", default: [],              array: true
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
-  create_table "order_forms", force: :cascade do |t|
-    t.json     "content",    null: false
-    t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string   "title"
-  end
-
-  create_table "pools", force: :cascade do |t|
-    t.string   "title"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "submissions", force: :cascade do |t|
-    t.string   "title"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.text     "description"
-  end
-
-  create_table "uploads", force: :cascade do |t|
+  create_table "images", force: :cascade do |t|
     t.string   "file"
     t.boolean  "enabled",           default: true
     t.boolean  "explicit",          default: false
@@ -76,13 +42,46 @@ ActiveRecord::Schema.define(version: 20160218004809) do
     t.datetime "updated_at",                        null: false
   end
 
+  create_table "messages", force: :cascade do |t|
+    t.string   "subject"
+    t.text     "content"
+    t.integer  "user_id"
+    t.integer  "recipient_id"
+    t.integer  "message_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.integer  "submission_id"
+  end
+
+  create_table "order_forms", force: :cascade do |t|
+    t.json     "content",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "title"
+  end
+
+  create_table "pools", force: :cascade do |t|
+    t.string   "title"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.string   "attachments", default: [],              array: true
+  end
+
+  create_table "submissions", force: :cascade do |t|
+    t.string   "title"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.text     "description"
+    t.string   "attachments", default: [],              array: true
+  end
+
   create_table "users", force: :cascade do |t|
     t.string   "name"
     t.string   "password_digest"
     t.string   "email"
     t.string   "level"
     t.inet     "ip_address"
-    t.string   "gallery"
+    t.string   "offsite_gallery"
     t.string   "price"
     t.text     "details"
     t.string   "tags"
@@ -98,7 +97,7 @@ ActiveRecord::Schema.define(version: 20160218004809) do
     t.integer  "favs",              default: [],                                                                                    array: true
     t.integer  "unread_messages",   default: 0
     t.string   "statuses",          default: ["not_interested", "not_interested", "not_interested", "not_interested"],              array: true
-    t.integer  "order_forms",       default: [],                                                                                    array: true
+    t.string   "attachments",       default: [],                                                                                    array: true
   end
 
   add_index "users", ["tags_tsvector"], name: "index_users_on_tags_tsvector", using: :gin

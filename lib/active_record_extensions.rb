@@ -31,4 +31,3 @@ module ActiveRecordExtensions
 end
 
 ActiveRecord::Base.send :include, ActiveRecordExtensions
-ActiveRecord::Base.send :include, LookupHelper

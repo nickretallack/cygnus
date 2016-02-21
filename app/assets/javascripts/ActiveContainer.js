@@ -5,26 +5,15 @@ Destroyable = function(element){
 
   self.buttonTable.append(self.closeButton);
 
-  self.top.css({
-    height: "1rem"
-  });
-
   self.closeButton.on("click.Destroyable", function(){
     self.destroy();
   });
 
   $(window).on("resize.Destroyable", function(){
     self.maximize(false);
-    self.title.css({
-      marginTop: "-0.15rem"
-    });
   });
 
   self.maximize(false);
-
-  self.title.css({
-    marginTop: "-0.15rem"
-  });
 
   return self;
 
@@ -119,7 +108,7 @@ ActiveContainer = (function(){
                 });
 
     self.top =  $("<div />", {
-            class: "row",
+            class: "row top",
             css: {
               userSelect: "none",
               cursor: "default",

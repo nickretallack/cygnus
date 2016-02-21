@@ -1,7 +1,7 @@
 class ImagesController < ApplicationController
 
   before_filter do
-    @image ||= Upload.find(params[:id]) || Upload.new
+    @image ||= Image.find(params[Image.slug]) || Image.new
 
     expires_in CONFIG[:image_shelf_life], public: true
   end

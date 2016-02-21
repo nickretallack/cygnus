@@ -15,8 +15,8 @@ Rails.application.routes.draw do
   end
 
   controller :images do
-    get "image/:type(/:#{Upload.slug})", to: "images#show", as: :image
-    get "download/:#{Upload.slug}", to: "images#download", as: :download
+    get "image/:type(/:#{Image.slug})", to: "images#show", as: :image
+    get "download/:#{Image.slug}", to: "images#download", as: :download
   end
 
   controller :attachments do

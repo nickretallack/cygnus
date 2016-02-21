@@ -6,6 +6,7 @@ CONFIG = {
   name: "Bleatr",
   copyright: "&copy;2015 Lunar Gryphon",
   image_path: Rails.root.join("app", "assets", "images"),
+  upload_path: Rails.root.join("app", "assets", "images", "uploads"),
   image_adult: "adult.png",
   image_adult_thumb: "thumb_adult.png",
   image_disabled: "not_found.png",

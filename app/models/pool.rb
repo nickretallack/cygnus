@@ -1,20 +1,16 @@
 class Pool < ActiveRecord::Base
+  include LookupHelper
 
   def users
-    parents(:user, "?", :pool, id)
+    parents("user")
   end
 
   def user
-    @user ||= users.first
-  end
-
-  def submission_attachments
-    @submission_attachments ||= attachments_for(:pool, id, :submission, "?")
+    users.first
   end
 
   def submissions
-    children(:pool, id, :submission, "?")
-    #@submissions ||= Submission.where("id = ANY (?)", "{" + submission_attachments.map { |submission| submission.parent_id }.join(",") + "}" )
+    children("submission")
   end
 
 end

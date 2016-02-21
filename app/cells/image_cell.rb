@@ -1,7 +1,7 @@
 class ImageCell < HelpfulCell
 
   def show(type, id = nil, suffix = "")
-    @image ||= Upload.find(id) || Upload.new
+    @image ||= Image.find(id) || Image.new
 
     if @image.enabled?
       if @image.explicit? and not current_user.view_adult?
