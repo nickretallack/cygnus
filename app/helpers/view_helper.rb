@@ -60,16 +60,22 @@ module ViewHelper
     markdown.render(content).html_safe
   end
 
-  def enum_for(collection, word = nil)
+  def enum_for(collection, word: nil, reverse: false)
     if collection.empty?
       if word.nil?
-        concat "Nothing here."
+        concat "<span id = 'nothing'>Nothing here.</span>".html_safe
       else
-        concat "No #{word} yet."
+        concat "<span id = 'nothing'>No #{word} yet.</span>".html_safe
       end
     else
-      collection.each do |item|
-        yield item
+      unless reverse
+        collection.each do |item|
+          yield item
+        end
+      else
+        collection.reverse.each do |item|
+          yield item
+        end
       end
     end
   end

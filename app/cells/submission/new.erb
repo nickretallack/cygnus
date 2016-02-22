@@ -1,5 +1,4 @@
-<%= form_for @submission, url: submissions_path, html: { class: "button-submit" } do |f| %>
-  <%= f.hidden_field :pool_id, value: @pool.id  %>
+<%= form_for Submission.new, url: submissions_path(@pool), html: { class: "remote button-submit" } do |f| %>
   <%= f.submit "New Submission", class: "float medium", id: "add" %>
 <% end %>
 <div class = "button-area float"></div>

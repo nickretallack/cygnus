@@ -19,46 +19,44 @@ Destroyable = function(element){
 
 };
 
-Hidable = (function(){
+Hidable = function(element){
 
-  var Hidable = function(element){
+  var self = this;
 
-    var self = new ActiveContainer(element);
+  self.container = new ActiveContainer(element);
 
-    self.buttonTable.append(self.minimizeButton);
-    self.buttonTable.append(self.closeButton);
+  self.container.buttonTable.append(self.container.minimizeButton);
+  self.container.buttonTable.append(self.container.closeButton);
+  self.container.title.append(self.container.divider);
+  self.container.divider.hide();
 
-    self.title.on("mouseenter.Hidable", function(){
-      self.minimizeButton.addClass("icon-hover");
-    });
+  self.container.title.on("mouseenter.Hidable", function(){
+    self.container.minimizeButton.addClass("icon-hover");
+  });
 
-    self.title.on("mouseleave.Hidable", function(){
-      self.minimizeButton.removeClass("icon-hover");
-    });
+  self.container.title.on("mouseleave.Hidable", function(){
+    self.container.minimizeButton.removeClass("icon-hover");
+  });
 
-    self.minimizeButton.on("click.Hidable", function(){
-      self.switch(true);
-    });
-    self.closeButton.on("click.Hidable", function(){
-      self.destroy();
-    });
-    self.title.on("click.Hidable", function(){
-      self.switch(true);
-    });
+  self.container.minimizeButton.on("click.Hidable", function(){
+    self.container.switch(true);
+  });
+  self.container.closeButton.on("click.Hidable", function(){
+    self.container.destroy();
+  });
+  self.container.title.on("click.Hidable", function(){
+    self.container.switch(true);
+  });
 
-    $(window).on("resize.Hidable", function(){
-      self.size();
-      self.same(false);
-    });
+  $(window).on("resize.Hidable", function(){
+    self.container.size();
+    self.container.same(false);
+  });
 
-    self.size();
-    self.same(true);
+  self.container.size();
+  self.container.same(true);
 
-  };
-
-  return Hidable;
-
-})();
+};
 
 ActiveContainer = (function(){
 
@@ -127,8 +125,6 @@ ActiveContainer = (function(){
               }
             });
 
-    self.title.append(self.divider);
-
     self.container.prepend(self.top);
     self.top.append(self.title, self.buttonTable);
 
@@ -169,7 +165,7 @@ ActiveContainer = (function(){
       self.minimizeButton.css({
         top: 5
       });
-      self.divider.show();
+      if(self.content.children().exists()) self.divider.show();
       self.title.css({
         marginTop: 1
       })

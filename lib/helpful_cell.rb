@@ -17,6 +17,10 @@ class HelpfulCell < Cell::ViewModel
     @user = User.find(params[User.slug])
   end
 
+  self.send :define_method, "get_item" do
+    instance_variable_set("@#{controller.controller_name.singularize}", controller.instance_variable_get("@#{controller.controller_name.singularize}"))
+  end
+
   define_hook :before_filter, :after_filter
 
   def call(state = :show, *args)
@@ -27,4 +31,5 @@ class HelpfulCell < Cell::ViewModel
   end
 
   self.send :before_filter, :get_user
+  self.send :before_filter, :get_item
 end

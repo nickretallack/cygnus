@@ -13,7 +13,7 @@
       <div class = "row stout">
         <h2 class = "header full-small"><%= cell(controller_name.singularize).(:header, action: action_name.to_sym) if cell_header? %></h2>
         <%= render "layouts/flash" %>
-        <%= cell(controller_name.singularize).(:instructions, action_name.to_sym) if cell_instructions? %>
+        <%= cell(controller_name.singularize).(:instructions, action: action_name.to_sym) if cell_instructions? %>
       </div>
       <%= yield %>
     </main>
@@ -24,7 +24,7 @@
         <%= render "layouts/footer_links" %>
         <%= CONFIG[:copyright].html_safe %>
       </div>
-      <%#= console %>
+      <%= console %>
     </footer>
   </body>
 </html>

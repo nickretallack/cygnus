@@ -1,22 +1,8 @@
-<% provide(:header, link_to(@pool.user.name, @pool.user)+"'s "+@pool.title) unless User.where(id: @pool.user.id).empty? %>
-
-<% provide :instructions_title, "Create a New Submission" if can_modify? @pool.user %>
-
-<% provide :instructions, "Click the add button floating in the lower left of your screen to make a new submission. Once created, the submission will appear at the beginning of your gallery, partially transparent to indicate it is hidden from other users. You can click on the submission to go to its page and edit its title, description, etc. and upload a picture. You can also change whether the submission is hidden from that page." if can_modify? @pool.user %>
-
 <%= cell(:submission).(:new) %>
 
-<div class = "row gallery">
-  <% enum_for @submissions do |submission| %>
-    <div class = "thumbnail-block">
-      <%= link_to submission do %>
-        <%= title_for submission: submission %>
-        <%= cell(:image).(:show, type: :bordered, id: submission.file_id) %>
-        <% if can_modify? submission.pool.user %>
-          <h5><%= link_to "Destroy", submission, method: :delete, data: { confirm: "Are you sure?" } %></h5>
-        <% end %>
-      <% end %>
-    </div>
+<div class = "row gallery" id = "pools">
+  <% enum_for @pool.submissions, word: "submissions", reverse: true do |submission| %>
+    <%= cell(:submission, submission).(:item) %>
   <% end %>
   <% 11.times do %>
     <div class = "thumbnail-block spacer"></div>

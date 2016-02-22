@@ -63,10 +63,13 @@ module UsersHelper
         redirect_to :root
       end
     when :permission
-      user ||= User.new(name: params[User.slug] || "any other user")
-      unless can_modify? user
-        flash[:danger] = "you are #{anon?? "not signed in" : "signed in as #{current_user.name}"} and are not allowed to view or modify #{user.name}'s personal records"
-        redirect_to :root
+      users = user.is_a?(ActiveRecord::Relation)? user : [user]
+      users.each do |user|
+        user ||= User.new(name: params[User.slug] || "any other user")
+        unless can_modify? user
+          flash[:danger] = "you are #{anon?? "not signed in" : "signed in as #{current_user.name}"} and are not allowed to view or modify #{user.name}'s personal records"
+          redirect_to :root
+        end
       end
     when :existence
       unless user

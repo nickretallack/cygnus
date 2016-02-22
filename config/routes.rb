@@ -26,9 +26,12 @@ Rails.application.routes.draw do
   resources :pools, only: [:index], path: "(:#{User.slug})/pools"
   resources :pools, only: [:create], path: ":#{User.slug}/pools"
   resources :pools, only: [:show, :update, :destroy]
-  resources :submissions, except: [:new, :edit] do
-    member do
-      get :fav
+
+  scope path: "pools/:pool_#{Pool.slug}" do
+    resources :submissions, except: [:new, :edit] do
+      member do
+        get :fav
+      end
     end
   end
 
@@ -40,13 +43,12 @@ Rails.application.routes.draw do
     end
   end
 
-  scope path: ":#{User.slug}/dashboard" do
-    controller :messages do
-      post :create_annoucement, path: "announcements", as: :announcements
-    end
-  end
-
   scope path: ":#{User.slug}" do
+    scope path: "dashboard" do
+      controller :messages do
+        post :create_annoucement, path: "announcements", as: :announcements
+      end
+    end
     scope path: "workboard" do
       controller :cards do
         get :index, path: "", as: :cards

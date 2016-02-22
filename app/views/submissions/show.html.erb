@@ -1,38 +1,29 @@
-<% provide :header, title_for(submission: @submission) %>
-
-<%= cell(:submission).(:new) %>
-
 <div class = "row hc">
   <span>
-    <%= link_to user_path(@submission.pool.user.name), title: "User Profile" do %>
-      <i class = "material-icons medium-small"><%= CONFIG[:submission_icons][:profile] %></i>
-    <% end %>
-    <div class = "vdiv"></div>
-    <%= link_to pool_path(@submission.pool.id), title: "Submission Pool" do %>
+    <%= link_to pool_path(params["pool_#{Pool.slug}"]), title: "Back to Pool" do %>
       <i class = "material-icons medium-small"><%= CONFIG[:submission_icons][:pool] %></i>
     <% end %>
-    <div class = "vdiv"></div>
-    <%= link_to download_path(@picture.id), title: "Download" do %>
-      <i class = "material-icons medium-small"><%= CONFIG[:submission_icons][:download] %></i>
+    <% if @submission.upload %>
+      <div class = "vdiv"></div>
+      <%= link_to download_path(@submission.upload.id), title: "Download" do %>
+        <i class = "material-icons medium-small"><%= CONFIG[:submission_icons][:download] %></i>
+      <% end %>
+      <div id = "favorite">
+        <%= render "favorite_link" %>
+      </div>
     <% end %>
-    <div id = "favorite">
-      <%= render "favorite_link" %>
-    </div>
   </span>
 </div>
 <div class = "row limit-height">
   <div class = "col expandable hc">
-    <%= cell(:image).(:show, type: :full, id: @picture.id) %>
+    <%= cell(:image).(:full, (@submission.upload.id rescue -1)) %>
   </div>
 </div>
-<div class = "row hidable max">
-  <div class = "hidable-title">Description</div>
-  <div class = "col s12">
-    <%= @submission.description %>
-  </div>
-</div>
+<% hidable "Description", true do %>
+  <%= @submission.description %>
+<% end %>
 <div class = "row" id = "messages">
-  <%= cell(:message, @comments).(:index, type: :full) %>
+  <%#= cell(:message, @comments).(:index, type: :full) %>
 </div>
 <hr />
-<%= cell(:message).(:new) %>
+<%#= cell(:message).(:new) %>

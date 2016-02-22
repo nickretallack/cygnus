@@ -1,10 +1,7 @@
 class PoolsController < ApplicationController
 
-  def before_save
-  end
-
-  def after_save
-    new_lookup(:user, @user.id, :pool, @pool.id)
+  def show
+    @pool ||= @user.gallery
   end
 
   def destroy

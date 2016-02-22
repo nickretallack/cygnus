@@ -1,12 +1,16 @@
 class SubmissionsController < ApplicationController
   
   before_filter only: [:create] do
-    @pool = Pool.find(params[:submission][:pool_id])
-    unless @pool
-      flash[:danger] = "pool does not exist"
-      back and return
-    @user = @pool.user
-    insist_on :permission, @user
+    if @user
+      insist_on :permission, @user
+    else
+      @pool = Pool.find(params["pool_#{Pool.slug}".to_sym])
+      unless @pool
+        flash[:danger] = "pool does not exist"
+        back and return
+      end
+      insist_on :permission, @pool.users
+    end
   end
 
   before_filter only: [:update, :destroy] do
@@ -19,21 +23,8 @@ class SubmissionsController < ApplicationController
     end
   end
 
-  def create
-    @new_submission = Submission.new
-    respond_to do |format|
-      if @new_submission.save
-        format.html { back }
-      else
-        format.html { back_with_errors }
-      end
-    end
-  end
-
-  def show
-    @submission = Submission.find(params[Submission.slug])
-    @comments = @submission.comments.where(message_id: nil)
-    @picture = Upload.find(@submission.file_id)
+  def after_save
+    @pool.update_attribute(:attachments, @pool.attachments << "submission-#{@submission.id}")
   end
 
   def update
@@ -65,4 +56,5 @@ class SubmissionsController < ApplicationController
       format.js
     end
   end
+
 end

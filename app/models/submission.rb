@@ -1,7 +1,11 @@
 class Submission < ActiveRecord::Base
 
-  def pools
-    @attachment ||= Attachment.where("child_model = ? AND ? = ANY (child_ids)", "pool", id)
+  def uploads
+    children("image")
+  end
+
+  def upload
+    uploads.first
   end
 
   def faved_by

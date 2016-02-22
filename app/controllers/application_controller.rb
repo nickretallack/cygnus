@@ -6,28 +6,29 @@ class ApplicationController < ActionController::Base
 
   before_filter :get_user
 
-  before_filter only: [:create, :destroy] do
-    insist_on :permission, @user unless controller_name == "users"
-  end
-
   before_filter only: [:show, :destroy, :update] do
-    unless instance_of? ImagesController
-      klass = controller_name.classify.constantize
-      instance_variable_set("@#{controller_name.singularize}", klass.find(params[klass.slug])) if klass != User and klass.slug
+    unless instance_of? UsersController or instance_of? ImagesController
+      set_item(klass.find(params[klass.slug]))
     end
   end
 
   before_filter only: [:create] do
-    instance_variable_set("@#{controller_name.singularize}", controller_name.classify.constantize.new)
+    set_item(klass.new)
   end
 
   define_method :index, proc{}
+
   define_method :show, proc{}
+
+  define_method :before_save, proc{}
+
+  define_method :after_save, proc{}
+
   define_method :create do
-    before_save if defined? "before_save"
+    before_save
     respond_to do |format|
-      if instance_variable_get("@#{controller_name.singularize}").save
-        after_save if defined? "after_save"
+      if item.save
+        after_save
         format.html { back }
         format.js
       else
@@ -35,8 +36,26 @@ class ApplicationController < ActionController::Base
       end
     end
   end
+  
   define_method :update, proc{}
+  
   define_method :destroy, proc{}
+
+  def klass
+    controller_name.classify.constantize
+  end
+
+  def item_string
+    "@#{controller_name.singularize}"
+  end
+
+  def item
+    instance_variable_get(item_string)
+  end
+
+  def set_item(value)
+    instance_variable_set(item_string, value)
+  end
 
   def activate_session(user)
     session[:username] = user.name
