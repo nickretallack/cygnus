@@ -1,11 +1,10 @@
 class OrderForm < ActiveRecord::Base
-  belongs_to :user
+
+  validates :content, presence: {message: " was blank or submitted incorrectly."}, on: :update
+  validate :content_is_array, on: :update
   
-  #CAREFUL! Object is an array at all times!
-  validates :content, presence: {message: " was blank or submitted incorrectly."}
-  validate :content_is_proper
-  
-  def content_is_proper
-  	errors.add(:content, "Severe Error has Occured, please retry") unless content.is_a? Array
+  def content_is_array
+  	errors.add(:content, "Server Error has Occurred, Please Retry") unless content.is_a? Array
   end
+
 end

@@ -50,6 +50,14 @@ class User < ActiveRecord::Base
     card
   end
 
+  def order_forms
+    children("order_form")
+  end
+
+  def order_form
+    order_forms.first
+  end
+
   def messages
     @messages ||= Message.where("user_id = ? AND ? = ANY (recipient_ids)", -1, id)
   end

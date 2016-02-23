@@ -1,52 +1,40 @@
 class OrderFormsController < ApplicationController
-  before_filter -> { insist_on :logged_in }, only: [:show]
-  before_filter -> { insist_on :permission, @order_form.nil?? User.find(params[User.slug]) : @order_form.user }, except: [:show]
-  
-  def index
-  	@user = User.find(params[User.slug])
-    @order_forms = @user.order_forms
+
+  before_filter only: [:index] do
+    insist_on :logged_in
   end
 
-  def show
-    @user = User.find(params[User.slug])
+  before_filter only: [:create, :edit, :destroy] do
+    insist_on :permission, @user
   end
 
-  def create
-  	@new_order_form.user_id = current_user.id
-    @new_order_form.content = JSON.parse(params[:order_form][:content])
-  	# if(!params[:order_form][:files].nil?)
-  	# 	params[:order_form][:files].each do |index, file|
-  	# 		if @new_order_form.content[index.to_i]["type"] == "image"
-  	# 			@new_order_form.content[index.to_i]["contents"] = Upload.render(params[:order_form][:file][index])
-  	# 		end
-  	# 	end
-  	# end
-    if @new_order_form.save
-      back
-    else
-      back_with_errors
-    end
+  def after_save
+    @user.update_attribute(:attachments, @user.attachments << "order_form-#{@order_form.id}")
   end
 
   def destroy
-    current_user.update_attribute(:default_order_form, nil) if current_user.default_order_form == @order_form.id
+    attachments = @user.attachments
+    attachments.delete("order_form-#{params[OrderForm.slug]}")
+    @user.update_attribute(:attachments, attachments)
     @order_form.destroy
-    flash[:success] = "form destroyed"
-    back
+    respond_to do |format|
+      format.html {
+        flash[:success] = "form destroyed: #{title_for @order_form}"
+        back
+      }
+      format.js
+    end
   end
 
   def set_default
-    current_user.update_attribute(:default_order_form, @order_form.id)
-    back
+    attachments = @user.attachments
+    attachments.delete("order_form-#{params[OrderForm.slug]}")
+    attachments.unshift("order_form-#{params[OrderForm.slug]}")
+    @user.update_attribute(:attachments, attachments)
+    respond_to do |format|
+      format.html { back }
+      format.js
+    end
   end
-
-  def order
-    
-  end
-
-  private
-
-  def order_form_params_permitted
-    [:title, :content, :files]
-  end
+  
 end

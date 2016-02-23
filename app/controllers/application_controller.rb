@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
   before_filter :get_user
 
-  before_filter only: [:show, :destroy, :update] do
+  before_filter only: [:show, :edit, :destroy, :update] do
     unless instance_of? UsersController or instance_of? ImagesController
       set_item(klass.find(params[klass.slug]))
     end
@@ -19,6 +19,8 @@ class ApplicationController < ActionController::Base
   define_method :index, proc{}
 
   define_method :show, proc{}
+
+  define_method :edit, proc{}
 
   define_method :before_save, proc{}
 

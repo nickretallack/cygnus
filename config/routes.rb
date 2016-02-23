@@ -71,9 +71,10 @@ Rails.application.routes.draw do
     controller :pools do
       get :show, path: "gallery", as: :gallery
     end
-    # controller :order_forms do
-    #   get :set_default, path: "order_forms/:#{OrderForm.slug}/default", as: :default_order_form
-    # end
+    controller :order_forms do
+      get :set_default, path: "order_forms/:#{OrderForm.slug}/default", as: :default_order_form
+      resources :order_forms, only: [:create, :index, :edit, :destroy]
+    end
     controller :users do
       get :dashboard
     end

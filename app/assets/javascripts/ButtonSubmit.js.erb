@@ -68,9 +68,21 @@ ButtonSubmit = (function(){
           div.removeClass("icon-hover");
         }).on("click.ButtonSubmit", function(event){
           pause(event);
-          icon.replaceWithSpinner();
-          button.trigger("click");
+          if(name === "delete" && button.is("[confirm]")){
+            if(confirm(button.attr("confirm"))){
+              icon.replaceWithSpinner();
+              button.trigger("click");
+            }
+          }else{
+            icon.replaceWithSpinner();
+            button.trigger("click");
+          }
         }));
+        if(name === "default"){
+          icon.css({
+            transform: "scaleY(-1)"
+          });
+        }
         button.hide();
       });
       if(self.area.hasClass("centered")){

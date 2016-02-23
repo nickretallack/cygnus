@@ -4,7 +4,7 @@ module ViewHelper
     unless stringish.is_a? Symbol or stringish.is_a? String
       ""
     else
-      stringish.to_s.humanize.titleize
+      stringish.to_s.underscore.humanize
     end
   end
 
@@ -90,12 +90,12 @@ module ViewHelper
     end
   end
 
-  def title_for(instance, name = nil)
+  def title_for(instance, name: nil)
     case true
     when !(instance.respond_to? :title rescue false)
       "Untitled"
     when instance.title.blank?
-      "Untitled #{name || readable(instance.class.name)}"
+      "Untitled #{name || readable(instance.class.name).titleize}"
     else
       instance.title
     end

@@ -1,7 +1,7 @@
 <div class = "col s4">
   <li><%= link_to "Activity", messages_path(current_user) %></li>
   <li><%= link_to "Conversations", pms_path(current_user) %></li>
-  <li><%= link_to "Order Forms" %></li>
+  <li><%= link_to "Order Forms", order_forms_path(current_user) %></li>
 </div>
 <div class = "col s4">
   <% unless current_user.pools.empty? %>

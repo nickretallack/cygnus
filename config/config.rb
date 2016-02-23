@@ -52,7 +52,8 @@ CONFIG = {
     save: "save",
     delete: "delete",
     edit: "edit",
-    add: "add_circle"
+    add: "add_circle",
+    default: "low_priority"
   },
 
   status_categories: {
