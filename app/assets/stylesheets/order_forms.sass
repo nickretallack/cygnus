@@ -20,33 +20,26 @@
       border-left-width: 5px
       padding: 4px 4px 30px
       position: relative
+      text-align: left
+      legend
+        text-align: center
       i
         position: absolute
-        top: 0
+        top: 15%
         right: 0
         font-size: 24px
       .handle
+        position: absolute
         cursor: ns-resize
         text-shadow: -1px -1px 1px #000, 1px 1px 1px #FFF
         left: 5px
         color: #FFF
-        top: -1px
-        bottom: -1px
       .handle:before
         content: ":::"
         display: block
         position: relative
-        top: 50%
-        line-height: 1px
-      .handle, .remove
-        width: 25px
-        text-align: center
-        position: absolute
-      .remove
-        cursor: pointer
-        right: 0px
-        top: 0px
-        height: 25px
+        top: -1rem
+        line-height: 0
       input[name = "required"]
         position: absolute
         right: 4px

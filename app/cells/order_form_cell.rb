@@ -19,7 +19,7 @@ class OrderFormCell < HelpfulCell
   CONFIG[:order_form_icons].each do |key, value|
     define_method key do |content = nil|
       @content = content == ""? render(key) : content || render(key)
-      @name = __method__
+      @name = key
       render "template"
     end
   end

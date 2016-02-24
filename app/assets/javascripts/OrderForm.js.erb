@@ -63,8 +63,7 @@ OrderForm = (function(){
     },
 
     generateContentFieldValue: function(){
-      var self = this,
-          array = [];
+      var self = this;
       $.each(self.workspace.children(".question").toArray().map(function(element){
         element = $(element);
         var object = {};
