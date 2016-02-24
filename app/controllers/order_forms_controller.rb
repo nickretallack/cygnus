@@ -26,6 +26,11 @@ class OrderFormsController < ApplicationController
     end
   end
 
+  def update
+    @order_form.update_attribute(:content, params[:order_form][:content].map { |key, value| value }.collect { |value| JSON.parse(value) })
+    back
+  end
+
   def set_default
     attachments = @user.attachments
     attachments.delete("order_form-#{params[OrderForm.slug]}")

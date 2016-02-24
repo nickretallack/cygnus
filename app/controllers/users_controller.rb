@@ -47,6 +47,7 @@ class UsersController < ApplicationController
   end
 
   def update
+    raise "break"
     @user.update_attribute(:settings, params[:user][:settings]) if params[:user][:settings].is_a? Hash and @user.settings != params[:user][:settings]
     back
     # @user.avatar = Upload.render(params[:user][:upload][:picture], params[:user][:upload][:explicit]) unless params[:user][:upload][:picture].nil?

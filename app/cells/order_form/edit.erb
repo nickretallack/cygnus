@@ -1,6 +1,5 @@
-<%= form_for OrderForm.new, url: order_forms_path(current_user), html: { id: "formcreator_result", class: "button-submit" } do |f| %>
+<%= form_for @order_form, url: order_form_path(current_user, @order_form), method: :patch, html: { id: "formcreator_result", class: "button-submit" } do |f| %>
   <%= f.text_field :title, placeholder: "Title for form (only you will see this)" %>
-  <%= f.hidden_field :content %>
   <%= f.submit "Save Form", id: "save" %>
 <% end %>
 <div class = "button-area float"></div>

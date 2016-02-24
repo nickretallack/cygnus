@@ -6,7 +6,9 @@ OrderForm = (function(){
 
     self.div = element;
     self.form = $("#"+self.div.attr("form"));
-    self.area = element.find("#workspace");
+    self.submit = self.form.children("[type = submit]");
+    self.contentField = self.form.children("[name = 'order_form[content]']");
+    self.workspace = element.find("#workspace");
     self.buttonArea = self.div.find("#button-area");
     self.icons = JSON.parse('<%= CONFIG[:order_form_icons].to_json %>');
     self.buttons = {};
@@ -20,16 +22,20 @@ OrderForm = (function(){
         class: "material-icons",
         text: icon
       }));
-      self.templates[name.camelCase()] = $("#" + name + "-template").html();
+      self.templates[name.camelCase()] = $($("#" + name + "-template").html());
     });
-
-    console.log(self.templates);
 
     $.each(self.buttons, function(key, value){
       self.buttonArea.append(value);
       value.on("click.OrderForm", function(){
         self.add(key);
-      })
+      });
+    });
+
+    self.submit.one("click.OrderForm", function(event){
+      pause(event);
+      self.generateContentFieldValue();
+      $(this).trigger("click");
     });
 
   };
@@ -37,10 +43,37 @@ OrderForm = (function(){
   Make.extend(OrderForm.prototype, {
 
     add: function(name){
-      self.area.append($("<div />", {
+      var self = this, question;
+      self.workspace.append(question = ($("<div />", {
         class: "question",
+        name: name,
         html: self.templates[name].clone()
-      }))
+      })));
+      question.children("i").on("click.OrderForm", function(){
+        question.remove();
+      });
+    },
+
+    generateContentFieldValue: function(){
+      var self = this,
+          array = [];
+      $.each(self.workspace.children(".question").toArray().map(function(element){
+        element = $(element);
+        var object = {};
+        object[element.attr("name")] = element.children(".content").html();
+        return object;
+      }), function(index, element){
+        self.form.append($("<input />", {
+          class: "question",
+          type: "hidden",
+          name: "order_form[content]["+self.form.children(".question").length+"]",
+          value: JSON.stringify(element)
+        }));
+      });
+    },
+
+    recreateWorkspace: function(){
+
     }
 
   });

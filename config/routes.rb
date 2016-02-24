@@ -73,7 +73,7 @@ Rails.application.routes.draw do
     end
     controller :order_forms do
       get :set_default, path: "order_forms/:#{OrderForm.slug}/default", as: :default_order_form
-      resources :order_forms, only: [:create, :index, :edit, :destroy]
+      resources :order_forms, only: [:create, :index, :edit, :update, :destroy]
     end
     controller :users do
       get :dashboard

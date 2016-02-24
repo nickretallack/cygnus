@@ -65,8 +65,6 @@ CONFIG = {
     image: "image"
   },
 
-  test: cell(:order_form).(:short_response),
-
   status_categories: {
     open: [:open, :one_day_only],
     maybe: [:long_wait, :make_a_pitch, :friends_only],
