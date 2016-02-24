@@ -70,6 +70,11 @@ class User < ActiveRecord::Base
     User.where("? = ANY (watching)", id)
   end
 
+  def setting(key)
+    setting = settings.fetch(key.to_s, false)
+    setting == "1"? true : false
+  end
+
   def self.level_for(grade)
     CONFIG[:user_levels].index(grade.to_s)
   end

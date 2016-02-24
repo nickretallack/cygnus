@@ -56,6 +56,17 @@ CONFIG = {
     default: "low_priority"
   },
 
+  order_form_icons: {
+    short_response: "text_format",
+    free_answer: "reorder",
+    choose_one: "radio_button_checked",
+    choose_all_that_apply: "check_box",
+    link: "link",
+    image: "image"
+  },
+
+  test: cell(:order_form).(:short_response),
+
   status_categories: {
     open: [:open, :one_day_only],
     maybe: [:long_wait, :make_a_pitch, :friends_only],

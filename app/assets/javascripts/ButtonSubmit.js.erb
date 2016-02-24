@@ -73,6 +73,8 @@ ButtonSubmit = (function(){
               icon.replaceWithSpinner();
               button.trigger("click");
             }
+          }else if(name === "edit"){
+            window.location.replace(self.form.attr("action"));
           }else{
             icon.replaceWithSpinner();
             button.trigger("click");

@@ -1,7 +1,7 @@
 <tr id = "<%= @model.id %>">
   <% if can_modify? @user %>
     <td>
-      <%= form_for @model, url: edit_order_form_path(@user, @model), method: :patch, html: { class: "button-submit" } do |f| %>
+      <%= form_for @model, url: edit_order_form_path(@user, @model), html: { class: "button-submit" } do |f| %>
         <%= f.submit "Edit", id: "edit" %>
       <% end %>
       <%= form_for @model, url: order_form_path(@user, @model), method: :delete, html: { class: "remote button-submit" } do |f| %>

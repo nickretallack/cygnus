@@ -1,0 +1,50 @@
+OrderForm = (function(){
+
+  var OrderForm = function(element){
+
+    var self = this;
+
+    self.div = element;
+    self.form = $("#"+self.div.attr("form"));
+    self.area = element.find("#workspace");
+    self.buttonArea = self.div.find("#button-area");
+    self.icons = JSON.parse('<%= CONFIG[:order_form_icons].to_json %>');
+    self.buttons = {};
+    self.templates = {};
+
+    $.each(self.icons, function(name, icon){
+      self.buttons[name.camelCase()] = $("<button />", {
+        class: "btn button-with-icon no-effects",
+        text: name.readable()
+      }).prepend($("<i />", {
+        class: "material-icons",
+        text: icon
+      }));
+      self.templates[name.camelCase()] = $("#" + name + "-template").html();
+    });
+
+    console.log(self.templates);
+
+    $.each(self.buttons, function(key, value){
+      self.buttonArea.append(value);
+      value.on("click.OrderForm", function(){
+        self.add(key);
+      })
+    });
+
+  };
+
+  Make.extend(OrderForm.prototype, {
+
+    add: function(name){
+      self.area.append($("<div />", {
+        class: "question",
+        html: self.templates[name].clone()
+      }))
+    }
+
+  });
+
+  return OrderForm;
+
+})();

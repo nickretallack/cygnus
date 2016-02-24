@@ -48,6 +48,7 @@ Init = {
     ImagePreview: ".image-preview",
     IndexField: "[class *= index-field]",
     Nav: "nav",
+    OrderForm: ".order-form",
     TagList: ".taglist",
     ViewAnyway: "img.adult",
     Workboard: ".top-card",

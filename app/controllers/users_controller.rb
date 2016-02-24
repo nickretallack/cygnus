@@ -47,18 +47,20 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user.avatar = Upload.render(params[:user][:upload][:picture], params[:user][:upload][:explicit]) unless params[:user][:upload][:picture].nil?
-    @user.view_adult = true if params[:user][:upload][:explicit]
-    @old_statuses = @user.statuses
-    @user.statuses = params[:user][:statuses].values
-    @user.artist_type = params[:user][:artist_type].values[0].split(", ").uniq.join(", ")
-    if @user.update_attributes(params.require(:user).permit([:tags]))
-      activity_message(:status_change, params[:user][:statuses]) if @old_statuses != @user.statuses
-      flash[:success] = "profile updated"
-      back
-    else
-      back_with_errors
-    end
+    @user.update_attribute(:settings, params[:user][:settings]) if params[:user][:settings].is_a? Hash and @user.settings != params[:user][:settings]
+    back
+    # @user.avatar = Upload.render(params[:user][:upload][:picture], params[:user][:upload][:explicit]) unless params[:user][:upload][:picture].nil?
+    # @user.view_adult = true if params[:user][:upload][:explicit]
+    # @old_statuses = @user.statuses
+    # @user.statuses = params[:user][:statuses].values
+    # @user.artist_type = params[:user][:artist_type].values[0].split(", ").uniq.join(", ")
+    # if @user.update_attributes(params.require(:user).permit([:tags]))
+    #   activity_message(:status_change, params[:user][:statuses]) if @old_statuses != @user.statuses
+    #   flash[:success] = "profile updated"
+    #   back
+    # else
+    #   back_with_errors
+    # end
   end
 
   def destroy
@@ -180,4 +182,5 @@ class UsersController < ApplicationController
       redirect_to password_reset_path
     end
   end
+
 end

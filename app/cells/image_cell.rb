@@ -4,7 +4,7 @@ class ImageCell < HelpfulCell
     @image ||= Image.find(id) || Image.new
 
     if @image.enabled?
-      if @image.explicit? and not current_user.view_adult?
+      if @image.explicit? and not current_user.setting(:view_adult)
         image_tag(controller.image_path("image_adult#{suffix}".to_sym), id: id, class: "adult")
       else
         image_tag(controller.image_path(type, id: id))

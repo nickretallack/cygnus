@@ -8,4 +8,10 @@ class ViewCell < HelpfulCell
     render
   end
 
+  def setting(name, label)
+    @name = name
+    @label = label
+    render
+  end
+
 end

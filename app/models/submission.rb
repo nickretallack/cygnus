@@ -1,11 +1,19 @@
 class Submission < ActiveRecord::Base
 
+  def pools
+    parents("pool")
+  end
+
+  def pool
+    pools.first
+  end
+
   def uploads
     children("image")
   end
 
   def upload
-    uploads.first
+    uploads.first || Image.new
   end
 
   def faved_by

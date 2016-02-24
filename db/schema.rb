@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160223111626) do
+ActiveRecord::Schema.define(version: 20160224045016) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,7 +93,6 @@ ActiveRecord::Schema.define(version: 20160223111626) do
     t.text     "details"
     t.string   "tags"
     t.tsvector "tags_tsvector"
-    t.boolean  "view_adult",        default: false
     t.string   "activation_digest"
     t.datetime "activated_at"
     t.datetime "reset_sent_at"
@@ -105,6 +104,7 @@ ActiveRecord::Schema.define(version: 20160223111626) do
     t.integer  "unread_messages",   default: 0
     t.string   "statuses",          default: ["not_interested", "not_interested", "not_interested", "not_interested"],              array: true
     t.string   "attachments",       default: [],                                                                                    array: true
+    t.json     "settings",          default: {}
   end
 
   add_index "users", ["tags_tsvector"], name: "index_users_on_tags_tsvector", using: :gin

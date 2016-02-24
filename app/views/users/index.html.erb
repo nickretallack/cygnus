@@ -16,8 +16,8 @@
   <div class = "row pool-index-field">
     <div class = "col content">
       <% enum_for recent_submissions do |submission| %>
-        <%= link_to submission_path(submission) do %>
-          <%= cell(:image).(:show, type: :bordered, id: submission.file_id) %>
+        <%= link_to submission_path(submission.pool, submission) do %>
+          <%= cell(:image).(:bordered, submission.upload.id) %>
         <% end %>
       <% end %>
     </div>

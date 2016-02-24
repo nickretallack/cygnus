@@ -9,7 +9,15 @@ class UserCell < HelpfulCell
         params[:terms][:tags]
       end
     when :dashboard
-      "#{link_to params[User.slug], user_path(params[User.slug])}'s dashboard"
+      if at_least :admin
+        "ADMIN DASHBOARD"
+      else
+        unless options[:sanitize]
+          "#{link_to params[User.slug], user_path(params[User.slug])}'s settings"
+        else
+          "#{@user.name}'s settings"
+        end
+      end
     when :show
       @user.name
     end

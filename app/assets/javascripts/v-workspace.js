@@ -2,6 +2,7 @@
  *  VWorkspace: Workspace for vertical layouts
  *    Author: Xch3l
  *    Version Datecode: 150914
+ *    Mofified Feb. 2016 by TwilightStormshi
  */
 
 function VWorkspace(element) {

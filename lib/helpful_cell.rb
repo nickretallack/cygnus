@@ -14,11 +14,11 @@ class HelpfulCell < Cell::ViewModel
   #self.digest_assets = Rails.application.config.assets[:digest]
 
   self.send :define_method, "get_user" do
-    @user = User.find(params[User.slug])
+    @user = User.find(params[User.slug]) rescue nil
   end
 
   self.send :define_method, "get_item" do
-    instance_variable_set("@#{controller.controller_name.singularize}", controller.instance_variable_get("@#{controller.controller_name.singularize}"))
+    instance_variable_set("@#{controller.controller_name.singularize}", controller.instance_variable_get("@#{controller.controller_name.singularize}")) rescue nil
   end
 
   define_hook :before_filter, :after_filter

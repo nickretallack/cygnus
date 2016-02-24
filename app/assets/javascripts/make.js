@@ -82,8 +82,16 @@ Make.extend(String.prototype, {
     return this.slice(0, 1).toUpperCase() + this.slice(1);
   },
 
+  readable: function(){
+    return this.capitalize().replace(/_/g, " ");
+  },
+
   humanize: function(){
     return this.replace(/([a-z])([A-Z])/g, '$1'+" "+'$2').replace(/([A-Z])([A-Z])([a-z])/g, '$1'+" "+'$2'+'$3').replace(/([A-Z])(I|A)(?=\s)/g, '$1'+" "+'$2');
+  },
+
+  camelCase: function(){
+    return this.split("_").map(function(element, index){return index === 0? element : element.capitalize();}).join("");
   },
 
   toArray: function(){
