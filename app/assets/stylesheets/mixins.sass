@@ -18,6 +18,12 @@
   to
     opacity: 0
 
+@keyframes saved
+  from
+    color: $success-color
+  to
+    color: "black"
+
 //mixins
 
 =block-centered
@@ -367,6 +373,11 @@
   animation-name: fade-out
   animation-duration: 1s
   opacity: 0
+
+.saved
+  animation-name: saved
+  animation-duration: 3s
+  color: "black"
 
 .help
   +help

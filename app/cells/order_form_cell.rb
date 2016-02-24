@@ -17,13 +17,20 @@ class OrderFormCell < HelpfulCell
   end
 
   CONFIG[:order_form_icons].each do |key, value|
-    define_method key do
-      html = ""
-      html << "<div class = 'handle'></div>"
-      html << "<div class = 'content'>" << render(key) << "</div>"
-      html << "<input type = 'checkbox' name = 'required'></input>"
-      html << "<i class = 'material-icons small'>clear</i>"
+    define_method key do |content = nil|
+      @content = content == ""? render(key) : content || render(key)
+      @name = __method__
+      render "template"
     end
+  end
+
+  def workspace
+    html = ""
+    @order_form.content.each do |object|
+      key, value = object.first
+      html << cell(:order_form).(key.underscore, value)
+    end
+    html
   end
 
   def header(options)

@@ -32,26 +32,34 @@ OrderForm = (function(){
       });
     });
 
-    self.submit.one("click.OrderForm", function(event){
-      pause(event);
-      self.generateContentFieldValue();
-      $(this).trigger("click");
-    });
-
   };
 
   Make.extend(OrderForm.prototype, {
 
+    initialize: function(){
+      var self = this;
+      self.workspace.children(".question").children("i").off("click.Orderform").on("click.OrderForm", function(){
+        self.remove($(this).parent());
+      });
+      self.form.children(".question").remove();
+      self.submit.one("click.OrderForm", function(event){
+        pause(event);
+        self.generateContentFieldValue();
+        $(this).trigger("click");
+      });
+    },
+
     add: function(name){
       var self = this, question;
-      self.workspace.append(question = ($("<div />", {
-        class: "question",
-        name: name,
-        html: self.templates[name].clone()
-      })));
+      self.workspace.append((question = self.templates[name].clone()));
       question.children("i").on("click.OrderForm", function(){
-        question.remove();
+        self.remove(question);
       });
+    },
+
+    remove: function(target){
+      var self = this;
+      target.remove();
     },
 
     generateContentFieldValue: function(){
@@ -70,10 +78,6 @@ OrderForm = (function(){
           value: JSON.stringify(element)
         }));
       });
-    },
-
-    recreateWorkspace: function(){
-
     }
 
   });
