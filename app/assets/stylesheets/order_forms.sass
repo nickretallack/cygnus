@@ -14,6 +14,10 @@
     padding: 4px
     margin: 5px 30px
     position: relative
+    list-style-type: decimal
+    list-style-position: inside
+    li
+      list-style: inherit
     .question
       background-color: rgba(247, 252, 242, 0.5) /*#F7FCF2 with 50% alpha/**/
       border: 1px solid #9CCC65
@@ -25,21 +29,17 @@
         text-align: center
       i
         position: absolute
-        top: 15%
-        right: 0
+      .remove
         font-size: 24px
+        top: 15px
+        right: 2px
       .handle
-        position: absolute
-        cursor: ns-resize
+        cursor: ns-resize !important
         text-shadow: -1px -1px 1px #000, 1px 1px 1px #FFF
-        left: 5px
+        font-size: 29px
+        top: 0
+        left: 10px
         color: #FFF
-      .handle:before
-        content: ":::"
-        display: block
-        position: relative
-        top: -1rem
-        line-height: 0
       input[name = "required"]
         position: absolute
         right: 4px
@@ -58,6 +58,22 @@
           input
             width: 48%
             margin-right: 5px
+        .fake-answer
+          background-color: ghostwhite
+          border: 3px dashed black
+          margin-top: 2%
+          color: lightslategrey
+        .fake-answer.short-response
+          height: 2rem
+          border-bottom-style: solid
+          text-align: center
+          text-transform: uppercase
+          line-height: 1.8rem
+        .fake-answer.free-answer
+          height: 6rem
+          text-align: center
+          text-transform: uppercase
+          line-height: 5.6rem
       input
         height: auto
       ul

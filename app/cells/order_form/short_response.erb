@@ -1,1 +1,2 @@
-<%= "yes" %>
+<%= text_area_tag "question", (@object[0]["value"] rescue nil), placeholder: "Question" %>
+<div class = "fake-answer <%= @name.to_s.underscore.dasherize %>">response area</div>

@@ -67,7 +67,14 @@ OrderForm = (function(){
       $.each(self.workspace.children(".question").toArray().map(function(element){
         element = $(element);
         var object = {};
-        object[element.attr("name")] = element.children(".content").html();
+        object[element.attr("name")] =  element.children(".content").children().toArray().map(function(element){
+                                          element = $(element);
+                                          return {
+                                            tag: element.prop("tagName").toLowerCase(),
+                                            type: element.attr("type"),
+                                            value: element.prop("value")
+                                          }
+                                        });
         return object;
       }), function(index, element){
         self.form.append($("<input />", {

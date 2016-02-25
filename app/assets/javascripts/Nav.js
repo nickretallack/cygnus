@@ -10,6 +10,7 @@ Nav = (function(){
     self.banner = self.nav.parents("header").children("img").safeAdd();
     self.dropdownButton = self.nav.find(".dropdown-button").safeAdd();
     self.collapseButton = self.nav.find(".button-collapse").safeAdd();
+    self.footerHeight = $("footer").height();
 
     self.dropdownButton.dropdown({
       belowOrigin: true,
@@ -25,6 +26,10 @@ Nav = (function(){
 
     $(window).on("scroll.Nav", function(){
       self.pushpin();
+    });
+
+    $(window).on("resize.Nav", function(){
+      $(window).trigger("scroll.Nav");
     });
 
     $(window).keydown(function(event){
@@ -43,9 +48,8 @@ Nav = (function(){
     },
 
     pushpin: function(){
-      if(!self.banner) return;
-      var scrollHeight = $(window).scrollTop();
-      if(scrollHeight > self.banner.outerHeight()){
+      if(!self.banner || !self.nav) return;
+      if($(window).scrollTop() > self.banner.outerHeight()){
         self.nav.css({
           position: "fixed",
           top: 0

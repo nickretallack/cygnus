@@ -29,6 +29,7 @@ Hidable = function(element){
   self.container.buttonTable.append(self.container.closeButton);
   self.container.title.append(self.container.divider);
   self.container.divider.hide();
+  self.container.maxHeight = self.container.title.outerHeight() + self.container.content.outerHeight() + 20;
 
   self.container.title.on("mouseenter.Hidable", function(){
     self.container.minimizeButton.addClass("icon-hover");
@@ -172,11 +173,11 @@ ActiveContainer = (function(){
       self.content.show();
       if(animate){
         self.container.animate({
-          height: self.title.outerHeight() + self.content.outerHeight()
+          height: self.maxHeight
         }, 1000, "easeOutExpo");
       }else{
         self.container.css({
-          height: self.title.outerHeight() + self.content.outerHeight()
+          height: self.maxHeight
         })
       }
     },

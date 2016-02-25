@@ -1,7 +1,9 @@
-<fieldset class = "question" name = "<%= @name %>">
-  <legend><%= readable @name %></legend>
-  <div class = "handle"></div>
-  <div class = "content"><%= @content %></div>
-  <input type = "checkbox" name = "required"></input>
-  <i class = "material-icons small">clear</i>
-</fieldset>
+<li>
+  <fieldset class = "question" name = "<%= @name %>">
+    <legend><%= readable @name %></legend>
+    <i class = "handle material-icons small">drag_handle</i>
+    <div class = "content"><%= @content %></div>
+    <input type = "checkbox" name = "required"></input>
+    <i class = "remove material-icons small">clear</i>
+  </fieldset>
+</li>
