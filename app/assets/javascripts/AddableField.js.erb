@@ -7,6 +7,7 @@ AddableField = (function(){
     self.field = element;
     self.area = element.siblings(".addable-area");
     self.addable = self.field.children().last();
+    self.orderable = self.field.is(".orderable");
     self.button = $("<i />", {
       class: "material-icons medium-small",
       text: "<%= CONFIG[:button_icons][:add] %>",
@@ -25,22 +26,70 @@ AddableField = (function(){
 
   Make.extend(AddableField.prototype, {
 
-    add: function(){
+    initialize(){
       var self = this;
-      var addable = self.addable.clone();
-      if(addable.is("select")){
-        addable.children().removeAttr("selected");
+      if(self.orderable && self.addable.is("li")){
+        self.field.children("li").off("mousedown.AddableField").on("mousedown.AddableField", function(event){
+          self.reorder($(event.target));
+        })
       }
-      var nameArray = self.addable.attr("name").toArray();
+    },
+
+    add: function(){
+      var self = this,
+          addable = self.addable.clone(),
+          field = addable.find("textarea, input, select").prop("value", "");
+
+      if(field.is("select")){
+        field.children("option").removeAttr("selected");
+      }
+      var nameArray = field.attr("name").toArray();
       nameArray[nameArray.length - 1] = parseInt(nameArray.last()) + 1;
       var name = nameArray.parse();
-      addable.attr("name", name);
-      addable.attr("id", name);
+      field.attr("name", name);
+      field.attr("id", name);
       self.addable = addable;
       self.field.append(addable);
       self.area.css({
         height: self.field.outerHeight()
       });
+      self.initialize();
+    },
+
+    reorder: function(item){
+      var self = this;
+      if(item.is("li")){
+        var ol = item.parent();
+        ol.find("*").addClass("no-select");
+        ol.on("mousemove.AddableField", function(){
+          ol.children().on("mouseenter.AddableField", function(){
+            $(this).css({
+              border: "2px dashed red",
+              paddingRight: 10
+            });
+          }).on("mouseleave.AddableField", function(){
+            $(this).css({
+              border: "none",
+              paddingRight: 0
+            });
+          });
+        });
+        $(window).one("mouseup.AddableField", function(event){
+          var target = $(event.target);
+          if(target.is(ol.find("*"))){
+            target = target.is("li")? target : target.closest("li");
+            if(target.index() < item.index()){
+              item.insertBefore(target);
+            }else if(target.index() > item.index()){
+              item.insertAfter(target);
+            }
+          }
+          ol.find("*").removeClass("no-select");
+          ol.children().trigger("mouseleave.AddableField");
+          ol.off("mousemove.AddableField");
+          ol.children().off("mouseenter.AddableField").off("mouseleave.AddableField");
+        });
+      }
     }
 
   });

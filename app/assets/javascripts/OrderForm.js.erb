@@ -38,10 +38,10 @@ OrderForm = (function(){
 
     initialize: function(){
       var self = this;
-      self.workspace.children(".question").children("i").off("click.Orderform").on("click.OrderForm", function(){
-        self.remove($(this).parent());
+      self.workspace.find(".question").children(".remove").off("click.Orderform").on("click.OrderForm", function(){
+        self.remove($(this).parents("li"));
       });
-      self.form.children(".question").remove();
+      self.form.find(".question").remove();
       self.submit.one("click.OrderForm", function(event){
         pause(event);
         self.generateContentFieldValue();
@@ -52,7 +52,8 @@ OrderForm = (function(){
     add: function(name){
       var self = this, question;
       self.workspace.append((question = self.templates[name].clone()));
-      question.children("i").on("click.OrderForm", function(){
+      console.log(question);
+      question.find(".remove").on("click.OrderForm", function(){
         self.remove(question);
       });
     },
@@ -64,10 +65,10 @@ OrderForm = (function(){
 
     generateContentFieldValue: function(){
       var self = this;
-      $.each(self.workspace.children(".question").toArray().map(function(element){
+      $.each(self.workspace.find(".question").toArray().map(function(element){
         element = $(element);
         var object = {};
-        object[element.attr("name")] =  element.children(".content").children().toArray().map(function(element){
+        object[element.attr("name")] =  element.children(".content").find("input, textarea").toArray().map(function(element){
                                           element = $(element);
                                           return {
                                             tag: element.prop("tagName").toLowerCase(),
