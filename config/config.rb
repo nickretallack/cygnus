@@ -65,6 +65,12 @@ CONFIG = {
     image: "image"
   },
 
+  other_icons: {
+    remove: "clear",
+    minimize: "remove",
+    handle: "drag_handle"
+  },
+
   status_categories: {
     open: [:open, :one_day_only],
     maybe: [:long_wait, :make_a_pitch, :friends_only],

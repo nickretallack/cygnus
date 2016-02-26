@@ -17,10 +17,13 @@ AddableField = (function(){
       self.add();
     });
 
+    if(self.orderable && self.addable.is("li")){
+      self.field.children("li").each(function(index, li){
+        self.initializeHandle($(li));
+      });
+    }
+
     self.area.append(self.button);
-    self.area.css({
-      height: self.field.outerHeight()
-    });
 
   };
 
@@ -28,11 +31,17 @@ AddableField = (function(){
 
     initialize(){
       var self = this;
-      if(self.orderable && self.addable.is("li")){
-        self.field.children("li").off("mousedown.AddableField").on("mousedown.AddableField", function(event){
-          self.reorder($(event.target));
-        })
-      }
+      console.log("here");
+      self.area.css({
+        height: self.field.outerHeight()
+      });
+    },
+
+    initializeHandle: function(li){
+      var self = this;
+      li.children(".handle").on("mousedown.AddableField", function(){
+        self.reorder(li);
+      });
     },
 
     add: function(){
@@ -53,43 +62,31 @@ AddableField = (function(){
       self.area.css({
         height: self.field.outerHeight()
       });
-      self.initialize();
+      if(addable.is("li")){
+        self.initializeHandle(addable);
+      }
     },
 
-    reorder: function(item){
-      var self = this;
-      if(item.is("li")){
-        var ol = item.parent();
-        ol.find("*").addClass("no-select");
-        ol.on("mousemove.AddableField", function(){
-          ol.children().on("mouseenter.AddableField", function(){
-            $(this).css({
-              border: "2px dashed red",
-              paddingRight: 10
-            });
-          }).on("mouseleave.AddableField", function(){
-            $(this).css({
-              border: "none",
-              paddingRight: 0
-            });
-          });
-        });
-        $(window).one("mouseup.AddableField", function(event){
+    reorder: function(li){
+      var self = this,
+          ol = li.closest("ol");
+      ol.find("*").addClass("no-select");
+      ol.one("mousemove.AddableField", function(){
+        ol.children().on("mouseenter.AddableField", function(event){
           var target = $(event.target);
-          if(target.is(ol.find("*"))){
-            target = target.is("li")? target : target.closest("li");
-            if(target.index() < item.index()){
-              item.insertBefore(target);
-            }else if(target.index() > item.index()){
-              item.insertAfter(target);
-            }
+          target = target.is("li")? target : target.closest("li");
+          if(target.index() < li.index()){
+            li.insertBefore(target);
+          }else if(target.index() > li.index()){
+            li.insertAfter(target);
           }
-          ol.find("*").removeClass("no-select");
-          ol.children().trigger("mouseleave.AddableField");
-          ol.off("mousemove.AddableField");
-          ol.children().off("mouseenter.AddableField").off("mouseleave.AddableField");
         });
-      }
+      });
+      $(window).one("mouseup.AddableField", function(event){
+        ol.find("*").removeClass("no-select");
+        ol.off("mousemove.AddableField");
+        ol.children().off("mouseenter.AddableField");
+      });
     }
 
   });

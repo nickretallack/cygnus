@@ -6,9 +6,10 @@
     padding: 0px 1rem
     margin-top: 5px
     i
-      line-height: 1px
-      margin-right: 0.5em
+      margin-right: 0.5rem
+      margin-top: -2px
       vertical-align: middle
+      color: white
   #workspace
     border: 1px solid #5EBE9F
     padding: 4px
@@ -60,16 +61,17 @@
             margin-right: 5px
         .fake-answer
           background-color: ghostwhite
-          border: 3px dashed black
           margin-top: 2%
           color: lightslategrey
         .fake-answer.short-response
+          border: 3px dashed black
           height: 2rem
           border-bottom-style: solid
           text-align: center
           text-transform: uppercase
           line-height: 1.8rem
         .fake-answer.free-answer
+          border: 3px dashed black
           height: 6rem
           text-align: center
           text-transform: uppercase
@@ -79,6 +81,14 @@
           width: 100%
           padding: 10px 0
           +no-select
+          ol
+            padding-left: 5%
+            li
+              position: relative
+              .handle
+                top: 10px
+                left: -50px
+              .remove
       input
         height: auto
       ul
@@ -97,8 +107,6 @@
       box-shadow: 0px 2px 4px #AAA
       position: absolute
       z-index: 100
-  #workspace.holding
-    cursor: ns-resize
   #workspace:empty:after
     content: "No questions yet."
     font-size: 2.28rem

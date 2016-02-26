@@ -38,10 +38,13 @@ OrderForm = (function(){
 
     initialize: function(){
       var self = this;
-      self.workspace.find(".question").children(".remove").off("click.Orderform").on("click.OrderForm", function(){
+      self.workspace.find(".question").children(".remove").on("click.OrderForm", function(){
         self.remove($(this).parents("li"));
       });
       self.form.find(".question").remove();
+      self.workspace.children("li").each(function(index, li){
+        self.initializeHandle($(li));
+      });
       self.submit.one("click.OrderForm", function(event){
         pause(event);
         self.generateContentFieldValue();
@@ -49,18 +52,54 @@ OrderForm = (function(){
       });
     },
 
-    add: function(name){
-      var self = this, question;
-      self.workspace.append((question = self.templates[name].clone()));
-      console.log(question);
-      question.find(".remove").on("click.OrderForm", function(){
-        self.remove(question);
+    initializeHandle: function(li){
+      var self = this;
+      console.log("here");
+      li.children().children(".handle").on("mousedown.OrderForm", function(){
+        self.reorder(li);
       });
+    },
+
+    add: function(name){
+      var self = this, li;
+      self.workspace.append((li = self.templates[name].clone()));
+      li.children().children(".remove").on("click.OrderForm", function(){
+        self.remove(li);
+      });
+      var addableField = li.find(".addable-field");
+      if(addableField.exists()){
+        addableField = new AddableField(addableField);
+        bleatr.push(addableField);
+        addableField.initialize();
+      }
+      self.initializeHandle(li);
     },
 
     remove: function(target){
       var self = this;
       target.remove();
+    },
+
+    reorder: function(li){
+      var self = this,
+          ol = li.closest("ol");
+      ol.find("*").addClass("no-select");
+      ol.one("mousemove.OrderForm", function(){
+        ol.children().on("mouseenter.OrderForm", function(event){
+          var target = $(event.target);
+          target = target.is("li")? target : target.closest("li");
+          if(target.index() < li.index()){
+            li.insertBefore(target);
+          }else if(target.index() > li.index()){
+            li.insertAfter(target);
+          }
+        });
+      });
+      $(window).one("mouseup.OrderForm", function(event){
+        ol.find("*").removeClass("no-select");
+        ol.off("mousemove.OrderForm");
+        ol.children().off("mouseenter.OrderForm");
+      });
     },
 
     generateContentFieldValue: function(){
