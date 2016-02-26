@@ -5,7 +5,6 @@ Destroyable = function(element){
   self.container = new ActiveContainer(element);
 
   self.container.buttonTable.append(self.container.closeButton);
-  self.container.maxHeight = self.container.top.outerHeight();
 
   self.container.closeButton.on("click.Destroyable", function(){
     self.container.destroy();
@@ -14,8 +13,6 @@ Destroyable = function(element){
   $(window).on("resize.Destroyable", function(){
     self.container.maximize(false);
   });
-
-  self.container.maximize(false);
 
   return self;
 
