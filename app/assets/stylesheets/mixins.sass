@@ -95,11 +95,9 @@
 
 =pool-index-field
   &
-    height: calc(100% + 1.5rem)
     +block-centered
+    height: 170px
     .col
-      position: relative
-      top: -10%
       display: inline
       width: 100%
       text-align: center !important
@@ -183,17 +181,29 @@
 
 =hidable
   background-color: $success-background-color
-  margin-top: 10px !important
-  margin-bottom: 10px !important
+  margin-top: 0.75rem
+  margin-bottom: 0.75rem
   border-radius: 14px
   border: 2px solid $text-shadow-color
-  padding: 10px
-  height: auto
+  padding: 0 10px
+  .top
+    width: 100%
+    font-size: 18px
+    +no-select
+  .title
+    float: left
+    cursor: pointer
+  .divider
+    margin: -3px
+  .button-table
+    float: right
+    margin-top: -1px
+    i
+      position: relative
   .content
     +block-centered
     text-align: left
-    width: 90%
-    height: auto
+    width: 95%
 
 =icon-hover
   color: $icon-hover-color

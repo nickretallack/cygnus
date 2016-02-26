@@ -25,10 +25,6 @@ IndexField = (function(){
         }));
     };
 
-    self.content.css({
-      height: 170
-    });
-
     self.resize();
     self.pool.html($("<div />", {
       html: self.pool.html()
@@ -56,10 +52,7 @@ IndexField = (function(){
 
   resize: function(){
     self.pool.css({
-    width: self.indexField.width() - (self.iconWidth + 2) * 2,
-    height: "100%",
-    margin: 0,
-    overflow: "hidden"
+      width: self.indexField.width() - (self.iconWidth + 2) * 2
     });
   }
 
