@@ -68,6 +68,23 @@
     text-align: center
     width: 100%
 
+=submit-link
+  background-color: transparent
+  color: #039be5 !important
+  text-transform: none
+  box-shadow: none
+  font-weight: normal
+  text-shadow: none !important
+  margin: 0 20px !important
+  padding: 0 !important
+  &:hover
+    text-decoration: underline !important
+    font-size: 100% !important
+    color: #039be5 !important
+    margin: 0 20px !important
+    padding: 0 !important
+    line-height: 2rem !important
+
 =placeholder
   color: $placeholder-color
   text-shadow: 0px 0px 5px $placeholder-text-shadow-color
@@ -399,6 +416,9 @@
 
 .no-select
   +no-select
+
+input[type = "submit"].link
+  +submit-link
 
 .clickable-icon
   +clickable-icon

@@ -17,6 +17,10 @@
   <% else %>
     <blockquote class = "inline link"><%= link_to "PM", pms_path(current_user.name, @model.name) %></blockquote>
   <% end %>
-  <blockquote class = "inline link danger">Order</blockquote>
+  <% unless @model.order_forms.empty? %>
+    <blockquote class = "inline link"><%= link_to "Order", place_order_path(@model, @model.order_form) %></blockquote>
+  <% else %>
+    <blockquote class = "inline link danger">Order</blockquote>
+  <% end %>
   <blockquote class = "inline link"><%= link_to "Activity", messages_path(@model) %></blockquote>
 </div>

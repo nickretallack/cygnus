@@ -3,8 +3,11 @@ class UserCell < HelpfulCell
   def header(options)
     case options[:action]
     when :index
-      if params[:terms] == CONFIG[:default_search_terms]
+      case true
+      when search_defaults
         "Open Artists"
+      when search_all
+        "All Users"
       else
         params[:terms][:tags]
       end

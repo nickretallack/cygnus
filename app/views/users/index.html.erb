@@ -1,3 +1,19 @@
+<%= form_for :terms, url: search_path do |f| %>
+  <%= f.fields_for :use_statuses do |use| %>
+    <%= use.hidden_field :commissions, value: "0" %>
+    <%= use.hidden_field :trades, value: "0" %>
+    <%= use.hidden_field :requests, value: "0" %>
+    <%= use.hidden_field :collaborations, value: "0" %>
+  <% end %>
+  <%= f.fields_for :statuses do |stat| %>
+    <%= stat.hidden_field :commissions, value: "all open statuses" %>
+    <%= stat.hidden_field :trades, value: "all open statuses" %>
+    <%= stat.hidden_field :requests, value: "all open statuses" %>
+    <%= stat.hidden_field :collaborations, value: "all open statuses" %>
+  <% end %>
+  <%= f.submit "List all users instead", class: "link" %>
+<% end %>
+
 <div class = "row">
   <%= form_for :terms, url: search_path do |f| %>
     <div class = "col s12 m10 block search">

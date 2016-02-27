@@ -7,9 +7,9 @@ IndexField = (function(){
     self = this;
 
     self.indexField = element;
-    self.pool = self.indexField.children(".content").safeAdd();
-    self.content = self.indexField.parent(".content").safeAdd();
-    if(self.pool === undefined) return;
+    self.pool = self.indexField.children(".content");
+    self.content = self.indexField.parent(".content");
+    if(!self.pool.exists()) return;
     self.iconWidth = 56;
     
     var arrow = function(direction){

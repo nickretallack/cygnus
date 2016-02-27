@@ -35,6 +35,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :orders, only: [:create]
+
   scope path: "submissions/:submission_#{Submission.slug}" do
     controller :messages do
       resources :messages, only: [:create], path: "comments", as: :comments
@@ -75,8 +77,13 @@ Rails.application.routes.draw do
       get :set_default, path: "order_forms/:#{OrderForm.slug}/default", as: :default_order_form
       resources :order_forms, only: [:create, :index, :edit, :update, :destroy]
     end
+    controller :orders do
+      get :place_order, path: "order/:#{OrderForm.slug}"
+    end
     controller :users do
       get :dashboard
+      get :reset_return, path: ":activation", as: :send_password_reset
+      patch :reset_return_confirm, path: ":activation"
     end
   end
 
@@ -89,18 +96,11 @@ Rails.application.routes.draw do
     scope path: "reset" do
       get :reset, as: :password_reset
       post :reset_confirm, as: :reset
-      scope path: ":#{User.slug}" do
-        get :reset_return, path: ":activation", as: :send_password_reset
-        patch :reset_return_confirm, path: ":activation"
-      end
     end
     resources :users, except: [:new, :edit], param: User.slug, path: "" do
       member do
         get :watch
         get :activate, path: "activate/:activation", as: :activate
-        # controller :order_forms do
-        #   resources :order_forms, except: [:new, :edit, :update]
-        # end
       end
     end
   end

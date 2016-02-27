@@ -23,6 +23,16 @@ module UsersHelper
     user == current_user
   end
 
+  # search terms
+
+  def search_defaults
+    params[:terms] == CONFIG[:default_search_terms]
+  end
+
+  def search_all
+    params[:terms][:use_statuses].reject{ |key, value| value == "0" }.empty? and params[:terms][:statuses].reject{ |key, value| value == "all open statuses" }.empty?
+  end
+
   # permission
 
   def get_user

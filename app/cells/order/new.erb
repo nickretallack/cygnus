@@ -1,0 +1,11 @@
+<%= form_for Order.new, url: orders_path, html: { class: "button-submit" } do |f| %>
+  <%= @model.content %>
+  <%= f.fields_for User.new, url: users_path do |nu| %>
+    <%= nu.text_field :name, placeholder: "Username" %>
+    <%= nu.email_field :email, placeholder: "Email" %>
+    <%= nu.password_field :password, placeholder: "Password" %>
+    <%= nu.password_field :password_confirmation, placeholder: "Confirm Password" %>
+  <% end %>
+  <%= f.submit "Place Order", id: "send" %>
+<% end %>
+<div class = "button-area float-right"></div>
