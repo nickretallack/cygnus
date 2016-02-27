@@ -36,15 +36,20 @@ AddableField = (function(){
       self.initializeRemove($(item));
     });
 
+    $(window).on("resize.AddableField", function(){
+      self.area.children().css({
+        height: self.addable.outerHeight()
+      });
+    });
+
   };
 
   Make.extend(AddableField.prototype, {
 
-    initialize(){
-      var self = this,
-          children = self.field.children();
+    initialize: function(){
+      var self = this;
       if(self.addable.is("li")){
-        self.initializeHandle(children.last());
+        self.initializeHandle(self.field.children().last());
       }
     },
 
@@ -56,8 +61,7 @@ AddableField = (function(){
     },
 
     initializeRemove: function(item){
-      var self = this,
-          children = self.field.children();
+      var self = this;
       self.addButton.before(self.removeButton.clone().css({
         height: self.addable.outerHeight()
       }).on("click.AddableField", function(){
@@ -73,11 +77,11 @@ AddableField = (function(){
       if(field.is("select")){
         field.children("option").removeAttr("selected");
       }
-      var nameArray = field.attr("name").toArray();
-      nameArray[nameArray.length - 1] = parseInt(nameArray.last()) + 1;
-      var name = nameArray.parse();
-      field.attr("name", name);
-      field.attr("id", name);
+      // var nameArray = field.attr("name").toArray();
+      // nameArray[nameArray.length - 1] = parseInt(nameArray.last()) + 1;
+      // var name = nameArray.parse();
+      // field.attr("name", name);
+      // field.attr("id", name);
       self.addable = addable;
       self.field.append(addable);
       self.initialize();
@@ -94,6 +98,9 @@ AddableField = (function(){
     reorder: function(li){
       var self = this,
           ol = li.closest("ol");
+      li.css({
+        backgroundColor: "antiquewhite"
+      });
       ol.find("*").addClass("no-select");
       ol.one("mousemove.AddableField", function(){
         ol.children().on("mouseenter.AddableField", function(event){
@@ -110,6 +117,9 @@ AddableField = (function(){
         });
       });
       $(window).one("mouseup.AddableField", function(event){
+        li.css({
+          backgroundColor: "inherit"
+        });
         ol.find("*").removeClass("no-select");
         ol.off("mousemove.AddableField");
         ol.children().off("mouseenter.AddableField");

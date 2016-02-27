@@ -16,7 +16,7 @@ OrderForm = (function(){
 
     $.each(self.icons, function(name, icon){
       self.buttons[name.camelCase()] = $("<button />", {
-        class: "btn button-with-icon no-effects",
+        class: "btn button-with-icon",
         text: name.readable()
       }).prepend($("<i />", {
         class: "material-icons",
@@ -112,6 +112,7 @@ OrderForm = (function(){
                                           return {
                                             tag: element.prop("tagName").toLowerCase(),
                                             type: element.attr("type"),
+                                            name: element.attr("name"),
                                             value: element.prop("value")
                                           }
                                         });

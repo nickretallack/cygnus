@@ -72,7 +72,7 @@ function initialize(){
   $.each(Init.classes, function(key, value){
     $(value).each(function(index, element){
       element = $(element);
-      if(!element.hasClass("objectified")){
+      if(!element.hasClass("objectified") && !element.is(".hide") && !element.closest(".hide").exists()){
         bleatr.push(new window[key](element));
         element.addClass("objectified");
       }

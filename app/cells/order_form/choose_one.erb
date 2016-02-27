@@ -1,10 +1,10 @@
-<%= text_area_tag "question", (@object[0]["value"] rescue nil), placeholder: "Question" %>
+<%= text_area_tag "question", @questions[0]["value"], placeholder: "Question" %>
 <div class = "fake-answer <%= @name.to_s.underscore.dasherize %>">
   <ol class = "js addable-field orderable">
-    <% (@object[1..-1] rescue [{"value" => nil}]).each do |object| %>
+    <% @options.each do |option| %>
       <li class = "padded">
         <i class = "handle material-icons small"><%= CONFIG[:other_icons][:handle] %></i>
-        <%= text_field_tag "question[0]", object["value"], placeholder: "Choice" %>
+        <%= text_field_tag "option", option["value"], placeholder: "Choice" %>
       </li>
     <% end %>
   </ol>
