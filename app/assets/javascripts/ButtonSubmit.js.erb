@@ -5,7 +5,7 @@ ButtonSubmit = (function(){
     var self = this;
 
     self.form = element;
-    self.area = element.siblings(".button-area");
+    self.area = element.nextAll(".button-area").first();
     self.icons = JSON.parse('<%= CONFIG[:button_icons].to_json %>');
 
   };
@@ -73,7 +73,7 @@ ButtonSubmit = (function(){
               icon.replaceWithSpinner();
               button.trigger("click");
             }
-          }else if(name === "edit"){
+          }else if(name === "edit" || name === "back"){
             window.location.replace(self.form.attr("action"));
           }else{
             icon.replaceWithSpinner();
@@ -83,6 +83,10 @@ ButtonSubmit = (function(){
         if(name === "default"){
           icon.css({
             transform: "scaleY(-1)"
+          });
+        }else if (name === "back"){
+          icon.css({
+            transform: "scaleX(-1)"
           });
         }
         button.hide();

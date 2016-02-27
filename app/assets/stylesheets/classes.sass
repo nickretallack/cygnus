@@ -249,25 +249,28 @@ input:focus:-ms-input-placeholder, textarea:focus:-ms-input-placeholder
 
 .button-area
   +block-centered
-  i
-    transition: 0.1s ease-out !important
   i + label
-    margin-top: 5%
+    margin-top: 10px
   div
     cursor: pointer
-    i
-      cursor: pointer
-    label
+    //do not put padding; breaks spinner
+    *
       cursor: pointer
 
 #cards
   min-height: 15px
 
-.button-area.float
+.button-area[class *= "float"]
   position: fixed
   bottom: 5px
-  left: 5px
   background-color: $background-color
+  z-index: 1
+
+.button-area.float-left
+  left: 5px
+
+.button-area.float-right
+  right: 5px
 
 //messages
 #flash

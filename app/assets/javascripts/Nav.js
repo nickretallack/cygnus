@@ -7,9 +7,9 @@ Nav = (function(){
     self = this;
 
     self.nav = element;
-    self.banner = self.nav.parents("header").children("img").safeAdd();
-    self.dropdownButton = self.nav.find(".dropdown-button").safeAdd();
-    self.collapseButton = self.nav.find(".button-collapse").safeAdd();
+    self.banner = self.nav.parents("header").children("img");
+    self.dropdownButton = self.nav.find(".dropdown-button");
+    self.collapseButton = self.nav.find(".button-collapse");
     self.footerHeight = $("footer").height();
 
     self.dropdownButton.dropdown({
@@ -48,7 +48,7 @@ Nav = (function(){
     },
 
     pushpin: function(){
-      if(!self.banner || !self.nav) return;
+      if(!self.banner.exists() || !self.nav.exists()) return;
       if($(window).scrollTop() > self.banner.outerHeight()){
         self.nav.css({
           position: "fixed",

@@ -8,12 +8,19 @@ AddableField = (function(){
     self.area = element.siblings(".addable-area");
     self.addable = self.field.children().last();
     self.orderable = self.field.is(".orderable");
-    self.button = $("<i />", {
-      class: "material-icons medium-small",
+    self.addButton = $("<i />", {
+      class: "material-icons medium-small add",
       text: "<%= CONFIG[:button_icons][:add] %>",
+      css: {
+        height: self.addable.outerHeight()
+      }
+    });
+    self.removeButton = $("<i />", {
+      class: "material-icons medium-small",
+      text: "<%= CONFIG[:button_icons][:remove] %>"
     });
 
-    self.button.on("click.AddableField", function(){
+    self.addButton.on("click.AddableField", function(){
       self.add();
     });
 
@@ -23,25 +30,39 @@ AddableField = (function(){
       });
     }
 
-    self.area.append(self.button);
+    self.area.append(self.addButton);
+
+    self.field.children().each(function(index, item){
+      self.initializeRemove($(item));
+    });
 
   };
 
   Make.extend(AddableField.prototype, {
 
     initialize(){
-      var self = this;
-      console.log("here");
-      self.area.css({
-        height: self.field.outerHeight()
-      });
+      var self = this,
+          children = self.field.children();
+      if(self.addable.is("li")){
+        self.initializeHandle(children.last());
+      }
     },
 
     initializeHandle: function(li){
       var self = this;
-      li.children(".handle").on("mousedown.AddableField", function(){
+      li.children(".handle").off("mousedown.AddableField").on("mousedown.AddableField", function(){
         self.reorder(li);
       });
+    },
+
+    initializeRemove: function(item){
+      var self = this,
+          children = self.field.children();
+      self.addButton.before(self.removeButton.clone().css({
+        height: self.addable.outerHeight()
+      }).on("click.AddableField", function(){
+        self.remove(item);
+      }));
     },
 
     add: function(){
@@ -59,12 +80,15 @@ AddableField = (function(){
       field.attr("id", name);
       self.addable = addable;
       self.field.append(addable);
-      self.area.css({
-        height: self.field.outerHeight()
-      });
-      if(addable.is("li")){
-        self.initializeHandle(addable);
-      }
+      self.initialize();
+      self.initializeRemove(addable);
+    },
+
+    remove: function(item){
+      var self = this,
+          buttons = self.area.children(":not(.add)");
+      buttons.eq(item.index()).remove();
+      item.remove();
     },
 
     reorder: function(li){
@@ -73,11 +97,14 @@ AddableField = (function(){
       ol.find("*").addClass("no-select");
       ol.one("mousemove.AddableField", function(){
         ol.children().on("mouseenter.AddableField", function(event){
-          var target = $(event.target);
+          var target = $(event.target),
+              buttons = self.area.children(":not(.add)");
           target = target.is("li")? target : target.closest("li");
           if(target.index() < li.index()){
+            buttons.eq(li.index()).insertBefore(buttons.eq(target.index()))
             li.insertBefore(target);
           }else if(target.index() > li.index()){
+            buttons.eq(li.index()).insertAfter(buttons.eq(target.index()))
             li.insertAfter(target);
           }
         });

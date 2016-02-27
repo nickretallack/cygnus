@@ -26,6 +26,13 @@
 
 //mixins
 
+=spaced
+  margin-top: 0.75em
+  margin-bottom: 0.75em
+
+=padded
+  padding-bottom: 10px
+
 =block-centered
   margin-left: auto !important
   margin-right: auto !important
@@ -356,6 +363,12 @@
       color: $danger-color
 
 //behavior
+
+.spaced
+  +spaced
+
+.padded
+  +padded
 
 .vc
   +vertical-center

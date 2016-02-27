@@ -2,7 +2,7 @@
 <div class = "fake-answer <%= @name.to_s.underscore.dasherize %>">
   <ol class = "js addable-field orderable">
     <% (@object[1..-1] rescue [{"value" => nil}]).each do |object| %>
-      <li>
+      <li class = "padded">
         <i class = "handle material-icons small"><%= CONFIG[:other_icons][:handle] %></i>
         <%= text_field_tag "question[0]", object["value"], placeholder: "Choice" %>
       </li>

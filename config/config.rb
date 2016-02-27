@@ -53,7 +53,9 @@ CONFIG = {
     delete: "delete",
     edit: "edit",
     add: "add_circle",
-    default: "low_priority"
+    default: "low_priority",
+    back: "play_arrow",
+    remove: "remove_circle"
   },
 
   order_form_icons: {

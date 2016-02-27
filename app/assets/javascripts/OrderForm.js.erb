@@ -54,7 +54,6 @@ OrderForm = (function(){
 
     initializeHandle: function(li){
       var self = this;
-      console.log("here");
       li.children().children(".handle").on("mousedown.OrderForm", function(){
         self.reorder(li);
       });
@@ -104,6 +103,7 @@ OrderForm = (function(){
 
     generateContentFieldValue: function(){
       var self = this;
+      self.form.children("input.question").remove();
       $.each(self.workspace.find(".question").toArray().map(function(element){
         element = $(element);
         var object = {};

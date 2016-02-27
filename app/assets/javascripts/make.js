@@ -361,14 +361,7 @@ Make.extend(Array.prototype, {
       return this.length > 0;
     },
 
-    safeAdd: function(){
-      if(this.exists()){
-        return this;
-      }else{
-        console.log(this.selector + " does not exist");
-        return undefined;
-      }
-    },
+    reverse: Array.prototype.reverse,
 
     collidesWith: function(div){
       var x1 = this.offset().left,
