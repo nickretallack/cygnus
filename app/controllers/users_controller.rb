@@ -22,27 +22,10 @@ class UsersController < ApplicationController
   end
 
   def create
-    @new_user = User.new(params.require(:user).permit([:name, :email, :password, :password_confirmation]))
-    @new_user.ip_address = request.remote_ip
-    if CONFIG[:email_required]
-      @new_user.level = :unactivated
-      if @new_user.save
-        session[:email] = @new_user.email
-        @new_user.send_activation_email
-        flash[:info] = "please check #{@new_user.email} to activate your account"
-        redirect_to action: :new
-      else
-        back_with_errors
-      end
+    if cell(:user).(:register).to_bool
+      back
     else
-      @new_user.level = :member
-      @new_user.activated_at = Time.zone.now
-      if @new_user.save
-        first_log_in @new_user
-        back
-      else
-        back_with_errors
-      end
+      back_with_errors
     end
   end
 
@@ -71,19 +54,10 @@ class UsersController < ApplicationController
   end
 
   def log_in
-    user = User.find(params[:session][:name])
-    if user
-      if user.authenticate(params[:session][:password])
-        activate_session user
-        flash[:success] = "logged in as "+user.name
-        redirect_to :back
-      else
-        flash[:danger] = "incorrect password"
-        redirect_to :back
-      end
+    if cell(:user).(:log_in).to_bool
+      back
     else
-      flash[:danger] = "no such user"
-      redirect_to :back
+      back
     end
   end
 

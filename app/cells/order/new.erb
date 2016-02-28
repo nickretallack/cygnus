@@ -1,11 +1,30 @@
 <%= form_for Order.new, url: orders_path, html: { class: "button-submit" } do |f| %>
   <%= @model.content %>
-  <%= f.fields_for User.new, url: users_path do |nu| %>
-    <%= nu.text_field :name, placeholder: "Username" %>
-    <%= nu.email_field :email, placeholder: "Email" %>
-    <%= nu.password_field :password, placeholder: "Password" %>
-    <%= nu.password_field :password_confirmation, placeholder: "Confirm Password" %>
-  <% end %>
+  <div class = "row limit-height">
+    <% unless anon? %>
+      <span class = "spaced note danger">You are currently logged into <%= CONFIG[:name] %> as <%= current_user.name %>. Your account email is <%= current_user.email %>; this email will be included on your order. Alternately, you can register a new user or sign in as a different user below; then their information will be included on the order.</span>
+    <% end %>
+    <div class = "col s1"></div>
+    <div class = "col s4">
+      <span class = "spaced">Register as a new <%= CONFIG[:name] %> user when placing your order:</span>
+      <%= fields_for :user do |u| %>
+        <%= u.text_field :name, placeholder: "Username" %>
+        <%= u.email_field :email, placeholder: "Email" %>
+        <%= u.password_field :password, placeholder: "Password" %>
+        <%= u.password_field :password_confirmation, placeholder: "Confirm Password" %>
+      <% end %>
+    </div>
+    <div class = "col s2"><span><%= "\u2014" %>or<%= "\u2014" %></span></div>
+    <div class = "col s4">
+      <span class = "spaced">Sign <%= anon?? "into your account" : "in as a different user" %> when placing your order:</span>
+      <%= fields_for :session do |s| %>
+        <%= s.text_field :name, placeholder: "Username" %>
+        <%= s.password_field :password, placeholder: "Password" %>
+      <% end %>
+    </div>
+    <div class = "col s1"></div>
+  </div>
+  <span class = "spaced note">*You can place your order anonymously, but the artist will not receive any indication of whom the order is from unless you tell them yourself. If you sign up or sign in, your username and email will be automatically attached to your order.</span>
   <%= f.submit "Place Order", id: "send" %>
 <% end %>
 <div class = "button-area float-right"></div>

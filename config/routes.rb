@@ -35,7 +35,10 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :orders, only: [:create]
+  controller :orders do
+    resources :orders, only: [:create]
+    get :place_order, path: "order/:#{OrderForm.slug}"
+  end
 
   scope path: "submissions/:submission_#{Submission.slug}" do
     controller :messages do
@@ -76,9 +79,6 @@ Rails.application.routes.draw do
     controller :order_forms do
       get :set_default, path: "order_forms/:#{OrderForm.slug}/default", as: :default_order_form
       resources :order_forms, only: [:create, :index, :edit, :update, :destroy]
-    end
-    controller :orders do
-      get :place_order, path: "order/:#{OrderForm.slug}"
     end
     controller :users do
       get :dashboard

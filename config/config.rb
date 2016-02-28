@@ -55,7 +55,8 @@ CONFIG = {
     add: "add_circle",
     default: "low_priority",
     back: "play_arrow",
-    remove: "remove_circle"
+    remove: "remove_circle",
+    send: "send"
   },
 
   order_form_icons: {

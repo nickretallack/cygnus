@@ -11,18 +11,22 @@ header
     font-size: 1rem
   .side-nav
     max-width: 80%
-  #reg-menu
+  #menu:not(.wide)
     min-width: 300px
     max-height: 800px
-  #mobile-reg-menu
+  #mobile-menu:not(.wide)
     max-width: 60% !important
     input[type = "submit"]
       width: 100%
+    input
+      margin-top: 10px !important
     li
       text-align: center
       float: left
       width: 100%
-  #nav-menu
+    form
+      margin-top: 20px
+  #menu.wide
     width: 600px
     a
       text-shadow: none
@@ -30,7 +34,7 @@ header
       font-size: 1.2rem
     li
       text-align: right
-  #mobile-nav-menu
+  #mobile-menu.wide
     a
       text-shadow: none
       font-size: 150%
@@ -101,7 +105,8 @@ header
           li
             text-align: center
             input
-              width: 90%
+              margin: 0 !important
+              width: calc(95% - 15px)
             input[type = "submit"]
               background-color: $menu-button-background-color
           li:last-child
@@ -125,7 +130,6 @@ header
         input
           box-shadow: 0 -2px 5px #4A9A6D inset
           border-radius: 50px
-          padding-left: 10px
           text-shadow: 0px 0px 1px $text-shadow-color
         input[type = "submit"]
           border-radius: 30px
