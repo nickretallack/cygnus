@@ -36,8 +36,8 @@ Rails.application.routes.draw do
   end
 
   controller :orders do
-    resources :orders, only: [:create]
-    get :place_order, path: "order/:#{OrderForm.slug}"
+    post :create, path: "order/:#{OrderForm.slug}", as: :place_order
+    get :new, path: "order/:#{OrderForm.slug}", as: :new_order
   end
 
   scope path: "submissions/:submission_#{Submission.slug}" do

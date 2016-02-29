@@ -1,6 +1,6 @@
 <% @options.each do |option| %>
-  <div>
-    <%= radio_button_tag :option, option %>
-    <%= label :option, option, option %>
+  <div class = "spaced">
+    <%= radio_button_tag "content[#{@index}-#{@question}]", option %>
+    <%= label "content[#{@index}-#{@question}]", option, option %>
   </div>
 <% end %>

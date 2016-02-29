@@ -2,7 +2,8 @@ class OrderCell < HelpfulCell
 
   def new
     html = ""
-    @order.content.each do |question|
+    @order.content.each_with_index do |question, index|
+      @index = index
       @name, content = question.first
       ["question", "href", "text"].each do |name|
         instance_variable_set("@#{name}", (content.select{ |item| item["name"] == name }.first["value"] rescue nil))
@@ -18,7 +19,7 @@ class OrderCell < HelpfulCell
 
   def header(options)
     case options[:action]
-    when :place_order
+    when :new
       unless options[:sanitize]
         "Place an order with #{link_to @order.user.name, user_path(@order.user)}"
       else
@@ -29,7 +30,7 @@ class OrderCell < HelpfulCell
 
   def instructions(options)
     case options[:action]
-    when :place_order
+    when :new
       @title = "Place an order"
       @content = ""
       @content << "You are about to place a commission order. The following is a list of questions the artist has drawn up for you pertaining to the work you want done. When you have answered them to your satisfaction, press the \u201CPlace Order\u201D button in the lower right of your screen."
