@@ -110,8 +110,6 @@ OrderForm = (function(){
         object[element.attr("name")] =  element.children(".content").find("input, textarea").toArray().map(function(element){
                                           element = $(element);
                                           return {
-                                            tag: element.prop("tagName").toLowerCase(),
-                                            type: element.attr("type"),
                                             name: element.attr("name"),
                                             value: element.prop("value")
                                           }

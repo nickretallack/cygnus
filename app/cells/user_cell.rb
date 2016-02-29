@@ -38,50 +38,6 @@ class UserCell < HelpfulCell
     end
   end
 
-  def log_in
-    user = User.find(params[:session][:name])
-    if user
-      if user.authenticate(params[:session][:password])
-        controller.activate_session user
-        controller.flash[:success] = "logged in as "+user.name
-        true
-      else
-        controller.flash[:danger] = "incorrect password"
-        false
-      end
-    else
-      controller.flash[:danger] = "no such user"
-      false
-    end
-  end
-
-  def register
-    @user = User.new(params.require(:user).permit([:name, :email, :password, :password_confirmation]))
-    @user.ip_address = request.remote_ip
-    if CONFIG[:email_required]
-      @user.level = :unactivated
-      if @user.save
-        session[:email] = @user.email
-        @user.send_activation_email
-        flash[:info] = "please check #{@user.email} to activate your account"
-        redirect_to register_path
-      else
-        controller.instance_variable_set("@user", @user)
-        false
-      end
-    else
-      @user.level = :member
-      @user.activated_at = Time.zone.now
-      if @user.save
-        controller.first_log_in @user
-        true
-      else
-        controller.instance_variable_set("@user", @user)
-        false
-      end
-    end
-  end
-
   ["summary", "links", "watch"].each do |method|
     define_method method do
       render method

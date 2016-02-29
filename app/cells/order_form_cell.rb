@@ -1,19 +1,9 @@
 class OrderFormCell < HelpfulCell
 
-  def index
-    render
-  end
-
-  def show
-    render
-  end
-
-  def new
-    render
-  end
-
-  def edit
-    render
+  ["index", "show", "new", "edit"].each do |method|
+    define_method method do
+      render method
+    end
   end
 
   CONFIG[:order_form_icons].each do |key, value|

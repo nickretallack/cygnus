@@ -18,4 +18,13 @@ module RoutingHelper
     back
   end
 
+  def referer_is(controller, action)
+    route = Rails.application.routes.recognize_path(request.referer)
+    route[:controller] == controller and route[:action] == action
+  end
+
+  def external_link(text, href)
+    link_to text, (/^http:\/\//.match(href) ? href : "http://#{href}")
+  end
+
 end

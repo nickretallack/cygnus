@@ -32,4 +32,5 @@ class HelpfulCell < Cell::ViewModel
 
   self.send :before_filter, :get_user
   self.send :before_filter, :get_item
+
 end

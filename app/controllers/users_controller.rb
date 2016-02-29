@@ -22,10 +22,29 @@ class UsersController < ApplicationController
   end
 
   def create
-    if cell(:user).(:register).to_bool
-      back
+    @user = User.new(params.require(:user).permit([:name, :email, :password, :password_confirmation]))
+    @user.ip_address = request.remote_ip
+    if CONFIG[:email_required]
+      @user.level = :unactivated
+      if @user.save
+        session[:email] = @user.email
+        @user.send_activation_email
+        flash[:info] = "please check #{@user.email} to activate your account"
+        redirect_to register_path
+      else
+        instance_variable_set("@user", @user)
+        back_with_errors
+      end
     else
-      back_with_errors
+      @user.level = :member
+      @user.activated_at = Time.zone.now
+      if @user.save
+        first_log_in @user
+        back
+      else
+        instance_variable_set("@user", @user)
+        back_with_errors
+      end
     end
   end
 
@@ -54,17 +73,30 @@ class UsersController < ApplicationController
   end
 
   def log_in
-    if cell(:user).(:log_in).to_bool
-      back
+    user = User.find(params[:session][:name])
+    if user
+      if user.authenticate(params[:session][:password])
+        activate_session user
+        flash[:success] = "logged in as "+user.name
+        back
+      else
+        flash[:danger] = "incorrect password"
+        back_with_errors
+      end
     else
-      back
+      flash[:danger] = "no such user"
+      back_with_errors
     end
   end
 
   def log_out
     deactivate_session
     flash[:info] = "logged out"
-    redirect_to :root
+    if referer_is("orders", "place_order")
+      back
+    else
+      redirect_to :root
+    end
   end
 
   def watch

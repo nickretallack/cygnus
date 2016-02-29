@@ -11,7 +11,7 @@ module LookupHelper
   end
 
   def parents(model)
-    model.classify.constantize.where("? = ANY (attachments)", "#{model_name.name.downcase}-#{id}")
+    model.classify.constantize.where("? = ANY (attachments)", "#{model_name.name.underscore}-#{id}")
   end
 
 end
