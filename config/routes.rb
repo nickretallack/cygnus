@@ -92,7 +92,6 @@ Rails.application.routes.draw do
 
   controller :users do
     post :resend_activation_email, as: :resend
-    post :index, path: "search", as: :search
     post :log_in
     delete :log_out
     get :new, path: "register", as: :register
@@ -100,7 +99,8 @@ Rails.application.routes.draw do
       get :reset, as: :password_reset
       post :reset_confirm, as: :reset
     end
-    resources :users, except: [:new, :edit], param: User.slug, path: "" do
+    post :index, path: "(page/:page)", as: :search
+    resources :users, except: [:new, :edit, :index], param: User.slug do
       member do
         get :watch
         get :activate, path: "activate/:activation", as: :activate

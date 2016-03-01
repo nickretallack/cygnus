@@ -18,7 +18,7 @@ class UsersController < ApplicationController
 
   def index
     params[:terms] ||= CONFIG[:default_search_terms]
-    @users = User.search(params[:terms])
+    @users = paginate User.search(params[:terms]), User.results_per_page
   end
 
   def create

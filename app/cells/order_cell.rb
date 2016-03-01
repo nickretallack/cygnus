@@ -37,6 +37,11 @@ class OrderCell < HelpfulCell
       end
     when :show
       if current_user == @order.patron
+        unless options[:sanitize]
+          "Order to #{@order.user.name}"
+        else
+          "Order to #{link_to @order.user.name, user_path(@order.user)}"
+        end
       else
         unless options[:sanitize]
           if @order.patron.instance_of? AnonymousUser

@@ -1,6 +1,10 @@
 class User < ActiveRecord::Base
   include LookupHelper
 
+  def User.results_per_page
+    10
+  end
+
   custom_slug :name, case_insensitive: true
   has_secure_password
   attr_accessor  :activation_token, :reset_token

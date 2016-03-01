@@ -47,7 +47,7 @@ Init = {
     ButtonSubmit: ".button-submit",
     ImagePreview: ".image-preview",
     IndexField: "[class *= index-field]",
-    Nav: "nav",
+    Nav: "header nav",
     OrderForm: ".order-form",
     TagList: ".taglist",
     ViewAnyway: "img.adult",

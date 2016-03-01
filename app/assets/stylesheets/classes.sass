@@ -332,3 +332,29 @@ i[class *= "comm-"]
   color: mediumspringgreen
 .comm-long_wait, .comm-make_a_pitch, .comm-friends_only
   color: gold
+
+//pagination
+
+.pagination
+  +block-centered
+  display: table
+  height: 50px
+  li
+    height: 50px
+    i
+      font-size: 4rem
+    a
+      +vertical-center
+      span
+        padding: 15px 20px
+  li.disabled
+    a
+      color: darkseagreen
+  li.active
+    background-color: transparent
+    border-bottom: 2px dotted $danger-color
+    a
+      color: black
+      cursor: default
+    a:hover
+      text-decoration: none

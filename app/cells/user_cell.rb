@@ -50,4 +50,8 @@ class UserCell < HelpfulCell
     end
   end
 
+  def page_nav
+    
+  end
+
 end

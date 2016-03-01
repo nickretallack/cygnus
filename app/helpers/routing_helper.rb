@@ -27,4 +27,8 @@ module RoutingHelper
     link_to text, (/^http:\/\//.match(href) ? href : "http://#{href}")
   end
 
+  def paginate(results, limit = 20)
+    results.offset(limit * (params[:page] || 1)).limit(limit) rescue ActiveRecord::Relation.new
+  end
+
 end

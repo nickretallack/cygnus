@@ -47,3 +47,7 @@
   <%= cell(:user, user).(:summary) %>
   <%= content_tag :hr unless user == @users.last %>
 <% end %>
+
+<div class = "row">
+  <%= cell(:user).(:page_nav) %>
+</div>
