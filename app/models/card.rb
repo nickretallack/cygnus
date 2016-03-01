@@ -1,7 +1,7 @@
 class Card < ActiveRecord::Base
 
     def cards
-      children(:card, id, :card, "?")
+      children("card")
     end
 
 end

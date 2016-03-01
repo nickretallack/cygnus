@@ -18,7 +18,9 @@ class ApplicationController < ActionController::Base
 
   define_method :index, proc{}
 
-  define_method :show, proc{}
+  define_method :show do
+    render inline: cell(cell_name, item).(:show), layout: :default
+  end
 
   define_method :edit, proc{}
 
@@ -47,8 +49,12 @@ class ApplicationController < ActionController::Base
     controller_name.classify.constantize
   end
 
+  def cell_name
+    controller_name.singularize
+  end
+
   def item_string
-    "@#{controller_name.singularize}"
+    "@#{cell_name}"
   end
 
   def item

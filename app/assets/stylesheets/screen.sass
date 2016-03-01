@@ -38,13 +38,13 @@
     transform: translateY(-50%) !important
   .submit
     padding: 0 1rem
-  .top-card
+  .top-card, .card.fw
     .list-card
       width: 31.81%
       margin-left: .76%
       margin-right: .76%
-  .top-card > .list-card:nth-child(3n + 1)
-    clear: left
+    .list-card:nth-child(3n + 1)
+      clear: left
   .message
     .col:not(.hc)
       margin-top: -.5% !important
@@ -68,7 +68,7 @@
     text-align: center
   .fh
     height: 12rem !important
-  .top-card
+  .top-card, .card.fw
     .list-card
       width: 47%
       margin-left: 1.5%
@@ -91,8 +91,9 @@
     +block-centered
   .submit, input[type = "submit"]
     margin-bottom: 10px !important
-  .top-card .card
-    width: 100%
+  .top-card, .card.fw
+    .card
+      width: 100%
   .pool-index-field
     .col
       transform: none

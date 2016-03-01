@@ -3,10 +3,6 @@ class AnonymousUser
     0
   end
 
-  def pools
-    ActiveRecord::Relation.new
-  end
-
   def level
     :unactivated
   end
@@ -20,11 +16,11 @@ class AnonymousUser
   end
   
   def name
-    "Anonymous"
+    "(anonymous)"
   end
 
-  def pretty_name
-    "Anonymous"
+  def email
+    "(no email)"
   end
 
   def view_adult?

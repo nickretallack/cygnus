@@ -11,29 +11,17 @@ class CardCell < HelpfulCell
     end
   end
 
-  def top
-    @user = controller.instance_variable_get("@user")
-    render "show/top"
-  end
-
-  def list
-    @user = controller.instance_variable_get("@user")
-    render "show/list"
-  end
-
-  def new_list
-    @user = controller.instance_variable_get("@user")
-    render "new/list"
-  end
-
-  def card
-    @user = controller.instance_variable_get("@user")
-    render "show/card"
-  end
-
-  def new_card
-    @user = controller.instance_variable_get("@user")
-    render "new/card"
+  ["top", "list", "new_list", "card", "new_card", "undecided_order"].each do |method|
+    define_method method do
+      render ->(method){
+        method = method.split("_")
+        if method[0] == "new"
+          "new/#{method[1..-1].join("_")}"
+        else
+          "show/#{method.join("_")}"
+        end
+      }.call(method)
+    end
   end
 
   def header(options)

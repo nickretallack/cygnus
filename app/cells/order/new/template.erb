@@ -1,6 +1,6 @@
 <li>
   <fieldset class = "question" name = "<%= @name.dasherize %>">
     <legend><%= readable (@question || @name) %></legend>
-    <div class = "answer <%= @name.dasherize %>"><%= render @name %></div>
+    <div class = "answer <%= @name.dasherize %>"><%= render "new/#{@name}" %></div>
   </fieldset>
 </li>

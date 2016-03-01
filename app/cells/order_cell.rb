@@ -12,7 +12,17 @@ class OrderCell < HelpfulCell
       ["option"].each do |name|
         instance_variable_set("@#{name.pluralize}", content.select{ |item| item["name"] == name }.collect{ |item| item["value"] })
       end
-      html << render("template")
+      html << render("new/template")
+    end
+    html
+  end
+
+  def show
+    html = ""
+    @order.content.each_with_index do |content, index|
+      @index = index
+      @question, @answer = content.first
+      html << render("show/template")
     end
     html
   end
@@ -24,6 +34,19 @@ class OrderCell < HelpfulCell
         "Place an order with #{link_to @order.user.name, user_path(@order.user)}"
       else
         "Order from #{@order.user.name}"
+      end
+    when :show
+      if current_user == @order.patron
+      else
+        unless options[:sanitize]
+          if @order.patron.instance_of? AnonymousUser
+            "Order from #{@order.patron.name}"
+          else
+            "Order from #{link_to @order.patron.name, user_path(@order.patron)}"
+          end
+        else
+          "Order from #{@order.patron.name}"
+        end
       end
     end
   end
@@ -39,7 +62,7 @@ class OrderCell < HelpfulCell
       @content << " You can sign up or sign in from the menu in the navigation bar at the top of your screen; then your username and email will be automatically attached to your order." if anon?
       @content << "</p>"
     end
-    render
+    render if @content
   end
 
   CONFIG[:order_form_icons].each do |key, value|

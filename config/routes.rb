@@ -36,8 +36,11 @@ Rails.application.routes.draw do
   end
 
   controller :orders do
-    post :create, path: "order/:#{OrderForm.slug}", as: :place_order
-    get :new, path: "order/:#{OrderForm.slug}", as: :new_order
+    post :create, path: "orders/:#{OrderForm.slug}", as: :place_order
+    get :new, path: "order/:#{OrderForm.slug}/new", as: :new_order
+    get :show, path: "order/:#{Order.slug}", as: :show_order
+    patch :accept, path: ":#{Order.slug}/accept", as: :accept_order
+    patch :reject, path: ":#{Order.slug}/reject", as: :reject_order
   end
 
   scope path: "submissions/:submission_#{Submission.slug}" do

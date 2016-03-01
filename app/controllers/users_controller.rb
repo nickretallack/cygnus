@@ -92,7 +92,7 @@ class UsersController < ApplicationController
   def log_out
     deactivate_session
     flash[:info] = "logged out"
-    if referer_is("orders", "place_order")
+    if referer_is("orders", "new")
       back
     else
       redirect_to :root

@@ -56,7 +56,9 @@ CONFIG = {
     default: "low_priority",
     back: "play_arrow",
     remove: "remove_circle",
-    send: "send"
+    send: "send",
+    accept: "check_circle",
+    reject: "highlight_off"
   },
 
   order_form_icons: {

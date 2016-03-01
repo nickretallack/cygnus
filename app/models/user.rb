@@ -33,8 +33,8 @@ class User < ActiveRecord::Base
   end
 
   def card
-    card = children("card")
-    if cards.empty?
+    card = children("card").first
+    unless card
       list_one = Card.new(title: "To Do")
       list_one.save!
       list_two = Card.new(title: "Doing")
@@ -56,6 +56,18 @@ class User < ActiveRecord::Base
 
   def order_form
     order_forms.first
+  end
+
+  def orders
+    children("order")
+  end
+
+  def undecided_orders
+    orders.select{ |order| order.decided == false }
+  end
+
+  def placed_orders
+    children("order", "placed_order")
   end
 
   def messages
