@@ -26,11 +26,11 @@ module UsersHelper
   # search terms
 
   def search_defaults
-    params[:terms] == CONFIG[:default_search_terms]
+    session[:terms] == CONFIG[:default_search_terms] rescue false
   end
 
   def search_all
-    params[:terms][:use_statuses].reject{ |key, value| value == "0" }.empty? and params[:terms][:statuses].reject{ |key, value| value == "all open statuses" }.empty?
+    session[:terms]["use_statuses"].reject{ |key, value| value == "0" }.empty? and session[:terms]["statuses"].reject{ |key, value| value == "all open statuses" }.empty? rescue false
   end
 
   # permission

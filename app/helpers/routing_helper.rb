@@ -28,7 +28,7 @@ module RoutingHelper
   end
 
   def paginate(results, limit = 20)
-    results.offset(limit * (params[:page] || 1)).limit(limit) rescue ActiveRecord::Relation.new
+    results.offset(limit * (((params[:page] || "1").to_i) - 1)).limit(limit)
   end
 
 end

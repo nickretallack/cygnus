@@ -9,7 +9,7 @@ class UserCell < HelpfulCell
       when search_all
         "All Users"
       else
-        params[:terms][:tags]
+        session["terms"]["tags"]
       end
     when :dashboard
       if at_least :admin
@@ -48,10 +48,6 @@ class UserCell < HelpfulCell
     define_method method do
       render "#{anon?? "anon" : "member"}/#{method}"
     end
-  end
-
-  def page_nav
-    
   end
 
 end

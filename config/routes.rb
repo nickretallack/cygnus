@@ -85,8 +85,8 @@ Rails.application.routes.draw do
     end
     controller :users do
       get :dashboard
-      get :reset_return, path: ":activation", as: :send_password_reset
-      patch :reset_return_confirm, path: ":activation"
+      get :reset_return, path: ":activation/reset", as: :send_password_reset
+      patch :reset_return_confirm, path: ":activation/reset"
     end
   end
 
@@ -99,7 +99,8 @@ Rails.application.routes.draw do
       get :reset, as: :password_reset
       post :reset_confirm, as: :reset
     end
-    post :index, path: "(page/:page)", as: :search
+    post :index, path: "", as: :search
+    get :index, path: "page/:page", as: :paginate_users
     resources :users, except: [:new, :edit, :index], param: User.slug do
       member do
         get :watch

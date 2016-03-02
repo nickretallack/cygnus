@@ -61,7 +61,7 @@ module ViewHelper
   end
 
   def enum_for(collection, word: nil, reverse: false)
-    if collection.empty?
+    if collection.length < 1
       if word.nil?
         concat "<span id = 'nothing'>Nothing here.</span>".html_safe
       else

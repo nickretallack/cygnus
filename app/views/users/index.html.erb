@@ -43,11 +43,11 @@
 <% end %>
 <hr />
 
+<%= cell(:view).(:page_nav) %>
+
 <% enum_for @users do |user| %>
   <%= cell(:user, user).(:summary) %>
-  <%= content_tag :hr unless user == @users.last %>
+  <hr />
 <% end %>
 
-<div class = "row">
-  <%= cell(:user).(:page_nav) %>
-</div>
+<%= cell(:view).(:page_nav) %>

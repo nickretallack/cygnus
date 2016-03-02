@@ -1,0 +1,40 @@
+<div class = "row">
+  <ul class = "pagination">
+    <% if @page > 1 %>
+      <li>
+        <%= link_to paginate_users_path(1) do %>
+          <span><i class = "material-icons">arrow_back</i></span>
+        <% end %>
+      </li>
+      <li>
+        <%= link_to paginate_users_path(@page - 1) do %>
+          <span><i class = "material-icons">chevron_left</i></span>
+        <% end %>
+      </li>
+    <% end %>
+    <% ((@page - 2)..(@page + 2)).each do |index| %>
+      <% if index == @page %>
+        <li class = "active"><a><span><%= index %></span></a></li>
+      <% elsif index > 0 and index * @results_per_page <= @total %>
+        <li>
+          <%= link_to paginate_users_path(index) do %>
+            <span><%= index %></span>
+          <% end %>
+        </li>
+      <% end %>
+    <% end %>
+    <% unless @page * @results_per_page + @results_per_page > @total %>
+      <li>
+        <%= link_to paginate_users_path(@page + 1) do %>
+          <span><i class = "material-icons">chevron_right</i></span>
+        <% end %>
+      </li>
+      <li>
+        <%= link_to paginate_users_path((@total / @results_per_page).ceil) do %>
+          <span><i class = "material-icons">arrow_forward</i></span>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</div>
+<hr />

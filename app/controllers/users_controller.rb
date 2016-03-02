@@ -17,8 +17,19 @@ class UsersController < ApplicationController
   end
 
   def index
-    params[:terms] ||= CONFIG[:default_search_terms]
-    @users = paginate User.search(params[:terms]), User.results_per_page
+    session[:terms] = ->{
+      if params[:terms]
+        params[:terms]
+      elsif !session[:terms]
+        CONFIG[:default_search_terms]
+      else
+        session[:terms]
+      end
+    }.call
+    params[:terms] = CONFIG[:default_search_terms] unless params[:page] || params[:terms] || !session[:terms]
+    session[:terms] = params[:terms] if params[:terms]
+    @users = paginate User.search(session[:terms]), User.results_per_page
+    @total_users = User.search(session[:terms]).count
   end
 
   def create

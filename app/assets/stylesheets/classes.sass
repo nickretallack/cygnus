@@ -338,18 +338,16 @@ i[class *= "comm-"]
 .pagination
   +block-centered
   display: table
-  height: 50px
+  height: 60px
   li
-    height: 50px
+    border-bottom: 2px solid transparent
+    height: 60px
     i
       font-size: 4rem
     a
       +vertical-center
       span
         padding: 15px 20px
-  li.disabled
-    a
-      color: darkseagreen
   li.active
     background-color: transparent
     border-bottom: 2px dotted $danger-color
@@ -358,3 +356,4 @@ i[class *= "comm-"]
       cursor: default
     a:hover
       text-decoration: none
+      font-size: 100%

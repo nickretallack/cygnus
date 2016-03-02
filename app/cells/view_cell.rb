@@ -14,4 +14,11 @@ class ViewCell < HelpfulCell
     render
   end
 
+  def page_nav
+    @page = (params[:page] || "1").to_i
+    @total = controller.instance_variable_get("@total_#{controller.controller_name}")
+    @results_per_page = controller.controller_name.classify.constantize.results_per_page
+    render unless @total <= @results_per_page
+  end
+
 end

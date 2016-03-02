@@ -18,13 +18,12 @@
       <%= yield %>
     </main>
     <footer>
-      <hr />
       <div class = "row hc">
         <%= yield :footer %>
         <%= render "layouts/footer_links" %>
         <%= CONFIG[:copyright].html_safe %>
       </div>
-      <%= console %>
+      <%#= console %>
     </footer>
   </body>
 </html>
