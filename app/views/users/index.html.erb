@@ -32,12 +32,12 @@
 
 <%= hidable "Recent Submissions", params[:terms] == CONFIG[:default_search_terms] do %>
   <div class = "row pool-index-field">
-    <div class = "col content">
-      <% enum_for recent_submissions do |submission| %>
-        <%= link_to submission_path(submission.pool, submission) do %>
-          <%= cell(:image).(:bordered, submission.upload.id) %>
+    <div class = "col">
+        <% enum_for recent_submissions do |submission| %>
+          <%= link_to submission_path(submission.pool, submission) do %>
+            <%= cell(:image).(:bordered, submission.upload.id) %>
+          <% end %>
         <% end %>
-      <% end %>
     </div>
   </div>
 <% end %>

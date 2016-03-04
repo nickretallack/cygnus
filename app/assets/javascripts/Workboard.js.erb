@@ -6,8 +6,6 @@ Workboard = (function(){
 
     self.topCard = element;
     self.modeRegex = /view|edit|reorder/;
-    self.lists = {};
-    self.cards = {};
     self.triggers = {};
     self.divs = {};
 
@@ -30,12 +28,6 @@ Workboard = (function(){
       var self = this;
       $.each(self.triggers.keys(), function(index, key){
         self.divs[key] = self.topCard.find("div."+key+"-mode");
-      });
-      self.topCard.find(".card-list").each(function(index, element){
-        self.lists[$(element).attr("id")] = $(element);
-      });
-      $.each(self.lists.values(), function(index, element){
-        self.cards[$(element).attr("id")] = $(element).find(".card-card");
       });
       self.switchMode(self.triggers.values().where(function(element){
         return element.is("[start]");
@@ -65,117 +57,171 @@ Workboard = (function(){
     },
 
     reorder: function(){
-      var self = this;
-      self.topCard.find(".card").on("mouseenter", function(){
-        hover = $(this);
-        hover.find("h4", "h5").css({
-          cursor: "default"
-        })
-        $(this).css("outline", "4px dashed slategrey");
-        $(this).on("mousedown", function(event){
-          held = $(this);
-          var title = held.find("#title");
-          pause(event);
-          $("<div />", {
-            class: "card thing"
-          }).css({
-            backgroundColor: held.css("background-color"),
-            color: title.css("color")
-          }).append($("<"+title.prop("tagName")+" />", {
-            text: title.html()
-          })).appendTo($(document.body));
-          $(".thing").css({
-            position: "absolute",
-            top: event.pageY,
-            left: event.pageX,
-            pointerEvents: "none",
-            padding: "10px"
-          });
-          $(".thing").css({
-            marginLeft: $(".thing").outerWidth()/-2,
-            marginTop: $(".thing").outerHeight()/-4
-          });
-          $(window).on("mousemove", function(event){
-            if(typeof scrollTimer !== "undefined") clearInterval(scrollTimer);
-            y = event.pageY;
-            if(event.pageY-$(window).scrollTop() > $(window).height()*.8){
-              scrollTimer = setInterval(function(){
-                if(y < $("footer").offset().top && $(window).scrollTop() < $(window).height() - 5){
-                  $(window).scrollTop($(window).scrollTop()+3);
-                  y += 3;
-                  $(".thing").css({
-                    top: y
-                  });
-                }
-              }, 5);
-            }else if(event.pageY-$(window).scrollTop() < $("header").height()*2){
-              scrollTimer = setInterval(function(){
-                if($(window).scrollTop() > 5){
-                  $(window).scrollTop($(window).scrollTop()-3);
-                  y -= 3;
-                  $(".thing").css({
-                    top: y
-                  });
-                }
-              }, 5);
-            }
-            $(".thing").css({
-              top: event.pageY,
-              left: event.pageX
-            });
-          });
+      var self = this,
+          cards = self.topCard.find(".card:not(.new)");
+      cards.on("mouseenter.Workboard", function(){
+        var card = $(this);
+        card.css({
+          border: "2px dashed red"
         });
-      }).on("mouseleave", function(){
-        $(this).css("outline", "none");
       });
-
-      $(window).on("mouseup", function(event){
-        if($(event.target).prop("tagName") === "INPUT") return;
-        $(window).off("mousemove");
-        $(".thing").remove();
-        if(typeof hover !== "undefined") hover.css("outline", "none");
-        if(typeof held !== "undefined"){
-          if($(held.parents(".card")[0]).hasClass("list")){
-            if(hover.hasClass("list")){
-              held.appendTo($(hover.find(".card-title")[0]));
-            }else{
-              if(held.prevAll(".card").toArray().contains(hover[0])){
-                held.insertBefore(hover);
-              }else{
-                held.insertAfter(hover);
-              }
-            }
-          }else if(hover.hasClass("list")){
-            if(held.prevAll(".card").toArray().contains(hover[0])){
-              held.insertBefore(hover);
-            }else{
-              held.insertAfter(hover);
-            }
-          }
-        }
-        self.generateOrderField();
-      });
+      // ol.find("*").addClass("no-select");
+      // ol.one("mousemove.OrderForm", function(){
+      //   ol.children().on("mouseenter.OrderForm", function(event){
+      //     var target = $(event.target);
+      //     target = target.is("li")? target : target.closest("li");
+      //     if(target.index() < li.index()){
+      //       li.insertBefore(target);
+      //     }else if(target.index() > li.index()){
+      //       li.insertAfter(target);
+      //     }
+      //   });
+      // });
+      // $(window).one("mouseup.OrderForm", function(event){
+      //   ol.find("*").removeClass("no-select");
+      //   ol.off("mousemove.OrderForm");
+      //   ol.children().off("mouseenter.OrderForm");
+      // });
+      // self.initialize();
+      // console.log(self.lists);
     },
 
-    generateOrderField(){
-      var self = this,
-          lists = $(".list");
-      $("#card_order").attr("value",
-      ("{"+$(".top-card").attr("id").stringify()+":["+[].fill(lists.length, function(index){
-          return lists.length > 0? lists[index].id.stringify() : "";
-        }).join(", ")+"]").replace(/'/g, "\"")+
-      (function(){
-        var append = "";
-        $.each(lists, function(index, list){
-          list = $(list);
-          var cards = list.find(".card");
-          append += (", "+list.attr("id").stringify()+":["+[].fill(cards.length, function(index){
-              return cards.length > 0? cards[index].id.stringify() : "";
-            }).join(", ")+"]").replace(/'/g, "\"");
-        });
-        return append+"}";
-      })());
-        }
+    orderField: function(){
+      var self = this;
+      self.form.children("input.question").remove();
+      $.each(self.workspace.find(".question").toArray().map(function(element){
+        element = $(element);
+        var object = {};
+        object[element.attr("name")] =  element.children(".content").find("input, textarea").toArray().map(function(element){
+                                          element = $(element);
+                                          return {
+                                            name: element.attr("name"),
+                                            value: element.prop("value")
+                                          }
+                                        });
+        return object;
+      }), function(index, element){
+        self.form.append($("<input />", {
+          class: "order",
+          type: "hidden",
+          name: "order_form[content]["+self.form.find(".list-card").length+"]",
+          value: JSON.stringify(element)
+        }));
+      });
+    }
+
+  //   reorder: function(){
+  //     var self = this;
+  //     self.topCard.find(".card").on("mouseenter", function(){
+  //       hover = $(this);
+  //       hover.find("h4", "h5").css({
+  //         cursor: "default"
+  //       })
+  //       $(this).css("outline", "4px dashed slategrey");
+  //       $(this).on("mousedown", function(event){
+  //         held = $(this);
+  //         var title = held.find("#title");
+  //         pause(event);
+  //         $("<div />", {
+  //           class: "card thing"
+  //         }).css({
+  //           backgroundColor: held.css("background-color"),
+  //           color: title.css("color")
+  //         }).append($("<"+title.prop("tagName")+" />", {
+  //           text: title.html()
+  //         })).appendTo($(document.body));
+  //         $(".thing").css({
+  //           position: "absolute",
+  //           top: event.pageY,
+  //           left: event.pageX,
+  //           pointerEvents: "none",
+  //           padding: "10px"
+  //         });
+  //         $(".thing").css({
+  //           marginLeft: $(".thing").outerWidth()/-2,
+  //           marginTop: $(".thing").outerHeight()/-4
+  //         });
+  //         $(window).on("mousemove", function(event){
+  //           if(typeof scrollTimer !== "undefined") clearInterval(scrollTimer);
+  //           y = event.pageY;
+  //           if(event.pageY-$(window).scrollTop() > $(window).height()*.8){
+  //             scrollTimer = setInterval(function(){
+  //               if(y < $("footer").offset().top && $(window).scrollTop() < $(window).height() - 5){
+  //                 $(window).scrollTop($(window).scrollTop()+3);
+  //                 y += 3;
+  //                 $(".thing").css({
+  //                   top: y
+  //                 });
+  //               }
+  //             }, 5);
+  //           }else if(event.pageY-$(window).scrollTop() < $("header").height()*2){
+  //             scrollTimer = setInterval(function(){
+  //               if($(window).scrollTop() > 5){
+  //                 $(window).scrollTop($(window).scrollTop()-3);
+  //                 y -= 3;
+  //                 $(".thing").css({
+  //                   top: y
+  //                 });
+  //               }
+  //             }, 5);
+  //           }
+  //           $(".thing").css({
+  //             top: event.pageY,
+  //             left: event.pageX
+  //           });
+  //         });
+  //       });
+  //     }).on("mouseleave", function(){
+  //       $(this).css("outline", "none");
+  //     });
+
+  //     $(window).on("mouseup", function(event){
+  //       if($(event.target).prop("tagName") === "INPUT") return;
+  //       $(window).off("mousemove");
+  //       $(".thing").remove();
+  //       if(typeof hover !== "undefined") hover.css("outline", "none");
+  //       if(typeof held !== "undefined"){
+  //         if($(held.parents(".card")[0]).hasClass("list")){
+  //           if(hover.hasClass("list")){
+  //             held.appendTo($(hover.find(".card-title")[0]));
+  //           }else{
+  //             if(held.prevAll(".card").toArray().contains(hover[0])){
+  //               held.insertBefore(hover);
+  //             }else{
+  //               held.insertAfter(hover);
+  //             }
+  //           }
+  //         }else if(hover.hasClass("list")){
+  //           if(held.prevAll(".card").toArray().contains(hover[0])){
+  //             held.insertBefore(hover);
+  //           }else{
+  //             held.insertAfter(hover);
+  //           }
+  //         }
+  //       }
+  //       self.generateOrderField();
+  //     });
+  //   },
+
+  //   generateOrderField(){
+  //     var self = this,
+  //         lists = $(".list");
+  //     $("#card_order").attr("value",
+  //     ("{"+$(".top-card").attr("id").stringify()+":["+[].fill(lists.length, function(index){
+  //         return lists.length > 0? lists[index].id.stringify() : "";
+  //       }).join(", ")+"]").replace(/'/g, "\"")+
+  //     (function(){
+  //       var append = "";
+  //       $.each(lists, function(index, list){
+  //         list = $(list);
+  //         var cards = list.find(".card");
+  //         append += (", "+list.attr("id").stringify()+":["+[].fill(cards.length, function(index){
+  //             return cards.length > 0? cards[index].id.stringify() : "";
+  //           }).join(", ")+"]").replace(/'/g, "\"");
+  //       });
+  //       return append+"}";
+  //     })());
+  //       }
   });
 
   return Workboard;

@@ -16,9 +16,9 @@ Rails.application.routes.draw do
     #get "message_listener", to: "messages#listener", as: :listener
     get :poller, path: "message_poller", as: :poller
     post :annoucement, path: "announcements", as: :new_announcement
-    # resources :messages, only: [:index], path: "conversations/(:recipient)", as: :pms
-    # resources :messages, only: [:create], path: "conversations/(:recipient)", as: :pms
-    # get :new, path: "reply/:message_id", as: :new_pm
+    resources :messages, only: [:index], path: "conversations/(:recipient)", as: :pms
+    resources :messages, only: [:create], path: "conversations/(:recipient)", as: :pms
+    get :new, path: "reply/:message_id", as: :new_pm
   end
 
   controller :images do
@@ -70,7 +70,8 @@ Rails.application.routes.draw do
   end
 
   controller :users do
-    get :index, path: "users(/page/:page)", as: :users
+    get :index, path: "(page/:page)", as: :users
+    post :index, path: "", as: :search
     get :new, path: "register", as: :register
     post :create, path: "users", as: :new_user
     patch :update, path: ":#{User.slug}/update", as: :update_user

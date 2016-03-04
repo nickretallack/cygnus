@@ -119,19 +119,18 @@
 
 =pool-index-field
   &
-    +block-centered
     height: 170px
     .col
       display: inline
-      width: 100%
-      text-align: center !important
       height: 100%
+      overflow: hidden
+      text-align: center
       +no-select
       a
         width: 170px
         height: 170px
         display: inline-block
-      *
+      i, .thumbnail
         +vertical-center
       i:hover
         color: $icon-hover-color
@@ -234,6 +233,7 @@
     +block-centered
     text-align: left
     width: 95%
+    overflow: hidden
 
 =icon-hover
   color: $icon-hover-color
