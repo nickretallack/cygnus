@@ -1,42 +1,18 @@
 <table id = "pools">
-  <% unless @user.pools.empty? %>
+  <% unless @pools.length < 1 %>
     <thead>
       <tr>
         <th></th>
-        <th>Title</th>
         <th>User</th>
+        <th>Title</th>
         <th></th>
       </tr>
     </thead>
   <% end %>
 
   <tbody>
-    <% enum_for @user.pools, "pools" do |pool| %>
-      <tr>
-        <% if can_modify? pool.user %>
-          <td>
-            <%= form_for pool, html: { class: "button-submit", edit: "edit-#{pool.id}" } do |f| %>
-              <%= f.submit "Edit", id: "edit" %>
-              <%= f.submit "Save", id: "save" %>
-            <% end %>
-            <%= form_for pool, url: pool_path(pool), method: :delete, html: { class: "button-submit" } do |f| %>
-              <%= f.submit "Delete", id: "delete", data: { confirm: "Delete #{title_for pool: pool}?" } %>
-            <% end %>
-            <div class = "button-area"></div>
-          </td>
-          <td>
-            <%= form_for pool, url: pool_path(pool), method: :patch, html: { id: "edit-#{pool.id}"} do |f| %>
-              <%= f.text_field :title, placeholder: title_for(pool), value: title_for(pool), class: "on" %>
-              <%= link_to title_for(pool), pool, class: "off" %>
-            <% end %>
-          </td>
-        <% else %>
-          <td></td>
-          <td><%= link_to title_for(pool), pool %></td>
-        <% end %>
-        <td><%= link_to pool.user.name, pool.user %></td>
-        <td class = "danger"><%= "Main Gallery" if pool == @user.gallery %></td>
-      </tr>
+    <% enum_for @pools do |pool| %>
+      <%= cell(:pool, pool).(:summary) %>
     <% end %>
   </tbody>
 </table>

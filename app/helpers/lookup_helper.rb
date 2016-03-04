@@ -7,7 +7,7 @@ module LookupHelper
         matches << attachment.split("-")[1]
       end
     end
-    matches.compact.collect { |attachment| model.classify.constantize.find_by(id: attachment) }
+    model.classify.constantize.where("id = ANY (?)", "{#{matches.compact.join(",")}}")
   end
 
   def parents(model, alternate_name = nil)

@@ -1,0 +1,15 @@
+<tr>
+  <% if (can_modify? @model.user rescue false) %>
+    <td>
+      <%= form_for @model, url: destroy_pool_path(@model), method: :delete, html: { class: "button-submit" } do |f| %>
+        <%= f.submit "Delete", id: "delete", data: { confirm: "Delete #{title_for @model}?" } %>
+      <% end %>
+      <div class = "button-area centered"></div>
+    </td>
+  <% else %>
+    <td></td>
+  <% end %>
+  <td><%= link_to @model.user.name, @model.user rescue "User not found" %></td>
+  <td><%= link_to title_for(@model), submissions_path(@model) %></td>
+  <td class = "danger"><%= "Main Gallery" if @model == @model.user.gallery rescue "" %></td>
+</tr>

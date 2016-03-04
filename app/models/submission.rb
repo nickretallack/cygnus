@@ -1,5 +1,9 @@
 class Submission < ActiveRecord::Base
 
+  def Submission.results_per_page
+    30
+  end
+
   def pools
     parents("pool")
   end

@@ -8,11 +8,11 @@
 
       <% if can_modify? @user %>
         <div class = "edit-mode">
-          <%= form_for @model, url: update_list_path(@user, @model), method: :patch, html: { class: "button-submit" } do |f| %>
+          <%= form_for @model, url: update_card_path(@user, @model), method: :patch, html: { class: "button-submit" } do |f| %>
             <%= f.text_field :title, placeholder: "Input List Title" %>
             <%= f.submit "Save List", id: "save" %>
           <% end %>
-          <%= form_for @model, url: destroy_list_path(@user, @model), method: :delete, html: { class: "button-submit" } do |f| %>
+          <%= form_for @model, url: destroy_card_path(@user, @model), method: :delete, html: { class: "button-submit" } do |f| %>
             <%= f.submit "Delete List", id: "delete" %>
           <% end %>
           <div class = "button-area centered"></div>

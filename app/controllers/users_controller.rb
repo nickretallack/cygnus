@@ -84,11 +84,11 @@ class UsersController < ApplicationController
   end
 
   def log_in
-    user = User.find(params[:session][:name])
-    if user
-      if user.authenticate(params[:session][:password])
-        activate_session user
-        flash[:success] = "logged in as "+user.name
+    @user = User.find(params[:session][:name])
+    if @user
+      if @user.authenticate(params[:session][:password])
+        activate_session @user
+        flash[:success] = "logged in as #{@user.name}"
         back
       else
         flash[:danger] = "incorrect password"

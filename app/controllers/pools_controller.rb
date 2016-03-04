@@ -1,18 +1,31 @@
 class PoolsController < ApplicationController
 
+  before_filter only: [:create] do
+    insist_on :logged_in
+  end
+
+  def after_save
+    current_user.update_attribute(:attachments, current_user.attachments << "pool-#{@pool.id}")
+  end
+
+  def index
+    if @user
+      @total_pools = @user.pools.count
+      @pools = paginate @user.pools, Pool.results_per_page
+    else
+      @total_pools = Pool.all.count
+      @pools = paginate Pool.all, Pool.results_per_page
+    end
+  end
+
   def show
     @pool ||= @user.gallery
   end
 
   def destroy
     @pool = Pool.find(params[:id])
-    flash[:success] = "#{@pool.title} destroyed"
+    flash[:success] = "#{title_for @pool} destroyed"
     @pool.destroy
-    if @user.pools.any?
-      flash[:danger] = "the first pool on your pools list (#{@user.pools.first.title}) has now become your main gallery"
-    else
-      flash[:danger] = "you now have no pools. You may create one at any time by visiting your pools page. The first one you create will be linked from artist searches as your main gallery"
-    end
     back
   end
 

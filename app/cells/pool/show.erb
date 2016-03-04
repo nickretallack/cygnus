@@ -1,6 +1,4 @@
-<%= cell(:submission).(:new) %>
-
-<div class = "row gallery" id = "pools">
+<div class = "row gallery" id = "submissions">
   <% enum_for @pool.submissions, word: "submissions", reverse: true do |submission| %>
     <%= cell(:submission, submission).(:item) %>
   <% end %>

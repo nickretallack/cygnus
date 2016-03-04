@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   default_url_options host: CONFIG[:host]
 
   root controller: :users, action: :index
@@ -8,104 +9,83 @@ Rails.application.routes.draw do
   end
 
   controller :messages do
-    #sse route
+    get :index, path: "activity(/page/:page)", as: :messages
+    get :create, path: "submission/:#{Submission.slug}(/reply/:message_#{Message.slug})", as: :new_comment
+    patch :update, path: "comment/:#{Message.slug}", as: :update_comment
+    delete :destroy, path: "comment/:#{Message.slug}", as: :destroy_comment
     #get "message_listener", to: "messages#listener", as: :listener
-    #poller route
-    get "message_poller", action: :poller, as: :poller
+    get :poller, path: "message_poller", as: :poller
+    post :annoucement, path: "announcements", as: :new_announcement
+    # resources :messages, only: [:index], path: "conversations/(:recipient)", as: :pms
+    # resources :messages, only: [:create], path: "conversations/(:recipient)", as: :pms
+    # get :new, path: "reply/:message_id", as: :new_pm
   end
 
   controller :images do
-    get "image/:type(/:#{Image.slug})", to: "images#show", as: :image
-    get "download/:#{Image.slug}", to: "images#download", as: :download
+    get :show, path: "image/:type(/:#{Image.slug})", as: :image
+    get :download, path: "download/:#{Image.slug}", as: :download_image
   end
 
-  controller :attachments do
-    resources :attachments, only: [:create, :destroy]
-    get "attachments/new", action: :new, as: "new_attachment"
+  controller :pools do
+    get :index, path: "(:#{User.slug})/pools(/page/:page)", as: :pools
+    post :create, path: "pools", as: :new_pool
+    patch :update, path: "pool/:#{Pool.slug}/update", as: :update_pool
+    delete :destroy, path: "pool/:#{Pool.slug}/destroy", as: :destroy_pool
+    get :gallery, path: ":#{User.slug}/gallery", as: :gallery
   end
-  resources :pools, only: [:index], path: "(:#{User.slug})/pools"
-  resources :pools, only: [:create], path: ":#{User.slug}/pools"
-  resources :pools, only: [:show, :update, :destroy]
 
-  scope path: "pools/:pool_#{Pool.slug}" do
-    resources :submissions, except: [:new, :edit] do
-      member do
-        get :fav
-      end
-    end
+  controller :submissions do
+    get :index, path: "(pool/:pool_#{Pool.slug}/)submissions(/page/:page)", as: :submissions
+    get :show, path: "(pool/:pool_#{Pool.slug}/)submission/:#{Submission.slug}", as: :submission
+    post :create, path: "(pool/:pool_#{Pool.slug}/)submissions", as: :new_submission
+    patch :update, path: "submission/:#{Submission.slug}/update", as: :update_submission
+    delete :destroy, path: "submission/:#{Submission.slug}/destroy", as: :destroy_submission
+    get :fav, path: "submisison/:#{Submission.slug}/fav", as: :fav_submission
+  end
+
+  controller :order_forms do
+    get :index, path: "(:#{User.slug}/)order_forms(/page/:page)", as: :order_forms
+    post :create, path: "order_forms", as: :new_order_form
+    get :show, path: "order_form/:#{OrderForm.slug}", as: :order_form
+    patch :update, path: "order_form/:#{OrderForm.slug}/update", as: :update_order_form
+    delete :destroy, path: "order_form/:#{OrderForm.slug}/destroy", as: :destroy_order_form
+    get :set_default, path: ":#{User.slug}/order_forms/:#{OrderForm.slug}/default", as: :default_order_form
   end
 
   controller :orders do
+    get :index, path: "orders(/page/:page)", as: :orders
     post :create, path: "orders/:#{OrderForm.slug}", as: :place_order
     get :new, path: "order/:#{OrderForm.slug}/new", as: :new_order
     get :show, path: "order/:#{Order.slug}", as: :show_order
-    patch :accept, path: ":#{Order.slug}/accept", as: :accept_order
-    patch :reject, path: ":#{Order.slug}/reject", as: :reject_order
+    patch :accept, path: "order/:#{Order.slug}/accept", as: :accept_order
+    patch :reject, path: "order/:#{Order.slug}/reject", as: :reject_order
   end
 
-  scope path: "submissions/:submission_#{Submission.slug}" do
-    controller :messages do
-      resources :messages, only: [:create], path: "comments", as: :comments
-      get :new, path: "reply/:message_id", as: :new_comment
-      resources :messages, only: [:update, :destroy], path: "comments", as: :comments
-    end
-  end
-
-  scope path: ":#{User.slug}" do
-    scope path: "dashboard" do
-      controller :messages do
-        post :create_annoucement, path: "announcements", as: :announcements
-      end
-    end
-    scope path: "workboard" do
-      controller :cards do
-        get :index, path: "", as: :cards
-        patch :reorder_cards, path: "reorder"
-        patch :new_list, path: "new"
-        patch :update_list, path: ":#{Card.slug}"
-        delete :destroy_list, path: ":#{Card.slug}"
-        patch :new_card, path: "new/:#{Card.slug}"
-        patch :update_card, path: "card/:#{Card.slug}"
-        delete :destroy_card, path: "card/:#{Card.slug}"
-      end
-    end
-    controller :messages do
-      resources :messages, only: [:index], path: "conversations/(:recipient)", as: :pms
-      resources :messages, only: [:create], path: "conversations/(:recipient)", as: :pms
-      get :new, path: "reply/:message_id", as: :new_pm
-
-      resources :messages, only: [:index], path: "activity"
-    end
-    controller :pools do
-      get :show, path: "gallery", as: :gallery
-    end
-    controller :order_forms do
-      get :set_default, path: "order_forms/:#{OrderForm.slug}/default", as: :default_order_form
-      resources :order_forms, only: [:create, :index, :edit, :update, :destroy]
-    end
-    controller :users do
-      get :dashboard
-      get :reset_return, path: ":activation/reset", as: :send_password_reset
-      patch :reset_return_confirm, path: ":activation/reset"
-    end
+  controller :cards do
+    get :index, path: ":#{User.slug}/workboard", as: :cards
+    patch :create, path: ":#{User.slug}/workboard/:#{Card.slug}", as: :new_card
+    patch :update, path: ":#{User.slug}/workboard/:#{Card.slug}/update", as: :update_card
+    delete :destroy, path: ":#{User.slug}/workboard/:#{Card.slug}/destroy", as: :destroy_card
+    patch :reorder, path: ":#{User.slug}/workboard/reorder", as: :reorder_cards
   end
 
   controller :users do
-    post :resend_activation_email, as: :resend
-    post :log_in
-    delete :log_out
+    get :index, path: "users(/page/:page)", as: :users
     get :new, path: "register", as: :register
-    scope path: "reset" do
-      get :reset, as: :password_reset
-      post :reset_confirm, as: :reset
-    end
-    post :index, path: "", as: :search
-    get :index, path: "page/:page", as: :paginate_users
-    resources :users, except: [:new, :edit, :index], param: User.slug do
-      member do
-        get :watch
-        get :activate, path: "activate/:activation", as: :activate
-      end
-    end
+    post :create, path: "users", as: :new_user
+    patch :update, path: ":#{User.slug}/update", as: :update_user
+    post :log_in, path: "log_in", as: :log_in
+    delete :log_out, path: "log_out", as: :log_out
+    get :send_reset, path: ":#{User.slug}/send_reset", as: :send_password_reset
+    post :reset, path: ":#{User.slug}/reset", as: :password_reset
+    get :send_activation, path: ":#{User.slug}/send_activation", as: :send_user_activation
+    post :activate, path: ":#{User.slug}/activate", as: :activate_user
+    get :watch, path: ":#{User.slug}/watch", as: :watch_user
+    get :dashboard, path: ":#{User.slug}/settings", as: :dashboard
   end
+
+  controller :users do
+    get :show, path: ":#{User.slug}", as: :user
+  end
+
 end

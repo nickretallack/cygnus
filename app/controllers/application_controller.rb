@@ -6,9 +6,25 @@ class ApplicationController < ActionController::Base
 
   before_filter :get_user
 
-  before_filter only: [:show, :edit, :destroy, :update] do
+  before_filter only: [:show, :update, :destroy] do
     unless instance_of? UsersController or instance_of? ImagesController
       set_item(klass.find(params[klass.slug]))
+    end
+  end
+
+  before_filter only: [:show, :update, :destroy] do
+    unless instance_of? UsersController or instance_of? ImagesController
+      unless item
+        flash[:danger] = "#{cell_name} does not exist"
+        back
+      end
+    end
+  end
+
+  before_filter only: [:index, :create] do
+    if /_id/.match(params.keys.join(" "))
+      parent = params.keys.collect{|key| /(.+)_id/.match(key)}.compact[0][1]
+      instance_variable_set("@#{parent}", parent.classify.constantize.find(params["#{parent}_id"]))
     end
   end
 
@@ -16,7 +32,15 @@ class ApplicationController < ActionController::Base
     set_item(klass.new)
   end
 
-  define_method :index, proc{}
+  define_method :index do
+    if user
+      set_items(paginate user.send(controller_name), klass.results_per_page) rescue nil
+      set_total(user.send(controller_name).count) rescue nil
+    else
+      set_items(paginate klass.all, klass.results_per_page) rescue nil
+      set_total(klass.all.count) rescue nil
+    end
+  end
 
   define_method :show do
     render inline: cell(cell_name, item).(:show), layout: :default
@@ -49,6 +73,10 @@ class ApplicationController < ActionController::Base
     controller_name.classify.constantize
   end
 
+  def user
+    instance_variable_get("@user")
+  end
+
   def cell_name
     controller_name.singularize
   end
@@ -63,6 +91,22 @@ class ApplicationController < ActionController::Base
 
   def set_item(value)
     instance_variable_set(item_string, value)
+  end
+
+  def items_string
+    "@#{controller_name}"
+  end
+
+  def items
+    instance_variable_get(items_string)
+  end
+
+  def set_items(value)
+    instance_variable_set(items_string, value)
+  end
+
+  def set_total(value)
+    instance_variable_set("@total_#{controller_name}", value)
   end
 
   def activate_session(user)

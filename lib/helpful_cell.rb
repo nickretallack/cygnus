@@ -9,12 +9,19 @@ class HelpfulCell < Cell::ViewModel
   #require all helper modules
   Dir["#{File.dirname(__FILE__)}/../app/helpers/*.rb"].collect { |file| include File.basename(file).gsub(".rb", "").camelize.constantize }
 
-  #self.assets_prefix = Rails.application.config.assets.prefix
-  #self.assets_environment = Rails.application.assets
-  #self.digest_assets = Rails.application.config.assets[:digest]
-
   self.send :define_method, "get_user" do
     @user = User.find(params[User.slug]) rescue nil
+  end
+
+  self.send :define_method, "get_parent" do
+    if /_id/.match(params.keys.join(" "))
+      parent = params.keys.collect{|key| /(.+)_id/.match(key)}.compact[0][1]
+      instance_variable_set("@#{parent}", controller.instance_variable_get("@#{parent}"))
+    end
+  end
+
+  self.send :define_method, "get_items" do
+    instance_variable_set("@#{controller.controller_name}", controller.instance_variable_get("@#{controller.controller_name}")) rescue nil
   end
 
   self.send :define_method, "get_item" do
@@ -31,6 +38,8 @@ class HelpfulCell < Cell::ViewModel
   end
 
   self.send :before_filter, :get_user
+  self.send :before_filter, :get_parent
+  self.send :before_filter, :get_items
   self.send :before_filter, :get_item
 
 end

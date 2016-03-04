@@ -126,7 +126,7 @@ ActiveContainer = (function(){
       self.minimizeButton.css({
         top: 5
       });
-      if(self.content.children().exists()) self.divider.show();
+      if(!self.content.is(":empty")) self.divider.show();
       self.content.show();
       if(animate){
         self.container.animate({

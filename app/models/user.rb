@@ -45,9 +45,9 @@ class User < ActiveRecord::Base
       list_two.save!
       list_three = Card.new(title: "Done")
       list_three.save!
-      top_card = Card.new(attachments: ["card-#{list_one.id}", "card-#{list_two.id}", "card-#{list_three.id}"])
-      top_card.save!
-      update_attribute(:attachments, attachments << "card-#{top_card.id}")
+      card = Card.new(attachments: ["card-#{list_one.id}", "card-#{list_two.id}", "card-#{list_three.id}"])
+      card.save!
+      update_attribute(:attachments, attachments << "card-#{card.id}")
     else
       card
     end

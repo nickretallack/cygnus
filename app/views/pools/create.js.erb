@@ -1,2 +1,3 @@
-$("#pools").html("<%=j cell(:pool).(:index) %>");
-initialize($(".button-area"));
+$("#pools").children("tbody").prepend("<%=j cell(:pool, @pool).(:summary) %>");
+$("#nothing").remove();
+initialize();

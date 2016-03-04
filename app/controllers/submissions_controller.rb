@@ -1,20 +1,18 @@
 class SubmissionsController < ApplicationController
   
   before_filter only: [:create] do
-    if @user
-      insist_on :permission, @user
-    else
-      @pool = Pool.find(params["pool_#{Pool.slug}".to_sym])
-      unless @pool
-        flash[:danger] = "pool does not exist"
-        back and return
-      end
-      insist_on :permission, @pool.users
+    unless @pool
+      flash[:danger] = "pool does not exist"
+      back
     end
   end
 
+  before_filter only: [:create] do
+    insist_on :permission, @pool.users
+  end
+
   before_filter only: [:update, :destroy] do
-    insist_on :permission, @submission.pool.user
+    insist_on :permission, @submission.pool.users
   end
 
   before_filter only: [:fav] do

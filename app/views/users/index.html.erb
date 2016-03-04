@@ -1,5 +1,5 @@
 <% unless search_all %>
-  <%= form_for :terms, url: search_path do |f| %>
+  <%= form_for :terms, url: users_path do |f| %>
     <%= f.fields_for :use_statuses do |use| %>
       <%= use.hidden_field :commissions, value: "0" %>
       <%= use.hidden_field :trades, value: "0" %>
@@ -17,7 +17,7 @@
 <% end %>
 
 <div class = "row">
-  <%= form_for :terms, url: search_path do |f| %>
+  <%= form_for :terms, url: users_path do |f| %>
     <div class = "col s12 m10 block search">
       <i class = "material-icons small">search</i>
       <%= f.text_field :tags, placeholder: CONFIG[:search_placeholder], value: @query, id: "search-tags" %>

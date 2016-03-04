@@ -8,30 +8,9 @@ class CardsController < ApplicationController
     insist_on :permission, @user
   end
 
-  def new_list
-    @card = Card.new
-    @card.save!
-    new_lookup(:card, @user.top_card.id, :card, @card.id)
-    respond_to do |format|
-      format.html { back }
-      format.js
-    end
-  end
-
-  def destroy_list
-    @card = Card.find(params[Card.slug])
-    
-    @card.destroy
-  end
-
-  def new_card
-    @card = Card.new
-    @card.save!
-    new_lookup(:card, params[:id], :card, @card.id)
-    respond_to do |format|
-      format.html { back }
-      format.js
-    end
+  def after_save
+    card = Card.find(params[Card.slug])
+    card.update_attribute(:attachments, card.attachments << "card-#{@card.id}")
   end
 
   def update
@@ -85,31 +64,19 @@ class CardsController < ApplicationController
   end
 
   def destroy
-    @card = Card.find(params[Card.slug])
-    not_found and return unless @card
-    not_found and return if @card == @user.card
-    if @user.card.cards.include? @card.id
-      @card.cards.collect { |card_id| Card.find(card_id) }.each do |card|
-        card.delete
+    if @user.card.attachments.include? "card-#{@card.id}"
+      @card.cards.each do |card|
+        card.destroy
       end
-      @user.card.cards.delete @card.id
-      @user.card.update_attribute(:cards, @user.card.cards)
+      @user.attachments.delete("card-#{@card.id}")
+      @user.update_attribute(:attachments, @user.attachments)
+      @card.destroy
     else
-      @user.card.cards.collect { |list_id| Card.find(list_id) }.each do |list|
-        list.cards.delete @card.id
-        list.update_attribute(:cards, list.cards)
-      end
+      @card.list.attachments.delete("card-#{@card.id}")
+      @card.list.update_attribute(:attachments, @card.list.attachments)
+      @card.destroy
     end
-    @card.destroy
-    respond_to do |format|
-      #format.html { back }
-      format.js
-    end
+    back
   end
 
-  private
-
-  def kanban_card_params_permitted
-    []
-  end
 end
