@@ -363,6 +363,11 @@ Make.extend(Array.prototype, {
 
     reverse: Array.prototype.reverse,
 
+    contains: function(item){
+      if(!item.exists()) return false;
+      return $.inArray(item.get(0), this) > -1;
+    },
+
     collidesWith: function(div){
       var x1 = this.offset().left,
         y1 = this.offset().top,

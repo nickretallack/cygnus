@@ -14,52 +14,24 @@ class CardsController < ApplicationController
   end
 
   def update
-    @card = Card.find(params[Card.slug])
-    case params[:commit]
-    when /.*Order/
-      if params[:card][:order].empty?
-        back and return
-      end
-      order = JSON.parse(params[:card][:order].gsub("=>", ":")).inject({}) { |memo, (key, value)| memo[key.to_i>0? key.to_i : nil] = value.collect { |id| id.to_i>0? id.to_i : nil }; memo }
-      order.each do |key, value|
-        card = Card.find(key)
-        card.update_attribute(:cards, value) if can_modify? User.find_by(id: Card.find(order.keys[0]).user_id)
-      end
-      back and return #only here since we've already updated attributes
-    when /Create.*/
-      @new_card = Card.new(title: nil)
-      @new_card.save!
-      @card.cards << @new_card.id
-      view_template = "create"
-    when /Save.*/
-      @card.title = params[:card][:title]
-      @card.description = params[:card][:description]
-      @card.file_id = Upload.render(params[:card][:upload][:picture], params[:card][:upload][:explicit]) if params[:card][:upload] and params[:card][:upload][:picture]
-      view_template = "save"
+    @card.update_attributes(params.require(:card).permit([:title, :description]))
+    respond_to do |format|
+      format.html {back}
+      format.js
     end
-    if @card.update_attributes(@card.attributes)
-    # @kanban_card.file_id = Upload.render(params[:kanban_card][:upload][:picture], params[:kanban_card][:upload][:explicit]) unless params[:kanban_card][:upload][:picture].nil?
-    # Upload.find(@kanban_card.file_id).update_attribute(:explicit, params[:kanban_card][:upload][:explicit]) unless @kanban_card.file_id.nil?
-    # if @kanban_card.update_attributes(kanban_card_params)
-    #   case params[:kanban_card][:order]
-    #   when "Move Up"
-    #     order = 1
-    #   when "Move Down"
-    #     order = -1
-    #   else
-    #     order = params[:kanban_card][:order]
-    #   end
-    #   @kanban_list = KanbanList.find params[:kanban_list_id]
-    #   index = [0, @kanban_list.cards.index(@kanban_card.id)-order.to_i, @kanban_list.cards.length-1].sort[1]
-    #   @kanban_list.cards.delete(@kanban_card.id)
-    #   @kanban_list.update_attribute(:cards, @kanban_list.cards.insert(index, @kanban_card.id))
-      respond_to do |format|
-        format.html { back }
-        format.js { render view_template }
-      end
-    else
-      flash[:danger] = "error updating item"
-      back
+  end
+
+  def reorder
+    decode = params[:card][:order].collect{|key,value| JSON.parse(value)}.map{|element| key, value = element.first; [key, value]}.to_h
+    @user.card.update_attribute(:attachments, decode.keys.map{|key| "card-#{key}"})
+    decode.each do |key, value|
+      card = Card.find(key.to_i)
+      card.update_attribute(:attachments, value.map{ |value| "card-#{value}" })
+    end
+    #raise "break"
+    respond_to do |format|
+      format.html {back}
+      format.js
     end
   end
 

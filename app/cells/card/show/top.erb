@@ -40,7 +40,6 @@
 
         <div class = "reorder-mode">
           <%= form_for @user.card, url: reorder_cards_path(@user, @user.card), method: :patch, html: { class: "button-submit" } do |f| %>
-            <%= f.hidden_field :order, value: "" %> <!-- :order is not a property, only works if value is explicitly specified -->
             <%= f.submit "Finalize Order", id: "save" %>
           <% end %>
           <div class = "button-area float-left"></div>

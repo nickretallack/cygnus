@@ -66,7 +66,7 @@ Rails.application.routes.draw do
     patch :create, path: ":#{User.slug}/workboard/:#{Card.slug}", as: :new_card
     patch :update, path: ":#{User.slug}/workboard/:#{Card.slug}/update", as: :update_card
     delete :destroy, path: ":#{User.slug}/workboard/:#{Card.slug}/destroy", as: :destroy_card
-    patch :reorder, path: ":#{User.slug}/workboard/reorder", as: :reorder_cards
+    patch :reorder, path: ":#{User.slug}/workboard/:#{Card.slug}/reorder", as: :reorder_cards
   end
 
   controller :users do

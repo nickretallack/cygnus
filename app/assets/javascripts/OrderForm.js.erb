@@ -48,7 +48,7 @@ OrderForm = (function(){
       self.submit.one("click.OrderForm", function(event){
         pause(event);
         self.generateContentFieldValue();
-        $(this).trigger("click");
+        $(this).trigger("click.ButtonSubmit");
       });
     },
 

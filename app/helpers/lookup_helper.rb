@@ -4,10 +4,10 @@ module LookupHelper
     matches = []
     attachments.each do |attachment|
       if Regexp.new("#{alternate_name || model}-").match(attachment)
-        matches << attachment.split("-")[1]
+        matches << attachment.split("-")[1].to_i
       end
     end
-    model.classify.constantize.where("id = ANY (?)", "{#{matches.compact.join(",")}}")
+    model.classify.constantize.where("id = ANY (?)", "{#{matches.join(",")}}").sort_by { |item| matches.index item.id }
   end
 
   def parents(model, alternate_name = nil)
