@@ -19,11 +19,11 @@
     </main>
     <footer>
       <div class = "row hc">
-        <%= yield :footer %>
+        <%= cell(controller_name.singularize).(:footer, action: action_name.to_sym) if cell_footer? %>
         <%= render "layouts/footer_links" %>
         <%= CONFIG[:copyright].html_safe %>
       </div>
-      <%= console %>
+      <%#= console %>
     </footer>
   </body>
 </html>

@@ -11,16 +11,20 @@
 .row
   margin-bottom: 0 !important
 
-.row:not(.hidable):not(.destroyable):not(.button-area)
+.row:not(.hidable):not(.destroyable):not(.button-area):not(.spaced)
   margin: 0 !important
 
 .row.list
   .item
     padding: 7px 0 7px 2% !important
-  .col:nth-child(odd)
-    float: left
-  .col:nth-child(even)
-    float: right
+    label
+      display: table
+      font-size: 18px
+      line-height: 28px
+  // .col:nth-child(odd)
+  //   float: left
+  // .col:nth-child(even)
+  //   float: right
 
 .row.block
   padding: 15px 10px !important
@@ -29,13 +33,11 @@
   padding: 0 !important
   margin: 0 !important
 
-.row.limit-height
-  .col
-    +vertical-center
-    span
-      width: 80%
-      +block-centered
-  .col:empty
+.row.limit-height > .col
+  span
+    width: 80%
+    +block-centered
+  &:empty
     height: 100%
 
 .header
@@ -81,21 +83,20 @@
 .addable-field
   float: left
   width: calc(100% - 75px)
-  select, input
+  input
     margin-top: -4px
     margin-bottom: 6px
     width: calc(100% - 10px)
+  select
+    height: 40px
+    margin: 5px 0
 
 .addable-area
   float: right
   width: 75px
-  position: relative
   i
-    +block-centered
     width: 75px
-    position: absolute
-    bottom: 0
-    left: 0
+    position: relative
 
 .button-with-icon
   padding: 0

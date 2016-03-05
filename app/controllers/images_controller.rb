@@ -13,6 +13,8 @@ class ImagesController < ApplicationController
     when :thumb, :bordered
       file = @image.file.thumb.url
       suffix = "_thumb"
+    when :limited
+      file = @image.file.limited.url
     when :full
       file = @image.file.url
     else

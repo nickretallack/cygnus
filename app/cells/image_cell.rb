@@ -26,8 +26,15 @@ class ImageCell < HelpfulCell
   end
 
   def bordered(id)
-    show = show(:bordered, id, '_thumb')
+    show = show(:bordered, id, "_thumb")
     div_for @image, class: "thumbnail #{@image.explicit?? 'danger' : 'success'}" do
+      show
+    end
+  end
+
+  def limited(id)
+    show = show(:limited, id)
+    div_for @image, class: "image #{@image.explicit?? 'danger' : 'success'}" do
       show
     end
   end

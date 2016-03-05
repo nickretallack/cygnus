@@ -26,6 +26,10 @@ class UserCell < HelpfulCell
     end
   end
 
+  def footer(options)
+    render "footer/#{options[:action]}" rescue nil
+  end
+
   def status(type)
     render "#{type}_status"
   end
@@ -38,7 +42,7 @@ class UserCell < HelpfulCell
     end
   end
 
-  ["summary", "links", "watch"].each do |method|
+  ["show", "summary", "links", "watch"].each do |method|
     define_method method do
       render method
     end

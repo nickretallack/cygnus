@@ -11,21 +11,13 @@ ImagePreview = (function(){
     self.spans = self.imagePreview.find("span");
     self.explicitBox = $("#"+self.imagePreview.attr("explicit-box"));
 
-    if(!self.fileField.exists()){
-      console.log("No file field");
-      return;
-    }
-
     self.fileField.parents(".file-field").hide();
     self.spans.eq(0).show();
 
     self.fileField.on("change.ImagePreview", function(event){
-      console.log("fired1");
       if(this.files && this.files[0]){
-        console.log("fired2");
         var reader = new FileReader();
         reader.onload = function(event){
-          console.log("fired3");
           image = self.imagePreview.find("img");
           image.attr("src", event.target.result);
           image.on("mouseenter.ImagePreview", function(){

@@ -14,4 +14,9 @@ module CellHelper
     @klass.instance_methods.include? :instructions
   end
 
+  def cell_footer?
+    return false unless cell_defined?
+    @klass.instance_methods.include? :footer
+  end
+
 end

@@ -10,10 +10,7 @@ AddableField = (function(){
     self.orderable = self.field.is(".orderable");
     self.addButton = $("<i />", {
       class: "material-icons medium-small add",
-      text: "<%= CONFIG[:button_icons][:add] %>",
-      css: {
-        height: self.addable.outerHeight()
-      }
+      text: "<%= CONFIG[:button_icons][:add] %>"
     });
     self.removeButton = $("<i />", {
       class: "material-icons medium-small",
@@ -38,7 +35,7 @@ AddableField = (function(){
 
     $(window).on("resize.AddableField", function(){
       self.area.children().css({
-        height: self.addable.outerHeight()
+        height: self.addable.outerHeight(true)
       });
     });
 
@@ -51,6 +48,7 @@ AddableField = (function(){
       if(self.addable.is("li")){
         self.initializeHandle(self.field.children().last());
       }
+      $(window).trigger("resize");
     },
 
     initializeHandle: function(li){
@@ -62,28 +60,35 @@ AddableField = (function(){
 
     initializeRemove: function(item){
       var self = this;
-      self.addButton.before(self.removeButton.clone().css({
-        height: self.addable.outerHeight()
-      }).on("click.AddableField", function(){
+      self.addButton.before(self.removeButton.clone().on("click.AddableField", function(){
         self.remove(item);
+        var nameArray = self.addable.attr("name").toArray();
+        self.field.children().each(function(index, element){
+          element = $(element);
+          nameArray[nameArray.length - 1] = 0 + index;
+          element.attr("name", nameArray.parse());
+          element.attr("id", nameArray.join("_"));
+        });
       }));
     },
 
     add: function(){
       var self = this,
           addable = self.addable.clone(),
-          field = addable.find("textarea, input, select").prop("value", "");
+          last = self.field.children().last();
 
-      if(field.is("select")){
-        field.children("option").removeAttr("selected");
+      last.prop("value", "");
+
+      if(last.is("select")){
+        last.children("option").removeAttr("selected");
       }
-      // var nameArray = field.attr("name").toArray();
-      // nameArray[nameArray.length - 1] = parseInt(nameArray.last()) + 1;
-      // var name = nameArray.parse();
-      // field.attr("name", name);
-      // field.attr("id", name);
+      console.log(last);
+      var nameArray = last.attr("name").toArray();
+      nameArray[nameArray.length - 1] = parseInt(nameArray.last()) + 1;
       self.addable = addable;
       self.field.append(addable);
+      addable.attr("name", nameArray.parse());
+      addable.attr("id", nameArray.join("_"));
       self.initialize();
       self.initializeRemove(addable);
     },

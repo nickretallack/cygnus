@@ -1,0 +1,39 @@
+<%= form_for @user, url: update_user_path(@user), method: :patch, html: { multipart: true, class: " button-submit" } do |f| %>
+  <div class = "row limit-height">
+    <% if can_modify? @user %>
+      <div class = "col s6 hc">
+        <%= cell(:attachment, @user.avatar).(:new_image, explicit: (@user.avatar.explicit rescue false)) %>
+      </div>
+    <% else %>
+      <div class = "col s6 expandable preview">
+        <%= cell(:image).(:limited, @user.avatar) %>
+      </div>
+    <% end %>
+    <div class = "col s6">
+      <%= cell(:user, @user).(:status, :verbose) %>
+      <%= render "links", user: @user unless can_modify? @user %>
+    </div>
+  </div>
+  <div class = "row">
+    <% if can_modify? @user %>
+      <hr class = "js" />
+      <div class = "js addable-field">
+        <%= select_tag "user[artist_types][0]", options_for_select(CONFIG[:artist_types]), include_blank: "Artist Type", class: "btn button-with-icon" %>
+      </div>
+      <div class ="addable-area"></div>
+      <hr class = "js" />
+      <%= f.text_area :offsite_gallery, placeholder: "Offsite Galleries" %>
+      <%= f.text_area :price, placeholder: "Commission rates" %>
+      <%= f.text_area :tags, placeholder: "Tags" %>
+      <%= f.text_area :details, placeholder: "Profile Text" %>
+      <%= f.submit "Update Profile", class: "float", id: "save" %>
+    <% else %>
+      <% unless @user.artist_type.blank? %><blockquote class = "inline"><%= @user.artist_type %></blockquote><% end %>
+      <% unless @user.gallery.blank? %><blockquote class = "inline link"><%= link_to @user.gallery %></blockquote><% end %>
+      <% unless @user.price.blank? %><blockquote class = "inline"><%= @user.price %></blockquote><% end %>
+      <% unless @user.tags.blank? %><blockquote class = "inline"><%= @user.tags %></blockquote><% end %>
+      <% unless @user.details.blank? %><blockquote class = "inline"><%= render_markdown @user.details %></blockquote><% end %>
+    <% end %>
+  </div>
+<% end %>
+<div class = "button-area float-right"></div>

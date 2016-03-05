@@ -23,22 +23,29 @@ class ImagesUploader < CarrierWave::Uploader::Base
   def filename
     @name ||= "#{md5}#{File.extname(super)}" if super
   end
-  
+
   version :thumb do
-    process :resized => [150, 150]
+    process resize: [150, 150]
   end
 
-  def resized(width, height)
+  version :limited do
+    process resize: [400, 400]
+  end
+
+  def resize(width, height)
+    image = ::MiniMagick::Image.open(current_path)
+    raise Exceptions::RenderError if image.type.downcase == "gif" and image.layers.length > 1 and image.size > 2097000
     manipulate! do |img|
       img.coalesce
-      img.resize "#{width}x#{height}^"
-      img = yield(img) if block_given?
+      unless img[:width] < width and img[:height] < height
+        img.resize "#{width}x#{height}^"
+      end
       img
     end
   end
 
-   def extension_white_list
-     %w(jpg jpeg gif png svg)
-   end
+  def extension_white_list
+    %w(jpg jpeg gif png svg)
+  end
 
 end

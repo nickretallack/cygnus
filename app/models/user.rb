@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
   validates :password, length: { minimum: 6 }, allow_blank: true
 
   def avatar
-    children("image").first
+    children("image", "avatar").first
   end
 
   def pools
@@ -115,11 +115,11 @@ class User < ActiveRecord::Base
       statuses = terms["statuses"].reject { |key, value| terms["use_statuses"][key] == "0" }.map { |key, value| [terms["statuses"].keys.index(key) + 1, value] }
       result = /^\s*$/.match(tags)? User.all : User.where("tags_tsvector @@ #{sanitize_sql_array(["to_tsquery('english', ?)", tags])}")
       statuses.each do |pair|
-        pair[1] = CONFIG["status_categories"][Regexp.new("(#{CONFIG[:status_categories].keys.join("|")})").match(pair[1])[0].to_sym].map { |status| status.to_s }.join(",") rescue pair[1]
+        pair[1] = CONFIG[:status_categories][Regexp.new("(#{CONFIG[:status_categories].keys.join("|")})").match(pair[1])[0].to_sym].map{ |status| status.to_s }.join(",") rescue pair[1]
         result = result.where("statuses[?] = ANY (string_to_array(?, ','))", pair[0], pair[1])
       end
       result
-    rescue
+    rescue SyntaxError
       User.all
     end
   end

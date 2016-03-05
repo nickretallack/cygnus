@@ -4,6 +4,7 @@ class HelpfulCell < Cell::ViewModel
   include ActionView::Helpers::CaptureHelper
   include ActionView::Helpers::UrlHelper
   include ActionView::Helpers::RecordTagHelper
+  include ActionView::Helpers::FormOptionsHelper
   include Hooks
   
   #require all helper modules

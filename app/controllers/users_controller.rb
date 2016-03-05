@@ -60,8 +60,22 @@ class UsersController < ApplicationController
   end
 
   def update
+    if params[:user][:settings].is_a? Hash
+      @user.update_attribute(:settings, params[:user][:settings]) if @user.settings != params[:user][:settings]
+    else
+      if params[:image][:image]
+        begin
+          @user.attachments.delete_if{ |attachment| attachment.split("-")[0] == "avatar" }
+          @user.attachments << "avatar-#{Image.render(params[:image][:image], params[:image][:explicit])}"
+          @user.update_attribute(:attachments, @user.attachments)
+        rescue Exceptions::RenderError
+          flash[:danger] = "Please no animated gifs above 2mb"
+        end
+      elsif @user.avatar
+        @user.avatar.update_attribute(:explicit, params[:image][:explicit])
+      end
+    end
     raise "break"
-    @user.update_attribute(:settings, params[:user][:settings]) if params[:user][:settings].is_a? Hash and @user.settings != params[:user][:settings]
     back
     # @user.avatar = Upload.render(params[:user][:upload][:picture], params[:user][:upload][:explicit]) unless params[:user][:upload][:picture].nil?
     # @user.view_adult = true if params[:user][:upload][:explicit]

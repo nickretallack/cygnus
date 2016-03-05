@@ -3,7 +3,7 @@
 <% end %>
 
 <% open = !@user.setting(:minimize_dashboard) %>
-<%= form_for @user, method: :patch, url: user_path(@user), html: { class: "button-submit" } do |f| %>
+<%= form_for @user, url: update_user_path(@user), method: :patch, html: { class: "button-submit" } do |f| %>
   <%= f.fields_for :settings do |s| %>
     <div class = "row list">
       <%= hidable "Images", open do %>
@@ -23,4 +23,4 @@
   <% end %>
   <%= f.submit "Save Settings", id: "save", class: "medium" %>
 <% end %>
-<div class = "button-area float"></div>
+<div class = "button-area float-right"></div>
