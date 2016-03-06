@@ -77,12 +77,12 @@ AddableField = (function(){
           addable = self.addable.clone(),
           last = self.field.children().last();
 
-      last.prop("value", "");
-
       if(last.is("select")){
-        last.children("option").removeAttr("selected");
+        addable.children("option").removeAttr("selected");
+      }else{
+        addable.prop("value", "");
       }
-      console.log(last);
+      
       var nameArray = last.attr("name").toArray();
       nameArray[nameArray.length - 1] = parseInt(nameArray.last()) + 1;
       self.addable = addable;

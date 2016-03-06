@@ -17,9 +17,11 @@
   <div class = "row">
     <% if can_modify? @user %>
       <hr class = "js" />
-      <div class = "js addable-field">
-        <%= select_tag "user[artist_types][0]", options_for_select(CONFIG[:artist_types]), include_blank: "Artist Type", class: "btn button-with-icon" %>
-      </div>
+      <%= f.fields_for :artist_types do |t| %>
+        <div class = "js addable-field">
+          <%= t.select "0", options_for_select(CONFIG[:artist_types]), { include_blank: "Artist Type" }, { class: "btn button-with-icon" } %>
+        </div>
+      <% end %>
       <div class ="addable-area"></div>
       <hr class = "js" />
       <%= f.text_area :offsite_gallery, placeholder: "Offsite Galleries" %>

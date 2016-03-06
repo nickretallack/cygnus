@@ -75,8 +75,14 @@ class UsersController < ApplicationController
         @user.avatar.update_attribute(:explicit, params[:image][:explicit])
       end
     end
-    raise "break"
-    back
+    @user.artist_types = params[:user][:artist_types].reject{ |key, type| type.blank? }.map{ |key, type| type}
+    if @user.save
+      raise "break"
+      back
+    else
+      raise "break"
+      back_with_errors
+    end
     # @user.avatar = Upload.render(params[:user][:upload][:picture], params[:user][:upload][:explicit]) unless params[:user][:upload][:picture].nil?
     # @user.view_adult = true if params[:user][:upload][:explicit]
     # @old_statuses = @user.statuses
