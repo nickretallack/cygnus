@@ -1,133 +1,56 @@
-FullImage = function(){
-
-    var fullImage = new ViewAnyway();
-
-    fullImage.container = fullImage.image.parents(".expandable").safeAdd();
-
-    setInterval(function(){
-        if($("#materialbox-overlay").length){
-            fullImage.container.css({
-                zIndex: 1000
-            });
-        }else{
-            fullImage.container.css({
-                zIndex: 0
-            });
-        }
-    }, 50);
-
-    fullImage.mouseenter = function(){
-        cover.css({
-            marginTop: -image.height(),
-            transform: "none"
-        });
-    };
-
-    fullImage.click = function(){
-        var image = $("<img />", {
-            src: "/image/full/"+fullImage.image.attr("id")
-        });
-        fullImage.image.replaceWith(image);
-        fullImage.image = image;
-        fullImage.materialBox();
-    };
-
-    fullImage.initialize();
-
-    return fullImage;
-};
-
-ThumbnailImage = function(){
-
-    var thumbnailImage = new ViewAnyway();
-
-    thumbnailImage.container = thumbnailImage.image.parents(".thumbnail").safeAdd();
-
-    thumbnailImage.mouseenter = function(){
-        cover.css({
-            top: "-100%",
-            transform: "none"
-        });
-    };
-
-    thumbnailImage.click = function(){
-        thumbnailImage.image.attr("src", "/image/thumb/" + thumbnailImage.image.attr("id"));
-        thumbnailImage.cover.remove();
-    };
-
-    thumbnailImage.initialize();
-
-    return thumbnailImage;
-
-}
-
 ViewAnyway = (function(){
 
-    var self;
+  var self;
 
-    var ViewAnyway = function(element){
+  var ViewAnyway = function(element){
 
-        self = this;
+    self = this;
 
-        self.image = element;
-        self.cover =    $("<div />", {
-                            class: "cover"
-                        });
+    self.container = element;
+    self.image = self.container.children("img");
+    self.type = /full|limited|thumbnail/.exec(self.container.attr("class")).first();
+    self.id = parseInt(self.container.attr("id").split("_")[1]);
+    self.cover =  $("<div />", {
+                    class: "cover",
+                    html: $("<span />", {
+                      text: "View Anyway"
+                    })
+                  });
 
-    };
-
-    Make.extend(ViewAnyway.prototype, {
-
-        initialize: function(){
-
-            self.cover.css({
-                backgroundColor: "rgba(47, 79, 79, .8)",
-                position: "relative",
-                color: "#D2FFC7",
-                textShadow: "0px 0px 35px black",
-                fontSize: self.image.width()/10,
-                height: self.image.height(),
-                width: self.image.width()
-            });
-            self.cover.append($("<span />", {
-                text: "View Anyway",
-                css: {
-                    cursor: "default",
-                    width: "100%",
-                    textAlign: "center"    
-                }
-            }));
-            self.cover.addClass("vc");
-
-            self.image.on("mouseleave.viewAnyway", function(){
-                self.cover.remove();
-            });
-
-            self.image.on("mouseenter.viewAnyway", function(){
-                self.container.append(self.cover);
-                self.mouseenter();
-                self.cover.on("click.viewAnyway", function(event){
-                    pauseEvent(event);
-                    self.click();
-                    self.image.trigger("mouseleave.viewAnyway");
-                });
-            });
-
-            $(window).scroll(function(){
-                container.trigger("mouseleave");
-            });
-            $(window).resize(function(){
-                container.trigger("mouseleave");
-            });
-
-        },
-
-        materialBox: function(){
-            self.image.addClass("materialboxed").materialbox();
-        }
-
+    $(window).on("resize.ViewAnyway", function(){
+      self.cover.css({
+        fontSize: self.image.width()/10,
+        height: self.image.height(),
+        width: self.image.width(),
+        margin: "0 " + (self.image.outerWidth(true) - self.image.width()) / 2 + "px"
+      });
+      self.cover.children().css({
+        lineHeight: self.image.height()+"px",
+        textAlign: "center"
+      });
     });
 
-    return ViewAnyway;
+    $(window).trigger("resize.ViewAnyway");
+
+    self.container.append(self.cover);
+    self.cover.hide();
+
+    self.image.on("mouseenter.ViewAnyway", function(){
+      self.cover.show();
+    });
+
+    self.container.on("mouseleave.ViewAnyway", function(){
+      self.cover.hide();
+    })
+
+    self.cover.on("click.ViewAnyway", function(event){
+      pause(event);
+      self.image.attr("src", "image/" + self.type + "/" + self.id);
+      self.cover.remove();
+    });
+
+  };
+
+  return ViewAnyway;
 
 })();

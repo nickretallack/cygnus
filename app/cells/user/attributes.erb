@@ -1,0 +1,7 @@
+<blockquote class = "inline"><%= summary_for "types of art", @model.artist_types %></blockquote>
+<% @model.offsite_galleries.each do |gallery| %>
+  <blockquote class = "inline">Offsite gallery: <%= external_link gallery, gallery %></blockquote>
+<% end %>
+<blockquote class = "inline"><%= summary_for "price", @model.price %></blockquote>
+<blockquote class = "inline"><%= summary_for "tags", @model.tags %></blockquote>
+<blockquote class = "inline"><%= render_markdown @user.details %></blockquote>

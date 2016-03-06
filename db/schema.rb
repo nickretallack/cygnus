@@ -90,7 +90,6 @@ ActiveRecord::Schema.define(version: 20160305232518) do
     t.string   "email"
     t.string   "level"
     t.inet     "ip_address"
-    t.string   "offsite_gallery"
     t.string   "price"
     t.text     "details"
     t.string   "tags"
@@ -107,6 +106,7 @@ ActiveRecord::Schema.define(version: 20160305232518) do
     t.string   "attachments",       default: [],                                                                                    array: true
     t.json     "settings",          default: {}
     t.string   "artist_types",      default: [],                                                                                    array: true
+    t.string   "offsite_galleries", default: [],                                                                                    array: true
   end
 
   add_index "users", ["tags_tsvector"], name: "index_users_on_tags_tsvector", using: :gin

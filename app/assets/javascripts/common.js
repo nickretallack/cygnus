@@ -50,7 +50,7 @@ Init = {
     Nav: "header nav",
     OrderForm: ".order-form",
     TagList: ".taglist",
-    ViewAnyway: "img.adult",
+    ViewAnyway: ".adult.image",
     Workboard: ".top-card",
 
     // keep these last so contents are loaded already

@@ -26,4 +26,8 @@ class AnonymousUser
   def view_adult?
     false
   end
+
+  def setting(key)
+    false
+  end
 end

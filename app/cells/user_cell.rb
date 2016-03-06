@@ -34,15 +34,7 @@ class UserCell < HelpfulCell
     render "#{type}_status"
   end
 
-  def navigation
-    if controller.instance_variable_get("@no_menu")
-      render "plain_navigation"
-    else
-      render
-    end
-  end
-
-  ["show", "summary", "links", "watch"].each do |method|
+  ["navigation", "show", "summary", "attributes", "links", "watch"].each do |method|
     define_method method do
       render method
     end

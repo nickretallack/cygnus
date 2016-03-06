@@ -8,37 +8,6 @@ module ViewHelper
     end
   end
 
-  def format_artist_type(array)
-    array.map { |index| CONFIG[:artist_types][index.to_i] }.collect { |type| type.split("/") }.collect { |type|
-      ->(word) {
-        case word
-        when "visual"
-          "visual arts: "
-        when "craft", "coding", "other"
-          ""
-        else
-          "#{word}: "
-        end
-      }.call(type[0])+
-      ->(type) {
-        if type[2]
-          case type[1]
-          when "costumes"
-            "#{type[2]}"
-          when "websites"
-            "#{type[1]} in #{type[2]}"
-          when "translation"
-            "#{type[1]}:"
-          else
-            "#{type[2]} #{type[1]}"
-          end
-        else
-          type[1]
-        end
-      }.call(type)
-    }.join(", ")
-  end
-
   def format_flash(message, key)
     suffix = ""
     case key.to_sym
@@ -48,10 +17,6 @@ module ViewHelper
       suffix = "."
     end
     message.slice(0, 1).capitalize+message.slice(1..-1)+suffix
-  end
-
-  def sanitize_title(content)
-    sanitize(content, tags: []).gsub("&#39;", "'").titleize
   end
 
   def render_markdown(content)
@@ -80,13 +45,19 @@ module ViewHelper
     end
   end
 
-  def message_for(*args)
-    key, value = args.first.first
-    key = key.to_s.gsub("_", " ")
-    if value.blank?
-      "No #{key} specified."
+  def summary_for(label, field)
+    if field.is_a? Array
+      if field.length < 1
+        "No #{label} specified."
+      else
+        "#{readable label}: #{field.join(", ")}"
+      end
     else
-      value
+      if field.blank?
+        "No #{label} specified."
+      else
+        "#{readable label}: #{field}"
+      end
     end
   end
 

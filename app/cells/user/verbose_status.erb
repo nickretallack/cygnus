@@ -16,7 +16,7 @@
       <% else %>
         <label>
           <i class = "material-icons medium-small comm-<%= status %>"><%= CONFIG[:activity_icons][status.to_sym] %></i>
-          <span><%= status.humanize.titleize %></span>
+          <%= status.humanize.titleize %>
         </label>
       <% end %>
     </div>

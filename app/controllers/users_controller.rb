@@ -75,9 +75,11 @@ class UsersController < ApplicationController
         @user.avatar.update_attribute(:explicit, params[:image][:explicit])
       end
     end
-    @user.artist_types = params[:user][:artist_types].reject{ |key, type| type.blank? }.map{ |key, type| type}
+    @user.statuses = params[:user][:statuses].values
+    @user.artist_types = params[:user][:artist_types].reject{ |key, type| type.blank? }.values
+    @user.offsite_galleries = params[:user][:offsite_galleries].reject{ |key, gallery| gallery.blank? }.values
     if @user.save
-      raise "break"
+      #raise "break"
       back
     else
       raise "break"

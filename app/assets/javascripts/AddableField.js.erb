@@ -5,7 +5,7 @@ AddableField = (function(){
     var self = this;
 
     self.field = element;
-    self.area = element.siblings(".addable-area");
+    self.area = element.nextAll(".addable-area").eq(0);
     self.addable = self.field.children().last();
     self.orderable = self.field.is(".orderable");
     self.addButton = $("<i />", {

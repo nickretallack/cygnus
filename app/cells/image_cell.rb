@@ -5,7 +5,7 @@ class ImageCell < HelpfulCell
 
     if @image.enabled?
       if @image.explicit? and not current_user.setting(:view_adult)
-        image_tag(controller.image_path("image_adult#{suffix}".to_sym), id: id, class: "adult")
+        image_tag(controller.image_path("image_adult#{suffix}".to_sym))
       else
         image_tag(controller.image_path(type, id: id))
       end
@@ -16,25 +16,21 @@ class ImageCell < HelpfulCell
 
   def full(id)
     show = show(:full, id)
-    div_for @image, class: "image" do
-      show
-    end
-  end
-
-  def thumb(id)
-    show(:thumb, id, "_thumb")
-  end
-
-  def bordered(id)
-    show = show(:bordered, id, "_thumb")
-    div_for @image, class: "thumbnail #{@image.explicit?? 'danger' : 'success'}" do
+    div_for @image, class: "full #{@image.explicit?? 'danger' : 'success'} #{"adult" if @image.explicit? and not current_user.setting(:view_adult)}" do
       show
     end
   end
 
   def limited(id)
     show = show(:limited, id)
-    div_for @image, class: "image #{@image.explicit?? 'danger' : 'success'}" do
+    div_for @image, class: "limited #{@image.explicit?? 'danger' : 'success'} #{"adult" if @image.explicit? and not current_user.setting(:view_adult)}" do
+      show
+    end
+  end
+
+  def bordered(id)
+    show = show(:bordered, id, "_thumb")
+    div_for @image, class: "thumbnail #{@image.explicit?? 'danger' : 'success'} #{"adult" if @image.explicit? and not current_user.setting(:view_adult)}" do
       show
     end
   end

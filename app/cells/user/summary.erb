@@ -17,9 +17,7 @@
       <%= cell(:user, @model).(:links) %>
     </div>
       <div class = "col s12 m6 l12">
-        <blockquote class = "inline"><%= message_for artist_types: @model.artist_type %></blockquote>
-        <blockquote class = "inline"><%= message_for price: @model.price %></blockquote>
-        <blockquote class = "inline"><%= message_for tags: @model.tags %></blockquote>
+        <%= cell(:user, @model).(:attributes) %>
       </div>
   </div>
 </div>
