@@ -10,11 +10,13 @@ class ImagesController < ApplicationController
     type = params[:type].to_sym
 
     case type
-    when :thumb, :bordered
+    when :bordered
       file = @image.file.thumb.url
       suffix = "_thumb"
     when :limited
       file = @image.file.limited.url
+    when :medium
+      file = @image.file.medium.url
     when :full
       file = @image.file.url
     else

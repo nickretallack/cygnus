@@ -25,20 +25,27 @@ class ImagesUploader < CarrierWave::Uploader::Base
   end
 
   version :thumb do
-    process resize: [150, 150]
+    process resize: [150, 150, false]
   end
 
   version :limited do
-    process resize: [400, 400]
+    process resize: [400, 400, true]
   end
 
-  def resize(width, height)
-    image = ::MiniMagick::Image.open(current_path)
-    raise Exceptions::RenderError if image.type.downcase == "gif" and image.layers.length > 1 and image.size > 2097000
+  version :medium do
+    process resize: [700, 700, true]
+  end
+
+  def resize(width, height, limit_to_height)
+    # no animated gifs above 2mb due to processing constraints
+      # image = ::MiniMagick::Image.open(current_path)
+      # raise Exceptions::RenderError if image.type.downcase == "gif" and image.layers.length > 1 and image.size > 2097000
     manipulate! do |img|
       img.coalesce
-      unless img[:width] < width and img[:height] < height
-        img.resize "#{width}x#{height}^"
+        unless limit_to_height
+          img.resize "#{width}x#{height}^"
+        else
+          img.resize "#{width}x#{height}>"
       end
       img
     end

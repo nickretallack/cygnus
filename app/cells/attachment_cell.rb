@@ -1,7 +1,8 @@
 class AttachmentCell < HelpfulCell
 
-  def new_image(explicit: false)
-    @explicit = explicit
+  def new_image(options)
+    @model ||= Image.new
+    @options = options
     render "new/image"
   end
 

@@ -1,0 +1,19 @@
+<div class = "view-mode">
+  <div class = "row medium-height">
+    <div class = "col s12">
+      <%= cell(:image).(:medium, @model.image.id) %>
+    </div>
+  </div>
+</div>
+
+<div class = "edit-mode">
+  <%= form_for @model, url: update_submission_path(@model), method: :patch, html: { multipart: true, class: "button-submit" } do |f| %>
+    <div class = "row medium-height">
+      <div class = "col s12 preview">
+        <%= cell(:attachment, @model.image).(:new_image, type: :medium) %>
+      </div>
+    </div>
+    <%= f.submit "Update Submission", id: "save" %>
+  <% end %>
+  <div class = "button-area float-right"></div>
+</div>

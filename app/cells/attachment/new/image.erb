@@ -1,6 +1,6 @@
-<%= fields_for Image.new, multipart: true do |i| %>
-  <div class = "input-field checkbox-field">
-    <%= i.check_box :explicit, { checked: @explicit } %><%= i.label :explicit, "Adult Image", id: "explicit-attachment" %>
+<%= fields_for Image.new do |i| %>
+  <div class = "padded">
+    <%= i.check_box :explicit, { checked: @model.explicit } %><%= i.label :explicit, "Adult Image", id: "explicit-attachment" %>
     <div class = "file-field input-field bordered">
       <div class = "submit">
         <span>Image</span>
@@ -9,8 +9,10 @@
     </div>
   </div>
   <div class = "image-preview" file-field = "change-attachment" explicit-label = "explicit-attachment">
-    <%= cell(:image).(:limited, (@model.id rescue -1)) %>
-    <span class = "inline js">Click image to change</span>
-    <span class = "inline danger nojs">Please mark adult images explicit before saving.</span>
+    <%= cell(:image).(options[:type], @model.id) %>
+    <div class = "image-labels">
+      <label>Click in border to change image (any size image)</label>
+      <label class = "danger">Please mark adult images explicit before saving.</label>
+    </div>
   </div>
 <% end %>

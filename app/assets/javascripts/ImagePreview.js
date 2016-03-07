@@ -8,11 +8,12 @@ ImagePreview = (function(){
 
     self.imagePreview = element;
     self.fileField = $("#"+self.imagePreview.attr("file-field"));
-    self.spans = self.imagePreview.find("span");
+    self.labels = self.imagePreview.find(".image-labels").children();
     self.explicitBox = $("#"+self.imagePreview.attr("explicit-box"));
 
     self.fileField.parents(".file-field").hide();
-    self.spans.eq(0).show();
+    self.labels.eq(0).show();
+    self.labels.eq(1).hide();
 
     self.fileField.on("change.ImagePreview", function(event){
       if(this.files && this.files[0]){
@@ -21,11 +22,11 @@ ImagePreview = (function(){
           image = self.imagePreview.find("img");
           image.attr("src", event.target.result);
           image.on("mouseenter.ImagePreview", function(){
-            self.spans.eq(0).show();
-            self.spans.eq(1).hide();
+            self.labels.eq(0).show();
+            self.labels.eq(1).hide();
           }).on("mouseleave.ImagePreview", function(){
-            self.spans.eq(0).hide();
-            self.spans.eq(1).show();
+            self.labels.eq(0).hide();
+            self.labels.eq(1).show();
           });
           self.imagePreview.trigger("mouseleave.ImagePreview");
         };

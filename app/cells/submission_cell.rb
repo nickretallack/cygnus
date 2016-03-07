@@ -1,6 +1,6 @@
 class SubmissionCell < HelpfulCell
 
-  ["new", "index", "summary"].each do |method|
+  ["new", "show", "index", "summary"].each do |method|
     define_method method do
       render method
     end

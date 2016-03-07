@@ -61,48 +61,18 @@ class UsersController < ApplicationController
 
   def update
     if params[:user][:settings].is_a? Hash
-      @user.update_attribute(:settings, params[:user][:settings]) if @user.settings != params[:user][:settings]
+      @user.settings = params[:user][:settings]
     else
-      if params[:image][:image]
-        begin
-          @user.attachments.delete_if{ |attachment| attachment.split("-")[0] == "avatar" }
-          @user.attachments << "avatar-#{Image.render(params[:image][:image], params[:image][:explicit])}"
-          @user.update_attribute(:attachments, @user.attachments)
-        rescue Exceptions::RenderError
-          flash[:danger] = "Please no animated gifs above 2mb"
-        end
-      elsif @user.avatar
-        @user.avatar.update_attribute(:explicit, params[:image][:explicit])
-      end
+      update_image_attachment("avatar")
+      @user.statuses = params[:user][:statuses].values
+      @user.artist_types = params[:user][:artist_types].reject{ |key, type| type.blank? }.values
+      @user.offsite_galleries = params[:user][:offsite_galleries].reject{ |key, gallery| gallery.blank? }.values
     end
-    @user.statuses = params[:user][:statuses].values
-    @user.artist_types = params[:user][:artist_types].reject{ |key, type| type.blank? }.values
-    @user.offsite_galleries = params[:user][:offsite_galleries].reject{ |key, gallery| gallery.blank? }.values
     if @user.save
-      #raise "break"
       back
     else
-      raise "break"
       back_with_errors
     end
-    # @user.avatar = Upload.render(params[:user][:upload][:picture], params[:user][:upload][:explicit]) unless params[:user][:upload][:picture].nil?
-    # @user.view_adult = true if params[:user][:upload][:explicit]
-    # @old_statuses = @user.statuses
-    # @user.statuses = params[:user][:statuses].values
-    # @user.artist_type = params[:user][:artist_type].values[0].split(", ").uniq.join(", ")
-    # if @user.update_attributes(params.require(:user).permit([:tags]))
-    #   activity_message(:status_change, params[:user][:statuses]) if @old_statuses != @user.statuses
-    #   flash[:success] = "profile updated"
-    #   back
-    # else
-    #   back_with_errors
-    # end
-  end
-
-  def destroy
-    @user.destroy
-    flash[:success] = "account deleted"
-    redirect_to :root
   end
 
   def log_in
@@ -133,7 +103,6 @@ class UsersController < ApplicationController
   end
 
   def watch
-
     if watching? @user
       current_user.update_attribute(:watching, current_user.watching.delete_if { |id| id == @user.id })
     else

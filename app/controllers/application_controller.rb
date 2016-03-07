@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  before_filter only: [:index, :create] do
+  before_filter only: [:index, :create, :show] do
     if /_id/.match(params.keys.join(" "))
       parent = params.keys.collect{|key| /(.+)_id/.match(key)}.compact[0][1]
       instance_variable_set("@#{parent}", parent.classify.constantize.find(params["#{parent}_id"]))
@@ -66,6 +66,16 @@ class ApplicationController < ActionController::Base
   end
   
   define_method :update, proc{}
+
+  define_method :update_image_attachment do |word|
+    if params[:image][:image]
+      item.attachments.delete_if{ |attachment| attachment.split("-")[0] == word }
+      item.attachments << "#{word}-#{Image.render(params[:image][:image], params[:image][:explicit])}"
+      item.update_attribute(:attachments, item.attachments)
+    elsif item.send word
+      item.send(word).update_attribute(:explicit, params[:image][:explicit])
+    end
+  end
   
   define_method :destroy, proc{}
 

@@ -8,7 +8,7 @@ ViewAnyway = (function(){
 
     self.container = element;
     self.image = self.container.children("img");
-    self.type = /full|limited|thumbnail/.exec(self.container.attr("class")).first();
+    self.type = /full|limited|medium|thumbnail/.exec(self.container.attr("class")).first();
     self.id = parseInt(self.container.attr("id").split("_")[1]);
     self.cover =  $("<div />", {
                     class: "cover",

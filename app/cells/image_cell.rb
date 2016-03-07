@@ -28,6 +28,13 @@ class ImageCell < HelpfulCell
     end
   end
 
+  def medium(id)
+    show = show(:medium, id)
+    div_for @image, class: "medium #{@image.explicit?? 'danger' : 'success'} #{"adult" if @image.explicit? and not current_user.setting(:view_adult)}" do
+      show
+    end
+  end
+
   def bordered(id)
     show = show(:bordered, id, "_thumb")
     div_for @image, class: "thumbnail #{@image.explicit?? 'danger' : 'success'} #{"adult" if @image.explicit? and not current_user.setting(:view_adult)}" do

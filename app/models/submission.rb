@@ -1,7 +1,7 @@
 class Submission < ActiveRecord::Base
 
   def Submission.results_per_page
-    30
+    20
   end
 
   def pools
@@ -12,12 +12,12 @@ class Submission < ActiveRecord::Base
     pools.first
   end
 
-  def uploads
+  def images
     children("image")
   end
 
-  def upload
-    uploads.first || Image.new
+  def image
+    images.first || Image.new
   end
 
   def faved_by
