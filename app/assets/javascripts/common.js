@@ -82,4 +82,5 @@ function initialize(){
   $.each(bleatr, function(index, object){
     if(object.has("initialize")) object.initialize();
   });
+  $(window).resize();
 }

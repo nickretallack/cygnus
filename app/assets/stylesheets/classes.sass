@@ -17,7 +17,7 @@
 .row.list
   margin-left: -20px
   .item
-    padding: 7px 0 7px 2% !important
+    padding: 7px 0 7px 5% !important
     label
       display: table
       font-size: 18px
@@ -35,22 +35,17 @@
   margin: 0 !important
 
 .limit-height
-  height: 450px
+  height: 500px
 
 .medium-height
-  height: 700px
+  height: 750px
 
 .row.limit-height > .col, .row.medium-height > .col
   max-height: 100%
-  img, label
-    +block-centered
-  .labels
-    width: 100%
-  &:empty
-    height: 100%
 
 .header
   width: 100%
+  line-height: 2rem
   margin-bottom: 10px
   margin-top: 30px
   a
@@ -199,7 +194,7 @@
 .thumbnail-block.hidden
   opacity: 0.7
 
-.thumbnail
+.bordered
   +block-centered
   width: $thumb-size
   height: $thumb-size
@@ -208,16 +203,40 @@
   box-sizing: content-box
   overflow: hidden
   position: relative
+  overflow: hidden
+  display: block
   img
     max-height: none
     max-width: none
     width: auto !important
+    +full-center
 
-.thumb-preview
-  .thumbnail
-    img
-      max-height: 100%
-      max-width: 100%
+.image-preview
+  +inline-block-centered
+  border: 2px solid black
+  border-radius: 8px
+  font-size: 18px
+  line-height: 18px
+  color: black
+  .click-area
+    // width: intrinsic
+    // width: -moz-fit-content
+    // width: -webkit-fit-content
+    // width: fit-content
+    display: inline-block
+    cursor: pointer
+  label
+    +block-centered
+  .bordered
+    img.wide
+      width: auto
+      max-height: 150px
+    img.tall
+      height: auto
+      max-width: 150px
+.image-preview:hover
+  label
+    color: $danger-color
 
 //input
 

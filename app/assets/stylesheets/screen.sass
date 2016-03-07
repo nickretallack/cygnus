@@ -103,14 +103,12 @@
       transform: none
       top: 0
       margin: 5% auto
-  .row.limit-height
+  .row
+    +spaced
+  .row.limit-height > .col
     height: auto
-    .col
-      width: 100%
-      label
-        +block-centered
-        margin-bottom: -10px
-        margin-top: 20px
+    max-height: auto
+    width: 100%
 
 //small
 @media only screen and (min-width: 364px) and (max-width: 800px)

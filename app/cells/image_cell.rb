@@ -37,7 +37,7 @@ class ImageCell < HelpfulCell
 
   def bordered(id)
     show = show(:bordered, id, "_thumb")
-    div_for @image, class: "thumbnail #{@image.explicit?? 'danger' : 'success'} #{"adult" if @image.explicit? and not current_user.setting(:view_adult)}" do
+    div_for @image, class: "bordered #{@image.explicit?? 'danger' : 'success'} #{"adult" if @image.explicit? and not current_user.setting(:view_adult)}" do
       show
     end
   end

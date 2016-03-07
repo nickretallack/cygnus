@@ -50,12 +50,11 @@ li
 img
   display: block
   position: relative
-  max-width: 100%
+  width: 100%
   box-sizing: content-box
 
 form
   background-color: $form-background-color
-  display: table
   margin: 0 auto
   width: 100%
   row
@@ -80,19 +79,20 @@ blockquote
   +blockquote
 
 input[type="checkbox"] + label
-  padding-left: 2rem
-  display: table
+  padding-left: 42px
+  display: table !important
   color: black
   top: 5px
   &:before
     width: 1.3rem
     height: 1.3rem
+    left: 10px
     border-color: #B08ECE
 
 input[type="checkbox"]:checked + label
   &:before
     top: -9px
-    left: -8px
+    left: 0
     width: 1.1rem
     height: 1.9rem
 

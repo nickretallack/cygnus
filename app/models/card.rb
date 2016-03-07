@@ -8,4 +8,8 @@ class Card < ActiveRecord::Base
       children("card")
     end
 
+    def image
+      children("image").first
+    end
+
 end

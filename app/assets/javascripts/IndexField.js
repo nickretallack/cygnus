@@ -1,14 +1,12 @@
 IndexField = (function(){
 
-  var self;
-
   var IndexField = function(element){
 
-    self = this;
+    var self = this;
 
     self.indexField = element;
 
-    self.indexField.parents(".content").css({
+    self.indexField.closest(".content").css({
       width: "100%"
     });
 
@@ -41,19 +39,38 @@ IndexField = (function(){
 
   Make.extend(IndexField.prototype, {
 
-  move: function(direction){
-    if(direction === "right"){
-      self.pool.children(":not(:hidden)").first().hide();
-    }else if(direction === "left"){
-      self.pool.children(":hidden").last().show();
-    }
-  },
+    move: function(direction){
+      var self = this;
+      if(direction === "right"){
+        if(!self.end()) self.pool.children(":not(:hidden)").first().hide();
+      }else if(direction === "left"){
+        self.pool.children(":hidden").last().show();
+      }
+    },
 
-  resize: function(){
-    self.pool.css({
-      width: self.indexField.width() - (self.iconWidth + 2) * 2
-    });
-  }
+    resize: function(){
+      var self = this,
+          size = self.size();
+      self.pool.css({
+        width: self.indexField.width() - (self.iconWidth + 2) * 2
+      });
+      console.log(size, self.size());
+      if(self.size() < size){
+        self.move("right");
+      }else if(self.size() > size){
+        self.move("left");
+      }
+    },
+
+    size: function(){
+      var self = this;
+      return Math.floor(self.pool.width() / (self.pool.children().eq(0).width() + 10));
+    },
+
+    end: function(){
+      var self = this;
+      return self.pool.children(":not(:hidden)").length - 1 < self.size();
+    }
 
   });
 

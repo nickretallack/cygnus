@@ -41,9 +41,12 @@ header
       color: $menu-text-color
       background-color: $menu-background-color
   .separator
-    height: $separator-height
-    background: linear-gradient(to bottom, $background-color, $background-color-transparent)
+    height: 50px
+    //background: linear-gradient(to bottom, $background-color, $background-color-transparent)
+    background: linear-gradient(to bottom, rgba(156, 204, 101, 0.7), rgba(156, 204, 101, 0))
     pointer-events: none
+    position: relative
+    top: -15px
   nav
     background-color: $nav-background-color
     z-index: 1

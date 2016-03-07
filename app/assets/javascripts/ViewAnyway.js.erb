@@ -4,11 +4,11 @@ ViewAnyway = (function(){
 
   var ViewAnyway = function(element){
 
-    self = this;
+    var self = this;
 
     self.container = element;
     self.image = self.container.children("img");
-    self.type = /full|limited|medium|thumbnail/.exec(self.container.attr("class")).first();
+    self.type = /full|limited|medium|bordered/.exec(self.container.attr("class")).first();
     self.id = parseInt(self.container.attr("id").split("_")[1]);
     self.cover =  $("<div />", {
                     class: "cover",
@@ -22,15 +22,13 @@ ViewAnyway = (function(){
         fontSize: self.image.width()/10,
         height: self.image.height(),
         width: self.image.width(),
-        margin: "0 " + (self.image.outerWidth(true) - self.image.width()) / 2 + "px"
+        marginLeft: ((self.container.width() - self.image.width()) / 2) + "px"
       });
       self.cover.children().css({
         lineHeight: self.image.height()+"px",
         textAlign: "center"
       });
     });
-
-    $(window).trigger("resize.ViewAnyway");
 
     self.container.append(self.cover);
     self.cover.hide();
@@ -45,7 +43,7 @@ ViewAnyway = (function(){
 
     self.cover.on("click.ViewAnyway", function(event){
       pause(event);
-      self.image.attr("src", "image/" + self.type + "/" + self.id);
+      self.image.attr("src", "/image/" + self.type + "/" + self.id);
       self.cover.remove();
     });
 

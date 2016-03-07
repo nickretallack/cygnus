@@ -58,7 +58,8 @@ CONFIG = {
     remove: "remove_circle",
     send: "send",
     accept: "check_circle",
-    reject: "highlight_off"
+    reject: "highlight_off",
+    attach: "attach_file"
   },
 
   order_form_icons: {

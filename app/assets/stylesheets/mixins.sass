@@ -37,7 +37,7 @@
   margin-left: auto !important
   margin-right: auto !important
   text-align: center
-  display: table
+  display: block
 
 =vertical-center
   position: relative !important
@@ -48,6 +48,11 @@
   position: relative !important
   left: 50% !important
   transform: translateX(-50%) !important
+
+=inline-block-centered
+  +horizontal-center
+  text-align: center
+  display: inline-block
 
 =full-center
   position: relative !important
@@ -132,8 +137,8 @@
         +vertical-center
         margin: 0
       a
-        width: 170px
-        height: 170px
+        width: 158px
+        height: 158px
         display: inline-block
       i, .thumbnail
         +vertical-center
@@ -204,13 +209,15 @@
 =destroyable
   height: 32px
   .top
+    height: 28px
     font-size: 26px
-    line-height: 28px
     width: 100%
   .title
     float: left
+    line-height: 28px
   .button-table
     float: right
+    line-height: 24px
 
 =hidable
   background-color: $success-background-color
@@ -219,19 +226,23 @@
   border-radius: 14px
   border: 2px solid $text-shadow-color
   padding: 0 10px
+  overflow: hidden
   .top
     width: 100%
     font-size: 18px
-    line-height: 24px
+    line-height: 26px
+    height: 28px
     +no-select
   .title
     float: left
     cursor: pointer
   .divider
     margin: 0
+    margin-top: -5px
+    margin-bottom: 5px
   .button-table
     float: right
-    margin-top: -1px
+    margin-top: -2px
     i
       position: relative
   .content
@@ -365,22 +376,10 @@
 =card-card
   &
     width: 100%
-
-=image-preview
-  &
-    border: 2px solid black
-    border-radius: 8px
-    font-size: 18px
-    line-height: 18px
-    color: black
-    cursor: pointer
-    div
-      width: 100%
-    img
-      max-height: 399px
-  &:hover
-    span
-      color: $danger-color
+    .button-area
+      margin-top: 10px
+    .new-image
+      display: none
 
 //behavior
 
@@ -398,7 +397,6 @@
   text-align: center
   *
     +block-centered
-    display: block
 
 .fh
   height: 10rem
@@ -469,6 +467,3 @@
 
 .icon-hover
   +icon-hover
-
-.image-preview
-  +image-preview

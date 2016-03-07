@@ -1,18 +1,23 @@
 <%= fields_for Image.new do |i| %>
-  <div class = "padded">
-    <%= i.check_box :explicit, { checked: @model.explicit } %><%= i.label :explicit, "Adult Image", id: "explicit-attachment" %>
-    <div class = "file-field input-field bordered">
-      <div class = "submit">
-        <span>Image</span>
-        <%= i.file_field :image, id: "change-attachment" %>
-      </div>
+  <div class = "file-field hidden">
+    <div class = "submit">
+      <span>Image</span>
+      <%= i.file_field :image %>
     </div>
   </div>
-  <div class = "image-preview" file-field = "change-attachment" explicit-label = "explicit-attachment">
-    <%= cell(:image).(options[:type], @model.id) %>
-    <div class = "image-labels">
-      <label>Click in border to change image (any size image)</label>
-      <label class = "danger">Please mark adult images explicit before saving.</label>
+  <div class = "image-preview">
+    <% check_box_for = SecureRandom.uuid %>
+    <%= i.check_box :explicit, { checked: @model.explicit, id: "image_#{check_box_for}" } %><%= i.label check_box_for, "Explicit", class: "padded" %>
+    <div class = "click-area">
+      <%= cell(:image).(options[:type] || :limited, @model.id) %>
+      <div class = "labels-1">
+        <label>Click preview image to change</label>
+        <label>(any size image, will be expandable to viewer)</label>
+      </div>
+      <div class = "labels-2 danger">
+        <label>Please mark adult images explicit.</label>
+        <label>Press the save icon to upload.</label>
+      </div>
     </div>
   </div>
 <% end %>

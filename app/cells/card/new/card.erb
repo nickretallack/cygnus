@@ -2,7 +2,7 @@
   <div class = "card-content">
     <div class = "card-title">
       <%= form_for @model, url: new_card_path(@user, @model), html: { class: " button-submit" } do |f| %>
-        <%= f.submit "Add New Card To This List", id: "add" %>
+        <%= f.submit "Add New Item To This List", id: "add" %>
       <% end %>
       <div class = "button-area centered"></div>
     </div>
