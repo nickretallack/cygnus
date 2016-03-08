@@ -14,10 +14,13 @@ class CardsController < ApplicationController
   end
 
   def update
-    @card.update_attributes(params.require(:card).permit([:title, :description]))
-    respond_to do |format|
-      format.html {back}
-      format.js
+    update_image_attachment("image")
+    @card.title = params[:card][:title]
+    @card.description = params[:card][:description]
+    if @card.save
+      back
+    else
+      back_with_errors
     end
   end
 

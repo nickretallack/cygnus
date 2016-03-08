@@ -21,6 +21,26 @@ class SubmissionsController < ApplicationController
     end
   end
 
+  def index
+    if @pool
+      if can_modify? @pool.user
+        @submissions = paginate @pool.submissions, Submission.results_per_page
+        @total_submissions = @pool.submissions.count
+      else
+        @submissions = paginate @pool.submissions.where(hidden: false), Submission.results_per_page
+        @total_submissions = @pool.submissions.where(hidden: false).count
+      end
+    else
+      @submissions = Submission.where(hidden: false)
+      @total_submissions = Submission.where(hidden: false).count
+      current_user.pools.each do |pool|
+        @submissions = @submissions | pool.submissions
+        @total_submissions += pool.submissions.length
+      end
+      @submissions = paginate Submission.where(id: @submissions.map(&:id)), Submission.results_per_page
+    end
+  end
+
   def after_save
     @pool.update_attribute(:attachments, @pool.attachments << "submission-#{@submission.id}")
   end

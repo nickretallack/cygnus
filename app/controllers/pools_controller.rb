@@ -18,8 +18,9 @@ class PoolsController < ApplicationController
     end
   end
 
-  def show
-    @pool ||= @user.gallery
+  def gallery
+    @pool = @user.gallery
+    render inline: cell(:pool, @pool).(:show), layout: :default
   end
 
   def destroy

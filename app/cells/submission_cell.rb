@@ -24,10 +24,14 @@ class SubmissionCell < HelpfulCell
           "#{@user.name}'s #{title_for @pool}"
         end
       else
-        unless options[:sanitize]
-          "#{title_for @pool} (#{link_to @pool.user.name, user_path(@pool.user.name)})"
+        if @pool
+          unless options[:sanitize]
+            "#{title_for @pool} (#{link_to @pool.user.name, user_path(@pool.user.name)})"
+          else
+            "#{title_for @pool} (#{@pool.user.name})"
+          end
         else
-          "#{title_for @pool} (#{@pool.user.name})"
+          "All submissions"
         end
       end
     when :show

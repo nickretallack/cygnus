@@ -1,6 +1,6 @@
 <div class = "row gallery" id = "submissions">
-  <% enum_for @pool.submissions, word: "submissions", reverse: true do |submission| %>
-    <%= cell(:submission, submission).(:item) %>
+  <% enum_for @model.submissions, word: "submissions", reverse: true do |submission| %>
+    <%= cell(:submission, submission).(:summary) %>
   <% end %>
   <% 11.times do %>
     <div class = "thumbnail-block spacer"></div>

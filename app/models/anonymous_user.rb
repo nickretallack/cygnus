@@ -30,4 +30,8 @@ class AnonymousUser
   def setting(key)
     false
   end
+
+  def pools
+    Pool.none
+  end
 end

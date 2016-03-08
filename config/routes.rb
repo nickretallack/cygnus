@@ -10,7 +10,7 @@ Rails.application.routes.draw do
 
   controller :messages do
     get :index, path: "activity(/page/:page)", as: :messages
-    get :create, path: "submission/:#{Submission.slug}(/reply/:message_#{Message.slug})", as: :new_comment
+    get :create, path: "submission/:#{Submission.slug}(/reply/:message_#{Message.slug})/comments", as: :new_comment
     patch :update, path: "comment/:#{Message.slug}", as: :update_comment
     delete :destroy, path: "comment/:#{Message.slug}", as: :destroy_comment
     #get "message_listener", to: "messages#listener", as: :listener
@@ -35,16 +35,16 @@ Rails.application.routes.draw do
   end
 
   controller :submissions do
-    get :index, path: "(pool/:pool_#{Pool.slug}/)submissions(/page/:page)", as: :submissions
-    get :show, path: "(pool/:pool_#{Pool.slug}/)submission/:#{Submission.slug}", as: :submission
-    post :create, path: "(pool/:pool_#{Pool.slug}/)submissions", as: :new_submission
+    get :index, path: "(pool/:pool_#{Pool.slug})/submissions(/page/:page)", as: :submissions
+    get :show, path: "(pool/:pool_#{Pool.slug})/submission/:#{Submission.slug}", as: :submission
+    post :create, path: "(pool/:pool_#{Pool.slug})/submissions", as: :new_submission
     patch :update, path: "submission/:#{Submission.slug}/update", as: :update_submission
     delete :destroy, path: "submission/:#{Submission.slug}/destroy", as: :destroy_submission
     get :fav, path: "submisison/:#{Submission.slug}/fav", as: :fav_submission
   end
 
   controller :order_forms do
-    get :index, path: "(:#{User.slug}/)order_forms(/page/:page)", as: :order_forms
+    get :index, path: "(:#{User.slug})/order_forms(/page/:page)", as: :order_forms
     post :create, path: "order_forms", as: :new_order_form
     get :show, path: "order_form/:#{OrderForm.slug}", as: :order_form
     patch :update, path: "order_form/:#{OrderForm.slug}/update", as: :update_order_form

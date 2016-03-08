@@ -37,9 +37,6 @@
 .limit-height
   height: 500px
 
-.medium-height
-  height: 750px
-
 .row.limit-height > .col, .row.medium-height > .col
   max-height: 100%
 
@@ -234,6 +231,20 @@
     img.tall
       height: auto
       max-width: 150px
+  .limited
+    img.wide
+      width: auto
+      max-height: 400px
+    img.tall
+      height: auto
+      max-width: 400px
+  .medium, .full
+    img.wide
+      width: 100%
+      height: auto
+    img.tall
+      width: auto
+      height: 100%
 .image-preview:hover
   label
     color: $danger-color
