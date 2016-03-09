@@ -59,7 +59,9 @@ CONFIG = {
     send: "send",
     accept: "check_circle",
     reject: "highlight_off",
-    attach: "attach_file"
+    attach: "attach_file",
+    unhide: "visibility",
+    hide: "visibility_off"
   },
 
   order_form_icons: {

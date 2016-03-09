@@ -31,12 +31,18 @@ class UserCell < HelpfulCell
   end
 
   def status(type)
-    render "#{type}_status"
+    render "status/#{type}"
   end
 
-  ["navigation", "show", "summary", "attributes", "links", "watch"].each do |method|
+  ["navigation", "show", "edit", "summary", "attributes", "links", "watch"].each do |method|
     define_method method do
       render method
+    end
+  end
+
+  ["show_profile", "edit_profile"].each do |method|
+    define_method method do
+      render "#{method.split("_")[1]}/#{method.split("_")[0]}"
     end
   end
 

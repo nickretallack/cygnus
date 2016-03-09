@@ -40,6 +40,7 @@ class ApplicationController < ActionController::Base
       set_items(paginate klass.all, klass.results_per_page) rescue nil
       set_total(klass.all.count) rescue nil
     end
+    render inline: cell(cell_name).(:index), layout: :default
   end
 
   define_method :show do

@@ -39,14 +39,38 @@ class SubmissionsController < ApplicationController
       end
       @submissions = paginate Submission.where(id: @submissions.map(&:id)), Submission.results_per_page
     end
+    render inline: cell(:submission).(:index), layout: :default
   end
 
   def after_save
     @pool.update_attribute(:attachments, @pool.attachments << "submission-#{@submission.id}")
   end
 
+  def show
+    if @pool
+      if can_modify? @pool.user
+        render inline: cell(:submission, @submission).(:edit), layout: :default
+      else
+        render inline: cell(:submission, @submission).(:show), layout: :default
+      end
+    else
+      if can_modify? @submission.pool.user
+        render inline: cell(:submission, @submission).(:edit), layout: :default
+      else
+        render inline: cell(:submission, @submission).(:show), layout: :default
+      end
+    end
+  end
+
   def update
-    update_image_attachment("image")
+    if /hide/.match params[:commit].downcase
+      @submission.hidden = !@submission.hidden
+    end
+    if /save/.match params[:commit].downcase
+      update_image_attachment("image")
+      @submission.title = params[:submission][:title]
+      @submission.description = params[:submission][:description]
+    end
     if @submission.save
       back
     else

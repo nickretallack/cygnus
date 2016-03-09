@@ -1,10 +1,8 @@
 Nav = (function(){
 
-  var self;
-
   var Nav = function(element){
 
-    self = this;
+    var self = this;
 
     self.nav = element;
     self.banner = self.nav.parents("header").children("img");
@@ -44,10 +42,12 @@ Nav = (function(){
   Make.extend(Nav.prototype, {
 
     initialize: function(){
+      var self = this;
       self.dropdownButton.trigger("mouseout");
     },
 
     pushpin: function(){
+      var self = this;
       if(!self.banner.exists() || !self.nav.exists()) return;
       if($(window).scrollTop() > self.banner.outerHeight()){
         self.nav.css({

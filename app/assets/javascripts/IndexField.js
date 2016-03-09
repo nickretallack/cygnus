@@ -54,7 +54,6 @@ IndexField = (function(){
       self.pool.css({
         width: self.indexField.width() - (self.iconWidth + 2) * 2
       });
-      console.log(size, self.size());
       if(self.size() < size){
         self.move("right");
       }else if(self.size() > size){

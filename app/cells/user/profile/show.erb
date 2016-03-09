@@ -1,0 +1,13 @@
+<div class = "row limit-height">
+  <div class = "col s6">
+    <%= cell(:image).(:limited, @user.avatar) %>
+  </div>
+  <div class = "col s6">
+    <%= cell(:user, @user).(:status, :show) %>
+    <%= cell(:user, @user).(:links) %>
+  </div>
+</div>
+<div class = "row">
+  <%= cell(:user, @user).(:attributes) %>
+  <blockquote class = "inline"><%= render_markdown @model.details %></blockquote>
+</div>

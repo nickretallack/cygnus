@@ -45,7 +45,7 @@ Init = {
     AddableAttachment: ".attachment-area",
     AddableField: ".addable-field",
     ButtonSubmit: ".button-submit",
-    ExpandableImage: ".image.medium",
+    ExpandableImage: ".image.medium > img",
     ImagePreview: ".image-preview",
     IndexField: "[class *= index-field]",
     Nav: "header nav",

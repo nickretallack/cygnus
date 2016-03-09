@@ -1,4 +1,6 @@
-<%= form_for Submission.new, url: new_submission_path(@pool || current_user.gallery), html: { class: "remote button-submit" } do |f| %>
-  <%= f.submit "New Submission", class: "float medium", id: "add" %>
-<% end %>
-<div class = "button-area float-right"></div>
+<div class = "submission new">
+  <%= form_for Submission.new, url: new_submission_path(@pool), html: { class: "remote button-submit" } do |f| %>
+    <%= f.submit "New Submission", class: "float medium", id: "add" %>
+  <% end %>
+  <div class = "button-area centered"></div>
+</div>

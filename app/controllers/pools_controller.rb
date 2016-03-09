@@ -19,8 +19,7 @@ class PoolsController < ApplicationController
   end
 
   def gallery
-    @pool = @user.gallery
-    render inline: cell(:pool, @pool).(:show), layout: :default
+    redirect_to submissions_path(@user.gallery)
   end
 
   def destroy

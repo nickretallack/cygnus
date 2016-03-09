@@ -11,10 +11,14 @@ header
     font-size: 1rem
   .side-nav
     max-width: 80%
+  form
+    display: table
   #menu:not(.wide)
+    background-color: $menu-background-color
     min-width: 300px
     max-height: 800px
   #mobile-menu:not(.wide)
+    background-color: $menu-background-color
     max-width: 60% !important
     input[type = "submit"]
       width: 100%
@@ -27,6 +31,7 @@ header
     form
       margin-top: 20px
   #menu.wide
+    background-color: $menu-background-color
     width: 600px
     a
       text-shadow: none
@@ -35,14 +40,13 @@ header
     li
       text-align: right
   #mobile-menu.wide
+    background-color: $menu-background-color
     a
       text-shadow: none
       font-size: 150%
       color: $menu-text-color
-      background-color: $menu-background-color
   .separator
     height: 50px
-    //background: linear-gradient(to bottom, $background-color, $background-color-transparent)
     background: linear-gradient(to bottom, rgba(156, 204, 101, 0.7), rgba(156, 204, 101, 0))
     pointer-events: none
     position: relative
@@ -144,6 +148,12 @@ main
     border: 3px outset $title-border-color
     border-left-style: none
     border-right-style: none
+    width: 100%
+    line-height: 2rem
+    margin-bottom: 30px
+    margin-top: 30px
+    a
+      color: inherit
   .danger-button
     background-color: $danger-color
     h4

@@ -1,0 +1,12 @@
+<%= form_for @model, url: update_submission_path(@model), method: :patch, html: { multipart: true, class: "button-submit" } do |f| %>
+  <%= f.text_field :title, placeholder: @model.title || "Title for Submission", class: "title" %>
+  <div class = "row medium-height spaced">
+    <%= cell(:attachment, @model.image).(:new_image, type: :medium) %>
+  </div>
+  <%= f.text_area :description, placeholder: @model.description || "Description for Submission", class: "big" %>
+  <%= f.submit "Save and Unhide", id: "unhide", area: 0 if @model.hidden %>
+  <%= f.submit "Save and Hide", id: "hide", area: 0 unless @model.hidden %>
+  <%= f.submit "Just Save", id: "save", area: 1 %>
+<% end %>
+<div class = "button-area float-left"></div>
+<div class = "button-area float-right"></div>

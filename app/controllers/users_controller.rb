@@ -59,6 +59,14 @@ class UsersController < ApplicationController
     end
   end
 
+  def show
+    if can_modify? @user
+      render inline: cell(:user, @user).(:edit_profile), layout: :default
+    else
+      render inline: cell(:user, @user).(:show_profile), layout: :default
+    end
+  end
+
   def update
     if params[:user][:settings].is_a? Hash
       @user.settings = params[:user][:settings]
@@ -67,6 +75,9 @@ class UsersController < ApplicationController
       @user.statuses = params[:user][:statuses].values
       @user.artist_types = params[:user][:artist_types].reject{ |key, type| type.blank? }.values
       @user.offsite_galleries = params[:user][:offsite_galleries].reject{ |key, gallery| gallery.blank? }.values
+      @user.price = params[:user][:price]
+      @user.tags = params[:user][:tags]
+      @user.details = params[:user][:details]
     end
     if @user.save
       back
@@ -84,11 +95,11 @@ class UsersController < ApplicationController
         back
       else
         flash[:danger] = "incorrect password"
-        back_with_errors
+        back
       end
     else
       flash[:danger] = "no such user"
-      back_with_errors
+      back
     end
   end
 

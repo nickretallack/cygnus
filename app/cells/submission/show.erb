@@ -1,17 +1,35 @@
-<div class = "view-mode">
-  <div class = "row">
-    <%= cell(:image).(:medium, @model.image.id) %>
-  </div>
-</div>
-
-<div class = "edit-mode">
-  <%= form_for @model, url: update_submission_path(@model), method: :patch, html: { multipart: true, class: "button-submit" } do |f| %>
-    <div class = "row medium-height">
-      <div class = "col s12 preview">
-        <%= cell(:attachment, @model.image).(:new_image, type: :medium) %>
+<div class = "row options">
+  <span>
+    <%= link_to submissions_path(@pool || @submission.pool), title: "Back to Pool" do %>
+      <i class = "material-icons medium-small"><%= CONFIG[:submission_icons][:pool] %></i>
+    <% end %>
+    <% if @submission.image %>
+      <%= link_to download_image_path(@submission.image.id), title: "Download" do %>
+        <i class = "material-icons medium-small"><%= CONFIG[:submission_icons][:download] %></i>
+      <% end %>
+      <div id = "favorite">
+        <% if can_fav? @submission %>
+          <% unless faved? @submission %>
+            <%= link_to fav_submission_path(@submission), class: "nojs", title: "Click to Favorite Submission" do %>
+              <i class = "material-icons medium-small"><%= CONFIG[:submission_icons][:unfaved] %></i>
+            <% end %>
+          <% else %>
+            <%= link_to fav_submission_path(@submission), class: "nojs danger", title: "Click to Unfavorite Submission" do %>
+              <i class = "material-icons medium-small"><%= CONFIG[:submission_icons][:faved] %></i>
+            <% end %>
+          <% end %>
+        <% end %>
       </div>
-    </div>
-    <%= f.submit "Update Submission", id: "save" %>
+    <% end %>
+  </span>
+</div>
+<div class = "row spaced">
+  <%= cell(:image).(:medium, @model.image.id) %>
+</div>
+<div class = "row">
+  <% unless @model.description.blank? %>
+    <%= hidable "Description", true do %>
+      <%= @model.description %>
+    <% end %>
   <% end %>
-  <div class = "button-area float-right"></div>
 </div>

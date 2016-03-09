@@ -5,14 +5,8 @@
   padding: 5px !important
   border-radius: 15px
 
-.hidable + .row
-  margin-top: 10px !important
-
-.row
-  margin-bottom: 0 !important
-
 .row:not(.hidable):not(.destroyable):not(.button-area):not(.spaced):not(.list)
-  margin: 0 !important
+  margin-bottom: 0 !important
 
 .row.list
   margin-left: -20px
@@ -30,6 +24,13 @@
 .row.block
   padding: 15px 10px !important
 
+.row.options
+  width: 100%
+  span
+    +block-centered
+    i
+      margin: 0 20px
+
 .col
   padding: 0 !important
   margin: 0 !important
@@ -39,14 +40,6 @@
 
 .row.limit-height > .col, .row.medium-height > .col
   max-height: 100%
-
-.header
-  width: 100%
-  line-height: 2rem
-  margin-bottom: 10px
-  margin-top: 30px
-  a
-    color: inherit
 
 .console
   max-height: 90px !important
@@ -179,17 +172,19 @@
 
 .gallery
   +block-centered
-
-.thumbnail-block
-  text-align: center
-  width: 200px
-  margin: 2% 5px 0 5px
-  display: inline-block
-  a:hover
-    font-size: 100%
-
-.thumbnail-block.hidden
-  opacity: 0.7
+  .submission
+    float: left
+    text-align: center
+    width: 200px
+    margin: 1% 15px
+    display: table
+    a:hover
+      font-size: 100%
+  .submission.new
+    margin-top: 60px
+  .submission.hidden
+    .image
+      opacity: 0.5
 
 .bordered
   +block-centered
@@ -249,6 +244,9 @@
   label
     color: $danger-color
 
+.image.adult > img:not([src *= "full"])
+  cursor: zoom-in
+
 //input
 
 .submit
@@ -299,6 +297,17 @@ input:focus::-moz-placeholder, textarea:focus::-moz-placeholder
   +placeholder-focus
 input:focus:-ms-input-placeholder, textarea:focus:-ms-input-placeholder
   +placeholder-focus
+
+input.title
+  width: calc(100% - 15px)
+  padding-right: 0
+  padding-left: 15px
+  font-size: 3rem
+  +block-centered
+
+textarea.big
+  width: 100%
+  min-height: 6rem
 
 .button-area
   +block-centered

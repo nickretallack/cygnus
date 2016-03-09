@@ -1,17 +1,15 @@
 class SubmissionCell < HelpfulCell
 
-  ["new", "show", "index", "summary"].each do |method|
+  ["new", "show", "edit", "index"].each do |method|
     define_method method do
       render method
     end
   end
 
-  def edit
-    @submission = @model
-    @pool = @submission.pool
-    @user = @pool.user
-    @title = title_for submission: @submission
-    render
+  ["show_summary", "edit_summary"].each do |method|
+    define_method method do
+      render "#{method.split("_")[1]}/#{method.split("_")[0]}"
+    end
   end
 
   def header(options)
@@ -35,7 +33,11 @@ class SubmissionCell < HelpfulCell
         end
       end
     when :show
-      title_for @submission
+      if (@pool and can_modify? @pool.user) or can_modify? @submission.pool.user
+        nil
+      else
+        title_for @submission
+      end
     end
   end
 

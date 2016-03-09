@@ -14,10 +14,10 @@ ButtonSubmit = (function(){
 
     initialize: function(){
       var self = this;
-      self.area.addClass("row");
       $.each(self.icons, function(name, icon){
         var button = self.form.find("#" + name);
         if(!button.exists()) return;
+        if(button.attr("area")) self.area = self.form.nextAll(".button-area").eq(parseInt(button.attr("area")));
         var size = /small|medium-small|medium|large/.exec(button.attr("class"));
         size = size === null? "medium-small" : size.first();
         if(self.form.attr("edit")){

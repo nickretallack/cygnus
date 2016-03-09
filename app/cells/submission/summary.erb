@@ -1,6 +1,0 @@
-<div class = "thumbnail-block <%= "hidden" if @model.hidden %>">
-  <%= link_to submission_path(@pool, @model) do %>
-    <%= "#{title_for @model}#{" - Hidden" if @model.hidden}" %>
-    <%= cell(:image).(:bordered, @model.image) %>
-  <% end %>
-</div>
