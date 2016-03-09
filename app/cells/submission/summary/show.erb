@@ -1,6 +1,4 @@
-<div class = "submission">
-  <%= link_to submission_path(@pool, @model) do %>
-    <%= title_for @model %>
-    <%= cell(:image).(:bordered, @model.image) %>
-  <% end %>
-</div>
+<%= link_to submission_path(@pool, @model) do %>
+  <%= title_for @model %>
+  <%= cell(:image).(:bordered, @model.image) %>
+<% end %>

@@ -1,14 +1,12 @@
-<div class = "submission <%= "hidden" if @model.hidden %>">
-  <%= form_for @model, url: update_submission_path(@model), method: :patch, html: { class: "button-submit" } do |f| %>
-    <%= link_to submission_path(@pool, @model) do %>
-      <%= "#{title_for @model}#{" - Hidden" if @model.hidden}" %>
-      <%= cell(:image).(:bordered, @model.image) %>
-    <% end %>
-    <%= f.submit "Unhide", id: "unhide" if @model.hidden %>
-    <%= f.submit "Hide", id: "hide" unless @model.hidden %>
+<%= form_for @model, url: update_submission_path(@model), method: :patch, html: { class: "button-submit" } do |f| %>
+  <%= link_to submission_path(@pool, @model) do %>
+    <%= "#{title_for @model}#{" (Hidden)" if @model.hidden}" %>
+    <%= cell(:image).(:bordered, @model.image) %>
   <% end %>
-  <%= form_for @model, url: destroy_submission_path(@model), method: :delete, html: { class: "button-submit" } do |f| %>
-    <%= f.submit "Delete", id: "delete" %>
-  <% end %>
-  <div class = "button-area centered"></div>
-</div>
+  <%= f.submit "Unhide", id: "unhide" if @model.hidden %>
+  <%= f.submit "Hide", id: "hide" unless @model.hidden %>
+<% end %>
+<%= form_for @model, url: destroy_submission_path(@model), method: :delete, html: { class: "button-submit" } do |f| %>
+  <%= f.submit "Delete", id: "delete" %>
+<% end %>
+<div class = "button-area centered"></div>

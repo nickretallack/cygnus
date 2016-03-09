@@ -1,16 +1,20 @@
 <%= cell(:view).(:page_nav) %>
-<div class = "row gallery" id = "submissions">
-  <% enum_for @submissions, word: "submissions", reverse: true do |submission| %>
-    <%= cell(:submission).(:new) if @pool and can_modify? @pool.user %>
-    <% if (@pool and can_modify? @pool.user) or can_modify? submission.pool.user %>
-      <%= cell(:submission, submission).(:edit_summary) %>
-    <% else %>
-      <%= cell(:submission, submission).(:show_summary) %>
+<table class = "gallery" id = "submissions">
+  <tr>
+    <td class = "new"><%= cell(:submission).(:new) if @pool and can_modify? @pool.user %></td>
+    <% enum_for @submissions, word: "submissions", reverse: true do |submission| %>
+      <td <%= "class = 'hidden'" if submission.hidden %>>
+        <% if (@pool and can_modify? @pool.user) or can_modify? submission.pool.user %>
+          <%= cell(:submission, submission).(:edit_summary) %>
+        <% else %>
+          <%= cell(:submission, submission).(:show_summary) %>
+        <% end %>
+      </td>
     <% end %>
-  <% end %>
-  <% 11.times do %>
-    <div class = "thumbnail-block spacer"></div>
-  <% end %>
-</div>
+    <% 11.times do %>
+      <td class = "spacer"></td>
+    <% end %>
+  <tr>
+</table>
 <hr />
 <%= cell(:view).(:page_nav) %>
