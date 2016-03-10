@@ -25,6 +25,6 @@ class Submission < ActiveRecord::Base
   end
 
   def comments
-    @comments ||= Message.where(submission_id: id)
+    @comments = children("message", "comment")
   end
 end

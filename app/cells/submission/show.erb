@@ -33,3 +33,9 @@
     <% end %>
   <% end %>
 </div>
+<% unless anon? %>
+  <div class = "row spaced">
+    <%= cell(:comment).(:index) %>
+  </div>
+  <%= cell(:comment).(:new) %>
+<% end %>

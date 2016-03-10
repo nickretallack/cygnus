@@ -1,0 +1,15 @@
+<table class = "message indent-<%= @indent %>">
+  <tbody>
+    <tr>
+      <td><%= cell(:image).(:bordered, @model.comment_author.avatar.id) %></td>
+      <td>
+        <h5><%= @model.comment_author.name %></h5>
+        <blockquote class = "inline"><%= @model.content %></blockquote>
+      </td>
+      <td class = "button-area"></td>
+    </tr>
+  </tbody>
+</table>
+<% @model.comments.each do |comment| %>
+  <%= cell(:comment, comment).(:show, @indent + 1) %>
+<% end %>

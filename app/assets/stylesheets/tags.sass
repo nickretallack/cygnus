@@ -23,6 +23,9 @@ h5
   a:hover
     font-size: 100%
 
+strong, b
+  font-weight: 900
+
 a
   display: inline-block
   img
@@ -78,7 +81,57 @@ span:not(.inline)
     font-size: 130%
 
 blockquote
-  +blockquote
+  @extend .flow-text
+  font-size: 90%
+  border-left-color: $nav-background-color
+  ul li
+    list-style-type: disc
+  h1, h2, h3, h4, h5, h6
+    font-size: 2rem
+    line-height: 4rem
+
+blockquote.inline
+  text-align: left !important
+  max-height: 3.8rem
+  padding-right: 8px
+  overflow-x: hidden
+  overflow-y: auto
+  margin-bottom: 0
+  p:first-child
+    margin-top: 0
+
+blockquote.link
+  height: 2.32rem
+  margin-top: 15px
+  padding-top: .25rem
+  overflow: hidden
+  font-size: 140%
+  white-space: nowrap
+  a
+    position: relative
+    bottom: 15%
+    vertical-align: text-top
+  a:hover
+    bottom: 32%
+    margin-left: -.2rem
+    font-size: 120% !important
+  a~a:hover
+    margin-left: 0
+  span
+    position: relative
+    bottom: 6%
+  input[type = "submit"]
+    text-shadow: none !important
+    color: #039be5 !important
+    transition: none !important
+    font-size: inherit !important
+    line-height: inherit !important
+    padding: 0 !important
+    background-color: transparent
+    letter-spacing: normal !important
+    text-transform: none !important
+    border-radius: 0 !important
+    box-shadow: none !important
 
 input[type="checkbox"] + label
   padding-left: 42px

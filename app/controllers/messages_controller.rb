@@ -35,33 +35,20 @@ class MessagesController < ApplicationController
   end
 
   def create
-    @new_message.user_id = current_user.id
-    @new_message.submission_id = params[:submission_id]
-    if User.lead_paths.exclude? params[:recipient]
-      recipient = User.find(params[:recipient])
-      @new_message.recipient_ids = [recipient.id] if recipient
-    end
-    @new_message.content = params[:message][:content]
-    if params[:message][:accept_text_reply] and params[:message][:content][/>>[^\s\D]+/]
-      @new_message.message_id = params[:message][:content][/>>[^\s\D]+/].gsub(">>", "").to_i
-      @new_message.content = @new_message.content.gsub(/>>[^\s\D]+\s*/, "")
-    else
-      @new_message.message_id = params[:message][:message_id]
-    end
-    @new_message.recipient_ids = [] if @new_message.message_id or @new_message.submission_id
-    @new_message.subject = view_context.sanitize(@new_message.subject)
-    @new_message.content = view_context.sanitize(@new_message.content)
-    if @new_message.save
-      activity_message(:comment, @new_message) if @new_message.submission
-      activity_message(:pm, @new_message) if @new_message.user_id > -1 and not @new_message.submission_id
+    case params[:commit].downcase
+    when "comment"
+      @submission = Submission.find(params[Submission.slug])
+      @message = Message.new(content: params[:message][:content])
       respond_to do |format|
-        format.html { back }
-        format.js
-      end
-    else
-      respond_to do |format|
-        format.html { back_with_errors }
-        format.js
+        if @message.save
+          current_user.update_attribute(:attachments, current_user.attachments << "comment-#{@message.id}")
+          @submission.update_attribute(:attachments, @submission.attachments << "comment-#{@message.id}")
+          format.html { back }
+          format.js
+        else
+          format.html{ back_with_errors }
+          format.js
+        end
       end
     end
   end

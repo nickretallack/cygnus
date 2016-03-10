@@ -309,16 +309,6 @@ textarea.big
   width: 100%
   min-height: 6rem
 
-.button-area
-  +block-centered
-  i + label
-    margin-top: 10px
-  div
-    cursor: pointer
-    //do not put padding; breaks spinner
-    *
-      cursor: pointer
-
 #cards
   min-height: 15px
 
@@ -333,6 +323,16 @@ textarea.big
   width: 80%
   +block-centered
 
+.button-area
+  +block-centered
+  i + label
+    margin-top: 10px
+  div
+    cursor: pointer
+    //do not put padding; breaks spinner
+    *
+      cursor: pointer
+
 .button-area[class *= "float"]
   position: fixed
   bottom: 5px
@@ -344,6 +344,9 @@ textarea.big
 
 .button-area.float-right
   right: 10px
+
+.button-area.centered-left
+  width: 20%
 
 //messages
 #flash
@@ -375,6 +378,43 @@ textarea.big
     line-height: 26px
     border-bottom: 1px solid black
     padding: 2px 0 2px 10px
+
+.message
+  +spaced
+  box-shadow: 0px 3px 15px $message-box-shadow-color
+  width: 75%
+  padding: 1%
+  margin-left: 25% !important
+  td
+    float: left
+    max-width: calc(100% - 408px)
+  td.button-area
+    float: right
+    display: table
+    div:nth-child(3)
+      clear: left
+  h5
+    line-height: 2rem
+
+@for $i from 0 through 4
+  .message.indent-#{$i}
+    $indent: (5*$i)
+    width: 100% - $indent
+    margin-left: $indent + 0% !important
+
+.message.minimal
+  margin: 10px 0 !important
+  padding: 0 5px !important
+  outline: 2px solid $success-color
+
+.message.sent
+  background-color: $message-sent-color
+
+.message.received
+  background-color: $message-received-color
+
+.message.unread
+  background-color: $message-unread-color
 
 //icons
 
@@ -417,3 +457,79 @@ i[class *= "comm-"]
     a:hover
       text-decoration: none
       font-size: 100%
+
+//active container
+
+.destroyable
+  height: 32px
+  .top
+    height: 28px
+    font-size: 26px
+    width: 100%
+  .title
+    float: left
+    line-height: 28px
+  .button-table
+    float: right
+    line-height: 24px
+
+.hidable
+  background-color: $success-background-color
+  margin-top: 0
+  margin-bottom: 0.75rem
+  border-radius: 14px
+  border: 2px solid $text-shadow-color
+  padding: 0 10px
+  overflow: hidden
+  .top
+    width: 100%
+    font-size: 18px
+    line-height: 26px
+    height: 28px
+    +no-select
+  .title
+    float: left
+    cursor: pointer
+  .divider
+    margin: 0
+    margin-top: -5px
+    margin-bottom: 5px
+  .button-table
+    float: right
+    margin-top: -2px
+    i
+      position: relative
+  .content
+    +block-centered
+    text-align: left
+    width: 95%
+    overflow: hidden
+  td
+    padding: 0
+  h1, h2, h3, h4, h5, h6
+    font-size: 2rem
+    line-height: 4rem
+  a:hover
+    font-size: 100% !important
+
+// index-field
+
+.pool-index-field
+  height: 164px
+  .col
+    display: inline
+    height: 100%
+    overflow: hidden
+    text-align: center
+    +no-select
+    #nothing
+      +vertical-center
+      margin: 0
+    a
+      width: 158px
+      height: 158px
+      display: inline-block
+    i, .thumbnail
+      +vertical-center
+    i:hover
+      color: $icon-hover-color

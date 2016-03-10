@@ -61,7 +61,11 @@ CONFIG = {
     reject: "highlight_off",
     attach: "attach_file",
     unhide: "visibility",
-    hide: "visibility_off"
+    hide: "visibility_off",
+    pm: "email",
+    preview_pm: "mail_outline",
+    comment: "message",
+    preview_comment: "chat_bubble_outline"
   },
 
   order_form_icons: {
@@ -77,6 +81,13 @@ CONFIG = {
     remove: "clear",
     minimize: "remove",
     handle: "drag_handle"
+  },
+
+  message_icons: {
+    minimize_conversation: "remove",
+    reply: "reply",
+    pm_author: "contact_mail",
+    quote: "format_quote"
   },
 
   status_categories: {

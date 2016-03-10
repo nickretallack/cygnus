@@ -123,34 +123,6 @@
   max-width: 100%
   width: 100%
 
-=clickable-icon
-  &
-    color: $icon-color
-    display: inline
-  &:hover
-    color: $icon-hover-color
-
-=pool-index-field
-  &
-    height: 170px
-    .col
-      display: inline
-      height: 100%
-      overflow: hidden
-      text-align: center
-      +no-select
-      #nothing
-        +vertical-center
-        margin: 0
-      a
-        width: 158px
-        height: 158px
-        display: inline-block
-      i, .thumbnail
-        +vertical-center
-      i:hover
-        color: $icon-hover-color
-
 =help
   &
     cursor: help
@@ -173,143 +145,8 @@
     cursor: pointer
     transform: scale(1.3) translateY(-38%)
 
-=message
-  &
-    box-shadow: 0px 3px 15px $message-box-shadow-color
-    margin-top: 1% !important
-    padding-top: 2% !important
-    padding-bottom: 1% !important
-    width: 75%
-    margin-left: 25% !important
-    blockquote.inline
-      margin-top: 2% !important
-      max-height: none
-    .col.hc
-      margin-bottom: 2%
-    .col:not(.hc)
-      padding: 0
-      margin-bottom: 1%
-    h5
-      line-height: 2rem
-
-  @for $i from 0 through 4
-    &.indent-#{$i}
-      $indent: (5*$i)
-      width: 100% - $indent
-      margin-left: $indent + 0% !important
-
-  &.minimal
-    margin: 10px 0 !important
-    padding: 0 5px !important
-    outline: 2px solid $success-color
-
-  &.sent
-    background-color: $message-sent-color
-
-  &.received
-    background-color: $message-received-color
-
-  &.unread
-    background-color: $message-unread-color
-
-=destroyable
-  height: 32px
-  .top
-    height: 28px
-    font-size: 26px
-    width: 100%
-  .title
-    float: left
-    line-height: 28px
-  .button-table
-    float: right
-    line-height: 24px
-
-=hidable
-  background-color: $success-background-color
-  margin-top: 0
-  margin-bottom: 0.75rem
-  border-radius: 14px
-  border: 2px solid $text-shadow-color
-  padding: 0 10px
-  overflow: hidden
-  .top
-    width: 100%
-    font-size: 18px
-    line-height: 26px
-    height: 28px
-    +no-select
-  .title
-    float: left
-    cursor: pointer
-  .divider
-    margin: 0
-    margin-top: -5px
-    margin-bottom: 5px
-  .button-table
-    float: right
-    margin-top: -2px
-    i
-      position: relative
-  .content
-    +block-centered
-    text-align: left
-    width: 95%
-    overflow: hidden
-
 =icon-hover
   color: $icon-hover-color
-
-=blockquote
-  &
-    @extend .flow-text
-    font-size: 90%
-    border-left-color: $nav-background-color
-    ul li
-      list-style-type: disc
-
-  &.inline
-    text-align: left !important
-    max-height: 3.8rem
-    padding-right: 8px
-    overflow-x: hidden
-    overflow-y: auto
-    margin-bottom: 0
-    p:first-child
-      margin-top: 0
-
-  &.link
-    height: 2.32rem
-    margin-top: 15px
-    padding-top: .25rem
-    overflow: hidden
-    font-size: 140%
-    white-space: nowrap
-    a
-      position: relative
-      bottom: 15%
-      vertical-align: text-top
-    a:hover
-      bottom: 32%
-      margin-left: -.2rem
-      font-size: 120% !important
-    a~a:hover
-      margin-left: 0
-    span
-      position: relative
-      bottom: 6%
-    input[type = "submit"]
-      text-shadow: none !important
-      color: #039be5 !important
-      transition: none !important
-      font-size: inherit !important
-      line-height: inherit !important
-      padding: 0 !important
-      background-color: transparent
-      letter-spacing: normal !important
-      text-transform: none !important
-      border-radius: 0 !important
-      box-shadow: none !important
 
 =card1
   background-color: $workboard-card1-background-color
@@ -426,12 +263,6 @@
   *
     +no-select
 
-.clickable-icon
-  +clickable-icon
-
-.pool-index-field
-  +pool-index-field
-
 .fade-in
   animation-name: fade-in
   animation-duration: 2s
@@ -457,15 +288,6 @@
 
 .circular-button
   +circular-button
-
-.message
-  +message
-
-.destroyable
-  +destroyable
-
-.hidable
-  +hidable
 
 .top-card
   +top-card

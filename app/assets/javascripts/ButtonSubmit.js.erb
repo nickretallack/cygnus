@@ -85,6 +85,18 @@ ButtonSubmit = (function(){
               case "attach":
                 self.form.siblings().find("."+self.form.attr("attachment")).show();
                 break;
+              case "preview_comment":
+                var comment = self.form.children("textarea");
+                var area = self.form.children("blockquote");
+                area.html(markdown.toHTML(comment.prop("value").replace(/\[.+?\]\((.+?)\)/gi, function(match, p1){
+                  if(p1.contains("http://")){
+                    return match;
+                  }else{
+                    return match.replace(p1, "http://" + p1);
+                  }
+                })));
+                area.show();
+                break;
               default:
                 icon.replaceWithSpinner();
                 button.trigger("click");
@@ -103,7 +115,7 @@ ButtonSubmit = (function(){
         }
         button.hide();
       });
-      if(self.area.hasClass("centered")){
+      if(self.area.is("[class *= centered]")){
         self.area.children().css({
           width: (100 / self.area.children().length)+"%"
         });

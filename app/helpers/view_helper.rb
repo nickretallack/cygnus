@@ -21,6 +21,7 @@ module ViewHelper
 
   def render_markdown(content)
     return "" unless content
+    content = content.gsub(/\[(.+?)\]\((.+?)\)/){ |match| external_link("#{$1}", "#{$2}") }
     markdown ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML.new(escape: true, hard_wrap: true, prettify:true), autolink: true, tables: true)
     markdown.render(content).html_safe
   end

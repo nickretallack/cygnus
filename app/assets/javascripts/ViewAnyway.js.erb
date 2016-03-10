@@ -28,6 +28,8 @@ ViewAnyway = (function(){
       });
     });
 
+    $(window).trigger("resize.ViewAnyway");
+
     self.container.append(self.cover);
     self.cover.hide();
 

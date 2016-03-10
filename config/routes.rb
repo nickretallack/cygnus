@@ -10,7 +10,7 @@ Rails.application.routes.draw do
 
   controller :messages do
     get :index, path: "activity(/page/:page)", as: :messages
-    get :create, path: "submission/:#{Submission.slug}(/reply/:message_#{Message.slug})/comments", as: :new_comment
+    post :create, path: "submission/:#{Submission.slug}(/reply/:message_#{Message.slug})/comments", as: :new_comment
     patch :update, path: "comment/:#{Message.slug}", as: :update_comment
     delete :destroy, path: "comment/:#{Message.slug}", as: :destroy_comment
     #get "message_listener", to: "messages#listener", as: :listener

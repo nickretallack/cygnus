@@ -3,28 +3,22 @@ class Message < ActiveRecord::Base
   belongs_to :user
   #after_create :notify_added
   
-  validates :content, format: { with: /\S+/, message: "must have some content." }
-  validate do
-    if message_id
-      message = Message.find(message_id)
-      if message.nil?
-        errors.add(:message_id, "##{message_id} does not exist.")
-      elsif not submission_id == message.submission_id
-        errors.add(:message_id, "##{message_id} is in another castle.")
-      end
-    end
-  end
-  validate do
-    if recipient_ids != [] #[] is the default value--not nil
-      user = User.find_by(id: recipient_ids[0])
-      if user.nil?
-        errors.add(:user_id, "does not exist.")
-      end
-    end
+  validates :content, format: { with: /\S+/, message: "was empty!" }
+
+  def pm_author
+    parents("user", "message").first
   end
 
-  def replies
-    self.class.where(message_id: id)
+  def pms
+
+  end
+
+  def comment_author
+    parents("user", "comment").first
+  end
+
+  def comments
+    children("message", "comment")
   end
 
   def timestamp(type = :created)

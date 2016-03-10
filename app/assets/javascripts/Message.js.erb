@@ -1,0 +1,44 @@
+Message = (function(){
+
+  var Message = function(element){
+
+    var self = this;
+
+    self.message = element;
+    self.buttonArea = element.find(".button-area");
+    self.buttonIcons = JSON.parse('<%= CONFIG[:message_icons].to_json %>');
+
+  }
+
+  Make.extend(Message.prototype, {
+
+    initialize: function(){
+      var self = this;
+      $.each(self.buttonIcons, function(name, icon){
+        var tag = $("<i />", {
+                    class: "material-icons medium-small",
+                    text: icon,
+                    title: name.readable()
+                  }),
+            label = $("<label />", {
+                      text: name.readable(),
+                      css: {
+                        display: "block"
+                      }
+                    }),
+            div = $("<div />", {
+                    css: {
+                      float: "left",
+                      width: "100px"
+                    }
+                  });
+        div.append(tag, label);
+        self.buttonArea.append(div);
+      });
+    }
+
+  })
+
+  return Message;
+
+})();
