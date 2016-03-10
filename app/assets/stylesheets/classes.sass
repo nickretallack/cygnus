@@ -345,7 +345,7 @@ textarea.big
 .button-area.float-right
   right: 10px
 
-.button-area.centered-left
+.button-area.centered-small
   width: 20%
 
 //messages
@@ -391,13 +391,14 @@ textarea.big
   td.button-area
     float: right
     display: table
-    div:nth-child(3)
-      clear: left
+    margin: 5px 0
+  td.button-area > div:nth-child(3)
+    clear: left
   h5
     line-height: 2rem
 
 @for $i from 0 through 4
-  .message.indent-#{$i}
+  .indent-#{$i}
     $indent: (5*$i)
     width: 100% - $indent
     margin-left: $indent + 0% !important

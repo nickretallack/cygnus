@@ -28,10 +28,10 @@ ViewAnyway = (function(){
       });
     });
 
-    $(window).trigger("resize.ViewAnyway");
-
     self.container.append(self.cover);
     self.cover.hide();
+
+    $(window).trigger("resize.ViewAnyway");
 
     self.image.on("mouseenter.ViewAnyway", function(){
       self.cover.show();

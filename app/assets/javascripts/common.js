@@ -48,7 +48,7 @@ Init = {
     ExpandableImage: ".image.medium > img",
     ImagePreview: ".image-preview",
     IndexField: "[class *= index-field]",
-    Message: ".message",
+    Message: ".message:not(.new)",
     Nav: "header nav",
     OrderForm: ".order-form",
     TagList: ".taglist",

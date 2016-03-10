@@ -34,6 +34,12 @@ class MessagesController < ApplicationController
     
   end
 
+  def new
+    @submission = Submission.find(params[:submission])
+    @reply_to = Message.find(params[:reply])
+    send_data cell(:comment, @reply_to).(:new, params[:indent].to_i + 1)
+  end
+
   def create
     case params[:commit].downcase
     when "comment"

@@ -1,5 +1,5 @@
 <% unless session[:email] %>
-  <%= form_for User.new, url: users_path do |f| %>
+  <%= form_for User.new, url: new_user_path do |f| %>
     <li><%= f.text_field :name, placeholder: "Username" %></li>
     <li><%= f.email_field :email, placeholder: "Email" %></li>
     <li><%= f.password_field :password, placeholder: "Password" %></li>

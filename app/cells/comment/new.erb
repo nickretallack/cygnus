@@ -1,46 +1,48 @@
-<%= form_for Message.new, url: new_comment_path(@submission), html: { class: "button-submit" } do |f| %>
-  <%= f.text_area :content, placeholder: "Your comment here" %>
-  <blockquote></blockquote>
-  <%= f.submit "Comment", id: "comment" %>
-  <%= f.submit "Preview", id: "preview_comment" %>
-<% end %>
-<%= hidable "Markdown cheatsheet", false do %>
-  <table>
-    <thead>
-      <tr>
-        <th></th>
-        <th>Input</th>
-        <th>Output</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Bold</td>
-        <td>**The <%= @word %> brown fox**</td>
-        <td><%= render_markdown "**The #{@word} brown fox**" %></td>
-      </tr>
-      <tr>
-        <td>Italic</td>
-        <td>*The <%= @word %> brown fox*</td>
-        <td><%= render_markdown "*The #{@word} brown fox*" %></td>
-      </tr>
-      <tr>
-        <td>Link</td>
-        <td>[The <%= @word %> brown fox](mozilla.org)</td>
-        <td><%= render_markdown "[The #{@word} brown fox](mozilla.org)" %></td>
-      </tr>
-      <tr>
-        <td>Code</td>
-        <td>`The <%= @word %> brown fox`</td>
-        <td><%= render_markdown "`The #{@word} brown fox`" %></td>
-      </tr>
-      <tr>
-        <td>Header</td>
-        <td>#The <%= @word %> brown fox</td>
-        <td><%= render_markdown "#The #{@word} brown fox" %></td>
-      </tr>
-    </tbody>
-  </table>
-  <%= link_to "More...", "https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet", target: "_blank" %>
-<% end %>
-<div class = "button-area centered-left"></div>
+<div class = "indent-<%= @indent %>">
+  <%= form_for Message.new, url: new_comment_path(@submission, @model), html: { class: "button-submit" } do |f| %>
+    <%= f.text_area :content, placeholder: "Your comment here" %>
+    <blockquote></blockquote>
+    <%= f.submit "Comment", id: "comment" %>
+    <%= f.submit "Preview", id: "preview_comment" %>
+  <% end %>
+  <%= hidable "Markdown cheatsheet", false do %>
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Input</th>
+          <th>Output</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Bold</td>
+          <td>**The <%= @word %> brown fox**</td>
+          <td><%= render_markdown "**The #{@word} brown fox**" %></td>
+        </tr>
+        <tr>
+          <td>Italic</td>
+          <td>*The <%= @word %> brown fox*</td>
+          <td><%= render_markdown "*The #{@word} brown fox*" %></td>
+        </tr>
+        <tr>
+          <td>Link</td>
+          <td>[The <%= @word %> brown fox](mozilla.org)</td>
+          <td><%= render_markdown "[The #{@word} brown fox](mozilla.org)" %></td>
+        </tr>
+        <tr>
+          <td>Code</td>
+          <td>`The <%= @word %> brown fox`</td>
+          <td><%= render_markdown "`The #{@word} brown fox`" %></td>
+        </tr>
+        <tr>
+          <td>Header</td>
+          <td>#The <%= @word %> brown fox</td>
+          <td><%= render_markdown "#The #{@word} brown fox" %></td>
+        </tr>
+      </tbody>
+    </table>
+    <%= link_to "More...", "https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet", target: "_blank" %>
+  <% end %>
+  <div class = "button-area centered-small"></div>
+</div>

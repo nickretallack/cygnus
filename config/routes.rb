@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   controller :messages do
     get :index, path: "activity(/page/:page)", as: :messages
+    get :new, path: "reply", as: :reply
     post :create, path: "submission/:#{Submission.slug}(/reply/:message_#{Message.slug})/comments", as: :new_comment
     patch :update, path: "comment/:#{Message.slug}", as: :update_comment
     delete :destroy, path: "comment/:#{Message.slug}", as: :destroy_comment
@@ -18,7 +19,6 @@ Rails.application.routes.draw do
     post :annoucement, path: "announcements", as: :new_announcement
     resources :messages, only: [:index], path: "conversations/(:recipient)", as: :pms
     resources :messages, only: [:create], path: "conversations/(:recipient)", as: :pms
-    get :new, path: "reply/:message_id", as: :new_pm
   end
 
   controller :images do

@@ -7,6 +7,7 @@ Message = (function(){
     self.message = element;
     self.buttonArea = element.find(".button-area");
     self.buttonIcons = JSON.parse('<%= CONFIG[:message_icons].to_json %>');
+    self.replyArea = element.nextAll(".reply-area").eq(0);
 
   }
 
@@ -15,7 +16,7 @@ Message = (function(){
     initialize: function(){
       var self = this;
       $.each(self.buttonIcons, function(name, icon){
-        var tag = $("<i />", {
+        var button = $("<i />", {
                     class: "material-icons medium-small",
                     text: icon,
                     title: name.readable()
@@ -32,9 +33,31 @@ Message = (function(){
                       width: "100px"
                     }
                   });
-        div.append(tag, label);
+        div.append(button, label);
         self.buttonArea.append(div);
+        button.one("click.Message", function(){
+          if(typeof self[name.camelCase()] === "function") self[name.camelCase()](button);
+        });
       });
+    },
+
+    reply: function(button){
+      var self = this;
+      if(/submission\/(\d+)/.test(window.location.pathname) && self.replyArea.is(":empty")){
+        button.replaceWithSpinner();
+        $.ajax({
+          url: "/reply",
+          data: {
+            submission: RegExp.$1,
+            reply: self.message.attr("id"),
+            indent: /indent-(\d+)/.exec(self.message.attr("class"))[1]
+          },
+          success: function(data){
+            self.replyArea.html(data);
+            initialize();
+          }
+        })
+      }
     }
 
   })

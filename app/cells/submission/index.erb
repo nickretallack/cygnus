@@ -1,7 +1,9 @@
 <%= cell(:view).(:page_nav) %>
 <table class = "gallery" id = "submissions">
   <tr>
-    <td class = "new"><%= cell(:submission).(:new) if @pool and can_modify? @pool.user %></td>
+    <% if @pool and can_modify? @pool.user %>
+      <td class = "new"><%= cell(:submission).(:new) %></td>
+    <% end %>
     <% enum_for @submissions, word: "submissions", reverse: true do |submission| %>
       <td <%= "class = 'hidden'" if submission.hidden %>>
         <% if (@pool and can_modify? @pool.user) or can_modify? submission.pool.user %>

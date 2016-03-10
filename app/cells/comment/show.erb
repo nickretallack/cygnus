@@ -1,4 +1,4 @@
-<table class = "message indent-<%= @indent %>">
+<table class = "message indent-<%= @indent %>" id = <%= @model.id %>>
   <tbody>
     <tr>
       <td><%= cell(:image).(:bordered, @model.comment_author.avatar.id) %></td>
@@ -10,6 +10,7 @@
     </tr>
   </tbody>
 </table>
+<div class = "reply-area"></div>
 <% @model.comments.each do |comment| %>
   <%= cell(:comment, comment).(:show, @indent + 1) %>
 <% end %>
