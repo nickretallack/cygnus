@@ -9,16 +9,20 @@ Rails.application.routes.draw do
   end
 
   controller :messages do
+    post :create, path: "submission/:#{Submission.slug}(/reply/:reply_#{Message.slug})/comments", as: :new_comment
+    patch :update, path: "comment/:#{Message.slug}/update", as: :update_comment
+    delete :destroy, path: "comment/:#{Message.slug}/destroy", as: :destroy_comment
+    get :index, path: ":#{User.slug}/conversations(/page/:page)", as: :pms
+    get :index, path: ":#{User.slug}/conversations/reply/:reply_to_#{User.slug}", as: :pm_author
+    post :create, path: ":#{User.slug}/to/:reply_to_#{User.slug}(/reply/:reply_#{Message.slug})/conversations", as: :new_pm
+    patch :update, path: "conversation/:#{Message.slug}/update", as: :update_pm
+    delete :destroy, path: "conversation/:#{Message.slug}/destroy", as: :destroy_pm
     get :index, path: "activity(/page/:page)", as: :messages
-    get :new, path: "reply", as: :reply
-    post :create, path: "submission/:#{Submission.slug}(/reply/:message_#{Message.slug})/comments", as: :new_comment
-    patch :update, path: "comment/:#{Message.slug}", as: :update_comment
-    delete :destroy, path: "comment/:#{Message.slug}", as: :destroy_comment
+    post :create, path: "messages", as: :new_message
+    delete :destroy, path: "message/:#{Message.slug}/destroy", as: :destroy_message
     #get "message_listener", to: "messages#listener", as: :listener
     get :poller, path: "message_poller", as: :poller
     post :annoucement, path: "announcements", as: :new_announcement
-    resources :messages, only: [:index], path: "conversations/(:recipient)", as: :pms
-    resources :messages, only: [:create], path: "conversations/(:recipient)", as: :pms
   end
 
   controller :images do

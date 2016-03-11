@@ -1,16 +1,15 @@
 <table class = "message indent-<%= @indent %>" id = <%= @model.id %>>
   <tbody>
     <tr>
-      <td><%= cell(:image).(:bordered, @model.comment_author.avatar.id) %></td>
+      <td><%= cell(:image, @model.comment_author.avatar).(:bordered) %></td>
       <td>
         <h5><%= @model.comment_author.name %></h5>
-        <blockquote class = "inline"><%= @model.content %></blockquote>
+        <blockquote><%= render_markdown @model.content %></blockquote>
       </td>
       <td class = "button-area"></td>
     </tr>
   </tbody>
 </table>
-<div class = "reply-area"></div>
 <% @model.comments.each do |comment| %>
   <%= cell(:comment, comment).(:show, @indent + 1) %>
 <% end %>

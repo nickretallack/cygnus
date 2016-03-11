@@ -29,6 +29,13 @@ class MessagesController < ApplicationController
     insist_on :logged_in
   end
 
+  before_filter only: [:index] do
+    if params[:reply_to_name]
+      @reply_to = User.find(params[:reply_to_name])
+      insist_on :existence, @reply_to
+    end
+  end
+
   def create_announcement
     @new_message = Message.new
     
@@ -48,7 +55,12 @@ class MessagesController < ApplicationController
       respond_to do |format|
         if @message.save
           current_user.update_attribute(:attachments, current_user.attachments << "comment-#{@message.id}")
-          @submission.update_attribute(:attachments, @submission.attachments << "comment-#{@message.id}")
+          if params["message_#{Message.slug}"]
+            @reply = Message.find(params["message_#{Message.slug}"])
+            @reply.update_attribute(:attachments, @reply.attachments << "comment-#{@message.id}")
+          else
+            @submission.update_attribute(:attachments, @submission.attachments << "comment-#{@message.id}")
+          end
           format.html { back }
           format.js
         else
@@ -60,17 +72,12 @@ class MessagesController < ApplicationController
   end
 
   def index
-    if view_context.current_page? messages_path
-      @user = User.find(params[User.slug])
-      @unread_messages = current_user.unread_messages
-      @header = "#{view_context.link_to(params[User.slug], user_path(params[User.slug]))}'s Activity"
-      @html = cell(:message, @user.messages.reverse).(:index, type: :stub, mark_read: (current_user? @user))
-      current_user.update_attribute(:unread_messages, 0)
-      session[:unread_messages] = 0
-    else
-      @header = "Conversations"
-      @new = cell(:message).(:new, recipient: params[:recipient])
-      @html = cell(:message, current_user.pms.where(message_id: nil)).(:index, type: :full)
+    if /conversations/.match url_for(params)
+      if @user == @reply_to
+        render inline: cell(:pm).(:index), layout: :default
+      else
+        render inline: cell(:pm, @reply_to).(:new) + cell(:pm).(:index), layout: :default
+      end
     end
   end
 

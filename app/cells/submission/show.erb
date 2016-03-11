@@ -24,7 +24,7 @@
   </span>
 </div>
 <div class = "row spaced">
-  <%= cell(:image).(:medium, @model.image.id) %>
+  <%= cell(:image, @model.image).(:medium) %>
 </div>
 <div class = "row">
   <% unless @model.description.blank? %>

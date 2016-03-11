@@ -62,11 +62,7 @@ ButtonSubmit = (function(){
               display: "block"
             }
           })
-        ).on("mouseenter.ButtonSubmit", function(){
-          div.addClass("icon-hover");
-        }).on("mouseleave.ButtonSubmit", function(){
-          div.removeClass("icon-hover");
-        }).on("click.ButtonSubmit", function(event){
+        ).on("click.ButtonSubmit", function(event){
           pause(event);
           if(name === "delete" && button.is("[confirm]")){
             if(confirm(button.attr("confirm"))){

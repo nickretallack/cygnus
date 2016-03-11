@@ -3,7 +3,7 @@
     <div class = "col s12 m6 mt">
       <div class = "fl col s6 m12 l5 fh full-small">
         <%= link_to user_path(@model) do %>
-          <%= cell(:image).(:bordered, @model.avatar) %>
+          <%= cell(:image, @model.avatar).(:bordered) %>
         <% end %>
       </div>
       <div class = "col s6 m12 l6 full-small">

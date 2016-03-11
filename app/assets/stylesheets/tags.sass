@@ -161,8 +161,14 @@ i
   text-align: center
   cursor: pointer !important
 
+div:hover > i, div:hover > i + label
+  color: $icon-hover-color
+
 i:hover
-  +icon-hover
+  color: $icon-hover-color
+
+i + label:hover
+  color: $icon-hover-color
 
 label
   color: inherit

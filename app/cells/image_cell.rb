@@ -14,29 +14,29 @@ class ImageCell < HelpfulCell
     end
   end
 
-  def full(id)
-    show = show(:full, id)
+  def full
+    show = show(:full, @model.nil?? -1 : @model.id)
     div_for @image, class: "full #{@image.explicit?? 'danger' : 'success'} #{"adult" if @image.explicit? and not current_user.setting(:view_adult)}" do
       show
     end
   end
 
-  def limited(id)
-    show = show(:limited, id)
+  def limited
+    show = show(:limited, @model.nil?? -1 : @model.id)
     div_for @image, class: "limited #{@image.explicit?? 'danger' : 'success'} #{"adult" if @image.explicit? and not current_user.setting(:view_adult)}" do
       show
     end
   end
 
-  def medium(id)
-    show = show(:medium, id)
+  def medium
+    show = show(:medium, @model.nil?? -1 : @model.id)
     div_for @image, class: "medium #{@image.explicit?? 'danger' : 'success'} #{"adult" if @image.explicit? and not current_user.setting(:view_adult)}" do
       show
     end
   end
 
-  def bordered(id)
-    show = show(:bordered, id, "_thumb")
+  def bordered
+    show = show(:bordered, @model.nil?? -1 : @model.id, "_thumb")
     div_for @image, class: "bordered #{@image.explicit?? 'danger' : 'success'} #{"adult" if @image.explicit? and not current_user.setting(:view_adult)}" do
       show
     end

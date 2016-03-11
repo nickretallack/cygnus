@@ -80,14 +80,15 @@ CONFIG = {
   other_icons: {
     remove: "clear",
     minimize: "remove",
-    handle: "drag_handle"
+    handle: "drag_handle",
+    maximize: "add"
   },
 
   message_icons: {
-    minimize_conversation: "remove",
     reply: "reply",
-    pm_author: "contact_mail",
-    quote: "format_quote"
+    minimize_conversation: "remove",
+    quote: "format_quote",
+    pm_author: "contact_mail"
   },
 
   status_categories: {

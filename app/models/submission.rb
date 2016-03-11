@@ -17,7 +17,7 @@ class Submission < ActiveRecord::Base
   end
 
   def image
-    images.first || Image.new
+    images.first
   end
 
   def faved_by

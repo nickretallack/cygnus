@@ -52,10 +52,8 @@ Hidable = function(element){
     self.container.same(false);
   });
 
-  setTimeout(function(){
-    self.container.size();
-    self.container.same(true);
-  }, 100); // wait for sizes to adjust properly
+  self.container.size();
+  self.container.same(false);
 
 };
 

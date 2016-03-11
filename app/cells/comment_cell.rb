@@ -8,7 +8,7 @@ class CommentCell < HelpfulCell
 
   def new(indent = 0)
     @submission = controller.instance_variable_get("@submission") || Submission.find(params[Submission.slug])
-    @word = @submission.image.explicit?? "hot" : "quick"
+    @word = (@submission.image and @submission.image.explicit?)? "hot" : "quick"
     @indent = indent
     render
   end

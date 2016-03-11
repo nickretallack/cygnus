@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
   before_filter only: [:index, :create, :show] do
     if /_id/.match(params.keys.join(" "))
       parent = params.keys.collect{|key| /(.+)_id/.match(key)}.compact[0][1]
-      instance_variable_set("@#{parent}", parent.classify.constantize.find(params["#{parent}_id"]))
+      instance_variable_set("@#{parent}", (parent.classify.constantize.find(params["#{parent}_id"]) rescue nil))
     end
   end
 

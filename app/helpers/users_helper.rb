@@ -36,7 +36,10 @@ module UsersHelper
   # permission
 
   def get_user
-    @user = User.find(params[User.slug]) if params[User.slug]
+    if params[User.slug]
+      @user = User.find(params[User.slug])
+      insist_on :existence, @user
+    end
   end
 
   def at_least(grade)
