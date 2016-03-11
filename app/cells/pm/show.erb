@@ -1,0 +1,14 @@
+<table class = "pm <%= @model.pm_author == @user? "sent" : "received" %>" id = <%= @model.id %>>
+  <tbody>
+    <tr>
+      <td><%= cell(:image, @model.pm_author.avatar).(:bordered) %></td>
+      <td>
+        <h5><%= @model.pm_author.name %></h5>
+        <blockquote><%= render_markdown @model.content %></blockquote>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<% @model.pms.each do |pm| %>
+  <%= cell(:pm, pm).(:show) %>
+<% end %>

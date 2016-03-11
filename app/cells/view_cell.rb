@@ -29,4 +29,8 @@ class ViewCell < HelpfulCell
     render unless @total <= @results_per_page
   end
 
+  def markdown_cheatsheet
+    cell(:view).(:hidable, title: "Markdown Cheatsheet", content: render)
+  end
+
 end

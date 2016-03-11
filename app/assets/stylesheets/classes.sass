@@ -380,21 +380,11 @@ textarea.big
     border-bottom: 1px solid black
     padding: 2px 0 2px 10px
 
-.message
+.pm, .comment
   +spaced
-  box-shadow: 0px 3px 15px $message-box-shadow-color
-  width: 75%
   padding: 1%
-  margin-left: 25% !important
   td
     float: left
-    max-width: calc(100% - 408px)
-  td.button-area
-    float: right
-    display: table
-    margin: 5px 0
-  td.button-area > div:nth-child(3)
-    clear: left
   h5
     line-height: 2rem
 
@@ -404,19 +394,37 @@ textarea.big
     width: 100% - $indent
     margin-left: $indent + 0% !important
 
+.pm
+  background-color: ghostwhite
+  border-width: 6px
+  border-style: inset
+
+.comment
+  width: 75%
+  margin-left: 25% !important
+  box-shadow: 0px 3px 15px $message-box-shadow-color
+  td
+    max-width: calc(100% - 408px)
+  td.button-area
+    float: right
+    display: table
+    margin: 5px 0
+  td.button-area > div:nth-child(3)
+    clear: left
+
+.pm.sent
+  border-color: $message-sent-color
+
+.pm.received
+  border-color: $message-received-color
+
+.message.unread
+  background-color: $message-unread-color
+
 .message.minimal
   margin: 10px 0 !important
   padding: 0 5px !important
   outline: 2px solid $success-color
-
-.message.sent
-  background-color: $message-sent-color
-
-.message.received
-  background-color: $message-received-color
-
-.message.unread
-  background-color: $message-unread-color
 
 //icons
 
@@ -506,11 +514,9 @@ i[class *= "comm-"]
     text-align: left
     width: 95%
     overflow: hidden
-  td
-    padding: 0
   h1, h2, h3, h4, h5, h6
     font-size: 2rem
-    line-height: 4rem
+    line-height: 1em
   a:hover
     font-size: 100% !important
 

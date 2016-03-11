@@ -82,6 +82,7 @@ ButtonSubmit = (function(){
                 self.form.siblings().find("."+self.form.attr("attachment")).show();
                 break;
               case "preview_comment":
+              case "preview_pm":
                 var comment = self.form.children("textarea");
                 var area = self.form.children("blockquote");
                 area.html(markdown.toHTML(comment.prop("value").replace(/\[.+?\]\((.+?)\)/gi, function(match, p1){

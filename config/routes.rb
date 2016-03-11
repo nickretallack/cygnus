@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   end
 
   controller :messages do
+    get :new, path: "reply", as: :reply_template
     post :create, path: "submission/:#{Submission.slug}(/reply/:reply_#{Message.slug})/comments", as: :new_comment
     patch :update, path: "comment/:#{Message.slug}/update", as: :update_comment
     delete :destroy, path: "comment/:#{Message.slug}/destroy", as: :destroy_comment

@@ -100,12 +100,13 @@ ActiveContainer = (function(){
   Make.extend(ActiveContainer.prototype, {
 
     minimize: function(animate){
-      var self = this;
+      var self = this,
+          parentHidable = self.container.parents(".hidable");
       self.container.removeClass("max").addClass("min");
       self.minimizeButton.css({
         top: -5
       });
-      if(animate){
+      if(animate && !parentHidable.exists()){
         self.container.animate({
           height: self.top.outerHeight()
         }, 1000, "easeOutExpo");
@@ -116,24 +117,35 @@ ActiveContainer = (function(){
       }
       self.divider.hide();
       self.content.hide();
+      if(parentHidable.exists()){
+        var obj = bleatr.where(function(element){
+          return element["container"] !== undefined && element.container["container"] !== undefined && element.container.container.get(0) == parentHidable.get(0);
+        }).first().container.same(false);
+      }
     },
 
     maximize: function(animate){
-      var self = this;
+      var self = this,
+          parentHidable = self.container.parents(".hidable");
       self.container.removeClass("min").addClass("max");
       self.minimizeButton.css({
         top: 5
       });
       if(!self.content.is(":empty")) self.divider.show();
       self.content.show();
-      if(animate){
+      if(animate && !parentHidable.exists()){
         self.container.animate({
           height: self.top.outerHeight() + self.content.outerHeight()
         }, 1000, "easeOutExpo");
       }else{
         self.container.css({
           height: self.top.outerHeight() + self.content.outerHeight()
-        })
+        });
+      }
+      if(parentHidable.exists()){
+        bleatr.where(function(element){
+          return element["container"] !== undefined && element.container["container"] !== undefined && element.container.container.get(0) == parentHidable.get(0);
+        }).first().container.maximize(false);
       }
     },
 

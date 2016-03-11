@@ -6,11 +6,15 @@ class Message < ActiveRecord::Base
   validates :content, format: { with: /\S+/, message: "was empty!" }
 
   def pm_author
-    parents("user", "message").first
+    parents("user", "pm-sent").first
   end
 
   def pms
+    children("message", "pm")
+  end
 
+  def recipient
+    parents("user", "pm").find{ |owner| owner != pm_author }
   end
 
   def comment_author

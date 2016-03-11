@@ -78,8 +78,12 @@ class User < ActiveRecord::Base
     @messages ||= Message.where("user_id = ? AND ? = ANY (recipient_ids)", -1, id)
   end
 
+  def pms_sent
+    children("message", "pm-sent")
+  end
+
   def pms
-    @pms ||= Message.where("submission_id IS NULL AND user_id > 0 AND (user_id = ? OR ? = ANY (recipient_ids))", id, id)
+    children("message", "pm")
   end
 
   def watched_by

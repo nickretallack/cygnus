@@ -1,1 +1,11 @@
-<%= @path %>
+<div class = "new spaced">
+  <%= form_for Message.new, url: @path, html: { class: "button-submit" } do |f| %>
+    <%= f.text_field :subject, placeholder: "Subject" if @model.instance_of? User %>
+    <%= f.text_area :content, placeholder: "Your message here" %>
+    <blockquote></blockquote>
+    <%= cell(:view, @word).(:markdown_cheatsheet) %>
+    <%= f.submit "Send", id: "pm" %>
+    <%= f.submit "Preview", id: "preview_pm" %>
+  <% end %>
+  <div class = "button-area centered-small padded"></div>
+</div>
