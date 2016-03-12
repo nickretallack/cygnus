@@ -1,7 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <%= render "layouts/head" %>
+    <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
+    <title>
+      <% if cell_header? %>
+        <%= cell(controller_name.singularize).(:header, action: action_name.to_sym, sanitize: true) %>
+      <% else %>
+        <%= CONFIG[:name] %>
+      <% end %>
+    </title> 
+    <meta name = "description" content = "<%= content_for?(:description)? yield(:description) : CONFIG[:name] %>">
+    <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
+    <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+    <%= csrf_meta_tags %>
   </head>
   <body>
     <div class = "widthTester hide"></div>
@@ -10,18 +21,36 @@
       <%= cell(:user).(:navigation) %>
     </header>
     <main>
-      <h2 class = "header full-small"><%= cell(controller_name.singularize).(:header, action: action_name.to_sym) if cell_header? %></h2>
-      <%= render "layouts/flash" %>
+      <h2 class = "header full-small">
+        <%= cell(controller_name.singularize).(:header, action: action_name.to_sym) if cell_header? %>
+      </h2>
+      <%= cell(:announcement).(:index) %>
+      <% if flash.any? %>
+        <% flash.each do |type, message| %>
+          <% if message.is_a? String %>
+            <div class = "<%= type %> destroyable max", id = "flash">
+              <div class = "title"><%= format_flash message, type %></div>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+      <% if flash[:errors] %>
+        <div class="errors">
+          <% flash[:errors].each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </div>
+      <% end %>
       <%= cell(controller_name.singularize).(:instructions, action: action_name.to_sym) if cell_instructions? %>
       <%= yield %>
     </main>
     <footer>
       <div class = "row hc">
         <%= cell(controller_name.singularize).(:footer, action: action_name.to_sym) if cell_footer? %>
-        <%= render "layouts/footer_links" %>
+        <%= cell(:view).(:footer) %>
         <%= CONFIG[:copyright].html_safe %>
       </div>
-      <%#= console %>
+      <%= console %>
     </footer>
   </body>
 </html>

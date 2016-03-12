@@ -95,6 +95,10 @@ class User < ActiveRecord::Base
     setting == "1"? true : false
   end
 
+  def announcements
+    children("message", "announcement")
+  end
+
   def self.level_for(grade)
     CONFIG[:user_levels].index(grade.to_s)
   end

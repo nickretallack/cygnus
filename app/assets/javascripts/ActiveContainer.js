@@ -52,8 +52,10 @@ Hidable = function(element){
     self.container.same(false);
   });
 
-  self.container.size();
-  self.container.same(false);
+  setTimeout(function(){
+    self.container.size();
+    self.container.same(false);
+  }, 100);
 
 };
 
@@ -93,7 +95,7 @@ ActiveContainer = (function(){
     self.container.prepend(self.top);
     self.top.append(self.title, self.buttonTable);
     
-    self.initializeAssociatedField();
+    if(self.container.is("[associated-field]")) self.initializeAssociatedField();
 
   };
 
@@ -118,7 +120,7 @@ ActiveContainer = (function(){
       self.divider.hide();
       self.content.hide();
       if(parentHidable.exists()){
-        var obj = bleatr.where(function(element){
+        bleatr.where(function(element){
           return element["container"] !== undefined && element.container["container"] !== undefined && element.container.container.get(0) == parentHidable.get(0);
         }).first().container.same(false);
       }
@@ -131,15 +133,15 @@ ActiveContainer = (function(){
       self.minimizeButton.css({
         top: 5
       });
-      if(!self.content.is(":empty")) self.divider.show();
+      if(self.content.hasText()) self.divider.show();
       self.content.show();
       if(animate && !parentHidable.exists()){
         self.container.animate({
-          height: self.top.outerHeight() + self.content.outerHeight()
+          height: self.top.outerHeight() + self.content.outerHeight(true)
         }, 1000, "easeOutExpo");
       }else{
         self.container.css({
-          height: self.top.outerHeight() + self.content.outerHeight()
+          height: self.top.outerHeight() + self.content.outerHeight(true)
         });
       }
       if(parentHidable.exists()){
@@ -151,6 +153,7 @@ ActiveContainer = (function(){
 
     destroy: function(){
       var self = this;
+      if(self.container.is("[on-destroy]")) self.destroyAttachment();
       self.container.remove();
     },
 
@@ -190,14 +193,23 @@ ActiveContainer = (function(){
 
     initializeAssociatedField: function(){
       var self = this;
-      if(self.container.is("[associated-field]")){
-        $("#"+self.container.attr("associated-field")).on("keyup.ActiveContainer", function(event){
-          pause(event);
-          if(!Key.ret(event) && self.container.hasClass("min")){
-            self.maximize();
-          }
-        })
-      }
+      $("#"+self.container.attr("associated-field")).on("keyup.ActiveContainer", function(event){
+        pause(event);
+        if(!Key.ret(event) && self.container.hasClass("min")){
+          self.maximize();
+        }
+      })
+    },
+
+    destroyAttachment: function(){
+      var self = this;
+      $.ajax({
+        method: "DELETE",
+        data: {
+          attachment: self.container.attr("on-destroy")
+        },
+        url: "/" + $("#current-user").text() + "/attachment"
+      });
     }
 
   });

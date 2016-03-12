@@ -1,0 +1,3 @@
+<%= hidable "Announcement#{": #{@model.subject}" unless @model.subject.blank?}", true, on_destroy: "announcement-#{@model.id}" do %>
+  <%= @model.content %>
+<% end %>

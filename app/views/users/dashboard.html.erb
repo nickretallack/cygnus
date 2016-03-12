@@ -1,5 +1,7 @@
-<% if at_least :admin %>
-  <%= cell(:message).(:new_announcement) %>
+<% if at_least? :admin %>
+  <%= hidable "Administrator Tools", true do %>
+    <%= cell(:announcement).(:new) %>
+  <% end %>
 <% end %>
 
 <% open = !@user.setting(:minimize_dashboard) %>

@@ -34,4 +34,8 @@ class AnonymousUser
   def pools
     Pool.none
   end
+
+  def announcements
+    Message.none
+  end
 end

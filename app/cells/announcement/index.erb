@@ -1,0 +1,3 @@
+<% current_user.announcements.each do |announcement| %>
+  <%= cell(:announcement, announcement).(:show) %>
+<% end %>

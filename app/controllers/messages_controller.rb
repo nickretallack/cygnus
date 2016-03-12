@@ -80,6 +80,16 @@ class MessagesController < ApplicationController
           end
         end
       end
+    when "announce"
+      @message = Message.new(subject: params[:message][:subject], content: params[:message][:content])
+      if @message.save
+        User.all.each do |user|
+          user.update_attribute(:attachments, user.attachments << "announcement-#{@message.id}")
+        end
+        back
+      else
+        back_with_errors
+      end
     end
   end
 

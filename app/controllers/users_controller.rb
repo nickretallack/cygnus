@@ -186,8 +186,10 @@ class UsersController < ApplicationController
     end
   end
 
-  def dashboard
-
+  def destroy
+    @user.attachments.delete(params[:attachment])
+    @user.update_attribute(:attachments, @user.attachments)
+    render nothing: true
   end
 
   private

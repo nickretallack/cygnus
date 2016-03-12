@@ -13,7 +13,7 @@
   <li><%= link_to "Workboard", cards_path(current_user) %></li>
 </div>
 <div class = "col s4">
-  <li><%= link_to "Settings", dashboard_path(current_user) %></li>
+  <li><%= link_to at_least?(:admin)? "Dashboard" : "Settings", dashboard_path(current_user) %></li>
   <li><%= link_to "Profile", user_path(current_user) %></li>
   <li><%= link_to "Log out", log_out_path, method: "delete" %></li>
 </div>

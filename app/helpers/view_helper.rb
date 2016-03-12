@@ -89,8 +89,8 @@ module ViewHelper
     end
   end
 
-  def hidable(title = nil, open = false, associated = nil, &block)
-    cell(:view).(:hidable, title: title, content: capture(&block), open: open, associated: associated)
+  def hidable(title = nil, open = false, associated: nil, on_destroy: nil, &block)
+    cell(:view).(:hidable, title: title, content: capture(&block), open: open, associated: associated, on_destroy: on_destroy)
   end
 
 end

@@ -42,16 +42,16 @@ module UsersHelper
     end
   end
 
-  def at_least(grade)
+  def at_least?(grade)
     User.level_for(current_user.level) >= User.level_for(grade)
   end
 
   def can_modify?(user)
-    at_least(:mod) or current_user? user
+    at_least?(:mod) or current_user? user
   end
 
   def can_watch?(user)
-    at_least(:admin) or (not anon? and not current_user? user)
+    at_least?(:admin) or (not anon? and not current_user? user)
   end
 
   def watching?(user)

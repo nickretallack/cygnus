@@ -18,12 +18,13 @@ Rails.application.routes.draw do
     post :create, path: ":#{User.slug}/to/:reply_to_#{User.slug}(/reply/:reply_#{Message.slug})/conversations", as: :new_pm
     patch :update, path: "conversation/:#{Message.slug}/update", as: :update_pm
     delete :destroy, path: "conversation/:#{Message.slug}/destroy", as: :destroy_pm
-    get :index, path: "activity(/page/:page)", as: :messages
+    get :index, path: ":#{User.slug}/activity(/page/:page)", as: :messages
     post :create, path: "messages", as: :new_message
     delete :destroy, path: "message/:#{Message.slug}/destroy", as: :destroy_message
     #get "message_listener", to: "messages#listener", as: :listener
     get :poller, path: "message_poller", as: :poller
-    post :annoucement, path: "announcements", as: :new_announcement
+    post :create, path: "announcements", as: :new_announcement
+    patch :update, path: "announcement/:#{Message.slug}/update", as: :update_annoucement
   end
 
   controller :images do
@@ -88,6 +89,7 @@ Rails.application.routes.draw do
     post :activate, path: ":#{User.slug}/activate", as: :activate_user
     get :watch, path: ":#{User.slug}/watch", as: :watch_user
     get :dashboard, path: ":#{User.slug}/settings", as: :dashboard
+    delete :destroy, path: ":#{User.slug}/attachment", as: :destroy_attachment
   end
 
   controller :users do

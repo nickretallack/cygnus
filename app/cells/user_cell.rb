@@ -12,8 +12,8 @@ class UserCell < HelpfulCell
         session["terms"]["tags"]
       end
     when :dashboard
-      if at_least :admin
-        "ADMIN DASHBOARD"
+      if at_least? :admin
+        "Administrator Dashboard"
       else
         unless options[:sanitize]
           "#{link_to params[User.slug], user_path(params[User.slug])}'s settings"

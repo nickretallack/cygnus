@@ -131,6 +131,6 @@ class ApplicationController < ActionController::Base
   end
 
   def static
-    render template: "pages/#{params[:page_name]}"
+    render inline: cell(:application).(params[:page_name]), layout: :default
   end
 end

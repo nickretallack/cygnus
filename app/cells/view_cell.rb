@@ -5,6 +5,7 @@ class ViewCell < HelpfulCell
     @content = options[:content] || ""
     @open = options[:open] || false
     @associated = options[:associated]
+    @on_destroy = options[:on_destroy]
     render
   end
 
@@ -31,6 +32,12 @@ class ViewCell < HelpfulCell
 
   def markdown_cheatsheet
     cell(:view).(:hidable, title: "Markdown Cheatsheet", content: render)
+  end
+
+  ["footer"].each do |method|
+    define_method method do
+      render method
+    end
   end
 
 end

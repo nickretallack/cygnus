@@ -386,6 +386,10 @@ Make.extend(Array.prototype, {
       return true;
     },
 
+    hasText: function(){
+      return /\S/.test(this.text());
+    },
+
     putCursorAtEnd: function(){
       this.one("focus.Cursor", function(){
         this.selectionStart = this.selectionEnd = this.value.length;

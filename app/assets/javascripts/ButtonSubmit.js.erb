@@ -83,8 +83,9 @@ ButtonSubmit = (function(){
                 break;
               case "preview_comment":
               case "preview_pm":
-                var comment = self.form.children("textarea");
-                var area = self.form.children("blockquote");
+                var comment = self.form.children("textarea"),
+                    area = self.form.children("blockquote"),
+                    parentHidable = self.form.parents(".hidable");
                 area.html(markdown.toHTML(comment.prop("value").replace(/\[.+?\]\((.+?)\)/gi, function(match, p1){
                   if(p1.contains("http://")){
                     return match;
@@ -93,6 +94,9 @@ ButtonSubmit = (function(){
                   }
                 })));
                 area.show();
+                if(parentHidable.exists()) bleatr.where(function(element){
+                  return element["container"] !== undefined && element.container["container"] !== undefined && element.container.container.get(0) == parentHidable.get(0);
+                }).first().container.maximize(false);
                 break;
               default:
                 icon.replaceWithSpinner();

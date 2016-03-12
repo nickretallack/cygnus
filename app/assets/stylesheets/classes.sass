@@ -4,14 +4,16 @@
   border: 4px dotted #9DD0B4
   padding: 5px !important
   border-radius: 15px
+  input[type = "text"]
+    width: calc(100% - 15px)
 
 .row:not(.hidable):not(.destroyable):not(.button-area):not(.spaced):not(.list)
   margin-bottom: 0 !important
 
 .row.list
-  margin-left: -20px
   .item
-    padding: 7px 0 7px 5% !important
+    +padded
+    padding-left: 2%
     label
       display: table
       font-size: 18px
@@ -514,11 +516,16 @@ i[class *= "comm-"]
     text-align: left
     width: 95%
     overflow: hidden
+    i
+      margin-top: -4px
   h1, h2, h3, h4, h5, h6
     font-size: 2rem
     line-height: 1em
   a:hover
     font-size: 100% !important
+
+.hidable[on-destroy]
+  background-color: $danger-background-color
 
 // index-field
 
