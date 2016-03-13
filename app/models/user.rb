@@ -79,7 +79,7 @@ class User < ActiveRecord::Base
   end
 
   def messages
-    children("message").order("created_at ASC")
+    children("message")
   end
 
   def pms_sent

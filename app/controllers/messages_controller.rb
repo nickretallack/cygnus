@@ -101,6 +101,7 @@ class MessagesController < ApplicationController
         render inline: cell(:pm, @reply_to).(:new) + cell(:pm).(:index), layout: :default
       end
     elsif view_context.current_page? messages_path
+      session[:toasts_seen] = current_user.unread_messages.length
       render inline: cell(:activity).(:index), layout: :default
     end
   end
@@ -125,17 +126,9 @@ class MessagesController < ApplicationController
   end
 
   def poller
-    if Message.where(submission_id: params[:submission_id]).count > params[:count].to_i
-      @message = Message.where(submission_id: params[:submission_id]).last
-      send_data ActiveSupport::JSON.encode({message: cell(:message, @message).(:show)})
-    end
-    activity_count = current_user.unread_messages - session[:unread_messages]
-    if activity_count > 0
-      session[:unread_messages] += 1
-      send_data ActiveSupport::JSON.encode({message: cell(:message, Message.where("user_id = -1 AND ? = ANY (recipient_ids)", current_user.id).order("id desc").limit(activity_count).reverse.first).(:stub), pollAgain: (activity_count-1 > 0)})
-    else
-      render nothing: true
-    end
+    messages = current_user.unread_messages.drop(session[:toasts_seen]).map{ |message| message.content }
+    session[:toasts_seen] += 1 if messages.any?
+    send_data ActiveSupport::JSON.encode(messages.first)
   end
 
 end

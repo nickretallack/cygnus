@@ -1,7 +1,7 @@
 <ul class = "right hide-on-med-and-down js">
   <li class = "circular-button">
     <%= link_to messages_path(current_user) do %>
-      <div><%= current_user.unread_messages.length %></div>
+      <div id = "unread-messages-count"><%= current_user.unread_messages.length %></div>
     <% end %>
   </li>
   <li>

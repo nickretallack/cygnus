@@ -67,6 +67,7 @@ Init = {
 bleatr = [];
 
 function initialize(){
+  currentUser = $("#current-user").text();
   $.each(Init.js, function(key, value){
     value($(key));
   });
@@ -83,8 +84,5 @@ function initialize(){
   $.each(bleatr, function(index, object){
     if(object.has("initialize")) object.initialize();
   });
-}
-
-function currentUser(){
-  return $("#current-user").text();
+  bleatr.push(new Poller());
 }

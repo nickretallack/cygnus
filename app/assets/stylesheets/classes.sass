@@ -352,6 +352,14 @@ textarea.big
   width: 20%
 
 //messages
+.toast
+  display: block
+  border-radius: 10px
+  border: 4px dashed $success-color
+  box-sizing: content-box
+  background-color: darkslategrey
+  box-shadow: 0 5px 10px lightslategrey
+
 #flash
   margin-bottom: 25px
   font-size: 125%
@@ -415,6 +423,8 @@ textarea.big
     clear: left
 
 .message.destroyable
+  .title
+    cursor: default
   .button-table
     line-height: 38px
 

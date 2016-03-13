@@ -208,7 +208,7 @@ ActiveContainer = (function(){
         data: {
           attachment: self.container.attr("on-destroy")
         },
-        url: "/" + currentUser() + "/attachment"
+        url: "/" + currentUser + "/attachment"
       });
     }
 

@@ -6,7 +6,7 @@
       </div>
     <% else %>
       <div class = "col s6 expandable preview">
-        <%= cell(:image).(:show, type: :full, id: @user.avatar) %>
+        <%= cell(:image, @user.avatar).(:full) %>
       </div>
     <% end %>
     <div class = "col s6 vc">

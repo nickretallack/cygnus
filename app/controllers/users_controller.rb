@@ -60,7 +60,6 @@ class UsersController < ApplicationController
   end
 
   def show
-    message(:watch, User.find("test2"))
     if can_modify? @user
       render inline: cell(:user, @user).(:edit_profile), layout: :default
     else
@@ -189,7 +188,10 @@ class UsersController < ApplicationController
 
   def destroy
     @user.attachments.delete(params[:attachment])
-    @user.attachments = @user.attachments << "message-#{/(\d+)/.match(params[:attachment])[1]}" if /unread-message-/.match(params[:attachment])
+    if /unread-message-/.match(params[:attachment])
+      @user.attachments = @user.attachments << "message-#{/(\d+)/.match(params[:attachment])[1]}"
+      session[:toasts_seen] -= 1
+    end
     @user.update_attribute(:attachments, @user.attachments)
     render nothing: true
   end
