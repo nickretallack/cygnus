@@ -40,7 +40,7 @@ class UserCell < HelpfulCell
     end
   end
 
-  ["show_profile", "edit_profile"].each do |method|
+  ["show_profile", "edit_profile", "edit_dashboard"].each do |method|
     define_method method do
       render "#{method.split("_")[1]}/#{method.split("_")[0]}"
     end

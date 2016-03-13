@@ -7,7 +7,8 @@ IndexField = (function(){
     self.indexField = element;
 
     self.indexField.closest(".content").css({
-      width: "100%"
+      width: "100%",
+      overflow: "hidden"
     });
 
     self.pool = self.indexField.children(".col");

@@ -16,7 +16,7 @@ class ImageCell < HelpfulCell
 
   def full
     show = show(:full, @model.nil?? -1 : @model.id)
-    div_for @image, class: "full #{@image.explicit?? 'danger' : 'success'} #{"adult" if @image.explicit? and not current_user.setting(:view_adult)}" do
+    div_for @image, class: "full #{@image.explicit?? 'danger' : 'success'} #{"adult" if @image.explicit? and not current_user.setting(:view_adult)} #{"fit" if current_user.setting(:always_fit_to_width)}" do
       show
     end
   end
@@ -30,7 +30,7 @@ class ImageCell < HelpfulCell
 
   def medium
     show = show(:medium, @model.nil?? -1 : @model.id)
-    div_for @image, class: "medium #{@image.explicit?? 'danger' : 'success'} #{"adult" if @image.explicit? and not current_user.setting(:view_adult)}" do
+    div_for @image, class: "medium #{@image.explicit?? 'danger' : 'success'} #{"adult" if @image.explicit? and not current_user.setting(:view_adult)} #{"fit" if current_user.setting(:always_fit_to_width)}" do
       show
     end
   end

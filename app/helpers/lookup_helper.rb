@@ -7,10 +7,10 @@ module LookupHelper
         matches << attachment.split("-").last.to_i
       end
     end
-#    model.classify.constantize.where("id = ANY (?)", "{#{matches.join(",")}}").sort_by { |item| matches.index item.id }
+#   model.classify.constantize.where("id = ANY (?)", "{#{matches.join(",")}}").sort_by { |item| matches.index item.id }
     matches.delete(0)
     children = model.classify.constantize.where("id = ANY ('{#{matches.join(",")}}')")
-    #children = children.order("idx(array[#{matches.join(",")}], id)") unless matches.empty?
+    children = children.order("idx(array[#{matches.join(",")}], id)") unless matches.empty?
     children
   end
 

@@ -5,6 +5,7 @@ ExpandableImage = (function(){
     var self = this;
 
     self.image = element;
+    if(self.image.parents(".image-preview").exists()) return;
 
     self.image.on("click.ExpandableImage", function(event){
       pause(event);

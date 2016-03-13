@@ -1,5 +1,9 @@
 class CardCell < HelpfulCell
 
+  def index
+    render
+  end
+
   def show(options)
     @user = options[:user]
     @image_attachments = Attachment.where(parent_model: "card", parent_id: @model.id, child_model: "image")

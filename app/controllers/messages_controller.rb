@@ -19,7 +19,11 @@ class MessagesController < ApplicationController
     end
   end
 
-  before_filter only: [:index, :create, :update, :destroy] do
+  before_filter only: [:create] do
+    insist_on :logged_in
+  end
+
+  before_filter only: [:index, :update, :destroy] do
     insist_on :permission, @user
   end
 

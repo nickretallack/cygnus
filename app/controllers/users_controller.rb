@@ -32,6 +32,10 @@ class UsersController < ApplicationController
     @total_users = User.search(session[:terms]).count
   end
 
+  def dashboard
+    render inline: cell(:user).(:edit_dashboard), layout: :default
+  end
+
   def create
     @user = User.new(params.require(:user).permit([:name, :email, :password, :password_confirmation]))
     @user.ip_address = request.remote_ip
@@ -68,7 +72,17 @@ class UsersController < ApplicationController
   end
 
   def update
-    if params[:user][:settings].is_a? Hash
+    if /mark all/.match(params[:commit].downcase)
+      @user.attachments.each do |attachment|
+        if /unread-message-/.match attachment
+          @user.attachments.delete(attachment)
+          @user.attachments = @user.attachments << "message-#{/(\d+)/.match(attachment)[1]}"
+          session[:toasts_seen] -= 1
+        end
+      end
+    elsif /older messages/.match(params[:commit].downcase)
+      @user.attachments.delete_if{ |attachment| /^message-/.match attachment }
+    elsif params[:user][:settings].is_a? Hash
       @user.settings = params[:user][:settings]
     else
       update_image_attachment("avatar")

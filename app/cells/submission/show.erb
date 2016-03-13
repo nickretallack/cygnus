@@ -24,11 +24,11 @@
   </span>
 </div>
 <div class = "row spaced">
-  <%= cell(:image, @model.image).(:medium) %>
+  <%= cell(:image, @model.image).(current_user.setting(:fit_to_width)? :full : :medium) %>
 </div>
 <div class = "row">
   <% unless @model.description.blank? %>
-    <%= hidable "Description", true do %>
+    <%= hidable "Description", current_user.setting(:minimize_descriptions) do %>
       <%= @model.description %>
     <% end %>
   <% end %>

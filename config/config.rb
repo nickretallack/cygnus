@@ -65,7 +65,7 @@ CONFIG = {
     pm: "email",
     preview_pm: "mail_outline",
     comment: "message",
-    preview_comment: "chat_bubble_outline"
+    preview_comment: "chat_bubble_outline",
   },
 
   order_form_icons: {

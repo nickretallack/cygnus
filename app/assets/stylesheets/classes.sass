@@ -45,9 +45,8 @@
 
 .console
   max-height: 115px !important
-  bottom: 100px !important
-  *
-    display: inline !important
+  position absolute
+  
 
 .cover
   background-color: rgba(47, 79, 79, .8)
@@ -142,6 +141,10 @@
   vertical-align: middle
   cursor: default
 
+ul.disc
+  li
+    list-style-type: disc !important
+
 .js
   display: none
 
@@ -171,6 +174,10 @@
 
 .image
   position: relative
+
+.image.fit
+  img
+    width: 100%
 
 .gallery
   +block-centered
@@ -326,6 +333,7 @@ textarea.big
   +block-centered
 
 .button-area
+  width: 100%
   +block-centered
   display: table
   i + label
@@ -341,12 +349,18 @@ textarea.big
   bottom: 5px
   background-color: $background-color
   z-index: 1
+  border-radius: 18px
+  width: auto
 
 .button-area.float-left
-  left: 10px
+  left: 0
+  padding-left: 10px
+  padding-right: 10px
 
 .button-area.float-right
-  right: 10px
+  right: 0
+  padding-left: 10px
+  padding-right: 10px
 
 .button-area.centered-small
   width: 20%
@@ -421,6 +435,9 @@ textarea.big
     margin: 5px 0
   td.button-area > div:nth-child(3)
     clear: left
+
+.comment.special
+  box-shadow: 0px 3px 15px gold
 
 .message.destroyable
   .title
@@ -530,7 +547,6 @@ i[class *= "comm-"]
     +block-centered
     text-align: left
     width: 95%
-    overflow: hidden
     i
       margin-top: -4px
   h1, h2, h3, h4, h5, h6

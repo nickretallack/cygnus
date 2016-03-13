@@ -54,7 +54,7 @@ ButtonSubmit = (function(){
             class: "material-icons " + size,
             id: button.attr("value"),
             text: icon,
-            title: name.capitalize()
+            title: name.readable()
           })),
           $("<label />", {
             text: button.attr("value"),
