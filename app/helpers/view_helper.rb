@@ -31,7 +31,7 @@ module ViewHelper
       if word.nil?
         concat "<span id = 'nothing'>Nothing here.</span>".html_safe
       else
-        concat "<span id = 'nothing'>No #{word} yet.</span>".html_safe
+        concat "<span id = 'nothing'>No #{word}.</span>".html_safe
       end
     else
       unless reverse
@@ -91,6 +91,10 @@ module ViewHelper
 
   def hidable(title = nil, open = false, associated: nil, on_destroy: nil, &block)
     cell(:view).(:hidable, title: title, content: capture(&block), open: open, associated: associated, on_destroy: on_destroy)
+  end
+
+  def message(type, recipient, **args)
+    cell(:activity, recipient).(:new, type, args)
   end
 
 end

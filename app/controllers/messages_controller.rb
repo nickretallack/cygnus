@@ -94,12 +94,14 @@ class MessagesController < ApplicationController
   end
 
   def index
-    if /conversations/.match url_for(params)
+    if view_context.current_page? pms_path
       if @user == @reply_to
         render inline: cell(:pm).(:index), layout: :default
       else
         render inline: cell(:pm, @reply_to).(:new) + cell(:pm).(:index), layout: :default
       end
+    elsif view_context.current_page? messages_path
+      render inline: cell(:activity).(:index), layout: :default
     end
   end
 

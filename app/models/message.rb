@@ -25,6 +25,10 @@ class Message < ActiveRecord::Base
     children("message", "comment")
   end
 
+  def type
+    attachments.first
+  end
+
   def timestamp(type = :created)
     case type
     when :created

@@ -44,7 +44,7 @@
   max-height: 100%
 
 .console
-  max-height: 90px !important
+  max-height: 115px !important
   bottom: 100px !important
   *
     display: inline !important
@@ -414,19 +414,24 @@ textarea.big
   td.button-area > div:nth-child(3)
     clear: left
 
+.message.destroyable
+  .button-table
+    line-height: 38px
+
 .pm.sent
   border-color: $message-sent-color
 
 .pm.received
   border-color: $message-received-color
 
-.message.unread
-  background-color: $message-unread-color
-
 .message.minimal
-  margin: 10px 0 !important
+  margin: 15px 0 !important
   padding: 0 5px !important
   outline: 2px solid $success-color
+  line-height: 36px
+  font-size: 18px
+  .title
+    line-height: 36px
 
 //icons
 

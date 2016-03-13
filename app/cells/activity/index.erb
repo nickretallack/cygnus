@@ -1,0 +1,20 @@
+<%= hidable "Unread messages", true do %>
+  <p class = "padded ic">Clicking the <i class = 'material-icons'>clear</i> on any message marks the message read.</p>
+  <div class = "row list" id = "unread">
+    <% enum_for @user.unread_messages, word: "new messages" do |message| %>
+      <div class = "item message minimal unread destroyable max" on-destroy = "unread-message-<%= message.id %>">
+        <div class = "title"><%= cell(:activity, message).(:show) %></div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<%= hidable "Older messages", false do %>
+  <div class = "row list" id = "read">
+    <% enum_for @user.messages, word: "activity" do |message| %>
+      <div class = "item message minimal" id = <%= message.id %>>
+        <%= cell(:activity, message).(:show) %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

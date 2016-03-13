@@ -74,8 +74,12 @@ class User < ActiveRecord::Base
     children("order", "placed_order")
   end
 
+  def unread_messages
+    children("message", "unread-message")
+  end
+
   def messages
-    @messages ||= Message.where("user_id = ? AND ? = ANY (recipient_ids)", -1, id)
+    children("message").order("created_at ASC")
   end
 
   def pms_sent

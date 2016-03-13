@@ -48,7 +48,7 @@ Init = {
     ExpandableImage: ".image.medium > img",
     ImagePreview: ".image-preview",
     IndexField: "[class *= index-field]",
-    Message: ".message:not(.new)",
+    Message: "#unread .message",
     Nav: "header nav",
     OrderForm: ".order-form",
     TagList: ".taglist",
@@ -83,4 +83,8 @@ function initialize(){
   $.each(bleatr, function(index, object){
     if(object.has("initialize")) object.initialize();
   });
+}
+
+function currentUser(){
+  return $("#current-user").text();
 }
