@@ -50,11 +50,9 @@ textarea
   margin-top: 10px
   padding-left: 10px
 
-ol
+ol, ul
   padding: 0
-
-li
-  list-style: none
+  list-style-type: none
 
 img
   +block-centered
@@ -165,7 +163,7 @@ i
   text-align: center
   cursor: pointer !important
 
-div:not(.button-table):hover > i, div:not(.button-table):hover > i + label
+div:not(.button-table):not(.addable-area):hover > i, div:not(.button-table):not(.addable-area):hover > i + label
   color: $icon-hover-color
 
 i:hover

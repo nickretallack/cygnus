@@ -1,25 +1,25 @@
-Message = (function(){
+Comment = (function(){
 
-  var Message = function(element){
+  var Comment = function(element){
 
     var self = this;
 
-    self.message = element;
-    self.imageArea = self.message.find(".image").parent();
-    self.author = self.message.find("h5").text();
-    self.content = self.message.find("blockquote");
+    self.comment = element;
+    self.imageArea = self.comment.find(".image").parent();
+    self.author = self.comment.find("h5").text();
+    self.content = self.comment.find("blockquote");
     self.buttonArea = element.find(".button-area");
-    self.buttonIcons = JSON.parse('<%= CONFIG[:message_icons].to_json %>');
+    self.buttonIcons = JSON.parse('<%= CONFIG[:comment_icons].to_json %>');
 
   };
 
-  Make.extend(Message.prototype, {
+  Make.extend(Comment.prototype, {
 
     initialize: function(){
       var self = this;
       self.buttonArea.html("");
       $.each(self.buttonIcons, function(name, icon){
-        self.buttonArea.append(self.makeButton(name, icon).one("click.Message", function(){
+        self.buttonArea.append(self.makeButton(name, icon).one("click.Comment", function(){
           if(typeof self[name.camelCase()] === "function") self[name.camelCase()]($(this));
         }));
       });
@@ -47,41 +47,41 @@ Message = (function(){
         return div;
     },
 
-    indentOf: function(message){
+    indentOf: function(comment){
       var self = this;
-      return (parseInt(/indent-(\d+)/.exec(message.attr("class"))[1]));
+      return (parseInt(/indent-(\d+)/.exec(comment.attr("class"))[1]));
     },
 
     reply: function(div){
       var self = this,
           button = div.children("i");
-      if(self.message.next().is(".new")) return;
+      if(self.comment.next().is(".new")) return;
       button.replaceWithSpinner();
       if(/submission\/(\d+)/.test(window.location.pathname)){
         $.ajax({
           url: "/reply",
           data: {
             submission: RegExp.$1,
-            reply: self.message.attr("id"),
-            indent: /indent-(\d+)/.exec(self.message.attr("class"))[1]
+            reply: self.comment.attr("id"),
+            indent: /indent-(\d+)/.exec(self.comment.attr("class"))[1]
           },
           success: function(data){
-            self.message.after(data);
+            self.comment.after(data);
             initialize();
           }
         });
       }
     },
 
-    minimizeConversation: function(div){
+    minimize: function(div){
       var self = this,
-          conversation = self.message.nextUntil(self.message.nextAll().filter(function(index, element){
-            return self.indentOf($(element)) <= self.indentOf(self.message);
+          conversation = self.comment.nextUntil(self.comment.nextAll().filter(function(index, element){
+            return self.indentOf($(element)) <= self.indentOf(self.comment);
           })),
           extraneousElements = self.imageArea.add(self.content).add(self.buttonArea.children());
       extraneousElements.hide();
       conversation.hide();
-      div.replaceWith(self.makeButton("maximize_conversation", '<%= CONFIG[:other_icons][:maximize] %>').one("click.Message", function(){
+      div.replaceWith(self.makeButton("maximize_conversation", '<%= CONFIG[:other_icons][:maximize] %>').one("click.Comment", function(){
         $(this).replaceWith(div);
         extraneousElements.show();
         conversation.show();
@@ -92,26 +92,30 @@ Message = (function(){
     quote: function(div){
       var self = this,
           button = div.children("i");
-      if(!self.message.next().is(".new")){
+      if(!self.comment.next().is(".new")){
         button.replaceWithSpinner();
         if(/submission\/(\d+)/.test(window.location.pathname)){
           $.ajax({
             url: "/reply",
             data: {
               submission: RegExp.$1,
-              reply: self.message.attr("id"),
-              indent: /indent-(\d+)/.exec(self.message.attr("class"))[1]
+              reply: self.comment.attr("id"),
+              indent: /indent-(\d+)/.exec(self.comment.attr("class"))[1]
             },
             success: function(data){
               data = $(data);
               var textarea = data.find("textarea");
               textarea.prop("value", ">" + self.content.text());
               textarea.putCursorAtEnd();
-              self.message.after(data);
+              self.comment.after(data);
               initialize();
             }
           });
         }
+      }else{
+        var textarea = self.comment.next().find("textarea");
+        textarea.prop("value", ">" + self.content.text());
+        textarea.putCursorAtEnd();
       }
     },
 
@@ -122,6 +126,6 @@ Message = (function(){
 
   })
 
-  return Message;
+  return Comment;
 
 })();

@@ -93,7 +93,7 @@
   input
     margin-top: -4px
     margin-bottom: 6px
-    width: calc(100% - 10px)
+    width: calc(100% - 15px)
   select
     height: 40px
     margin: 5px 0
@@ -220,12 +220,9 @@ ul.disc
   line-height: 18px
   color: black
   .click-area
-    // width: intrinsic
-    // width: -moz-fit-content
-    // width: -webkit-fit-content
-    // width: fit-content
     display: inline-block
-    cursor: pointer
+    img
+      cursor: pointer !important
   label
     +block-centered
   .bordered
@@ -253,7 +250,7 @@ ul.disc
   label
     color: $danger-color
 
-.image.adult > img:not([src *= "full"])
+.image > img:not([src *= "full"])
   cursor: zoom-in
 
 //input
@@ -321,18 +318,13 @@ textarea.big
 #cards
   min-height: 15px
 
-.card.fw
-  +top-card
-  .list-card
-    +list-card
-
 .note
   font-size: 2rem
   line-height: 2rem
   width: 80%
   +block-centered
 
-.button-area
+div.button-area
   width: 100%
   +block-centered
   display: table
@@ -413,7 +405,7 @@ textarea.big
     line-height: 2rem
 
 @for $i from 0 through 4
-  .indent-#{$i}
+  .comment.indent-#{$i}, .new.indent-#{$i}
     $indent: (5*$i)
     width: 100% - $indent
     margin-left: $indent + 0% !important
@@ -433,6 +425,9 @@ textarea.big
     float: right
     display: table
     margin: 5px 0
+  td.button-area > div
+    +block-centered
+    margin: 10px 0
   td.button-area > div:nth-child(3)
     clear: left
 
@@ -512,10 +507,10 @@ i[class *= "comm-"]
     width: 100%
   .title
     float: left
-    line-height: 28px
+    line-height: 32px
   .button-table
     float: right
-    line-height: 24px
+    line-height: 28px
 
 .hidable
   background-color: $success-background-color
@@ -577,3 +572,66 @@ i[class *= "comm-"]
       display: inline-block
     i, .thumbnail
       +vertical-center
+
+//cards
+
+.top-card, .card.fw
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 15px 30px 0 rgba(0, 0, 0, 0.12)
+  background-color: $workboard-background-color
+  text-align: left
+  input[type = "text"]
+    //text-shadow: 0px 0px 4px $text-shadow-color
+    color: $placeholder-color
+  input[type = "submit"]
+    margin-bottom: 10px !important
+  textarea
+    font-size: 1rem
+    line-height: 2rem
+    height: auto
+  h5
+    margin-bottom: -5%
+  .thumbnail
+    position: inherit
+    top: auto
+    transform: none
+  .card-content
+    .card-title
+      color: black
+
+.list-card
+  float: left
+  input
+    margin-bottom: 5% !important
+  .card-action
+    padding: 0
+    font-size: 1.2rem
+    line-height: 1.2rem
+    border: none
+    margin-top: -10px
+    text-align: left !important
+    .view-mode
+      margin-top: 12%
+    .thumbnail
+      float: left
+      margin-right: 5px
+    span
+      display: inline
+
+.list-card:nth-of-type(odd)
+  +card1
+.list-card .card-card:nth-of-type(even)
+  +card1
+.list-card .card-card:nth-of-type(odd)
+  +card2
+
+.list-card:nth-of-type(even)
+  +card2
+  .card-card:nth-of-type(odd)
+    +card1
+  .card-card:nth-of-type(even)
+    +card2
+
+.card-card
+  width: 100%
+  .button-area
+    margin-top: 10px

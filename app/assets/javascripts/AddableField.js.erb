@@ -39,6 +39,8 @@ AddableField = (function(){
       });
     });
 
+    $(window).trigger("resize.AddableField");
+
   };
 
   Make.extend(AddableField.prototype, {
@@ -48,7 +50,6 @@ AddableField = (function(){
       if(self.addable.is("li")){
         self.initializeHandle(self.field.children().last());
       }
-      $(window).trigger("resize");
     },
 
     initializeHandle: function(li){
@@ -62,13 +63,8 @@ AddableField = (function(){
       var self = this;
       self.addButton.before(self.removeButton.clone().on("click.AddableField", function(){
         self.remove(item);
-        var nameArray = self.addable.attr("name").toArray();
-        self.field.children().each(function(index, element){
-          element = $(element);
-          nameArray[nameArray.length - 1] = 0 + index;
-          element.attr("name", nameArray.parse());
-          element.attr("id", nameArray.join("_"));
-        });
+      }).css({
+        height: self.addable.outerHeight(true)
       }));
     },
 
@@ -83,21 +79,36 @@ AddableField = (function(){
         addable.prop("value", "");
       }
       
-      var nameArray = last.attr("name").toArray();
-      nameArray[nameArray.length - 1] = parseInt(nameArray.last()) + 1;
-      self.addable = addable;
+      if(last.is("[name]")){
+        var nameArray = last.attr("name").toArray();
+        nameArray[nameArray.length - 1] = parseInt(nameArray.last()) + 1;
+        addable.attr("name", nameArray.parse());
+        addable.attr("id", nameArray.join("_"));
+      }
+
       self.field.append(addable);
-      addable.attr("name", nameArray.parse());
-      addable.attr("id", nameArray.join("_"));
+      self.addable = addable;
+
       self.initialize();
-      self.initializeRemove(addable);
+      self.initializeRemove(self.addable);
     },
 
     remove: function(item){
       var self = this,
           buttons = self.area.children(":not(.add)");
-      buttons.eq(item.index()).remove();
-      item.remove();
+      if(self.field.children().length > 1){
+        buttons.eq(item.index()).remove();
+        item.remove();
+        if(self.addable.is("[name]")){
+          var nameArray = self.addable.attr("name").toArray();
+          self.field.children().each(function(index, element){
+            element = $(element);
+            nameArray[nameArray.length - 1] = 0 + index;
+            element.attr("name", nameArray.parse());
+            element.attr("id", nameArray.join("_"));
+          });
+        }
+      }
     },
 
     reorder: function(li){

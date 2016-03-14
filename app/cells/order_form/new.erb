@@ -1,4 +1,4 @@
-<%= form_for :content, url: order_forms_path, html: { class: "remote button-submit" } do |f| %>
-  <%= f.submit "Create Order Form", id: "add", class: "medium" %>
+<%= form_for :content, url: order_forms_path(@user), html: { class: "button-submit" } do |f| %>
+  <%= f.submit "Create Order Form", id: "add" %>
 <% end %>
-<div class = "button-area float"></div>
+<div class = "button-area float-right"></div>

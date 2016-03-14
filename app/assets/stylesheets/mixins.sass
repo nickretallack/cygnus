@@ -157,70 +157,6 @@
     .card-title
       color: $workboard-card2-title-color
 
-=top-card
-  &
-    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 15px 30px 0 rgba(0, 0, 0, 0.12)
-    background-color: $workboard-background-color
-    text-align: left
-    input[type = "text"]
-      //text-shadow: 0px 0px 4px $text-shadow-color
-      color: $placeholder-color
-    input[type = "submit"]
-      margin-bottom: 10px !important
-    textarea
-      font-size: 1rem
-      line-height: 2rem
-      height: auto
-    h5
-      margin-bottom: -5%
-    .thumbnail
-      position: inherit
-      top: auto
-      transform: none
-    .card-content
-      .card-title
-        color: black
-
-=list-card
-  &
-    float: left
-    input
-      margin-bottom: 5% !important
-    .card-action
-      padding: 0
-      font-size: 1.2rem
-      line-height: 1.2rem
-      border: none
-      margin-top: -10px
-      text-align: left !important
-      .view-mode
-        margin-top: 12%
-      .thumbnail
-        float: left
-        margin-right: 5px
-      span
-        display: inline
-  &:nth-of-type(odd)
-    +card1
-    .card-card:nth-child(even)
-      +card2
-    .card-card:nth-child(odd)
-      +card1
-  &:nth-of-type(even)
-    +card2
-    .card-card:nth-child(even)
-      +card1
-    .card-card:nth-child(odd)
-      +card2
-
-=card-card
-  &
-    width: 100%
-    .button-area
-      margin-top: 10px
-    .new-image
-      display: none
-
 //behavior
 
 .spaced
@@ -289,12 +225,3 @@
 
 .circular-button
   +circular-button
-
-.top-card
-  +top-card
-
-.list-card
-  +list-card
-
-.card-card
-  +card-card

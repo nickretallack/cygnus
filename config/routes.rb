@@ -10,21 +10,21 @@ Rails.application.routes.draw do
 
   controller :messages do
     get :new, path: "reply", as: :reply_template
-    post :create, path: "submission/:#{Submission.slug}(/reply/:reply_#{Message.slug})/comments", as: :new_comment
-    patch :update, path: "comment/:#{Message.slug}/update", as: :update_comment
-    delete :destroy, path: "comment/:#{Message.slug}/destroy", as: :destroy_comment
+    post :create, path: ":#{User.slug}/submission/:#{Submission.slug}(/reply/:reply_#{Message.slug})/comments", as: :new_comment
+    patch :update, path: ":#{User.slug}/comment/:#{Message.slug}/update", as: :update_comment
+    delete :destroy, path: ":#{User.slug}/comment/:#{Message.slug}/destroy", as: :destroy_comment
     get :index, path: ":#{User.slug}/conversations(/page/:page)", as: :pms
     get :index, path: ":#{User.slug}/conversations/reply/:reply_to_#{User.slug}", as: :pm_author
     post :create, path: ":#{User.slug}/to/:reply_to_#{User.slug}(/reply/:reply_#{Message.slug})/conversations", as: :new_pm
-    patch :update, path: "conversation/:#{Message.slug}/update", as: :update_pm
-    delete :destroy, path: "conversation/:#{Message.slug}/destroy", as: :destroy_pm
+    patch :update, path: ":#{User.slug}/conversation/:#{Message.slug}/update", as: :update_pm
+    delete :destroy, path: ":#{User.slug}/conversation/:#{Message.slug}/destroy", as: :destroy_pm
     get :index, path: ":#{User.slug}/activity(/page/:page)", as: :messages
-    post :create, path: "messages", as: :new_message
-    delete :destroy, path: "message/:#{Message.slug}/destroy", as: :destroy_message
+    post :create, path: ":#{User.slug}/messages", as: :new_message
+    delete :destroy, path: ":#{User.slug}/message/:#{Message.slug}/destroy", as: :destroy_message
     #get "message_listener", to: "messages#listener", as: :listener
     get :poller, path: "message_poller", as: :poller
-    post :create, path: "announcements", as: :new_announcement
-    patch :update, path: "announcement/:#{Message.slug}/update", as: :update_annoucement
+    post :create, path: ":#{User.slug}/announcements", as: :new_announcement
+    patch :update, path: ":#{User.slug}/announcement/:#{Message.slug}/update", as: :update_annoucement
   end
 
   controller :images do
@@ -50,11 +50,11 @@ Rails.application.routes.draw do
   end
 
   controller :order_forms do
-    get :index, path: "(:#{User.slug})/order_forms(/page/:page)", as: :order_forms
-    post :create, path: "order_forms", as: :new_order_form
-    get :show, path: "order_form/:#{OrderForm.slug}", as: :order_form
-    patch :update, path: "order_form/:#{OrderForm.slug}/update", as: :update_order_form
-    delete :destroy, path: "order_form/:#{OrderForm.slug}/destroy", as: :destroy_order_form
+    get :index, path: ":#{User.slug}/order_forms(/page/:page)", as: :order_forms
+    post :create, path: ":#{User.slug}/order_forms", as: :new_order_form
+    get :show, path: ":#{User.slug}/order_form/:#{OrderForm.slug}", as: :order_form
+    patch :update, path: ":#{User.slug}/order_form/:#{OrderForm.slug}/update", as: :update_order_form
+    delete :destroy, path: ":#{User.slug}/order_form/:#{OrderForm.slug}/destroy", as: :destroy_order_form
     get :set_default, path: ":#{User.slug}/order_forms/:#{OrderForm.slug}/default", as: :default_order_form
   end
 

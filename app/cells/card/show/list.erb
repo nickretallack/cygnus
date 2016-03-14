@@ -22,10 +22,16 @@
           <% @model.cards.each do |card| %>
             <%= cell(:card, card).(:card) %>
           <% end %>
+
+          <%= cell(:card, @model).(:new_card) %>
         </div>
 
-        <div class = "edit-mode">
-          <%= cell(:card, @model).(:new_card) %>
+      <% else %>
+
+        <div id = "cards">
+          <% @model.cards.each do |card| %>
+            <%= cell(:card, card).(:card) %>
+          <% end %>
         </div>
 
       <% end %>

@@ -84,9 +84,9 @@ CONFIG = {
     maximize: "add"
   },
 
-  message_icons: {
+  comment_icons: {
     reply: "reply",
-    minimize_conversation: "remove",
+    minimize: "remove",
     quote: "format_quote",
     pm_author: "contact_mail"
   },

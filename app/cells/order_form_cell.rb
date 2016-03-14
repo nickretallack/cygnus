@@ -1,6 +1,6 @@
 class OrderFormCell < HelpfulCell
 
-  ["index", "show", "new", "edit"].each do |method|
+  ["index", "summary", "new", "show"].each do |method|
     define_method method do
       render method
     end

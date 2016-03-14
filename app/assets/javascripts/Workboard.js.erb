@@ -30,11 +30,13 @@ Workboard = (function(){
     initialize: function(){
       var self = this;
       $.each(self.triggers.keys(), function(index, key){
-        self.divs[key] = self.topCard.find("div."+key+"-mode");
+        self.divs[key] = self.topCard.find("div." + key + "-mode");
       });
-      self.switchMode(self.triggers.values().where(function(element){
+      var start = self.triggers.values().where(function(element){
         return element.is("[start]");
-      }).first().attr("name"));
+      }).first().attr("name");
+      self.switchMode(start);
+      if(start === "view") $("#triggers").hide();
       self.submit.on("click.Workboard", function(event){
         pause(event);
         self.orderField();

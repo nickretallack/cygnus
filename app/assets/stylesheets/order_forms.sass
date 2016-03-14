@@ -1,7 +1,10 @@
 .order
   li
-    list-style-type: decimal
-    list-style-position: inside
+    counter-increment: index
+    legend
+      text-align: center
+    legend:before
+      content: counter(index)
     .answer
       text-align: left
       input[type = "text"]
@@ -25,10 +28,6 @@
     padding: 4px
     margin: 5px 30px
     position: relative
-    list-style-type: decimal
-    list-style-position: inside
-    li
-      list-style: inherit
     .question
       background-color: rgba(247, 252, 242, 0.5) /*#F7FCF2 with 50% alpha/**/
       border: 1px solid #9CCC65
@@ -36,20 +35,25 @@
       padding: 4px 4px 30px
       position: relative
       text-align: left
+    li
+      counter-increment: index
       legend
         text-align: center
+      legend:before
+        content: counter(index)
       i
-        position: absolute
+        position: relative
+        z-index: 1
       .remove
         font-size: 24px
-        top: 15px
-        right: 2px
+        top: 40px
+        left: calc(100% - 60px)
       .handle
         cursor: ns-resize !important
         text-shadow: -1px -1px 1px #000, 1px 1px 1px #FFF
         font-size: 29px
-        top: 0
-        left: 10px
+        top: 30px
+        left: 15px
         color: #FFF
       input[name = "required"]
         position: absolute
@@ -74,9 +78,8 @@
           margin-top: 2%
           color: lightslategrey
         .fake-answer.short-response
-          border: 3px dashed black
+          border-bottom: 3px solid black
           height: 2rem
-          border-bottom-style: solid
           text-align: center
           text-transform: uppercase
           line-height: 1.8rem

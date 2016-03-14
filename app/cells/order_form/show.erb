@@ -1,20 +1,29 @@
-<tr id = "<%= @model.id %>">
-  <% if can_modify? @user %>
-    <td>
-      <%= form_for @model, url: edit_order_form_path(@user, @model), html: { class: "button-submit" } do |f| %>
-        <%= f.submit "Edit", id: "edit" %>
-      <% end %>
-      <%= form_for @model, url: order_form_path(@user, @model), method: :delete, html: { class: "remote button-submit" } do |f| %>
-        <%= f.submit "Delete", id: "delete", confirm: "Delete #{title_for @model}?" %>
-      <% end %>
-      <% unless @model == @user.order_form %>
-        <%= form_for @model, url: default_order_form_path(@user, @model), html: { class: "remote button-submit" } do |f| %>
-          <%= f.submit "Set Default", id: "default" %>
-        <% end %>
-      <% end %>
-      <div class = "button-area"></div>
-    </td>
-    <td><%= title_for @model %></td>
+<%= form_for @order_form, url: order_forms_path(@user), html: { class: "button-submit" } do |f| %>
+  <%= f.submit "Back to Index", id: "back" %>
+<% end %>
+<div class = "button-area float-left"></div>
+<%= form_for @order_form, url: update_order_form_path(@user, @order_form), method: :patch, html: { id: "formcreator_result", class: "remote button-submit" } do |f| %>
+  <%= f.text_field :title, placeholder: "Title for form (only you will see this)" %>
+  <%= f.submit "Save Form", id: "save" %>
+<% end %>
+<div class = "button-area float-right"></div>
+
+<br />
+
+<div class = "order-form" form = "formcreator_result">
+
+  <% CONFIG[:order_form_icons].each do |key, value| %>
+    <div id = "<%= key %>-template" class = "hide">
+      <%= cell(:order_form).(key) %>
+    </div>
   <% end %>
-  <td class = "danger"><%= "Default" if @model == @user.order_form %></td>
-</tr>
+
+  <fieldset>
+    <legend align = "center">Add Question to Form:</legend>
+    <div id = "button-area"></div>
+  </fieldset>
+
+  <!-- must not contain whitespace -->
+  <ol id = "workspace"><%= cell(:order_form).(:workspace) %></ol>
+
+</div>

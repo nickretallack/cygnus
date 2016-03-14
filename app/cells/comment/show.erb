@@ -1,4 +1,4 @@
-<table class = "message indent-<%= @indent %> <%= "special" if current_user == @model.comment_author and current_user.setting(:border_comments) %>" id = <%= @model.id %>>
+<table class = "comment indent-<%= @indent %> <%= "special" if current_user == @model.comment_author and current_user.setting(:border_comments) %>" id = <%= @model.id %>>
   <tbody>
     <tr>
       <td><%= cell(:image, @model.comment_author.avatar).(:bordered) %></td>

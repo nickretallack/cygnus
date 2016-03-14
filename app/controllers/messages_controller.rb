@@ -98,13 +98,14 @@ class MessagesController < ApplicationController
   end
 
   def index
-    if view_context.current_page? pms_path
+    if /conversations/.match url_for(params)
       if @user == @reply_to
+        flash[:danger] = "cannot pm yourself"
         render inline: cell(:pm).(:index), layout: :default
       else
         render inline: cell(:pm, @reply_to).(:new) + cell(:pm).(:index), layout: :default
       end
-    elsif view_context.current_page? messages_path
+    elsif /activity/.match url_for(params)
       session[:toasts_seen] = current_user.unread_messages.length
       render inline: cell(:activity).(:index), layout: :default
     end

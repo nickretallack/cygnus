@@ -18,14 +18,24 @@
           <%= form_for @model, url: destroy_card_path(@user, @model), method: :delete, html: { class: "button-submit" } do |f| %>
             <%= f.submit "Delete Item", id: "delete" %>
           <% end %>
-          <%= form_for @model, url: update_card_path(@user, @model), method: :patch, html: { class: "button-submit", attachment: "new-image" } do |f| %>
+          <%= form_for @model, url: update_card_path(@user, @model), method: :patch, html: { class: "button-submit", attachment: "image-preview" } do |f| %>
             <%= f.submit "Attach Image", id: "attach" %>
           <% end %>
           <div class = "button-area centered"></div>
-
         </div>
 
+        <div class = "view-mode">
+          <%= cell(:image, @model.image).(:bordered) if @model.image %>
+          <p class = "ic"><%= @model.description %></p>
+        </div>
+
+      <% else %>
+
+        <%= cell(:image, @model.image).(:bordered) if @model.image %>
+        <p class = "ic"><%= @model.description %></p>
+
       <% end %>
+
       <div class = "card-action">
       </div>
     </div>

@@ -6,6 +6,7 @@ ButtonSubmit = (function(){
 
     self.form = element;
     self.area = element.nextAll(".button-area").first();
+    self.attachmentArea = self.form.siblings().find("."+self.form.attr("attachment"));
     self.icons = JSON.parse('<%= CONFIG[:button_icons].to_json %>');
 
   };
@@ -20,28 +21,10 @@ ButtonSubmit = (function(){
         if(button.attr("area")) self.area = self.form.nextAll(".button-area").eq(parseInt(button.attr("area")));
         var size = /small|medium-small|medium|large/.exec(button.attr("class"));
         size = size === null? "medium-small" : size.first();
-        if(self.form.attr("edit")){
-          var form = $("#" + self.form.attr("edit"));
-          if(!form.exists()){
-            switch(name){
-              case "edit":
-                var on = form.children(".on");
-                var off = form.children(".off");
-                on.hide();
-                button.on("click.ButtonSubmit", function(event){
-                  pause(event);
-                  off.hide();
-                  on.show();
-                });
-                break;
-              case "save":
-                button.on("click.ButtonSubmit", function(event){
-                  pause(event);
-                  form.submit();
-                });
-                break;
-            }
-          }
+        switch(name){
+          case "attach":
+            if(self.attachmentArea.find("#new_image").exists()) self.attachmentArea.hide();
+            break;
         }
         var div, icon;
         self.area.append((div = $("<div />", {
@@ -79,7 +62,7 @@ ButtonSubmit = (function(){
                 $(".editing").show();
                 break;
               case "attach":
-                self.form.siblings().find("."+self.form.attr("attachment")).show();
+                self.attachmentArea.show();
                 break;
               case "preview_comment":
               case "preview_pm":

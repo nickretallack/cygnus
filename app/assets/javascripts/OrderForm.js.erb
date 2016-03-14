@@ -38,8 +38,8 @@ OrderForm = (function(){
 
     initialize: function(){
       var self = this;
-      self.workspace.find(".question").children(".remove").on("click.OrderForm", function(){
-        self.remove($(this).parents("li"));
+      self.workspace.find(".remove").on("click.OrderForm", function(){
+        self.remove($(this).parent());
       });
       self.form.find(".question").remove();
       self.workspace.children("li").each(function(index, li){
@@ -54,7 +54,7 @@ OrderForm = (function(){
 
     initializeHandle: function(li){
       var self = this;
-      li.children().children(".handle").on("mousedown.OrderForm", function(){
+      li.children(".handle").on("mousedown.OrderForm", function(){
         self.reorder(li);
       });
     },
