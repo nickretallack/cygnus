@@ -1,6 +1,14 @@
 <li>
   <fieldset class = "question" name = "<%= @question %>">
     <legend align = "center">. <%= @question %></legend>
-    <div class = "answer"><%= @answer %></div>
+    <% unless @answer.is_a? Array %>
+      <div class = "answer"><%= @answer %></div>
+    <% else %>
+      <table class = "gallery">
+        <% @answer.each do |image| %>
+          <td><%= cell(:image, Image.find(/\d+/.match(image)[0])).(:bordered) %></td>
+        <% end %>
+      </table>
+    <% end %>
   </fieldset>
 </li>

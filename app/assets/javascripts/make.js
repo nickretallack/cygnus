@@ -399,59 +399,7 @@ Make.extend(Array.prototype, {
     replaceWithSpinner: function(){
       var spinner = $('<div class="preloader-wrapper big active"><div class="spinner-layer spinner-blue-only"><div class="circle-clipper left"><div class="circle"></div></div><div class="gap-patch"><div class="circle"></div></div><div class="circle-clipper right"><div class="circle"></div></div></div></div>'); //from materialize
       this.replaceWith(spinner);
-    },
-
-  //   selectionMenu: function(options){
-  //     var button = $(this);
-  //     var initMenu = $("<div />", {
-  //       css: {
-  //         position: "absolute",
-  //         width: 200,
-  //         height: 200,
-  //         backgroundColor: "white"
-  //       }
-  //     });
-  //     button.on("click.selectionMenu", function(event){
-  //       var menu = initMenu.clone();
-  //       menu.css({
-  //         top: event.pageY - 5,
-  //         left: event.pageX - 5
-  //       }).on("mouseleave.selectionMenu", function(){
-  //         $(this).remove();
-  //       }).appendTo($(document.body));
-  //       $.each(options, function(name, callback){
-  //         if(typeof callback !== "function") return;
-  //         $("<span />", {
-  //           text: name.humanize().capitalize(),
-  //           css: {
-  //             marginLeft: 5,
-  //             cursor: "pointer"
-  //           }
-  //         }).appendTo($("<div />", {
-  //           css: {
-  //             width: 200,
-  //             fontSize: 16,
-  //             border: "2px solid black",
-  //             borderCollapse: "collapse",
-  //             cursor: "pointer"
-  //           }
-  //         }).on("mouseenter.selectionMenu", function(){
-  //           $(this).css({
-  //             backgroundColor: "lightblue",
-  //             color: "white"
-  //           });
-  //         }).on("mouseleave.selectionMenu", function(){
-  //           $(this).css({
-  //             backgroundColor: "white",
-  //             color: "black"
-  //           });
-  //         }).on("click.selectionMenu", function(){
-  //           callback();
-  //         }).appendTo(menu));
-  //       });
-  //     });
-  //     return button;
-  //   }
+    }
   
   });
 

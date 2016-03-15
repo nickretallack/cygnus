@@ -17,9 +17,11 @@
 //= require_tree .
 
 $(document).on("page:load", function(){
-    initialize();
+  initialize();
+  bleatr.push(new Poller());
 });
 
 $(window).on("load", function(){
-    initialize();
+  initialize();
+  bleatr.push(new Poller());
 });

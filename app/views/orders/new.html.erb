@@ -1,4 +1,4 @@
-<%= form_for Order.new, url: place_order_path(@order), html: { class: "button-submit" } do |f| %>
+<%= form_for Order.new, url: place_order_path(@order), html: { multipart: true, class: "button-submit" } do |f| %>
   <ol class = "order">
     <%= cell(:order).(:new) %>
   </ol>

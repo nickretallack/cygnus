@@ -20,7 +20,7 @@ ExpandableImage = (function(){
                           backgroundColor: "rgba(0, 0, 0, 0.9)",
                           position: "fixed",
                           top: 0,
-                          zIndex: 1
+                          zIndex: 2
                         },
                         html: $("<img />", {
                           src: self.image.attr("src").replace(/bordered|limited|medium/, "full"),

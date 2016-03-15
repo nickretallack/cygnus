@@ -8,6 +8,8 @@ class OrderCell < HelpfulCell
       ["question", "href", "text"].each do |name|
         instance_variable_set("@#{name}", (content.select{ |item| item["name"] == name }.first["value"] rescue nil))
       end
+      @question = "blank" if @question.blank?
+      @label = "#{index}-#{@question}"
       @text = nil if @text == ""
       ["option"].each do |name|
         instance_variable_set("@#{name.pluralize}", content.select{ |item| item["name"] == name }.collect{ |item| item["value"] })
@@ -22,6 +24,7 @@ class OrderCell < HelpfulCell
     @order.content.each_with_index do |content, index|
       @index = index
       @question, @answer = content.first
+      @question = /\d+-(.+)/.match(@question)[1]
       html << render("show/template")
     end
     html

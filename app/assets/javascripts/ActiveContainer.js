@@ -137,11 +137,11 @@ ActiveContainer = (function(){
       self.content.show();
       if(animate && !parentHidable.exists()){
         self.container.animate({
-          height: self.top.outerHeight() + self.content.outerHeight(true)
+          height: self.top.outerHeight() + self.content.outerHeight(true) + 10
         }, 1000, "easeOutExpo");
       }else{
         self.container.css({
-          height: self.top.outerHeight() + self.content.outerHeight(true)
+          height: self.top.outerHeight() + self.content.outerHeight(true) + 10
         });
       }
       if(parentHidable.exists()){

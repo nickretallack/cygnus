@@ -17,7 +17,6 @@ gem "puma"
 gem "cells"
 gem "cells-erb"
 gem "hooks"
-gem "modernizr-rails"
 
 group :development, :test do
   gem "byebug"

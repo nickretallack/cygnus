@@ -10,14 +10,8 @@
     <%= i.check_box :explicit, { checked: @model.explicit, id: "image_#{check_box_for}" } %><%= i.label check_box_for, "Explicit", class: "padded" %>
     <div class = "click-area">
       <%= cell(:image, @model).(options[:type] || :limited) %>
-      <div class = "labels-1">
-        <label>Click preview image to change</label>
-        <label>(any size image, will be expandable to viewer)</label>
-      </div>
-      <div class = "labels-2 danger">
-        <label>Please mark adult images explicit.</label>
-        <label>Press the save icon to upload.</label>
-      </div>
+      <label>Click preview image to change</label>
+      <label>(any size image, will be expandable to viewer)</label>
     </div>
   </div>
 <% end %>

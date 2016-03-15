@@ -73,8 +73,8 @@ CONFIG = {
     free_answer: "reorder",
     choose_one: "radio_button_checked",
     choose_all_that_apply: "check_box",
-    link: "link",
-    image: "image"
+    request_links_to_references: "link",
+    request_reference_image_uploads: "image"
   },
 
   other_icons: {

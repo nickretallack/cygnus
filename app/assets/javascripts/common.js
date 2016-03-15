@@ -84,5 +84,4 @@ function initialize(){
   $.each(bleatr, function(index, object){
     if(object.has("initialize")) object.initialize();
   });
-  bleatr.push(new Poller());
 }
