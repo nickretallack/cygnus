@@ -408,9 +408,17 @@ Make.extend(Array.prototype, {
       spinner.replaceWith(spinner.data("revert"));
     },
 
-    hidableObject: function(hidableElement){
+    hidableObject: function(){
+      var self = this;
       return bleatr.where(function(element){
-        return element["container"] !== undefined && element.container["container"] !== undefined && element.container.container.get(0) === hidableElement.get(0);
+        return element["container"] !== undefined && element.container["container"] !== undefined && element.container.container.get(0) === self.get(0);
+      }).first();
+    },
+
+    commentObject: function(){
+      var self = this;
+      return bleatr.where(function(element){
+        return element["comment"] !== undefined && element.comment.get(0) === self.get(0);
       }).first();
     }
 

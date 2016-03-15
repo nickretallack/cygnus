@@ -400,6 +400,10 @@ div.button-area
   h5
     line-height: 2rem
 
+.new[class *= "indent-"]
+  width: 75%
+  margin-left: 25%
+
 @for $i from 0 through 4
   .comment.indent-#{$i}, .new.indent-#{$i}
     $indent: (5*$i)
@@ -413,7 +417,7 @@ div.button-area
 
 .comment
   width: 75%
-  margin-left: 25% !important
+  margin-left: 25%
   box-shadow: 0px 3px 15px $message-box-shadow-color
   td
     max-width: calc(100% - 408px)

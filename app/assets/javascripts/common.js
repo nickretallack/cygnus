@@ -77,4 +77,5 @@ function initialize(){
       }
     });
   });
+  $(".dropdown-button").trigger("mouseout");
 }

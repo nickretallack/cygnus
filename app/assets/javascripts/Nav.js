@@ -34,7 +34,6 @@ Nav = (function(){
       if(Key.esc(event)) self.collapseButton.sideNav("hide");
     });
 
-    self.dropdownButton.trigger("mouseout");
     self.pushpin();
   };
 

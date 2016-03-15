@@ -1,5 +1,16 @@
-var container = $("#comments"),
-    comment = $("<%=j cell(:comment, @comment).(:show, 0) %>");
-container.append(comment);
-comment.addClass("fade-in");
-lastClicked.revert();
+var container = $("#comments");
+var reply = container.find("#" + <%= params[:reply_id] || "" %>);
+var comment = $("<%=j cell(:comment, @comment).(:show, 0) %>");
+if(reply.exists()){
+  var replyObject = reply.commentObject();
+  replyObject.conversation().last().after(comment);
+  initialize();
+  comment.addClass(".fade-in");
+  comment.commentObject().setIndent(replyObject.indent() + 1);
+  lastClicked.form.closest(".new").hide();
+}else{
+  comment.addClass(".fade-in");
+  container.append(comment);
+  initialize();
+  lastClicked.revert();
+}

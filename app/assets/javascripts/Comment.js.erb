@@ -11,6 +11,8 @@ Comment = (function(){
     self.buttonArea = element.find(".button-area");
     self.buttonIcons = JSON.parse('<%= CONFIG[:comment_icons].to_json %>');
 
+    self.fill();
+
   };
 
   Make.extend(Comment.prototype, {
@@ -19,7 +21,7 @@ Comment = (function(){
       var self = this;
       self.buttonArea.html("");
       $.each(self.buttonIcons, function(name, icon){
-        self.buttonArea.append(self.makeButton(name, icon).one("click.Comment", function(){
+        self.buttonArea.append(self.makeButton(name, icon).on("click.Comment", function(){
           if(typeof self[name.camelCase()] === "function") self[name.camelCase()]($(this));
         }));
       });
@@ -47,37 +49,60 @@ Comment = (function(){
         return div;
     },
 
+    indent: function(){
+      var self = this;
+      return self.indentOf(self.comment);
+    },
+
     indentOf: function(comment){
       var self = this;
-      return (parseInt(/indent-(\d+)/.exec(comment.attr("class"))[1]));
+      return parseInt(/indent-(\d+)/.exec(comment.attr("class"))[1]);
+    },
+
+    setIndent: function(level){
+      var self = this;
+      self.comment.removeClass(/indent-\d+/.exec(self.comment.attr("class"))[0]).addClass("indent-" + level);
     },
 
     reply: function(div){
       var self = this,
-          button = div.children("i");
-      if(self.comment.next().is(".new")) return;
-      button.replaceWithSpinner();
-      if(/submission\/(\d+)/.test(window.location.pathname)){
-        $.ajax({
-          url: "/reply",
-          data: {
-            submission: RegExp.$1,
-            reply: self.comment.attr("id"),
-            indent: /indent-(\d+)/.exec(self.comment.attr("class"))[1]
-          },
-          success: function(data){
-            self.comment.after(data);
-            initialize();
-          }
-        });
+          button = div.children("i"),
+          newArea = self.comment.next(".new");
+      if(newArea.exists()){
+        newArea.show();
+        newArea.returnAreaFromSpinner();
+        var textarea = newArea.find("textarea");
+        textarea.prop("value", "");
+      }else{
+        button.replaceWithSpinner();
+        if(/submission\/(\d+)/.test(window.location.pathname)){
+          $.ajax({
+            url: "/reply",
+            data: {
+              submission: RegExp.$1,
+              reply: self.comment.attr("id"),
+              indent: self.indent()
+            },
+            success: function(data){
+              self.comment.after(data);
+              self.buttonArea.returnAreaFromSpinner()
+              initialize();
+            }
+          });
+        }
       }
+    },
+
+    conversation: function(){
+      var self = this;
+      return self.comment.nextUntil(self.comment.nextAll().filter(function(index, element){
+        return self.indentOf($(element)) <= self.indentOf(self.comment);
+      }));
     },
 
     minimize: function(div){
       var self = this,
-          conversation = self.comment.nextUntil(self.comment.nextAll().filter(function(index, element){
-            return self.indentOf($(element)) <= self.indentOf(self.comment);
-          })),
+          conversation = self.conversation(),
           extraneousElements = self.imageArea.add(self.content).add(self.buttonArea.children());
       extraneousElements.hide();
       conversation.hide();
@@ -91,8 +116,9 @@ Comment = (function(){
 
     quote: function(div){
       var self = this,
-          button = div.children("i");
-      if(!self.comment.next().is(".new")){
+          button = div.children("i"),
+          newArea = self.comment.next(".new");
+      if(!newArea.exists()){
         button.replaceWithSpinner();
         if(/submission\/(\d+)/.test(window.location.pathname)){
           $.ajax({
@@ -108,12 +134,15 @@ Comment = (function(){
               textarea.prop("value", ">" + self.content.text());
               textarea.putCursorAtEnd();
               self.comment.after(data);
+              self.buttonArea.returnAreaFromSpinner();
               initialize();
             }
           });
         }
       }else{
-        var textarea = self.comment.next().find("textarea");
+        newArea.show();
+        newArea.returnAreaFromSpinner();
+        var textarea = newArea.find("textarea");
         textarea.prop("value", ">" + self.content.text());
         textarea.putCursorAtEnd();
       }
