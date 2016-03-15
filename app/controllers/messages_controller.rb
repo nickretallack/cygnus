@@ -42,21 +42,21 @@ class MessagesController < ApplicationController
     case params[:commit].downcase
     when "comment"
       @submission = Submission.find(params[Submission.slug])
-      @message = Message.new(content: params[:message][:content])
+      @comment = Message.new(content: params[:message][:content])
       respond_to do |format|
-        if @message.save
-          current_user.update_attribute(:attachments, current_user.attachments << "comment-#{@message.id}")
+        if @comment.save
+          current_user.update_attribute(:attachments, current_user.attachments << "comment-#{@comment.id}")
           if params["reply_#{Message.slug}"]
             @reply = Message.find(params["reply_#{Message.slug}"])
-            @reply.update_attribute(:attachments, @reply.attachments << "comment-#{@message.id}")
+            @reply.update_attribute(:attachments, @reply.attachments << "comment-#{@comment.id}")
           else
-            @submission.update_attribute(:attachments, @submission.attachments << "comment-#{@message.id}")
+            @submission.update_attribute(:attachments, @submission.attachments << "comment-#{@comment.id}")
           end
           format.html { back }
-          format.js
+          format.js { render "comments/create" }
         else
           format.html{ back_with_errors }
-          format.js
+          format.js{ back_with_errors_js }
         end
       end
     when "send"

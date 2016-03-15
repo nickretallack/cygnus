@@ -9,12 +9,7 @@ ButtonSubmit = (function(){
     self.attachmentArea = self.form.siblings().find("."+self.form.attr("attachment"));
     self.icons = JSON.parse('<%= CONFIG[:button_icons].to_json %>');
 
-  };
-
-  Make.extend(ButtonSubmit.prototype, {
-
-    initialize: function(){
-      var self = this;
+    var self = this;
       $.each(self.icons, function(name, icon){
         var button = self.form.find("#" + name);
         if(!button.exists()) return;
@@ -47,6 +42,7 @@ ButtonSubmit = (function(){
           })
         ).on("click.ButtonSubmit", function(event){
           pause(event);
+          lastClicked = self;
           if(name === "delete" && button.is("[confirm]")){
             if(confirm(button.attr("confirm"))){
               icon.replaceWithSpinner();
@@ -104,6 +100,14 @@ ButtonSubmit = (function(){
           width: (100 / self.area.children().length)+"%"
         });
       }
+
+  };
+
+  Make.extend(ButtonSubmit.prototype, {
+
+    revert: function(){
+      var self = this;
+      self.area.returnAreaFromSpinner();
     }
 
   });

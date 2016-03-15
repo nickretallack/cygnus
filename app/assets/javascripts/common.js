@@ -58,9 +58,6 @@ Init = {
     // keep these last so contents are loaded already
     Destroyable: ".destroyable",
     Hidable: ".hidable"
-  },
-  reset: function(){
-    $(".button-area").html("");
   }
 };
 
@@ -71,7 +68,6 @@ function initialize(){
   $.each(Init.js, function(key, value){
     value($(key));
   });
-  Init.reset();
   $.each(Init.classes, function(key, value){
     $(value).each(function(index, element){
       element = $(element);
@@ -80,8 +76,5 @@ function initialize(){
         element.addClass("objectified");
       }
     });
-  });
-  $.each(bleatr, function(index, object){
-    if(object.has("initialize")) object.initialize();
   });
 }

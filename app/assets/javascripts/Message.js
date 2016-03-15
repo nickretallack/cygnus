@@ -37,12 +37,7 @@ Message = (function(){
 
     initialize: function(){
       var self = this;
-      self.unreadHidableObject = bleatr.where(function(element){
-        return element["container"] !== undefined && element.container["container"] !== undefined && element.container.container.get(0) === self.unreadHidable.get(0);
-      }).first();
-      self.readHidableObject = bleatr.where(function(element){
-        return element["container"] !== undefined && element.container["container"] !== undefined && element.container.container.get(0) === self.readHidable.get(0);
-      }).first();
+      
     },
 
     destroy: function(){
@@ -50,9 +45,9 @@ Message = (function(){
       self.container.destroy();
       self.message.prependTo(self.readList);
       self.container.buttonTable.remove();
-      self.unreadHidableObject.container.maximize(false);
+      self.hidableObject(self.unreadHidable).container.maximize(false);
       if(self.readHidable.hasClass("max")){
-        self.readHidableObject.container.maximize(false);
+        self.hidableObject(self.readHidable).container.maximize(false);
       }
       self.unreadCounter.text(function(index, text){
         return parseInt(text) - 1;

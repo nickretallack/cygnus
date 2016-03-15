@@ -3,7 +3,11 @@
     <tr>
       <td><%= cell(:image, @model.comment_author.avatar).(:bordered) %></td>
       <td>
-        <h5><%= @model.comment_author.name %></h5>
+        <h5>
+          <%= link_to user_path(@model.comment_author) do %>
+            <%= @model.comment_author.name %>
+          <% end %>
+        </h5>
         <blockquote><%= render_markdown @model.content %></blockquote>
       </td>
       <td class = "button-area"></td>

@@ -6,6 +6,11 @@ ExpandableImage = (function(){
 
     self.image = element;
     if(self.image.parents(".image-preview, a").exists()) return;
+    if(/-1/.test(self.image.attr("src"))) return;
+
+    self.image.css({
+      cursor: "zoom-in"
+    });
 
     self.image.on("click.ExpandableImage", function(event){
       pause(event);

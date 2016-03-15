@@ -13,7 +13,7 @@ class OrdersController < ApplicationController
       unless value.is_a? Hash
         {key => value}
       else
-        unless value.values.first.key? "image"
+        unless value.values.first.is_a? Hash and value.values.first.key? "image"
           {key => value.values.join(", ")}
         else
           {key => value.values.map{ |value| "image-#{Image.render(value["image"], value["explicit"])}" }}

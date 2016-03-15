@@ -2,7 +2,7 @@
   <fieldset class = "question" name = "<%= @question %>">
     <legend align = "center">. <%= @question %></legend>
     <% unless @answer.is_a? Array %>
-      <div class = "answer"><%= @answer %></div>
+      <div class = "answer"><%= auto_link(@answer) %></div>
     <% else %>
       <table class = "gallery">
         <% @answer.each do |image| %>

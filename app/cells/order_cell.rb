@@ -5,15 +5,11 @@ class OrderCell < HelpfulCell
     @order.content.each_with_index do |question, index|
       @index = index
       @name, content = question.first
-      ["question", "href", "text"].each do |name|
-        instance_variable_set("@#{name}", (content.select{ |item| item["name"] == name }.first["value"] rescue nil))
-      end
+      @question = content.select{ |item| item["name"] == "question" }.first["value"] rescue ""
       @question = "blank" if @question.blank?
       @label = "#{index}-#{@question}"
       @text = nil if @text == ""
-      ["option"].each do |name|
-        instance_variable_set("@#{name.pluralize}", content.select{ |item| item["name"] == name }.collect{ |item| item["value"] })
-      end
+      @options = content.select{ |item| item["name"] == "option" }.map.with_index{ |item, index| item["value"].blank?? "blank #{(index + 1).ordinalize} option" : item["value"] }
       html << render("new/template")
     end
     html
@@ -24,7 +20,7 @@ class OrderCell < HelpfulCell
     @order.content.each_with_index do |content, index|
       @index = index
       @question, @answer = content.first
-      @question = /\d+-(.+)/.match(@question)[1]
+      @question = Regexp.last_match(1) if /\d+-(.+)/.match(@question)
       html << render("show/template")
     end
     html

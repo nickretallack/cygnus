@@ -17,6 +17,7 @@ gem "puma"
 gem "cells"
 gem "cells-erb"
 gem "hooks"
+gem "rails_autolink"
 
 group :development, :test do
   gem "byebug"

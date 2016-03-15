@@ -34,17 +34,11 @@ Nav = (function(){
       if(Key.esc(event)) self.collapseButton.sideNav("hide");
     });
 
-    self.initialize();
+    self.dropdownButton.trigger("mouseout");
     self.pushpin();
-
   };
 
   Make.extend(Nav.prototype, {
-
-    initialize: function(){
-      var self = this;
-      self.dropdownButton.trigger("mouseout");
-    },
 
     pushpin: function(){
       var self = this;

@@ -1,5 +1,5 @@
 <div class = "new spaced indent-<%= @indent %>">
-  <%= form_for Message.new, url: new_comment_path(@submission, @model), html: { class: "button-submit" } do |f| %>
+  <%= form_for Message.new, url: new_comment_path(@submission, @model), html: { class: "remote button-submit" } do |f| %>
     <% if @model %>
       <p class = "ic">Replying to <%= @model.comment_author.name %>:</p>
     <% end %>

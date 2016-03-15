@@ -32,25 +32,22 @@ OrderForm = (function(){
       });
     });
 
+    self.workspace.find(".remove").on("click.OrderForm", function(){
+      self.remove($(this).parent());
+    });
+    self.form.find(".question").remove();
+    self.workspace.children("li").each(function(index, li){
+      self.initializeHandle($(li));
+    });
+    self.submit.one("click.OrderForm", function(event){
+      pause(event);
+      self.generateContentFieldValue();
+      $(this).trigger("click.ButtonSubmit");
+    });
+
   };
 
   Make.extend(OrderForm.prototype, {
-
-    initialize: function(){
-      var self = this;
-      self.workspace.find(".remove").on("click.OrderForm", function(){
-        self.remove($(this).parent());
-      });
-      self.form.find(".question").remove();
-      self.workspace.children("li").each(function(index, li){
-        self.initializeHandle($(li));
-      });
-      self.submit.one("click.OrderForm", function(event){
-        pause(event);
-        self.generateContentFieldValue();
-        $(this).trigger("click.ButtonSubmit");
-      });
-    },
 
     initializeHandle: function(li){
       var self = this;

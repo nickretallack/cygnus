@@ -1,0 +1,5 @@
+var container = $("#comments"),
+    comment = $("<%=j cell(:comment, @comment).(:show, 0) %>");
+container.append(comment);
+comment.addClass("fade-in");
+lastClicked.revert();

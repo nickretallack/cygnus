@@ -1,3 +1,5 @@
-<% @submission.comments.each do |comment| %>
-  <%= cell(:comment, comment).(:show, 0) %>
-<% end %>
+<div class = "row spaced" id = "comments">
+  <% @submission.comments.each do |comment| %>
+    <%= cell(:comment, comment).(:show, 0) %>
+  <% end %>
+</div>

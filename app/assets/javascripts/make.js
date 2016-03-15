@@ -398,9 +398,22 @@ Make.extend(Array.prototype, {
 
     replaceWithSpinner: function(){
       var spinner = $('<div class="preloader-wrapper big active"><div class="spinner-layer spinner-blue-only"><div class="circle-clipper left"><div class="circle"></div></div><div class="gap-patch"><div class="circle"></div></div><div class="circle-clipper right"><div class="circle"></div></div></div></div>'); //from materialize
+      spinner.data("revert", this);
       this.replaceWith(spinner);
+    },
+
+    returnAreaFromSpinner: function(){
+      var spinner = this.find(".preloader-wrapper");
+      if(!spinner.data("revert")) return this;
+      spinner.replaceWith(spinner.data("revert"));
+    },
+
+    hidableObject: function(hidableElement){
+      return bleatr.where(function(element){
+        return element["container"] !== undefined && element.container["container"] !== undefined && element.container.container.get(0) === hidableElement.get(0);
+      }).first();
     }
-  
+
   });
 
 })(jQuery);

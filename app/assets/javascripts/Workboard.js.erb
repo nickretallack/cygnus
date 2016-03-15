@@ -23,26 +23,23 @@ Workboard = (function(){
       });
     });
 
+    $.each(self.triggers.keys(), function(index, key){
+      self.divs[key] = self.topCard.find("div." + key + "-mode");
+    });
+    var start = self.triggers.values().where(function(element){
+      return element.is("[start]");
+    }).first().attr("name");
+    self.switchMode(start);
+    if(start === "view") $("#triggers").hide();
+    self.submit.on("click.Workboard", function(event){
+      pause(event);
+      self.orderField();
+      $(this).trigger("click.ButtonSubmit");
+    });
+
   };
 
   Make.extend(Workboard.prototype, {
-
-    initialize: function(){
-      var self = this;
-      $.each(self.triggers.keys(), function(index, key){
-        self.divs[key] = self.topCard.find("div." + key + "-mode");
-      });
-      var start = self.triggers.values().where(function(element){
-        return element.is("[start]");
-      }).first().attr("name");
-      self.switchMode(start);
-      if(start === "view") $("#triggers").hide();
-      self.submit.on("click.Workboard", function(event){
-        pause(event);
-        self.orderField();
-        $(this).trigger("click.ButtonSubmit");
-      });
-    },
 
     switchMode: function(mode){
       var self = this;

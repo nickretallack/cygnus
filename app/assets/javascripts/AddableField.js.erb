@@ -56,13 +56,6 @@ AddableField = (function(){
 
   Make.extend(AddableField.prototype, {
 
-    initialize: function(){
-      var self = this;
-      if(self.addable.is("li")){
-        self.initializeHandle(self.field.children().last());
-      }
-    },
-
     initializeHandle: function(li){
       var self = this;
       li.children(".handle").off("mousedown.AddableField").on("mousedown.AddableField", function(){
@@ -88,7 +81,10 @@ AddableField = (function(){
       self.renumber();
 
       self.addable.find("*").removeClass("objectified");
-      initialize();
+      
+      if(self.addable.is("li")){
+        self.initializeHandle(self.field.children().last());
+      }
       self.initializeRemove(addable);
     },
 

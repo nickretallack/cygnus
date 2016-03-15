@@ -15,42 +15,45 @@
     <%= csrf_meta_tags %>
   </head>
   <body>
-    <div class = "widthTester hide"></div>
-    <header>
-      <%= cell(:image).(:show, :banner) %>
-      <%= cell(:user).(:navigation) %>
-    </header>
-    <main>
-      <h2 class = "header full-small">
-        <%= cell(controller_name.singularize).(:header, action: action_name.to_sym) if cell_header? %>
-      </h2>
-      <%= cell(:announcement).(:index) %>
-      <% if flash.any? %>
-        <% flash.each do |type, message| %>
-          <% if message.is_a? String %>
-            <div class = "<%= type %> destroyable max", id = "flash">
-              <div class = "title"><%= format_flash message, type %></div>
-            </div>
+    <h5 class = "nojs hc"><%= CONFIG[:name] %> relies heavily on javascript for everything from layout to form submission. Please enable javascript to browse this site.</h5>
+    <div class = "js">
+      <div class = "widthTester hide"></div>
+      <header>
+        <%= cell(:image).(:show, :banner) %>
+        <%= cell(:user).(:navigation) %>
+      </header>
+      <main>
+        <h2 class = "header full-small">
+          <%= cell(controller_name.singularize).(:header, action: action_name.to_sym) if cell_header? %>
+        </h2>
+        <%= cell(:announcement).(:index) %>
+        <% if flash.any? %>
+          <% flash.each do |type, message| %>
+            <% if message.is_a? String %>
+              <div class = "<%= type %> destroyable max", id = "flash">
+                <div class = "title"><%= format_flash message, type %></div>
+              </div>
+            <% end %>
           <% end %>
         <% end %>
-      <% end %>
-      <% if flash[:errors] %>
-        <div class="errors">
-          <% flash[:errors].each do |msg| %>
-            <li><%= msg %></li>
-          <% end %>
+        <% if flash[:errors] %>
+          <div class="errors">
+            <% flash[:errors].each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </div>
+        <% end %>
+        <%= cell(controller_name.singularize).(:instructions, action: action_name.to_sym) if cell_instructions? %>
+        <%= yield %>
+      </main>
+      <footer>
+        <div class = "row hc">
+          <%= cell(controller_name.singularize).(:footer, action: action_name.to_sym) if cell_footer? %>
+          <%= cell(:view).(:footer) %>
+          <%= CONFIG[:copyright].html_safe %>
         </div>
-      <% end %>
-      <%= cell(controller_name.singularize).(:instructions, action: action_name.to_sym) if cell_instructions? %>
-      <%= yield %>
-    </main>
-    <footer>
-      <div class = "row hc">
-        <%= cell(controller_name.singularize).(:footer, action: action_name.to_sym) if cell_footer? %>
-        <%= cell(:view).(:footer) %>
-        <%= CONFIG[:copyright].html_safe %>
-      </div>
-      <%#= console %>
-    </footer>
+        <%#= console %>
+      </footer>
+    </div>
   </body>
 </html>

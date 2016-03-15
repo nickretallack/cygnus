@@ -15,7 +15,7 @@ Comment = (function(){
 
   Make.extend(Comment.prototype, {
 
-    initialize: function(){
+    fill: function(){
       var self = this;
       self.buttonArea.html("");
       $.each(self.buttonIcons, function(name, icon){
@@ -85,7 +85,7 @@ Comment = (function(){
         $(this).replaceWith(div);
         extraneousElements.show();
         conversation.show();
-        self.initialize();
+        self.fill();
       }));
     },
 
@@ -122,6 +122,10 @@ Comment = (function(){
     pmAuthor: function(div){
       var self = this;
       window.open("/" + $("#current-user").text() + "/conversations/reply/" + self.author, "_blank");
+    },
+
+    placeNew: function(comment){
+      
     }
 
   })

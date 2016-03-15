@@ -10,9 +10,9 @@ Rails.application.routes.draw do
 
   controller :messages do
     get :new, path: "reply", as: :reply_template
-    post :create, path: ":#{User.slug}/submission/:#{Submission.slug}(/reply/:reply_#{Message.slug})/comments", as: :new_comment
-    patch :update, path: ":#{User.slug}/comment/:#{Message.slug}/update", as: :update_comment
-    delete :destroy, path: ":#{User.slug}/comment/:#{Message.slug}/destroy", as: :destroy_comment
+    post :create, path: "submission/:#{Submission.slug}(/reply/:reply_#{Message.slug})/comments", as: :new_comment
+    patch :update, path: "comment/:#{Message.slug}/update", as: :update_comment
+    delete :destroy, path: "comment/:#{Message.slug}/destroy", as: :destroy_comment
     get :index, path: ":#{User.slug}/conversations(/page/:page)", as: :pms
     get :index, path: ":#{User.slug}/conversations/reply/:reply_to_#{User.slug}", as: :pm_author
     post :create, path: ":#{User.slug}/to/:reply_to_#{User.slug}(/reply/:reply_#{Message.slug})/conversations", as: :new_pm

@@ -18,6 +18,11 @@ module RoutingHelper
     back
   end
 
+  def back_with_errors_js
+    flash[:errors] = instance_variable_get("@#{controller_name.singularize}").errors.full_messages
+    render js: "location.reload();"
+  end
+
   def referer_is(controller, action)
     route = Rails.application.routes.recognize_path(request.referer)
     route[:controller] == controller and route[:action] == action
