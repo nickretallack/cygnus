@@ -66,7 +66,6 @@ OrderForm = (function(){
       if(addableField.exists()){
         addableField = new AddableField(addableField);
         bleatr.push(addableField);
-        addableField.initialize();
       }
       self.initializeHandle(li);
     },
@@ -103,14 +102,20 @@ OrderForm = (function(){
       self.form.children("input.question").remove();
       $.each(self.workspace.find(".question").toArray().map(function(element){
         element = $(element);
-        var object = {};
-        object[element.attr("name")] =  element.children(".content").find("input, textarea").toArray().map(function(element){
-                                          element = $(element);
-                                          return {
-                                            name: element.attr("name"),
-                                            value: element.prop("value")
-                                          }
-                                        });
+        var object = {},
+            innerObject = {},
+            question = element.find("[name = question]").prop("value");
+        innerObject[question] = (function(){
+          var options = element.find("input");
+          if(options.exists()){
+            return options.toArray().map(function(option){
+              return $(option).prop("value");
+            });
+          }else{
+            return "";
+          }
+        })();
+        object[element.attr("name")] = innerObject;
         return object;
       }), function(index, element){
         self.form.append($("<input />", {

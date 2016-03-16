@@ -21,10 +21,15 @@ class Submission < ActiveRecord::Base
   end
 
   def faved_by
-    @faved_by ||= User.where("? = ANY (favs)", id)
+    User.where("? = ANY (favs)", id)
   end
 
   def comments
-    @comments = children("message", "comment")
+    children("message", "comment")
   end
+
+  def all_comments
+    children("message", "buried-comment")
+  end
+
 end

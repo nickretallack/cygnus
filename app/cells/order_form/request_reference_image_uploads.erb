@@ -1,4 +1,4 @@
-<%= text_area_tag "question", (@question[0]["value"] rescue nil), placeholder: "Request" %>
+<%= text_area_tag "question", @question, placeholder: "Request" %>
 <div class = "fake-answer <%= @name.to_s.underscore.dasherize %>">
   <p class = "ic padded">Response area:</p>
   <table class = "gallery hc">

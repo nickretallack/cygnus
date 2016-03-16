@@ -1,7 +1,7 @@
 <ol class = "addable-field orderable">
   <li class = "option">
     <i class = "handle material-icons small"><%= CONFIG[:other_icons][:handle] %></i>
-    <%= fields_for "content[#{@label}][0]" do |i| %>
+    <%= fields_for "content[#{@index}-#{@name}][answer][0]" do |i| %>
       <div class = "file-field hidden">
         <div class = "submit">
           <span>Image</span>

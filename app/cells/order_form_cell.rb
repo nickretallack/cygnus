@@ -6,25 +6,15 @@ class OrderFormCell < HelpfulCell
     end
   end
 
-  CONFIG[:order_form_icons].each do |key, value|
-    define_method key do |object = nil|
-      @object = object
-      ["question", "option", "href", "text"].each do |name|
-        instance_variable_set("@#{name}".pluralize, ->{
-          unless @object
-            [{"value" => nil}]
-          else
-            fields = @object.select { |element| element["name"] == name }
-            if fields == []
-              [{"value" => nil}]
-            else
-              fields
-            end
-          end
-        }.call)
+  CONFIG[:order_form_icons].each do |name, icon|
+    define_method name do |object = nil|
+      if object.nil?
+        @question = ""
+        @options = [""]
+      else
+        @question, @options = object.first
       end
-      @name = key
-      @content = render(key)
+      @name = name
       render "template"
     end
   end
@@ -32,8 +22,8 @@ class OrderFormCell < HelpfulCell
   def workspace
     html = ""
     @order_form.content.each do |object|
-      key, value = object.first
-      html << cell(:order_form).(key.underscore, value)
+      name, object = object.first
+      html << cell(:order_form).(name.underscore, object)
     end
     html
   end

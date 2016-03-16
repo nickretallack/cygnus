@@ -6,7 +6,7 @@ Comment = (function(){
 
     self.comment = element;
     self.imageArea = self.comment.find(".image").parent();
-    self.author = self.comment.find("h5").text();
+    self.author = self.comment.find(".author").text();
     self.content = self.comment.find("blockquote");
     self.buttonArea = element.find(".button-area");
     self.buttonIcons = JSON.parse('<%= CONFIG[:comment_icons].to_json %>');
@@ -150,7 +150,7 @@ Comment = (function(){
 
     pmAuthor: function(div){
       var self = this;
-      window.open("/" + $("#current-user").text() + "/conversations/reply/" + self.author, "_blank");
+      window.open("/" + currentUser + "/conversations/reply/" + self.author, "_blank");
     },
 
     placeNew: function(comment){

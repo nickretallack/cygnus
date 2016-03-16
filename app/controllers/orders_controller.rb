@@ -9,15 +9,20 @@ class OrdersController < ApplicationController
 
   def create
     @form = OrderForm.find(params[OrderForm.slug])
-    @order.content = params[:content].collect{ |key, value|
-      unless value.is_a? Hash
-        {key => value}
-      else
-        unless value.values.first.is_a? Hash and value.values.first.key? "image"
-          {key => value.values.join(", ")}
+    @order.content = params[:content].map{ |key, content|
+      name = /\d+-(.+)/.match(key)[1]
+      if content["answer"] == nil
+        { name => { content["question"] => "" } }
+      elsif content["answer"].is_a? Hash
+        if content["answer"].values.first.is_a? String
+          { name => { content["question"] => content["answer"].values } }
         else
-          {key => value.values.map{ |value| "image-#{Image.render(value["image"], value["explicit"])}" }}
+          { name => { content["question"] => content["answer"].map{ |index, image|
+            "image-#{Image.render(image["image"], image["explicit"])}"
+          } } }
         end
+      else
+        { name => { content["question"] => content["answer"] } }
       end
     }
     if @order.save

@@ -1,0 +1,9 @@
+<table class = "gallery">
+  <% @answer.each do |image| %>
+    <% if /image-(\d+)/.match(image) %>
+      <td><%= cell(:image, Image.find(RegExp.last_match[1])).(:bordered) %></td>
+    <% else %>
+      No images given.
+    <% end %>
+  <% end %>
+</table>

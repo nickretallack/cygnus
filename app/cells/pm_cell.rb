@@ -1,6 +1,6 @@
 class PmCell < HelpfulCell
 
-  ["index", "show", "edit"].each do |model|
+  ["index", "show", "summary"].each do |model|
     define_method model do
       render model
     end
@@ -10,6 +10,7 @@ class PmCell < HelpfulCell
     if @model.instance_of? User
       @path = new_pm_path(@user, @model)
     elsif @model.instance_of? Message
+      @user ||= current_user
       if @model.pm_author == @user
         @path = new_pm_path(@user, @model.recipient, @model)
       else

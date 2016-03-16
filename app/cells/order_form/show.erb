@@ -2,7 +2,7 @@
   <%= f.submit "Back to Index", id: "back" %>
 <% end %>
 <div class = "button-area float-left"></div>
-<%= form_for @order_form, url: update_order_form_path(@user, @order_form), method: :patch, html: { id: "formcreator_result", class: "remote button-submit" } do |f| %>
+<%= form_for @order_form, url: update_order_form_path(@user, @order_form), method: :patch, html: { id: "formcreator_result", class: "button-submit" } do |f| %>
   <%= f.text_field :title, placeholder: "Title for form (only you will see this)" %>
   <%= f.submit "Save Form", id: "save" %>
 <% end %>

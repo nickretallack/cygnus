@@ -90,6 +90,10 @@ class User < ActiveRecord::Base
     children("message", "pm")
   end
 
+  def unread_pms
+    children("message", "unread-pm")
+  end
+
   def watched_by
     User.where("? = ANY (watching)", id)
   end

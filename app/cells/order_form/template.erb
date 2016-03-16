@@ -3,7 +3,6 @@
   <i class = "remove material-icons small">clear</i>
   <fieldset class = "question" name = "<%= @name %>">
     <legend align = "center">. <%= readable @name %></legend>
-    <div class = "content"><%= @content %></div>
-    <input type = "checkbox" name = "required"></input>
+    <div class = "content"><%= render @name %></div>
   </fieldset>
 </li>

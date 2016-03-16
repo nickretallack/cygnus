@@ -31,6 +31,10 @@
         <%= cell(:view, s).(:setting, :minimize_descriptions, "Minimize descriptions by default when you view other members' submissions") %>
         <%= cell(:view, s).(:setting, :border_comments, "Highlight your comments with a different color from other comments") %>
       <% end %>
+      <%= hidable "Commission Orders", open do %>
+        <%= cell(:view, s).(:setting, :anonymous_orders, "Accept commission orders from anonymous users") %>
+        <%= cell(:view, s).(:setting, :non_open_orders, "Accept commission orders even when you are not open for commissions") %>
+      <% end %>
       <%= hidable "Messages", open do %>
         <%= cell(:view, s).(:setting, :public_activity_feed, "Disable others from viewing your activity feed") %>
         <%= cell(:view, s).(:setting, :activity_feed, "Disable activity feed entirely") %>

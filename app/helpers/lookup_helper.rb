@@ -3,7 +3,7 @@ module LookupHelper
   def children(model, alternate_name = nil)
     matches = []
     attachments.each do |attachment|
-      if Regexp.new("^#{alternate_name || model}-").match(attachment)
+      if Regexp.new("^#{alternate_name || model}-[0-9]+").match(attachment)
         matches << attachment.split("-").last.to_i
       end
     end

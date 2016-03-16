@@ -1,6 +1,6 @@
 <% @options.each_with_index do |option, index| %>
   <div class = "spaced">
-    <%= radio_button_tag "content[#{@question}]", option %>
-    <%= label "content[#{@question}]", option.gsub(" ", "_"), option %>
+    <%= radio_button_tag "content[#{@index}-#{@name}][answer]", option %>
+    <%= label "content[#{@index}-#{@name}][answer]", option.gsub(/\W/, "_"), option %>
   </div>
 <% end %>

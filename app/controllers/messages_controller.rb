@@ -49,8 +49,9 @@ class MessagesController < ApplicationController
           if params["reply_#{Message.slug}"]
             @reply = Message.find(params["reply_#{Message.slug}"])
             @reply.update_attribute(:attachments, @reply.attachments << "comment-#{@comment.id}")
+            @submission.update_attribute(:attachments, @submission.attachments << "buried-comment-#{@comment.id}")
           else
-            @submission.update_attribute(:attachments, @submission.attachments << "comment-#{@comment.id}")
+            @submission.update_attribute(:attachments, @submission.attachments << "buried-comment-#{@comment.id}" << "comment-#{@comment.id}")
           end
           format.html { back }
           format.js { render "comments/create" }
@@ -69,11 +70,12 @@ class MessagesController < ApplicationController
           if @message.save
             if params["reply_#{Message.slug}"]
               @reply = Message.find(params["reply_#{Message.slug}"])
-              @user.update_attribute(:attachments, @user.attachments << "pm-sent-#{@message.id}")
+              @user.update_attribute(:attachments, @user.attachments << "pm-sent-#{@message.id}" )
               @reply.update_attribute(:attachments, @reply.attachments << "pm-#{@message.id}")
+              @reply.recipient.update_attribute(:attachments, @reply.recipient.attachments << "unread-pm-#{@message.id}") if @reply.recipient != @user
             else
               @user.update_attribute(:attachments, @user.attachments << "pm-sent-#{@message.id}" << "pm-#{@message.id}")
-              @reply_to.update_attribute(:attachments, @reply_to.attachments << "pm-#{@message.id}")
+              @reply_to.update_attribute(:attachments, @reply_to.attachments << "pm-#{@message.id}" << "unread-pm-#{@message.id}")
             end
             flash[:success] = "pm sent #{"to #{@reply_to.name}" if @reply_to}"
             format.html{ back }
@@ -102,8 +104,10 @@ class MessagesController < ApplicationController
       if @user == @reply_to
         flash[:danger] = "cannot pm yourself"
         render inline: cell(:pm).(:index), layout: :default
-      else
+      elsif @reply_to
         render inline: cell(:pm, @reply_to).(:new) + cell(:pm).(:index), layout: :default
+      else
+        render inline: cell(:pm).(:index), layout: :default
       end
     elsif /activity/.match url_for(params)
       session[:toasts_seen] = current_user.unread_messages.length
@@ -131,9 +135,22 @@ class MessagesController < ApplicationController
   end
 
   def poller
+    comments = []
+    if params[:submission_id] != "-1"
+      submission = Submission.find(params[:submission_id])
+      difference = submission.all_comments.count - params[:comments].to_i
+      if difference > 0
+        comments = submission.all_comments.last(difference).map{ |comment| [cell(:comment, comment).(:show, 0), (comment.comment_parent.id rescue 0)] }
+      end
+    end
+    pms = []
+    difference = current_user.unread_pms.count - params[:pms].to_i
+    if difference > 0
+      pms = current_user.unread_pms.last(difference).map{ |pm| [cell(:pm, pm).(:summary), cell(:pm, pm).(:show), (pm.pm_parent.id rescue 0)] }
+    end
     messages = current_user.unread_messages.drop(session[:toasts_seen]).map{ |message| message.content }
     session[:toasts_seen] += 1 if messages.any?
-    send_data ActiveSupport::JSON.encode(messages.first)
+    send_data ActiveSupport::JSON.encode({ activity: messages.first, comments: comments, pms: pms })
   end
 
 end

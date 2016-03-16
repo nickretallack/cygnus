@@ -1,14 +1,6 @@
 <li>
   <fieldset class = "question" name = "<%= @question %>">
     <legend align = "center">. <%= @question %></legend>
-    <% unless @answer.is_a? Array %>
-      <div class = "answer"><%= auto_link(@answer) %></div>
-    <% else %>
-      <table class = "gallery">
-        <% @answer.each do |image| %>
-          <td><%= cell(:image, Image.find(/\d+/.match(image)[0])).(:bordered) %></td>
-        <% end %>
-      </table>
-    <% end %>
+    <div class = "content"><%= render "show/#{@name}" %></div>
   </fieldset>
 </li>

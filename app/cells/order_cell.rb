@@ -2,14 +2,11 @@ class OrderCell < HelpfulCell
 
   def new
     html = ""
-    @order.content.each_with_index do |question, index|
+    @order.content.each_with_index do |object, index|
+      @name, content = object.first
+      @question, @options = content.first
       @index = index
-      @name, content = question.first
-      @question = content.select{ |item| item["name"] == "question" }.first["value"] rescue ""
       @question = "blank" if @question.blank?
-      @label = "#{index}-#{@question}"
-      @text = nil if @text == ""
-      @options = content.select{ |item| item["name"] == "option" }.map.with_index{ |item, index| item["value"].blank?? "blank #{(index + 1).ordinalize} option" : item["value"] }
       html << render("new/template")
     end
     html
@@ -17,10 +14,13 @@ class OrderCell < HelpfulCell
 
   def show
     html = ""
-    @order.content.each_with_index do |content, index|
-      @index = index
+    @order.content.each_with_index do |object, index|
+      @name, content = object.first
       @question, @answer = content.first
-      @question = Regexp.last_match(1) if /\d+-(.+)/.match(@question)
+      @question = "(blank)" if @question.blank?
+      @answer = "(no response)" if @answer.blank?
+      @answer = ["(no response)"] if @answer == [""]
+      @index = index
       html << render("show/template")
     end
     html

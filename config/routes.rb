@@ -19,8 +19,6 @@ Rails.application.routes.draw do
     patch :update, path: ":#{User.slug}/conversation/:#{Message.slug}/update", as: :update_pm
     delete :destroy, path: ":#{User.slug}/conversation/:#{Message.slug}/destroy", as: :destroy_pm
     get :index, path: ":#{User.slug}/activity(/page/:page)", as: :messages
-    post :create, path: ":#{User.slug}/messages", as: :new_message
-    delete :destroy, path: ":#{User.slug}/message/:#{Message.slug}/destroy", as: :destroy_message
     #get "message_listener", to: "messages#listener", as: :listener
     get :poller, path: "message_poller", as: :poller
     post :create, path: ":#{User.slug}/announcements", as: :new_announcement

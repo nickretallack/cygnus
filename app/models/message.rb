@@ -9,12 +9,16 @@ class Message < ActiveRecord::Base
     parents("user", "pm-sent").first
   end
 
-  def pms
-    children("message", "pm")
+  def pm
+    children("message", "pm").first
+  end
+
+  def pm_parent
+    parents("message", "pm").first
   end
 
   def recipient
-    parents("user", "pm").find{ |owner| owner != pm_author }
+    parents("user", "unread-pm").first || parents("user", "read-pm").first
   end
 
   def comment_author
@@ -23,6 +27,10 @@ class Message < ActiveRecord::Base
 
   def comments
     children("message", "comment")
+  end
+
+  def comment_parent
+    parents("message", "comment").first
   end
 
   def type

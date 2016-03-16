@@ -27,13 +27,17 @@ class OrderFormsController < ApplicationController
   end
 
   def update
-    title = params[:order_form][:title]
-    content = params[:order_form][:content] || []
-    content = content.map { |key, value| value }.collect { |value| JSON.parse(value) }
-    @order_form.update_attributes({title: title, content: content})
+    @order_form.title = params[:order_form][:title]
+    @order_form.content = params[:order_form][:content] || []
+    @order_form.content = @order_form.content.map { |key, value| value }.collect { |value| JSON.parse(value) }
     respond_to do |format|
-      format.html { back }
-      format.js
+      if @order_form.save
+        format.html { back }
+        format.js
+      else
+        format.html { back_with_errors }
+        format.js { back_with_errors_js }
+      end
     end
   end
 

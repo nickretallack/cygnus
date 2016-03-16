@@ -1,5 +1,8 @@
 <div class = "new spaced">
   <%= form_for Message.new, url: @path, html: { class: "button-submit" } do |f| %>
+    <% if @model.instance_of? User %>
+      <p class = "ic padded">Starting a new conversation with <%= @model.name %>:</p>
+    <% end %>
     <%= f.text_field :subject, placeholder: "Subject" if @model.instance_of? User %>
     <%= f.text_area :content, placeholder: "Your message here" %>
     <blockquote></blockquote>

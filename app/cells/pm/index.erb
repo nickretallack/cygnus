@@ -1,6 +1,5 @@
-<% enum_for @user.pms do |pm| %>
-  <%= hidable pm.subject.blank?? "Conversation with #{pm.pm_author == @user? pm.recipient.name : pm.pm_author.name}" : pm.subject do %>
-    <%= cell(:pm, pm).(:show) %>
-    <%= cell(:pm, pm).(:new) %>
+<div id = "pms">
+  <% enum_for @user.pms do |pm| %>
+    <%= cell(:pm, pm).(:summary) %>
   <% end %>
-<% end %>
+</div>

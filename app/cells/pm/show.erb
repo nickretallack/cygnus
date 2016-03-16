@@ -9,6 +9,8 @@
     </tr>
   </tbody>
 </table>
-<% @model.pms.each do |pm| %>
-  <%= cell(:pm, pm).(:show) %>
+<% if @model.pm %>
+  <%= cell(:pm, @model.pm).(:show) %>
+<% else %>
+  <%= cell(:pm, @model).(:new) %>
 <% end %>

@@ -18,6 +18,7 @@
     <h5 class = "nojs hc"><%= CONFIG[:name] %> relies heavily on javascript for everything from layout to form submission. Please enable javascript to browse this site.</h5>
     <div class = "js">
       <div class = "widthTester hide"></div>
+      <div class = "hide" disable-toasting = <%= current_user.setting(:disable_toasting) %>></div>
       <header>
         <%= cell(:image).(:show, :banner) %>
         <%= cell(:user).(:navigation) %>
@@ -52,7 +53,7 @@
           <%= cell(:view).(:footer) %>
           <%= CONFIG[:copyright].html_safe %>
         </div>
-        <%#= console %>
+        <%= console %>
       </footer>
     </div>
   </body>
