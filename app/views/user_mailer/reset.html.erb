@@ -1,0 +1,14 @@
+<div style = "width: 100%;">
+  <%= image_tag attachments["logo.png"].url, style: "display: block; margin: 0 auto;" %>
+  <p>
+    <h3 style = "text-align: center;">
+      Click <%= link_to "here", reset_url(@user, @user.reset_token) %> to reset your password.
+
+      <br />This link will expire in <%= CONFIG[:password_reset_shelf_life]/3600 %> hours.
+
+      <br />Your password will remain as it is until you click the link above.
+
+      <br />If you did not request your password to be reset, you may ignore this email.
+    </h3>
+  </p>
+</div>

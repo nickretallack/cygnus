@@ -44,4 +44,14 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   config.action_mailer.raise_delivery_errors = true
+
+  ActionMailer::Base.smtp_settings = {
+    :address        => 'smtp.gmail.com',
+    :domain         => 'mail.google.com',
+    :port           => 587,
+    :user_name      => 'twilightstormshi@gmail.com',
+    :password       => '579acr1111',
+    :authentication => :plain,
+    :enable_starttls_auto => true
+  }
 end

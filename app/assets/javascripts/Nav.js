@@ -8,7 +8,8 @@ Nav = (function(){
     self.banner = self.nav.parents("header").children("img");
     self.dropdownButton = self.nav.find(".dropdown-button");
     self.collapseButton = self.nav.find(".button-collapse");
-    self.footerHeight = $("footer").height();
+    self.pageWrapper = $("#page-wrapper");
+    self.footer = $("footer");
 
     self.dropdownButton.dropdown({
       belowOrigin: true,
@@ -29,6 +30,20 @@ Nav = (function(){
     $(window).on("resize.Nav", function(){
       $(window).trigger("scroll.Nav");
     });
+
+    $(window).on("resize.Nav", function(){
+      console.log(self.pageWrapper.height() < $("body").height());
+      if(self.pageWrapper.height() < $("body").height()){
+        console.log("here");
+        self.footer.css({
+          position: "absolute"
+        });
+      }
+    });
+
+    setTimeout(function(){
+      $(window).trigger("resize.Nav");
+    }, 500);
 
     $(window).keydown(function(event){
       if(Key.esc(event)) self.collapseButton.sideNav("hide");

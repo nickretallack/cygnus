@@ -16,10 +16,10 @@ Poller = (function(){
     self.unreadCounter = $("#unread-messages-count");
     self.unreadPMCounter = $("#unread-pms-count");
     self.displayTime = 4000;
-    self.pollingInterval = 2000;
+    self.pollingInterval = 30000;
     self.pollAgain = {
       min: 2000,
-      max: 2000
+      max: 10000
     }
     self.disableToasting = $("[disable-toasting]").attr("disable-toasting");
     self.disableToasting = self.disableToasting === "true"? true : false;
@@ -66,14 +66,12 @@ Poller = (function(){
               self.placeComment($(comment[0]), self.comments.find("#" + comment[1]));
             })
           }
-          console.log(data.pms);
           if(data.pms.length > 0){
             self.unreadPMCounter.text(function(index, text){
               return "PMs: " + (parseInt(/\d+/.exec(text)[0]) + 1);
             });
             if(self.pms.exists()){
               $.each(data.pms, function(index, pm){
-                console.log(pm[2]);
                 self.placePM($(pm[0]), $(pm[1]), self.pms.find("#" + pm[2]));
               });
             }
@@ -101,7 +99,6 @@ Poller = (function(){
 
     placePM: function(summary, pm, parent){
       var self = this;
-      console.log(parent);
       if(parent.exists()){
         pm.addClass("unread");
         parent.after(pm);

@@ -1,5 +1,5 @@
 <div id = "watch">
-  <% unless @model.at_least(:member) %>
+  <% unless @model.at_least? :member %>
     <blockquote class = "inline danger link"><span><%= readable @model.level %></span></blockquote>
   <% else %>
     <% if can_watch? @model %>

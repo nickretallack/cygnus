@@ -37,6 +37,10 @@
   padding: 0 !important
   margin: 0 !important
 
+.col.centered
+  +inline-block-centered
+  float: none
+
 .limit-height
   height: 500px
 
@@ -263,9 +267,9 @@ ul.disc
   height: auto !important
   padding: 0 2rem !important
 
-.submit:hover
-  font-size: 1.2rem !important
-  line-height: 2.4rem !important
+.submit:not(.link):hover
+  width: 100% !important
+  font-size: 110% !important
   color: white !important
   text-decoration: none !important
 
@@ -312,12 +316,6 @@ textarea.big
 
 #cards
   min-height: 15px
-
-.note
-  font-size: 2rem
-  line-height: 2rem
-  width: 80%
-  +block-centered
 
 div.button-area
   width: 100%

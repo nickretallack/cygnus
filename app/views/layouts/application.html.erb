@@ -16,7 +16,7 @@
   </head>
   <body>
     <h5 class = "nojs hc"><%= CONFIG[:name] %> relies heavily on javascript for everything from layout to form submission. Please enable javascript to browse this site.</h5>
-    <div class = "js">
+    <div class = "js" id = "page-wrapper">
       <div class = "widthTester hide"></div>
       <div class = "hide" disable-toasting = <%= current_user.setting(:disable_toasting) %>></div>
       <header>
@@ -48,12 +48,15 @@
         <%= yield %>
       </main>
       <footer>
-        <div class = "row hc">
-          <%= cell(controller_name.singularize).(:footer, action: action_name.to_sym) if cell_footer? %>
-          <%= cell(:view).(:footer) %>
-          <%= CONFIG[:copyright].html_safe %>
+        <div class = "row">
+          <hr />
+          <div class = "col centered">
+            <%= cell(controller_name.singularize).(:footer, action: action_name.to_sym) if cell_footer? %>
+            <%= cell(:view).(:footer) %>
+            <%= CONFIG[:copyright].html_safe %>
+          </div>
         </div>
-        <%= console %>
+        <%#= console %>
       </footer>
     </div>
   </body>

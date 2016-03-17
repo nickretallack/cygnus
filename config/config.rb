@@ -1,8 +1,8 @@
 CONFIG = {
   thumbnail_width: 150,
   thumbnail_height: 150,
-  email_required: false,
-  host: "bleatr.com",
+  email_required: true,
+  host: "localhost:3000",
   name: "Bleatr",
   copyright: "&copy;2015 Lunar Gryphon",
   image_path: Rails.root.join("app", "assets", "images"),

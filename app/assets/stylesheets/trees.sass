@@ -17,6 +17,20 @@ header
     background-color: $menu-background-color
     min-width: 300px
     max-height: 800px
+    form
+      background-color: $header-form-background-color
+      width: 90%
+      border-radius: 8px
+      min-width: 200px
+      li
+        text-align: center
+        input[type = "text"], input[type = "password"], input[type = "email"]
+          width: calc(95% - 15px)
+        input[type = "submit"]
+          width: 95%
+          background-color: $menu-button-background-color
+      li:last-child
+        +spaced
   #mobile-menu:not(.wide)
     background-color: $menu-background-color
     max-width: 60% !important
@@ -51,6 +65,15 @@ header
     pointer-events: none
     position: relative
     top: -15px
+  #reset-link
+    +block-centered
+    line-height: 0
+    height: 0
+    font-size: 20px
+    color: #039be5
+    text-shadow: none
+  #reset-link:hover
+    text-decoration: underline
   nav
     background-color: $nav-background-color
     z-index: 2
@@ -86,7 +109,7 @@ header
         line-height: inherit !important
     .button-collapse:hover
       text-decoration: none
-    .right.js
+    .right
       height: 100%
       .dropdown-content
         margin-right: -5px
@@ -103,45 +126,6 @@ header
         .col.s4
           float: left !important
           width: 33.33333% !important
-        form
-          background-color: $header-form-background-color
-          width: 60%
-          border-radius: 3px
-          padding-bottom: 5px
-          min-width: 200px
-          li
-            text-align: center
-            input
-              margin: 0 !important
-              width: calc(95% - 15px)
-            input[type = "submit"]
-              background-color: $menu-button-background-color
-          li:last-child
-            margin-top: 10px
-    .right.nojs
-      list-style: none
-      overflow: hidden
-      +vertical-center
-      a
-        margin-left: 10px
-        margin-right: 10px
-      li
-        float: left
-      .col
-        float: left !important
-      form
-        background-color: $form-background-color
-        li
-          float: left
-          margin-right: 15px
-        input
-          box-shadow: 0 -2px 5px #4A9A6D inset
-          border-radius: 50px
-          text-shadow: 0px 0px 1px $text-shadow-color
-        input[type = "submit"]
-          border-radius: 30px
-          background-color: $in-nav-menu-button-background-color
-          padding-left: 0
 
 main
   .header
@@ -164,10 +148,13 @@ main
 
 footer
   width: 100%
-  float: left
-  margin-top: 2%
-  a:hover
-    font-size: 100%
+  position: relative
+  bottom: 0
+  hr
+    position: absolute
+  .col
+    z-index: 1
+    background-color: $background-color
 
 #pools
   th:first-child, td:first-child

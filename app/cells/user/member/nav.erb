@@ -1,10 +1,10 @@
 <ul class = "right hide-on-med-and-down js">
-  <li class = "circular-button">
+  <li class = "circular-button green darken-3" title = "Unread Private Messages">
     <%= link_to pms_path(current_user) do %>
-      <div id = "unread-pms-count">PMs: <%= current_user.unread_pms.length %></div>
+      <div id = "unread-pms-count"><%= current_user.unread_pms.length %></div>
     <% end %>
   </li>
-  <li class = "circular-button">
+  <li class = "circular-button green" title = "Unread Activity Messages">
     <%= link_to messages_path(current_user) do %>
       <div id = "unread-messages-count"><%= current_user.unread_messages.length %></div>
     <% end %>

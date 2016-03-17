@@ -1,0 +1,11 @@
+<div class = "row">
+  <div class = "col s12 m6 centered">
+    <%= form_for :reset, url: send_reset_url, html: { class: "button-submit" } do |f| %>
+      <%= f.text_field :name, placeholder: "Username" %>
+      <span class = "note">&mdash;or&mdash;</span>
+      <%= f.text_field :email, placeholder: "Account email" %>
+      <%= f.submit "Send reset email", id: "pm" %>
+    <% end %>
+    <div class = "button-area centered"></div>
+  </div>
+</div>

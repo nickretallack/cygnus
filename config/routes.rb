@@ -76,18 +76,20 @@ Rails.application.routes.draw do
   controller :users do
     get :index, path: "(page/:page)", as: :users
     post :index, path: "", as: :search
-    get :new, path: "register", as: :register
     post :create, path: "users", as: :new_user
     patch :update, path: ":#{User.slug}/update", as: :update_user
     post :log_in, path: "log_in", as: :log_in
     delete :log_out, path: "log_out", as: :log_out
-    get :send_reset, path: ":#{User.slug}/send_reset", as: :send_password_reset
-    post :reset, path: ":#{User.slug}/reset", as: :password_reset
-    get :send_activation, path: ":#{User.slug}/send_activation", as: :send_user_activation
-    post :activate, path: ":#{User.slug}/activate", as: :activate_user
+    get :request_reset, path: "reset", as: :request_reset
+    get :reset, path: ":#{User.slug}/reset/:token", as: :reset
+    post :send_reset, path: "send_reset", as: :send_reset
+    post :reset_password, path: ":#{User.slug}/update_password", as: :reset_password
+    get :activate, path: ":#{User.slug}/activate/:token", as: :activate
+    post :send_activation, path: "send_activation", as: :send_activation
     get :watch, path: ":#{User.slug}/watch", as: :watch_user
     get :dashboard, path: ":#{User.slug}/settings", as: :dashboard
-    delete :destroy, path: ":#{User.slug}/attachment", as: :destroy_attachment
+    delete :destroy_attachment, path: ":#{User.slug}/attachment", as: :destroy_attachment
+    delete :destroy, path: "destroy", as: :destroy_user
   end
 
   controller :users do

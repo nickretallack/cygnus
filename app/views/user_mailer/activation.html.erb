@@ -1,0 +1,8 @@
+<div style = "width: 100%;">
+  <%= image_tag attachments["logo.png"].url, style: "display: block; margin: 0 auto;" %>
+  <p>
+    <h3 style = "text-align: center;">
+      Welcome to <%=CONFIG[:name]%>! Click <%= link_to "here", activate_url(@user, @user.activation_token) %> to activate your account.
+    </h3>
+  </p>
+</div>

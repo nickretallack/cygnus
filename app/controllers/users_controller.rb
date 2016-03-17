@@ -6,13 +6,120 @@ class UsersController < ApplicationController
     insist_on :existence, @user
   end
 
-  before_filter only: [:dashboard, :update, :destroy] do
+  before_filter only: [:dashboard, :update, :destroy_attachment] do
     insist_on :permission, @user
   end
 
   before_filter only: [:watch] do
     insist_on do
       can_watch? @user
+    end
+  end
+
+  before_filter only: [:destroy] do
+    @user = User.find_by(email: session[:email])
+    insist_on :existence, @user
+  end
+
+  before_filter only: [:send_reset] do
+    @user = User.find(params[:reset][User.slug]) || User.find_by(email: params[:reset][:email])
+    insist_on :existence, @user
+  end
+
+  before_filter only: [:reset] do
+    @user = User.find params[User.slug]
+    unless @user and @user.at_least? :member
+      flash[:danger] = "password reset not allowed on your account"
+      redirect_to :root
+    end
+    unless @user.authenticated? params[:token]
+      flash[:danger] = "invalid reset link"
+      redirect_to :root
+    end
+    if @user.reset_expired?
+      flash[:danger] = "password reset token has expired. Reset email resent automatically"
+      render :send_reset
+    end
+  end
+
+  def log_in
+    @user = User.find params[:session][:name]
+    if @user
+      if @user.authenticate params[:session][:password]
+        activate_session @user
+        flash[:success] = "logged in as #{@user.name}"
+        back
+      else
+        flash[:danger] = "incorrect password"
+        back
+      end
+    else
+      flash[:danger] = "no such user"
+      back
+    end
+  end
+
+  def log_out
+    deactivate_session
+    flash[:info] = "logged out"
+    if referer_is "orders", "new"
+      back
+    else
+      redirect_to :root
+    end
+  end
+
+  def send_activation
+    @user = User.find_by email: session[:email]
+    if @user
+      if @user.authenticate(params[:user][:password])
+        @user.send_activation_email
+        flash[:success] = "activation email resent to #{@user.email}"
+      else
+        flash[:danger] = "incorrect password for #{@user.name}"
+      end
+      back
+    else
+      flash[:danger] = "something went wrong. Please try again"
+      back
+    end
+  end
+
+  def activate
+    @user = User.find(params[User.slug])
+    if @user and @user.at_level? :unactivated and @user.authenticated? params[:token]
+      first_log_in @user
+    else
+      flash[:danger] = "invalid activation link"
+    end
+    redirect_to :root
+  end
+
+  def request_reset
+    render inline: cell(:user).(:request_reset), layout: :default
+  end
+
+  def send_reset
+    if @user
+      @user.send_reset_email
+      flash[:info] = "email sent with password reset instructions"
+      back
+    else
+      flash.now[:danger] = "email address not found"
+      back
+    end
+  end
+  def reset
+    render inline: cell(:user, @user).(:reset), layout: :default
+  end
+
+  def reset_password
+    if @user.update_attribute(:password, params[:user][:password])
+      activate_session @user
+      flash[:success] = "password has been reset"
+      redirect_to user_path(@user)
+    else
+      back_with_errors
     end
   end
 
@@ -45,9 +152,8 @@ class UsersController < ApplicationController
         session[:email] = @user.email
         @user.send_activation_email
         flash[:info] = "please check #{@user.email} to activate your account"
-        redirect_to register_path
+        back
       else
-        instance_variable_set("@user", @user)
         back_with_errors
       end
     else
@@ -57,7 +163,6 @@ class UsersController < ApplicationController
         first_log_in @user
         back
       else
-        instance_variable_set("@user", @user)
         back_with_errors
       end
     end
@@ -100,31 +205,11 @@ class UsersController < ApplicationController
     end
   end
 
-  def log_in
-    @user = User.find(params[:session][:name])
-    if @user
-      if @user.authenticate(params[:session][:password])
-        activate_session @user
-        flash[:success] = "logged in as #{@user.name}"
-        back
-      else
-        flash[:danger] = "incorrect password"
-        back
-      end
-    else
-      flash[:danger] = "no such user"
-      back
-    end
-  end
-
-  def log_out
-    deactivate_session
-    flash[:info] = "logged out"
-    if referer_is("orders", "new")
-      back
-    else
-      redirect_to :root
-    end
+  def destroy
+    session.delete :email
+    @user.destroy
+    flash[:info] = "account deleted"
+    back
   end
 
   def watch
@@ -140,67 +225,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def activate
-    @user = User.find(params[User.slug])
-    if @user and @user.at_level :unactivated and @user.authenticated? :activation, params[:activation]
-      @user.update_attribute(:level, :member)
-      @user.update_attribute(:activated_at, Time.zone.now)
-      first_log_in @user
-      redirect_to action: :show, User.slug => @user
-    else
-      flash[:danger] = "invalid activation link"
-      back
-    end
-  end
-
-  def resend_activation_email
-    @user = User.find_by(email: session[:email])
-    if @user
-      if @user.authenticate(params[:user][:password])
-        @user.send_activation_email
-        flash[:success] = "activation email resent to #{@user.email}"
-      else
-        flash[:danger] = "incorrect password for #{@user.name}"
-      end
-      redirect_to action: :new
-    else
-      flash[:danger] = "could not find user"
-      back
-    end
-  end
-
-  def reset_confirm
-    @user = User.find_by(email: params[:password_reset][:email].downcase)
-    if @user
-      @user.create_reset_digest
-      UserMailer.password_reset(@user).deliver_now
-
-      flash[:info] = "email sent with password reset instructions"
-      redirect_to root_url
-    else
-      flash.now[:danger] = "email address not found"
-      render 'reset'
-    end
-  end
-
-  def reset_return
-      
-  end
-
-  def reset_return_confirm
-    if params[:user][:password].blank?
-      flash[:danger] = "password can't be blank"
-      redirect_to :back
-    elsif @user.update_attributes(reset_params)
-      log_in @user
-      flash[:success] = "password has been reset"
-      redirect_to controller: "users", action: "show", name: @user.name
-    else
-      redirect_to :back
-    end
-  end
-
-  def destroy
+  def destroy_attachment
     @user.attachments.delete(params[:attachment])
     if /unread-message-/.match(params[:attachment])
       @user.attachments = @user.attachments << "message-#{/(\d+)/.match(params[:attachment])[1]}"
@@ -208,19 +233,6 @@ class UsersController < ApplicationController
     end
     @user.update_attribute(:attachments, @user.attachments)
     render nothing: true
-  end
-
-  private
-  
-  def check_expiration
-    @user = User.find_by id: params[:id]
-    unless @user and @user.level > CONFIG[:user_levels].index("member") and @user.authenticated?(:activation, params[:activation])
-      redirect_to root_url
-    end
-    if @user.password_reset_expired?
-      flash[:danger] = "password reset has expired"
-      redirect_to password_reset_path
-    end
   end
 
 end

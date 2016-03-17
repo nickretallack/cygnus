@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence: true, length: { maximum: 255 }, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
   
-  validates :password, length: { minimum: 6 }, allow_blank: true
+  validates :password, length: { minimum: 6, maximum: 72 }
 
   def avatar
     children("image", "avatar").first
@@ -37,21 +37,7 @@ class User < ActiveRecord::Base
   end
 
   def card
-    card = children("card").first
-    unless card
-      list_one = Card.new(title: "To Do")
-      list_one.save!
-      list_two = Card.new(title: "Doing")
-      list_two.save!
-      list_three = Card.new(title: "Done")
-      list_three.save!
-      card = Card.new(attachments: ["card-#{list_one.id}", "card-#{list_two.id}", "card-#{list_three.id}"])
-      card.save!
-      update_attribute(:attachments, attachments << "card-#{card.id}")
-    else
-      card
-    end
-    card
+    children("card").first
   end
 
   def order_forms
@@ -111,16 +97,11 @@ class User < ActiveRecord::Base
     CONFIG[:user_levels].index(grade.to_s)
   end
 
-  def send_activation_email
-    update_attribute(:activation_digest, create_activation_digest)
-    UserMailer.account_activation(self).deliver_now
-  end
-
-  def at_level(grade)
+  def at_level?(grade)
     User.level_for(level) == User.level_for(grade)
   end
 
-  def at_least(grade)
+  def at_least?(grade)
     User.level_for(level) >= User.level_for(grade)
   end
 
@@ -141,30 +122,34 @@ class User < ActiveRecord::Base
   end
   
   def User.digest(string)
-    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
-    BCrypt::Password.create(string, cost: cost)
+    BCrypt::Password.create(string)
   end
 
-  def authenticated?(attribute, token)
-    digest = send("#{attribute}_digest")
-    return false if digest.nil?
-    BCrypt::Password.new(digest).is_password?(token)
+  def authenticated?(token)
+    if activation_digest
+      BCrypt::Password.new(activation_digest).is_password?(token)
+    else
+      false
+    end
   end
 
-  def create_reset_digest  
+  def send_activation_email
+    self.activation_token = SecureRandom.urlsafe_base64
+    self.activation_digest = User.digest(self.activation_token)
+    self.save
+    UserMailer.activation(self).deliver_now
+  end
+
+  def send_reset_email  
     self.reset_token = SecureRandom.urlsafe_base64
-    update_attribute(:activation_digest,  User.digest(reset_token))
-    update_attribute(:reset_sent_at, Time.zone.now)
+    self.activation_digest = User.digest(self.reset_token)
+    self.reset_sent_at = Time.zone.now
+    self.save
+    UserMailer.reset(self).deliver_now
   end
 
-  def password_reset_expired?
+  def reset_expired?
     reset_sent_at < CONFIG[:password_reset_shelf_life].ago
   end
 
-  private
-
-  def create_activation_digest  
-      self.activation_token  = SecureRandom.urlsafe_base64
-      self.activation_digest = User.digest(activation_token)
-  end
 end

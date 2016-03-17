@@ -5,6 +5,10 @@ html
   font-family: "Blogger"
   background-color: $background-color
   overflow-y: scroll
+  height: 100%
+
+body
+  height: 100%
 
 main
   margin: 0 2%
@@ -74,13 +78,20 @@ table
     font-size: 100%
 
 span:not(.inline)
-  display: table !important
+  margin: 0 auto
+  display: table
   *
     +float-left
   a
     font-size: 130%
   a:hover
     font-size: 130%
+
+span.note
+  +spaced
+  display: block
+  font-size: 1.3rem
+  line-height: 1.3rem
 
 blockquote
   @extend .flow-text

@@ -4,8 +4,19 @@ module UsersHelper
 
   def first_log_in(user)
     pool = Pool.new(title: "Gallery")
-    pool.save!
-    user.update_attribute(:attachments, user.attachments << "pool-#{pool.id}")
+    pool.save
+    list_one = Card.new(title: "To Do")
+    list_one.save
+    list_two = Card.new(title: "Doing")
+    list_two.save
+    list_three = Card.new(title: "Done")
+    list_three.save
+    card = Card.new(attachments: ["card-#{list_one.id}", "card-#{list_two.id}", "card-#{list_three.id}"])
+    card.save
+    user.level = :member
+    user.activated_at = Time.zone.now
+    user.attachments = user.attachments << "pool-#{pool.id}" << "card-#{card.id}"
+    user.save
     activate_session user
     flash[:success] = "welcome to #{CONFIG[:name]}"
     session.delete(:email)

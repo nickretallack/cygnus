@@ -1,3 +1,27 @@
-<%= render "log_in" %>
-<hr />
-<%= render "register" %>
+<% unless session[:email] %>
+  <%= form_for :session, url: log_in_path do |f| %>
+    <li><%= f.text_field :name, placeholder: "Username" %></li>
+    <li><%= f.password_field :password, placeholder: "Password" %></li>
+    <li><%= f.submit "Log in" %></li>
+  <% end %>
+  <hr />
+  <%= link_to "Reset Password", request_reset_url, id: "reset-link" %>
+  <hr />
+  <%= form_for User.new, url: new_user_path do |f| %>
+    <li><%= f.text_field :name, placeholder: "Username" %></li>
+    <li><%= f.email_field :email, placeholder: "Email" %></li>
+    <li><%= f.password_field :password, placeholder: "Password" %></li>
+    <li><%= f.password_field :password_confirmation, placeholder: "Confirm Password" %></li>
+    <li><%= f.submit "Register" %></li>
+  <% end %>
+<% else %>
+  <%= form_for :user, url: send_activation_path do |f| %>
+    <li><%= f.password_field :password, placeholder: "Password" %></li>
+    <li><%= f.password_field :password_confirmation, placeholder: "Confirm Password" %></li>
+    <li><%= f.submit "Resend Activation" %></li>
+  <% end %>
+  <hr />
+  <%= form_for :user, url: destroy_user_path, method: :delete do |f| %>
+    <li><%= f.submit "Delete account", data: { confirm: "Are you sure?" } %></li>
+  <% end %>
+<% end %>
