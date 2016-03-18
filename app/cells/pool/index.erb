@@ -1,26 +1,14 @@
-<%= cell(:pool).(:new) unless anon? %>
+<%= cell(:pool).(:new) if can_modify? @user %>
+
+<%= form_for :back, url: root_path, html: { class: "button-submit" } do |f| %>
+  <%= f.submit "Back to main page/search", id: "back" %>
+<% end %>
+<div class = "button-area float-left"></div>
 
 <hr />
 <%= page_nav :top %>
 
-<table id = "pools">
-  <% unless @pools.length < 1 %>
-    <thead>
-      <tr>
-        <th></th>
-        <th>User</th>
-        <th>Title</th>
-        <th></th>
-      </tr>
-    </thead>
-  <% end %>
-
-  <tbody>
-    <% enum_for @pools do |pool| %>
-      <%= cell(:pool, pool).(:summary) %>
-    <% end %>
-  </tbody>
-</table>
+<%= cell(:pool, @pools).(:pools) %>
 
 <hr/>
 <%= page_nav :bottom %>

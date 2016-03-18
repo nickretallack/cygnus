@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
   end
 
   before_filter only: [:update, :destroy, :set_default] do
-    insist_on :permission, user
+    insist_on :permission, (user || item.user)
   end
 
   before_filter only: [:index, :create, :show] do
@@ -101,9 +101,17 @@ class ApplicationController < ActionController::Base
     elsif item.send word
       item.send(word).update_attribute(:explicit, params[:image][:explicit])
     end
+    if params[:image][:explicit] and not setting(:view_adult)
+      @user = (user || item.user)
+      @user.settings[:view_adult] = "1"
+      @user.save(validate: false)
+    end
   end
-  
+
+  define_method :before_destroy, proc{}
+
   define_method :destroy do
+    before_destroy
     item.destroy
     respond_to do |format|
       format.html{

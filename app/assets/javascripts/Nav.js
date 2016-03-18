@@ -32,16 +32,19 @@ Nav = (function(){
     });
 
     $(window).on("resize.Nav", function(){
-      if(self.pageWrapper.height() < $("body").height()){
+      self.footer.css({
+        position: "relative"
+      });
+      if(self.footer.position().top < $("body").height()){
         self.footer.css({
           position: "absolute"
         });
       }
     });
 
-    setTimeout(function(){
-      $(window).trigger("resize.Nav");
-    }, 500);
+    // setTimeout(function(){
+    //   $(window).trigger("resize.Nav");
+    // }, 500);
 
     $(window).keydown(function(event){
       if(Key.esc(event)) self.collapseButton.sideNav("hide");

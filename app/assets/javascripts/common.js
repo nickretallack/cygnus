@@ -52,12 +52,12 @@ Init = {
     Message: "#unread .message",
     Nav: "header nav",
     OrderForm: ".order-form",
-    ViewAnyway: ".adult.image",
     Workboard: ".top-card",
 
     // keep these last so contents are loaded already
     Destroyable: ".destroyable",
-    Hidable: ".hidable"
+    Hidable: ".hidable",
+    ViewAnyway: ".adult.image"
   }
 };
 

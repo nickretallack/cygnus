@@ -1,0 +1,2 @@
+$("#submissions").find("#" + <%= @submission.id %>).remove();
+if(!$("#submissions").find(".new").next().exists()) $("#nothing").show();

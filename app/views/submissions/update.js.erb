@@ -1,0 +1,2 @@
+$("#submissions").find("#" + <%= @submission.id %>).replaceWith("<%=j cell(:submission, @submission).(:edit_summary) %>");
+initialize();

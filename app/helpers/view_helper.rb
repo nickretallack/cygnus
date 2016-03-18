@@ -28,9 +28,9 @@ module ViewHelper
 
   def enum_for(collection, word: nil, reverse: false, index: false)
     if word.nil?
-      concat "<span #{"class = 'nojs'" unless collection} id = 'nothing'>Nothing here.</span>".html_safe
+      concat "<span #{"class = 'nojs'" unless collection.length < 1} id = 'nothing'>Nothing here.</span>".html_safe
     else
-      concat "<span #{"class = 'nojs'" unless collection} id = 'nothing'>No #{word}.</span>".html_safe
+      concat "<span #{"class = 'nojs'" unless collection.length < 1} id = 'nothing'>No #{word}.</span>".html_safe
     end
     unless reverse
       if index

@@ -1,23 +1,26 @@
-<% if @pool and can_modify? @pool.users %>
-  <%= form_for @pool, url: update_pool_path(@pool), method: :patch, html: { class: "button-submit" } do |f| %>
+<% if @pool and can_modify? @pool.user %>
+  <%= form_for @pool, url: update_pool_path(@pool), method: :patch, html: { class: "remote button-submit full-width" } do |f| %>
     <%= f.text_field :title, placeholder: @pool.title || "Title for Pool", class: "title" %>
     <%= f.submit "Update Pool Title", id: "save" %>
   <% end %>
+  <div class = "button-area float-right"></div>
 <% end %>
+<%= form_for :back, url: pools_path(@pool.user), html: { class: "button-submit" } do |f| %>
+  <%= f.submit "#{can_modify?(@pool.user)? "Your" : "This user's"} pools", id: "back" %>
+<% end %>
+<div class = "button-area float-left"></div>
 <%= cell(:view).(:page_nav) %>
 <table class = "gallery" id = "submissions">
   <tr>
-    <% if @pool and can_modify? @pool.users %>
+    <% if @pool and can_modify? @pool.user %>
       <td class = "new"><%= cell(:submission).(:new) %></td>
     <% end %>
     <% enum_for @submissions, word: "submissions", reverse: true do |submission| %>
-      <td <%= "class = 'hidden'" if submission.hidden %>>
-        <% if (@pool and can_modify? @pool.users) or can_modify? submission.users %>
-          <%= cell(:submission, submission).(:edit_summary) %>
-        <% else %>
-          <%= cell(:submission, submission).(:show_summary) %>
-        <% end %>
-      </td>
+      <% if (@pool and can_modify? @pool.user) or can_modify? submission.user %>
+        <%= cell(:submission, submission).(:edit_summary) %>
+      <% else %>
+        <%= cell(:submission, submission).(:show_summary) %>
+      <% end %>
     <% end %>
     <% 11.times do %>
       <td class = "spacer"></td>

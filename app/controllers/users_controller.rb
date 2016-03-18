@@ -4,7 +4,7 @@ class UsersController < ApplicationController
     insist_on :referer
   end
 
-  before_filter only: [:show, :watch, :update, :log_out, :activate, :reset, :update_password] do
+  before_filter only: [:show, :watch, :update, :activate, :reset, :update_password] do
     insist_on :existence, @user
   end
 
@@ -142,10 +142,11 @@ class UsersController < ApplicationController
         session[:terms]
       end
     }.call
-    params[:terms] = CONFIG[:default_search_terms] unless params[:page] || params[:terms] || !session[:terms]
+    params[:page] ||= 1
+    session[:page] = params[:page]
     session[:terms] = params[:terms] if params[:terms]
-    @users = paginate User.search(session[:terms])
-    @total_users = User.search(session[:terms]).count
+    paginate User.search(session[:terms])
+    redirect_to users_path(session[:page]) if params[:page] != session[:page]
   end
 
   def dashboard
@@ -207,7 +208,7 @@ class UsersController < ApplicationController
       @user.tags = params[:user][:tags]
       @user.details = params[:user][:details]
     end
-    if @user.save
+    if @user.save(validate: false)
       back
     else
       back_with_errors

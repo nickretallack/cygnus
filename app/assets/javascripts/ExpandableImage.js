@@ -30,7 +30,11 @@ ExpandableImage = (function(){
                         html: $("<img />", {
                           src: self.image.attr("src").replace(/bordered|limited|medium/, "full"),
                           css: {
-                            height: "100%"
+                            maxHeight: "95%",
+                            maxWidth: "95%",
+                            position: "relative",
+                            top: "50%",
+                            transform: "translateY(-50%)"
                           }
                         })
                       });

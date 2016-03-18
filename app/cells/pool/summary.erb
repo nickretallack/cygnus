@@ -1,11 +1,11 @@
 <tr id = <%= @model.id %>>
   <% if can_modify? @model.user %>
     <td>
-      <%= form_for @model, url: destroy_pool_path(@model.user, @model), method: :delete, html: { class: "remote button-submit" } do |f| %>
+      <%= form_for @model, url: destroy_pool_path(@model), method: :delete, html: { class: "remote button-submit" } do |f| %>
         <%= f.submit "Delete", id: "delete", data: { confirm: "Delete #{title_for @model}?" } %>
       <% end %>
       <% if @model != @model.user.gallery %>
-        <%= form_for @model, url: default_pool_path(@model.user, @model), html: { class: "button-submit" } do |f| %>
+        <%= form_for @model, url: default_pool_path(@model), html: { class: "remote button-submit" } do |f| %>
           <%= f.submit "Make this your main gallery", id: "default" %>
         <% end %>
       <% end %>

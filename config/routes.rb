@@ -28,10 +28,10 @@ Rails.application.routes.draw do
   controller :pools do
     get :index, path: "(:#{User.slug})/pools(/page/:page)", as: :pools
     post :create, path: ":#{User.slug}/pools", as: :new_pool
-    patch :update, path: ":#{User.slug}/pool/:#{Pool.slug}/update", as: :update_pool
-    delete :destroy, path: ":#{User.slug}/pool/:#{Pool.slug}/destroy", as: :destroy_pool
+    patch :update, path: "pool/:#{Pool.slug}/update", as: :update_pool
+    delete :destroy, path: "pool/:#{Pool.slug}/destroy", as: :destroy_pool
     get :gallery, path: ":#{User.slug}/gallery", as: :gallery
-    patch :set_default, path: ":#{User.slug}/pool/:#{Pool.slug}/default", as: :default_pool
+    patch :set_default, path: "pool/:#{Pool.slug}/default", as: :default_pool
   end
 
   controller :submissions do

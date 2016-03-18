@@ -1,4 +1,6 @@
-<%= link_to submission_path(@pool, @model) do %>
-  <%= title_for @model %>
-  <%= cell(:image, @model.image).(:bordered) %>
-<% end %>
+<td id = <%= @model.id %>>
+  <%= link_to submission_path(@pool, @model) do %>
+    <%= title_for @model %>
+    <%= cell(:image, @model.image).(:bordered) %>
+  <% end %>
+<td>

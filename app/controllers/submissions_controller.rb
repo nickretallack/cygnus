@@ -63,17 +63,18 @@ class SubmissionsController < ApplicationController
       @submission.title = params[:submission][:title]
       @submission.description = params[:submission][:description]
     end
-    if @submission.save
-      back
-    else
-      back_with_errors
+    respond_to do |format|
+      if @submission.save
+        format.html{
+          flash[:success] = "submission updated"
+          back
+        }
+        format.js
+      else
+        format.html { back_with_errors }
+        format.js { back_with_errors_js }
+      end
     end
-  end
-
-  def destroy
-    flash[:success] = "#{@submission.title} destroyed"
-    @submission.destroy
-    back
   end
 
   def fav

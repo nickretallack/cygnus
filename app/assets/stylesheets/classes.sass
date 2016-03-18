@@ -40,6 +40,10 @@
 .col.centered
   +inline-block-centered
   float: none
+  a
+    padding: 0 15px
+  div
+    display: inline-block
 
 .limit-height
   height: 500px
@@ -50,7 +54,6 @@
 .console
   max-height: 115px !important
   position absolute
-  
 
 .cover
   background-color: rgba(47, 79, 79, .8)
@@ -223,6 +226,8 @@ ul.disc
   color: black
   .click-area
     display: inline-block
+    .image
+      display: inline
     img
       cursor: pointer !important
   label
@@ -334,18 +339,25 @@ div.button-area
   bottom: 5px
   background-color: $background-color
   z-index: 1
-  border-radius: 18px
+  border-radius: 14px
   width: auto
+  border: 1px solid black
 
 .button-area.float-left
-  left: 0
+  left: 10px
   padding-left: 10px
   padding-right: 10px
 
+.button-area.float-left:nth-child(2)
+  left: 100px
+
 .button-area.float-right
-  right: 0
+  right: 10px
   padding-left: 10px
   padding-right: 10px
+
+.button-area.float-right:nth-child(2)
+  right: 100px
 
 .button-area.centered-small
   width: 20%

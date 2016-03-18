@@ -15,22 +15,22 @@ class SubmissionCell < HelpfulCell
   def header(options)
     case options[:action]
     when :index
-      if @user
-        unless options[:sanitize]
-          "#{link_to @user.name, user_path(@user.name)}'s #{title_for @pool}"
+      if @pool
+        if can_modify? @pool.user
+          unless options[:sanitize]
+            ""
+          else
+            "#{title_for @pool} (#{@pool.user.name})"
+          end
         else
-          "#{@user.name}'s #{title_for @pool}"
-        end
-      else
-        if @pool
           unless options[:sanitize]
             "#{title_for @pool} (#{link_to @pool.user.name, user_path(@pool.user.name)})"
           else
             "#{title_for @pool} (#{@pool.user.name})"
           end
-        else
-          "All submissions"
         end
+      else
+        "All submissions"
       end
     when :show
       if (@pool and can_modify? @pool.user) or can_modify? @submission.pool.user

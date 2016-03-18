@@ -5,7 +5,8 @@ html
   font-family: "Blogger"
   background-color: $background-color
   overflow-y: scroll
-  height: 100%
+  overflow-x: hidden
+  height: 115%
 
 body
   height: 100%
@@ -63,6 +64,7 @@ img
   position: relative
   width: auto
   box-sizing: content-box
+  max-width: 100%
 
 form
   background-color: $form-background-color
@@ -72,6 +74,10 @@ form
     height: 398px
     col
       height: 100%
+
+form.full-width
+  input
+    padding: 0
 
 table
   a:hover
