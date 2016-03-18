@@ -10,19 +10,14 @@ Rails.application.routes.draw do
 
   controller :messages do
     get :new, path: "reply", as: :reply_template
-    post :create, path: "submission/:#{Submission.slug}(/reply/:reply_#{Message.slug})/comments", as: :new_comment
-    patch :update, path: "comment/:#{Message.slug}/update", as: :update_comment
-    delete :destroy, path: "comment/:#{Message.slug}/destroy", as: :destroy_comment
+    post :create_comment, path: "submission/:#{Submission.slug}(/reply/:reply_#{Message.slug})/comments", as: :new_comment
     get :index, path: ":#{User.slug}/conversations(/page/:page)", as: :pms
     get :index, path: ":#{User.slug}/conversations/reply/:reply_to_#{User.slug}", as: :pm_author
-    post :create, path: ":#{User.slug}/to/:reply_to_#{User.slug}(/reply/:reply_#{Message.slug})/conversations", as: :new_pm
-    patch :update, path: ":#{User.slug}/conversation/:#{Message.slug}/update", as: :update_pm
-    delete :destroy, path: ":#{User.slug}/conversation/:#{Message.slug}/destroy", as: :destroy_pm
-    get :index, path: ":#{User.slug}/activity(/page/:page)", as: :messages
+    post :create_pm, path: ":#{User.slug}/to/:reply_to_#{User.slug}(/reply/:reply_#{Message.slug})/conversations", as: :new_pm
+    get :activity, path: ":#{User.slug}/activity(/page/:page)", as: :messages
     #get "message_listener", to: "messages#listener", as: :listener
     get :poller, path: "message_poller", as: :poller
-    post :create, path: ":#{User.slug}/announcements", as: :new_announcement
-    patch :update, path: ":#{User.slug}/announcement/:#{Message.slug}/update", as: :update_annoucement
+    post :create_announcement, path: ":#{User.slug}/announcements", as: :new_announcement
   end
 
   controller :images do
@@ -32,16 +27,17 @@ Rails.application.routes.draw do
 
   controller :pools do
     get :index, path: "(:#{User.slug})/pools(/page/:page)", as: :pools
-    post :create, path: "pools", as: :new_pool
-    patch :update, path: "pool/:#{Pool.slug}/update", as: :update_pool
-    delete :destroy, path: "pool/:#{Pool.slug}/destroy", as: :destroy_pool
+    post :create, path: ":#{User.slug}/pools", as: :new_pool
+    patch :update, path: ":#{User.slug}/pool/:#{Pool.slug}/update", as: :update_pool
+    delete :destroy, path: ":#{User.slug}/pool/:#{Pool.slug}/destroy", as: :destroy_pool
     get :gallery, path: ":#{User.slug}/gallery", as: :gallery
+    patch :set_default, path: ":#{User.slug}/pool/:#{Pool.slug}/default", as: :default_pool
   end
 
   controller :submissions do
     get :index, path: "(pool/:pool_#{Pool.slug})/submissions(/page/:page)", as: :submissions
     get :show, path: "(pool/:pool_#{Pool.slug})/submission/:#{Submission.slug}", as: :submission
-    post :create, path: "(pool/:pool_#{Pool.slug})/submissions", as: :new_submission
+    post :create, path: "pool/:pool_#{Pool.slug}/submissions", as: :new_submission
     patch :update, path: "submission/:#{Submission.slug}/update", as: :update_submission
     delete :destroy, path: "submission/:#{Submission.slug}/destroy", as: :destroy_submission
     get :fav, path: "submisison/:#{Submission.slug}/fav", as: :fav_submission
@@ -53,7 +49,7 @@ Rails.application.routes.draw do
     get :show, path: ":#{User.slug}/order_form/:#{OrderForm.slug}", as: :order_form
     patch :update, path: ":#{User.slug}/order_form/:#{OrderForm.slug}/update", as: :update_order_form
     delete :destroy, path: ":#{User.slug}/order_form/:#{OrderForm.slug}/destroy", as: :destroy_order_form
-    get :set_default, path: ":#{User.slug}/order_forms/:#{OrderForm.slug}/default", as: :default_order_form
+    patch :set_default, path: ":#{User.slug}/order_forms/:#{OrderForm.slug}/default", as: :default_order_form
   end
 
   controller :orders do
@@ -83,7 +79,7 @@ Rails.application.routes.draw do
     get :request_reset, path: "reset", as: :request_reset
     get :reset, path: ":#{User.slug}/reset/:token", as: :reset
     post :send_reset, path: "send_reset", as: :send_reset
-    post :reset_password, path: ":#{User.slug}/update_password", as: :reset_password
+    post :update_password, path: ":#{User.slug}/update_password", as: :update_password
     get :activate, path: ":#{User.slug}/activate/:token", as: :activate
     post :send_activation, path: "send_activation", as: :send_activation
     get :watch, path: ":#{User.slug}/watch", as: :watch_user

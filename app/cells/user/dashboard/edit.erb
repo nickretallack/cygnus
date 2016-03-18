@@ -41,8 +41,8 @@
         <%= cell(:view, s).(:setting, :disable_toasting, "Disable popup/toasted activity messages") %>
       <% end %>
       <%= hidable "Indexing and Pagination", open do %>
-        <%= cell(:view, s).(:setting, :pagination_at_top, "Show the page-index bar above the index") %>
-        <%= cell(:view, s).(:setting, :pagination_at_bottom, "Show page-index bar below the index") %>
+        <%= cell(:view, s).(:setting, :pagination_at_top, "Show the page-index bar only above the index") %>
+        <%= cell(:view, s).(:setting, :pagination_at_both, "Show page-index bar both above and below the index") %>
       <% end %>
       <%= hidable "Recent Submissions", open do %>
         <%= cell(:view, s).(:setting, :recent_submissions, "Show recent submissions on the main page") %>

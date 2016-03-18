@@ -32,9 +32,7 @@ Nav = (function(){
     });
 
     $(window).on("resize.Nav", function(){
-      console.log(self.pageWrapper.height() < $("body").height());
       if(self.pageWrapper.height() < $("body").height()){
-        console.log("here");
         self.footer.css({
           position: "absolute"
         });

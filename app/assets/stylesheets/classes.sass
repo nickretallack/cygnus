@@ -370,8 +370,6 @@ div.button-area
   background-color: $flash-background-color
   width: 100%
   box-shadow: none
-  .row
-    height: 100%
 
 .success
   color: $success-color !important
@@ -504,9 +502,8 @@ i[class *= "comm-"]
 //active container
 
 .destroyable
-  height: 32px
   .top
-    height: 28px
+    min-height: 32px
     font-size: 26px
     width: 100%
   .title
@@ -528,7 +525,7 @@ i[class *= "comm-"]
     width: 100%
     font-size: 18px
     line-height: 26px
-    height: 28px
+    min-height: 28px
     +no-select
   .title
     float: left

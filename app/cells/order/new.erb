@@ -1,0 +1,15 @@
+<%= form_for Order.new, url: place_order_path(@order), html: { multipart: true, class: "button-submit" } do |f| %>
+  <% if anon? %>
+    <div class = "row">
+      <div class = "col s12 m6 centered">
+        <%= f.password_field :name, placeholder: "Your name" %>
+        <%= f.password_field :email, placeholder: "Your email" %>
+      </div>
+    </div>
+  <% end %>
+  <ol class = "order">
+    <%= cell(:order).(:new_order) %>
+  </ol>
+  <%= f.submit "Place Order", id: "send" %>
+<% end %>
+<div class = "button-area float-right"></div>

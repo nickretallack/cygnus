@@ -2,6 +2,41 @@ class MessagesController < ApplicationController
   
   #include ActionController::Live
 
+  before_filter only: [:new, :create_comment, :create_pm, :create_announcement] do
+    insist_on :referer
+  end
+
+  before_filter only: [:create, :new, :create_comment, :create_announcement, :poller, :listener] do
+    insist_on :logged_in
+  end
+
+  before_filter only: [:index, :activity, :create_pm, :update] do
+    insist_on :permission, @user
+  end
+
+  before_filter only: [:new, :create_comment] do
+    @submission = Submission.find(params[Submission.slug])
+    unless @submission
+      flash[:danger] = "submission #{params[Submission.slug]} not exist"
+      back
+    end
+  end
+
+  before_filter only: [:new, :create_comment] do
+    route = Rails.application.routes.recognize_path(request.referer)
+    unless route[:controller] == "submission" and route[:action] == "show" and route["submission_#{Submission.slug}"] == @submission.id
+      flash[:danger] = "can only comment on a submission from its own page"
+      back
+    end
+  end
+
+  before_filter only: [:create_pm] do
+    unless referer_is "messages", "index"
+      flash[:danger] = "can only send a pm from your conversations page"
+      back
+    end
+  end
+
   before_filter only: [:create_announcement] do
     insist_on do
       at_least :admin
@@ -19,105 +54,97 @@ class MessagesController < ApplicationController
     end
   end
 
-  before_filter only: [:create] do
-    insist_on :logged_in
-  end
-
-  before_filter only: [:index, :update, :destroy] do
-    insist_on :permission, @user
-  end
-
-  def create_announcement
-    @new_message = Message.new
-    
-  end
-
   def new
     @submission = Submission.find(params[:submission])
     @reply_to = Message.find(params[:reply])
     send_data cell(:comment, @reply_to).(:new, params[:indent].to_i + 1)
   end
 
-  def create
-    case params[:commit].downcase
-    when "comment"
-      @submission = Submission.find(params[Submission.slug])
-      @comment = Message.new(content: params[:message][:content])
+  def create_comment
+    @submission = Submission.find(params[Submission.slug])
+    @comment = Message.new(content: params[:message][:content])
+    respond_to do |format|
+      if @comment.save
+        current_user.update_attribute(:attachments, current_user.attachments << "comment-#{@comment.id}")
+        if params["reply_#{Message.slug}"]
+          @reply = Message.find(params["reply_#{Message.slug}"])
+          @reply.update_attribute(:attachments, @reply.attachments << "comment-#{@comment.id}")
+          @submission.update_attribute(:attachments, @submission.attachments << "buried-comment-#{@comment.id}")
+        else
+          @submission.update_attribute(:attachments, @submission.attachments << "buried-comment-#{@comment.id}" << "comment-#{@comment.id}")
+        end
+        format.html { back }
+        format.js { render "comments/create" }
+      else
+        format.html{ back_with_errors }
+        format.js{ back_with_errors_js }
+      end
+    end
+  end
+
+  def create_pm
+    if @user == @reply_to
+      flash[:danger] = "can't pm yourself"
+      back
+    else
+      @message = Message.new(subject: params[:message][:subject], content: params[:message][:content])
       respond_to do |format|
-        if @comment.save
-          current_user.update_attribute(:attachments, current_user.attachments << "comment-#{@comment.id}")
+        if @message.save
           if params["reply_#{Message.slug}"]
             @reply = Message.find(params["reply_#{Message.slug}"])
-            @reply.update_attribute(:attachments, @reply.attachments << "comment-#{@comment.id}")
-            @submission.update_attribute(:attachments, @submission.attachments << "buried-comment-#{@comment.id}")
+            @user.update_attribute(:attachments, @user.attachments << "pm-sent-#{@message.id}" )
+            @reply.update_attribute(:attachments, @reply.attachments << "pm-#{@message.id}")
+            @reply.recipient.update_attribute(:attachments, @reply.recipient.attachments << "unread-pm-#{@message.id}") if @reply.recipient != @user
           else
-            @submission.update_attribute(:attachments, @submission.attachments << "buried-comment-#{@comment.id}" << "comment-#{@comment.id}")
+            @user.update_attribute(:attachments, @user.attachments << "pm-sent-#{@message.id}" << "pm-#{@message.id}")
+            @reply_to.update_attribute(:attachments, @reply_to.attachments << "pm-#{@message.id}" << "unread-pm-#{@message.id}")
           end
-          format.html { back }
-          format.js { render "comments/create" }
+          format.html{
+            flash[:success] = "pm sent #{"to #{@reply_to.name}" if @reply_to}"
+            back
+          }
+          format.js{ render "pms/create" }
         else
           format.html{ back_with_errors }
-          format.js{ back_with_errors_js }
+          format.js { back_with_errors_js }
         end
       end
-    when "send"
-      if @user == @reply_to
-        flash[:danger] = "can't pm yourself"
-        back
-      else
-        @message = Message.new(subject: params[:message][:subject], content: params[:message][:content])
-        respond_to do |format|
-          if @message.save
-            if params["reply_#{Message.slug}"]
-              @reply = Message.find(params["reply_#{Message.slug}"])
-              @user.update_attribute(:attachments, @user.attachments << "pm-sent-#{@message.id}" )
-              @reply.update_attribute(:attachments, @reply.attachments << "pm-#{@message.id}")
-              @reply.recipient.update_attribute(:attachments, @reply.recipient.attachments << "unread-pm-#{@message.id}") if @reply.recipient != @user
-            else
-              @user.update_attribute(:attachments, @user.attachments << "pm-sent-#{@message.id}" << "pm-#{@message.id}")
-              @reply_to.update_attribute(:attachments, @reply_to.attachments << "pm-#{@message.id}" << "unread-pm-#{@message.id}")
-            end
-            flash[:success] = "pm sent #{"to #{@reply_to.name}" if @reply_to}"
-            format.html{ back }
-            format.js
-          else
-            format.html{ back_with_errors }
-            format.js
-          end
-        end
-      end
-    when "announce"
-      @message = Message.new(subject: params[:message][:subject], content: params[:message][:content])
+    end
+  end
+
+  def create_announcement
+    @message = Message.new(subject: params[:message][:subject], content: params[:message][:content])
+    respond_to do |format|
       if @message.save
         User.all.each do |user|
           user.update_attribute(:attachments, user.attachments << "announcement-#{@message.id}")
         end
-        back
+        format.html{
+          flash[:success] = "message created"
+          back
+        }
+        format.js { render "announcements/create" }
       else
-        back_with_errors
+        format.html{ back_with_errors }
+        format.js{ back_with_errors_js }
       end
     end
   end
 
   def index
-    if /conversations/.match url_for(params)
-      if @user == @reply_to
-        flash[:danger] = "cannot pm yourself"
-        render inline: cell(:pm).(:index), layout: :default
-      elsif @reply_to
-        render inline: cell(:pm, @reply_to).(:new) + cell(:pm).(:index), layout: :default
-      else
-        render inline: cell(:pm).(:index), layout: :default
-      end
-    elsif /activity/.match url_for(params)
-      session[:toasts_seen] = current_user.unread_messages.length
-      render inline: cell(:activity).(:index), layout: :default
+    if @user == @reply_to
+      flash[:danger] = "cannot pm yourself"
+      render inline: cell(:pm).(:index), layout: :default
+    elsif @reply_to
+      render inline: cell(:pm, @reply_to).(:new) + cell(:pm).(:index), layout: :default
+    else
+      render inline: cell(:pm).(:index), layout: :default
     end
   end
 
-  def destroy
-    @message.destroy
-    back
+  def activity
+    session[:toasts_seen] = current_user.unread_messages.length
+    render inline: cell(:activity).(:index), layout: :default
   end
 
   def listener #sse

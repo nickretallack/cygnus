@@ -4,7 +4,7 @@ class OrderFormsController < ApplicationController
     insist_on :logged_in
   end
 
-  before_filter only: [:create, :update, :destroy] do
+  before_filter only: [:create, :update, :destroy, :set_default] do
     insist_on :permission, @user
   end
 
@@ -42,14 +42,17 @@ class OrderFormsController < ApplicationController
   end
 
   def set_default
-    attachments = @user.attachments
-    attachments.delete("order_form-#{params[OrderForm.slug]}")
-    attachments.unshift("order_form-#{params[OrderForm.slug]}")
-    @user.update_attribute(:attachments, attachments)
+    @user.attachments.delete("order_form-#{params[OrderForm.slug]}")
+    @user.attachments.unshift("order_form-#{params[OrderForm.slug]}")
     respond_to do |format|
-      format.html { back }
-      format.js
+      if @user.save
+        format.html { back }
+        format.js { render "index" }
+      else
+        format.html { back_with_errors }
+        format.js { back_with_errors_js }
+      end
     end
   end
-  
+
 end

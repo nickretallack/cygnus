@@ -1,7 +1,0 @@
-<%= form_for Order.new, url: place_order_path(@order), html: { multipart: true, class: "button-submit" } do |f| %>
-  <ol class = "order">
-    <%= cell(:order).(:new) %>
-  </ol>
-  <%= f.submit "Place Order", id: "send" %>
-<% end %>
-<div class = "button-area float-right"></div>

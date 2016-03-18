@@ -2,6 +2,14 @@ module ActiveRecordExtensions
   extend ActiveSupport::Concern
 
   class_methods do
+    def each_page_show(number)
+      self.instance_variable_set("@results_per_page", number)
+    end
+
+    def results_per_page
+      self.instance_variable_get("@results_per_page")
+    end
+
     def custom_slug(slug, case_insensitive: false)
       self.redefine_method :to_param do
         self.send(slug)

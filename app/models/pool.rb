@@ -1,10 +1,7 @@
 class Pool < ActiveRecord::Base
-  include LookupHelper
 
-  def Pool.results_per_page
-    15
-  end
-
+  each_page_show 15
+  
   def users
     parents("user")
   end

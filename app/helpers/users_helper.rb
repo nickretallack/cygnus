@@ -16,7 +16,7 @@ module UsersHelper
     user.level = :member
     user.activated_at = Time.zone.now
     user.attachments = user.attachments << "pool-#{pool.id}" << "card-#{card.id}"
-    user.save
+    user.save(validate: false)
     activate_session user
     flash[:success] = "welcome to #{CONFIG[:name]}"
     session.delete(:email)
@@ -32,6 +32,10 @@ module UsersHelper
 
   def current_user?(user)
     user == current_user
+  end
+
+  def setting(setting)
+    current_user.setting(setting)
   end
 
   # search terms
@@ -58,23 +62,23 @@ module UsersHelper
   end
 
   def can_modify?(user)
-    at_least?(:mod) or current_user? user
+    user and (at_least?(:mod) or current_user? user)
   end
 
   def can_watch?(user)
-    at_least?(:admin) or (not anon? and not current_user? user)
+    user and (at_least?(:admin) or (not anon? and not current_user? user))
   end
 
   def watching?(user)
-    current_user.watching.include? user.id
+    user and current_user.watching.include? user.id
   end
 
   def can_fav?(submission)
-    not anon? and not current_user? submission.pool.user
+    submission and not anon? and not current_user? submission.pool.user
   end
 
   def faved?(submission)
-    current_user.favs.include? submission.id
+    submission and current_user.favs.include? submission.id
   end
 
   #insist_on must be used inside a separate method like a before_filter to avoid calling redirect twice in the same action
@@ -84,6 +88,11 @@ module UsersHelper
     when :logged_in
       if anon?
         flash[:danger] = "please sign in first"
+        redirect_to :root
+      end
+    when :logged_out
+      unless anon?
+        flash[:danger] = "cannot perform this action while logged in"
         redirect_to :root
       end
     when :permission
@@ -99,6 +108,10 @@ module UsersHelper
       unless user
         flash[:danger] = "no such user"
         redirect_to :root
+      end
+    when :referer
+      unless request.referer and Regexp.new(Regexp.escape(CONFIG[:host])).match(URI.parse(request.referer).host)
+        render nothing: true
       end
     else
       unless Proc.new.call

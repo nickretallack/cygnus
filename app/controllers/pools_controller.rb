@@ -4,33 +4,34 @@ class PoolsController < ApplicationController
     insist_on :logged_in
   end
 
-  def after_save
-    current_user.update_attribute(:attachments, current_user.attachments << "pool-#{@pool.id}")
+  before_filter only: [:gallery] do
+    insist_on :existence, @user
   end
 
-  def index
-    if @user
-      @total_pools = @user.pools.count
-      @pools = paginate @user.pools, Pool.results_per_page
-    else
-      @total_pools = Pool.all.count
-      @pools = paginate Pool.all, Pool.results_per_page
-    end
+  def after_save
+    current_user.update_attribute(:attachments, current_user.attachments << "pool-#{@pool.id}")
   end
 
   def gallery
     redirect_to submissions_path(@user.gallery)
   end
 
-  def destroy
-    @pool = Pool.find(params[:id])
-    flash[:success] = "#{title_for @pool} destroyed"
-    @pool.destroy
-    back
+  def before_update
+    @pool.title = params[:pool][:title]
   end
 
-  def update
-    @pool.update_attributes(params.require(:pool).permit([:title]))
-    back
+  def set_default
+    @user.attachments.delete("pool-#{params[Pool.slug]}")
+    @user.attachments.unshift("pool-#{params[Pool.slug]}")
+    respond_to do |format|
+      if @user.save
+        format.html { back }
+        format.js { render "index" }
+      else
+        format.html { back_with_errors }
+        format.js { back_with_errors_js }
+      end
+    end
   end
+
 end

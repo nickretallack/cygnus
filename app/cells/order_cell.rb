@@ -1,6 +1,12 @@
 class OrderCell < HelpfulCell
 
-  def new
+  ["new", "show"].each do |method|
+    define_method method do
+      render method
+    end
+  end
+
+  def new_order
     html = ""
     @order.content.each_with_index do |object, index|
       @name, content = object.first
@@ -12,7 +18,7 @@ class OrderCell < HelpfulCell
     html
   end
 
-  def show
+  def show_order
     html = ""
     @order.content.each_with_index do |object, index|
       @name, content = object.first
@@ -35,22 +41,10 @@ class OrderCell < HelpfulCell
         "Order from #{@order.user.name}"
       end
     when :show
-      if current_user == @order.patron
-        unless options[:sanitize]
-          "Order to #{@order.user.name}"
-        else
-          "Order to #{link_to @order.user.name, user_path(@order.user)}"
-        end
+      unless options[:sanitize]
+        "Order from #{link_to(@order.patron.name, user_path(@order.patron)) rescue @order.name}"
       else
-        unless options[:sanitize]
-          if @order.patron.instance_of? AnonymousUser
-            "Order from #{@order.patron.name}"
-          else
-            "Order from #{link_to @order.patron.name, user_path(@order.patron)}"
-          end
-        else
-          "Order from #{@order.patron.name}"
-        end
+        "Order from #{@order.patron.name}"
       end
     end
   end

@@ -1,10 +1,7 @@
 class User < ActiveRecord::Base
   include LookupHelper
 
-  def User.results_per_page
-    10
-  end
-
+  each_page_show 10
   custom_slug :name, case_insensitive: true
   has_secure_password
   attr_accessor  :activation_token, :reset_token
@@ -91,6 +88,10 @@ class User < ActiveRecord::Base
 
   def announcements
     children("message", "announcement")
+  end
+
+  def announcement
+    announcements.last
   end
 
   def self.level_for(grade)

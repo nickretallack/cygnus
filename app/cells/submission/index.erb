@@ -1,12 +1,18 @@
+<% if @pool and can_modify? @pool.users %>
+  <%= form_for @pool, url: update_pool_path(@pool), method: :patch, html: { class: "button-submit" } do |f| %>
+    <%= f.text_field :title, placeholder: @pool.title || "Title for Pool", class: "title" %>
+    <%= f.submit "Update Pool Title", id: "save" %>
+  <% end %>
+<% end %>
 <%= cell(:view).(:page_nav) %>
 <table class = "gallery" id = "submissions">
   <tr>
-    <% if @pool and can_modify? @pool.user %>
+    <% if @pool and can_modify? @pool.users %>
       <td class = "new"><%= cell(:submission).(:new) %></td>
     <% end %>
     <% enum_for @submissions, word: "submissions", reverse: true do |submission| %>
       <td <%= "class = 'hidden'" if submission.hidden %>>
-        <% if (@pool and can_modify? @pool.user) or can_modify? submission.pool.user %>
+        <% if (@pool and can_modify? @pool.users) or can_modify? submission.users %>
           <%= cell(:submission, submission).(:edit_summary) %>
         <% else %>
           <%= cell(:submission, submission).(:show_summary) %>

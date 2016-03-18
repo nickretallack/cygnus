@@ -4,7 +4,7 @@ class CardsController < ApplicationController
     insist_on :logged_in
   end
 
-  before_filter only: [:new_list, :destroy] do
+  before_filter only: [:create, :update, :reorder, :destroy] do
     insist_on :permission, @user
   end
 
@@ -31,7 +31,6 @@ class CardsController < ApplicationController
       card = Card.find(key.to_i)
       card.update_attribute(:attachments, value.map{ |value| "card-#{value}" })
     end
-    #raise "break"
     respond_to do |format|
       format.html {back}
       format.js

@@ -10,8 +10,9 @@ Destroyable = function(element){
     self.container.destroy();
   });
 
-  $(window).on("resize.Destroyable", function(){
-    self.container.maximize(false);
+  $(window).on("resize.Hidable", function(){
+    self.container.size();
+    self.container.same(false);
   });
 
   return self;
@@ -137,11 +138,11 @@ ActiveContainer = (function(){
       self.content.show();
       if(animate && !parentHidable.exists()){
         self.container.animate({
-          height: self.top.outerHeight() + self.content.outerHeight(true) + 10
+          height: self.top.outerHeight() + (self["content"] === undefined? 0 : self.content.outerHeight(true))
         }, 1000, "easeOutExpo");
       }else{
         self.container.css({
-          height: self.top.outerHeight() + self.content.outerHeight(true) + 10
+          height: self.top.outerHeight() + (self["content"] === undefined? 0 : self.content.outerHeight(true))
         });
       }
       if(parentHidable.exists()){

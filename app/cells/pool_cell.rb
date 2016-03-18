@@ -11,7 +11,7 @@ class PoolCell < HelpfulCell
     when :index
       if @user
         unless options[:sanitize]
-          "#{link_to @user.name, user_path(@user.name)}'s pools"
+          "Pools: #{link_to @user.name, user_path(@user.name)}"
         else
           "#{@user.name}'s pools"
         end

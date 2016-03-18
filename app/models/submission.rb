@@ -12,6 +12,14 @@ class Submission < ActiveRecord::Base
     pools.first
   end
 
+  def users
+    pool.users
+  end
+
+  def user
+    pool.user
+  end
+
   def images
     children("image")
   end

@@ -6,7 +6,11 @@ class ApplicationController < ActionController::Base
 
   before_filter :get_user
 
-  before_filter only: [:show, :update, :destroy] do
+  before_filter only: [:create, :update, :destroy] do
+    insist_on :referer
+  end
+
+  before_filter only: [:new, :show, :update, :destroy, :set_default] do
     unless instance_of? UsersController or instance_of? ImagesController
       set_item(klass.find(params[klass.slug]))
     end
@@ -21,6 +25,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  before_filter only: [:update, :destroy, :set_default] do
+    insist_on :permission, user
+  end
+
   before_filter only: [:index, :create, :show] do
     if /_id/.match(params.keys.join(" "))
       parent = params.keys.collect{|key| /(.+)_id/.match(key)}.compact[0][1]
@@ -32,13 +40,15 @@ class ApplicationController < ActionController::Base
     set_item(klass.new)
   end
 
+  define_method :new do
+    render inline: cell(cell_name).(:new), layout: :default
+  end
+
   define_method :index do
     if user
-      set_items(paginate user.send(controller_name), klass.results_per_page) rescue nil
-      set_total(user.send(controller_name).count) rescue nil
+      paginate user.send(controller_name)
     else
-      set_items(paginate klass.all, klass.results_per_page) rescue nil
-      set_total(klass.all.count) rescue nil
+      paginate klass.all
     end
     render inline: cell(cell_name).(:index), layout: :default
   end
@@ -46,8 +56,6 @@ class ApplicationController < ActionController::Base
   define_method :show do
     render inline: cell(cell_name, item).(:show), layout: :default
   end
-
-  define_method :edit, proc{}
 
   define_method :before_save, proc{}
 
@@ -61,12 +69,29 @@ class ApplicationController < ActionController::Base
         format.html { back }
         format.js
       else
-        back_with_errors
+        format.html { back_with_errors }
+        format.js { back_with_errors_js }
       end
     end
   end
-  
-  define_method :update, proc{}
+
+  define_method :before_update, proc{}
+
+  define_method :after_update, proc{}
+
+  define_method :update do
+    before_update
+    respond_to do |format|
+      if item.save
+        after_update
+        format.html { back }
+        format.js
+      else
+        format.html { back_with_errors }
+        format.js { back_with_errors_js }
+      end
+    end
+  end
 
   define_method :update_image_attachment do |word|
     if params[:image][:image]
@@ -78,7 +103,16 @@ class ApplicationController < ActionController::Base
     end
   end
   
-  define_method :destroy, proc{}
+  define_method :destroy do
+    item.destroy
+    respond_to do |format|
+      format.html{
+        flash[:success] = "#{cell_name} destroyed"
+        back
+      }
+      format.js
+    end
+  end
 
   def klass
     controller_name.classify.constantize

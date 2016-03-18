@@ -26,17 +26,26 @@ module ViewHelper
     markdown.render(content).html_safe
   end
 
-  def enum_for(collection, word: nil, reverse: false)
-    if collection.length < 1
-      if word.nil?
-        concat "<span id = 'nothing'>Nothing here.</span>".html_safe
-      else
-        concat "<span id = 'nothing'>No #{word}.</span>".html_safe
-      end
+  def enum_for(collection, word: nil, reverse: false, index: false)
+    if word.nil?
+      concat "<span #{"class = 'nojs'" unless collection} id = 'nothing'>Nothing here.</span>".html_safe
     else
-      unless reverse
+      concat "<span #{"class = 'nojs'" unless collection} id = 'nothing'>No #{word}.</span>".html_safe
+    end
+    unless reverse
+      if index
+        collection.each_with_index do |item, index|
+          yield item, index
+        end
+      else
         collection.each do |item|
           yield item
+        end
+      end
+    else
+      if index
+        collection.each_with_index do |item, index|
+          yield item, index
         end
       else
         collection.reverse.each do |item|
@@ -95,6 +104,14 @@ module ViewHelper
 
   def message(type, recipient, **args)
     cell(:activity, recipient).(:new, type, args)
+  end
+
+  def page_nav(position)
+    if (position == :top and (setting(:pagination_at_top) or setting(:pagination_at_both))) or (position == :bottom and (not setting(:pagination_at_top) or setting(:pagination_at_both)))
+      cell(:view).(:page_nav)
+    else
+      nil
+    end
   end
 
 end

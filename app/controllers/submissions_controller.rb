@@ -1,5 +1,5 @@
 class SubmissionsController < ApplicationController
-  
+
   before_filter only: [:create] do
     unless @pool
       flash[:danger] = "pool does not exist"
@@ -12,7 +12,7 @@ class SubmissionsController < ApplicationController
   end
 
   before_filter only: [:update, :destroy] do
-    insist_on :permission, @submission.pool.users
+    insist_on :permission, @submission.users
   end
 
   before_filter only: [:fav] do
@@ -24,20 +24,12 @@ class SubmissionsController < ApplicationController
   def index
     if @pool
       if can_modify? @pool.user
-        @submissions = paginate @pool.submissions, Submission.results_per_page
-        @total_submissions = @pool.submissions.count
+        paginate @pool.submissions
       else
-        @submissions = paginate @pool.submissions.where(hidden: false), Submission.results_per_page
-        @total_submissions = @pool.submissions.where(hidden: false).count
+        paginate @pool.submissions.where(hidden: false)
       end
     else
-      @submissions = Submission.where(hidden: false)
-      @total_submissions = Submission.where(hidden: false).count
-      current_user.pools.each do |pool|
-        @submissions = @submissions | pool.submissions
-        @total_submissions += pool.submissions.length
-      end
-      @submissions = paginate Submission.where(id: @submissions.map(&:id)), Submission.results_per_page
+      paginate Submission.where(hidden: false)
     end
     render inline: cell(:submission).(:index), layout: :default
   end

@@ -78,4 +78,5 @@ function initialize(){
     });
   });
   $(".dropdown-button").trigger("mouseout");
+  if(window["lastClicked"] !== undefined && lastClicked["area"] !== undefined) lastClicked.area.returnAreaFromSpinner();
 }

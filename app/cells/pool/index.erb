@@ -1,3 +1,8 @@
+<%= cell(:pool).(:new) unless anon? %>
+
+<hr />
+<%= page_nav :top %>
+
 <table id = "pools">
   <% unless @pools.length < 1 %>
     <thead>
@@ -16,3 +21,6 @@
     <% end %>
   </tbody>
 </table>
+
+<hr/>
+<%= page_nav :bottom %>

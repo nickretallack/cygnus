@@ -6,6 +6,17 @@ class ImagesController < ApplicationController
     expires_in CONFIG[:image_shelf_life], public: true
   end
 
+  before_filter only: [:download] do
+    insist_on :referer
+  end
+
+  before_filter only: [:download] do
+    if @image == Image.new
+      flash[:danger] = "file not found"
+      render nothing: true
+    end
+  end
+
   def show
     type = params[:type].to_sym
 

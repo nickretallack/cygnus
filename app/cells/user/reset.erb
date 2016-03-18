@@ -1,6 +1,6 @@
 <div class = "row">
   <div class = "col s12 m6 centered">
-    <%= form_for :user, url: reset_password_path, html: { class: "button-submit" } do |f| %>
+    <%= form_for :user, url: update_password_path, html: { class: "button-submit" } do |f| %>
       <%= f.password_field :password, placeholder: "New password" %>
       <%= f.password_field :password_confirmation, placeholder: "Confirm password" %>
       <%= f.submit "Change password", id: "save" %>
