@@ -35,6 +35,9 @@ p
   margin: 0
   line-height: 1em
 
+p.ic
+  @extend .truncate
+
 a
   display: inline-block
   img
@@ -75,10 +78,6 @@ form
     col
       height: 100%
 
-form.full-width
-  input
-    padding: 0
-
 table
   a:hover
     font-size: 100%
@@ -92,12 +91,8 @@ span:not(.inline)
     font-size: 130%
   a:hover
     font-size: 130%
-
-span.note
-  +spaced
-  display: block
-  font-size: 1.3rem
-  line-height: 1.3rem
+  h1, h2, h3, h4, h5, h6
+    @extend .truncate
 
 blockquote
   @extend .flow-text

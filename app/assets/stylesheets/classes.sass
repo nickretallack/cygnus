@@ -226,7 +226,7 @@ ul.disc
   color: black
   .click-area
     display: inline-block
-    .image
+    .image:not(.bordered)
       display: inline
     img
       cursor: pointer !important
@@ -309,9 +309,8 @@ input:focus:-ms-input-placeholder, textarea:focus:-ms-input-placeholder
   +placeholder-focus
 
 input.title
-  width: calc(100% - 15px)
-  padding-right: 0
-  padding-left: 15px
+  width: 100%
+  padding: 0
   font-size: 3rem
   +block-centered
 
@@ -361,6 +360,9 @@ div.button-area
 
 .button-area.centered-small
   width: 20%
+
+.button-area.centered-medium
+  width: 50%
 
 //messages
 .toast
@@ -615,6 +617,9 @@ i[class *= "comm-"]
   float: left
   input
     margin-bottom: 5% !important
+  .card-title
+    h1, h2, h3, h4, h5, h6
+      @extend .truncate
   .card-action
     padding: 0
     font-size: 1.2rem
@@ -648,3 +653,6 @@ i[class *= "comm-"]
   width: 100%
   .button-area
     margin-top: 10px
+  .description
+    display: inline
+    font-size: 1rem

@@ -8,6 +8,15 @@ class CardsController < ApplicationController
     insist_on :permission, @user
   end
 
+  before_filter only: [:index] do
+    unless @user.card
+      card = Card.new
+      card.save(validate: false)
+      @user.attachments << "card-#{card.id}"
+      @user.save(validate: false)
+    end
+  end
+
   def after_save
     card = Card.find(params[Card.slug])
     card.update_attribute(:attachments, card.attachments << "card-#{@card.id}")
@@ -39,6 +48,7 @@ class CardsController < ApplicationController
 
   def destroy
     if @user.card.attachments.include? "card-#{@card.id}"
+      @word = "list"
       @card.cards.each do |card|
         card.destroy
       end
@@ -46,11 +56,18 @@ class CardsController < ApplicationController
       @user.update_attribute(:attachments, @user.attachments)
       @card.destroy
     else
+      @word = "card"
       @card.list.attachments.delete("card-#{@card.id}")
       @card.list.update_attribute(:attachments, @card.list.attachments)
       @card.destroy
     end
-    back
+    respond_to do |format|
+      format.html{
+        flash[:success] = "#{@word} destroyed"
+        back
+      }
+      format.js
+    end
   end
 
 end

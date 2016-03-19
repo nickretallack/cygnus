@@ -1,4 +1,4 @@
-<h5>Email: <%= @order.patron.email rescue @order.email %></h5>
+<h5>Email: <%= @order.email.blank?? @order.patron.email : @order.email %></h5>
 <h5>Placed: <%= @order.created_at %></h5>
 <ol class = "order">
   <%= cell(:order, @order).(:show_order) %>

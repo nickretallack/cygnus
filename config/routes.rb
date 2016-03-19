@@ -46,19 +46,19 @@ Rails.application.routes.draw do
   controller :order_forms do
     get :index, path: ":#{User.slug}/order_forms(/page/:page)", as: :order_forms
     post :create, path: ":#{User.slug}/order_forms", as: :new_order_form
-    get :show, path: ":#{User.slug}/order_form/:#{OrderForm.slug}", as: :order_form
-    patch :update, path: ":#{User.slug}/order_form/:#{OrderForm.slug}/update", as: :update_order_form
-    delete :destroy, path: ":#{User.slug}/order_form/:#{OrderForm.slug}/destroy", as: :destroy_order_form
-    patch :set_default, path: ":#{User.slug}/order_forms/:#{OrderForm.slug}/default", as: :default_order_form
+    get :show, path: "order_form/:#{OrderForm.slug}", as: :order_form
+    patch :update, path: "order_form/:#{OrderForm.slug}/update", as: :update_order_form
+    delete :destroy, path: "order_form/:#{OrderForm.slug}/destroy", as: :destroy_order_form
+    patch :set_default, path: "order_forms/:#{OrderForm.slug}/default", as: :default_order_form
   end
 
   controller :orders do
-    get :index, path: "orders(/page/:page)", as: :orders
+    get :index, path: ":#{User.slug}/orders(/page/:page)", as: :orders
     post :create, path: "orders/:#{OrderForm.slug}", as: :place_order
-    get :new, path: "order/:#{OrderForm.slug}/new", as: :new_order
+    get :new, path: "place_order/:#{OrderForm.slug}", as: :new_order
     get :show, path: "order/:#{Order.slug}", as: :show_order
-    patch :accept, path: "order/:#{Order.slug}/accept", as: :accept_order
-    patch :reject, path: "order/:#{Order.slug}/reject", as: :reject_order
+    patch :accept, path: ":#{User.slug}/order/:#{Order.slug}/accept", as: :accept_order
+    patch :reject, path: ":#{User.slug}/order/:#{Order.slug}/reject", as: :reject_order
   end
 
   controller :cards do

@@ -12,4 +12,8 @@ class Card < ActiveRecord::Base
       children("image").first
     end
 
+    def order
+      children("order").first
+    end
+
 end

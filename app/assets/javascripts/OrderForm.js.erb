@@ -68,11 +68,13 @@ OrderForm = (function(){
         bleatr.push(addableField);
       }
       self.initializeHandle(li);
+      $(window).trigger("resize.Nav");
     },
 
     remove: function(target){
       var self = this;
       target.remove();
+      $(window).trigger("resize.Nav");
     },
 
     reorder: function(li){

@@ -1,21 +1,13 @@
-<table id = "order_forms">
-  <% unless @user.order_forms.empty? %>
-    <thead>
-      <tr>
-        <th></th>
-        <th>Title</th>
-        <th></th>
-      </tr>
-    </thead>
-  <% end %>
-
-  <tbody>
-    <% enum_for @user.order_forms, word: "order forms" do |order_form| %>
-      <%= cell(:order_form, order_form).(:summary) %>
-    <% end %>
-  </tbody>
-</table>
-
 <% if can_modify? @user %>
   <%= cell(:order_form).(:new) %>
 <% end %>
+
+<table>
+  <thead id = "order_forms_head">
+    <%= cell(:order_form).(:head) %>
+  </thead>
+
+  <tbody id = "order_forms">
+    <%= cell(:order_form).(:enum) %>
+  </tbody>
+</table>

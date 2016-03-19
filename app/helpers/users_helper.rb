@@ -50,13 +50,6 @@ module UsersHelper
 
   # permission
 
-  def get_user
-    if params[User.slug]
-      @user = User.find(params[User.slug])
-      insist_on :existence, @user
-    end
-  end
-
   def at_least?(grade)
     User.level_for(current_user.level) >= User.level_for(grade)
   end
@@ -88,12 +81,12 @@ module UsersHelper
     when :logged_in
       if anon?
         flash[:danger] = "please sign in first"
-        redirect_to :root
+        shunt_to_root
       end
     when :logged_out
       unless anon?
         flash[:danger] = "cannot perform this action while logged in"
-        redirect_to :root
+        shunt_to_root
       end
     when :permission
       users = user.is_a?(ActiveRecord::Relation)? user : [user]
@@ -101,13 +94,13 @@ module UsersHelper
         user ||= User.new(name: params[User.slug] || "any other user")
         unless can_modify? user
           flash[:danger] = "you are #{anon?? "not signed in" : "signed in as #{current_user.name}"} and are not allowed to view or modify #{user.name}'s personal records"
-          redirect_to :root
+          shunt_to_root
         end
       end
     when :existence
       unless user
         flash[:danger] = "no such user"
-        redirect_to :root
+        shunt_to_root
       end
     when :referer
       unless request.referer and Regexp.new(Regexp.escape(CONFIG[:host])).match(URI.parse(request.referer).host)
@@ -116,7 +109,7 @@ module UsersHelper
     else
       unless Proc.new.call
         flash[:danger] = "you do not have permission to do that"
-        redirect_to :root
+        shunt_to_root
       end
     end
   end

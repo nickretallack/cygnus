@@ -1,0 +1,60 @@
+CopyToClipboard = (function(){
+
+  var CopyToClipboard = function(element){
+
+    var self = this;
+
+    self.link = element;
+    self.text = element.attr("copy");
+    console.log(self.text);
+
+    self.link.on("click.CopyToClipboard", function(){
+      self.copy();
+    });
+  };
+
+  Make.extend(CopyToClipboard.prototype, {
+
+    copy: function(){
+      var self = this,
+          input = $("<input />", {
+            type: "text"
+          });
+      input.appendTo($("body"));
+      input.prop("value", self.text);
+      input.get(0).select();
+
+      try{
+        if(document.execCommand("copy")){
+          var icon = $("<i />", {
+            class: "material-icons small",
+            text: "<%= CONFIG[:other_icons][:success] %>",
+            css: {
+              color: "green"
+            }
+          });
+          self.link.after(icon);
+          icon.addClass("fade-in");
+          setTimeout(function(){
+            icon.remove();
+          }, 1500);
+        }else{
+          self.manualCopy();
+        }
+      }catch(error){
+        self.manualCopy();
+      }
+
+      input.remove();
+    },
+
+    manualCopy(){
+      var self = this;
+      window.prompt("Send this link to commissioners:", self.text);
+    }
+
+  });
+
+  return CopyToClipboard;
+
+})();

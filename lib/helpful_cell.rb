@@ -11,7 +11,7 @@ class HelpfulCell < Cell::ViewModel
   Dir["#{File.dirname(__FILE__)}/../app/helpers/*.rb"].collect { |file| include File.basename(file).gsub(".rb", "").camelize.constantize }
 
   self.send :define_method, "get_user" do
-    @user = User.find(params[User.slug]) rescue nil
+    @user = controller.instance_variable_get("@user") rescue User.find(params[User.slug])
   end
 
   self.send :define_method, "get_parent" do
@@ -22,11 +22,11 @@ class HelpfulCell < Cell::ViewModel
   end
 
   self.send :define_method, "get_items" do
-    instance_variable_set("@#{controller.controller_name}", controller.instance_variable_get("@#{controller.controller_name}")) rescue nil
+    instance_variable_set("@#{controller.controller_name}", controller.instance_variable_get("@#{controller.controller_name}"))
   end
 
   self.send :define_method, "get_item" do
-    instance_variable_set("@#{controller.controller_name.singularize}", controller.instance_variable_get("@#{controller.controller_name.singularize}")) rescue nil
+    instance_variable_set("@#{controller.controller_name.singularize}", controller.instance_variable_get("@#{controller.controller_name.singularize}"))
   end
 
   define_hook :before_filter, :after_filter

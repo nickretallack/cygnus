@@ -6,7 +6,7 @@ class Message < ActiveRecord::Base
   validates :content, format: { with: /\S+/, message: "was empty!" }
 
   def pm_author
-    parents("user", "pm-sent").first
+    parents("user", "pm_sent").first
   end
 
   def pm
@@ -18,7 +18,7 @@ class Message < ActiveRecord::Base
   end
 
   def recipient
-    parents("user", "unread-pm").first || parents("user", "read-pm").first
+    parents("user", "unread_pm").first || parents("user", "read_pm").first
   end
 
   def comment_author

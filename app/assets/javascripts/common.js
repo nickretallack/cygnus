@@ -46,6 +46,7 @@ Init = {
     AddableField: ".addable-field",
     ButtonSubmit: ".button-submit",
     Comment: ".comment",
+    CopyToClipboard: ".copy-to-clipboard",
     ExpandableImage: ".image.medium > img, .image.bordered > img",
     ImagePreview: ".image-preview",
     IndexField: "[class *= index-field]",

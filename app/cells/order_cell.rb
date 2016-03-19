@@ -1,6 +1,6 @@
 class OrderCell < HelpfulCell
 
-  ["new", "show"].each do |method|
+  ["new", "show", "short_summary", "summary", "head", "enum", "index"].each do |method|
     define_method method do
       render method
     end
@@ -25,7 +25,7 @@ class OrderCell < HelpfulCell
       @question, @answer = content.first
       @question = "(blank)" if @question.blank?
       @answer = "(no response)" if @answer.blank?
-      @answer = ["(no response)"] if @answer == [""]
+      @answer = ["(no response)"] if @answer.is_a? Array and @answer.reject{ |answer| answer.blank? }.empty?
       @index = index
       html << render("show/template")
     end
@@ -42,9 +42,9 @@ class OrderCell < HelpfulCell
       end
     when :show
       unless options[:sanitize]
-        "Order from #{link_to(@order.patron.name, user_path(@order.patron)) rescue @order.name}"
+        "Order from #{@order.name.blank?? link_to(@order.patron.name, user_path(@order.patron)) : @order.name}"
       else
-        "Order from #{@order.patron.name}"
+        "Order from #{@order.name.blank?? @order.patron.name : @order.name}"
       end
     end
   end

@@ -1,5 +1,5 @@
 <% if @pool and can_modify? @pool.user %>
-  <%= form_for @pool, url: update_pool_path(@pool), method: :patch, html: { class: "remote button-submit full-width" } do |f| %>
+  <%= form_for @pool, url: update_pool_path(@pool), method: :patch, html: { class: "remote button-submit" } do |f| %>
     <%= f.text_field :title, placeholder: @pool.title || "Title for Pool", class: "title" %>
     <%= f.submit "Update Pool Title", id: "save" %>
   <% end %>

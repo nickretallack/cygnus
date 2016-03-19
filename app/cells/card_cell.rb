@@ -1,21 +1,12 @@
 class CardCell < HelpfulCell
 
-  def index
-    render
-  end
-
-  def show(options)
-    @user = options[:user]
-    @image_attachments = Attachment.where(parent_model: "card", parent_id: @model.id, child_model: "image")
-    if @user.card.cards.include? @model.id
-      @cards = @model.cards.collect { |card_id| Card.find(card_id) }
-      render "list"
-    else
-      render "card"
+  ["index"].each do |method|
+    define_method method do
+      render method
     end
   end
 
-  ["top", "list", "new_list", "card", "new_card", "undecided_order"].each do |method|
+  ["top", "list", "new_list", "card", "new_card", "undecided_order", "order"].each do |method|
     define_method method do
       render ->(method){
         method = method.split("_")

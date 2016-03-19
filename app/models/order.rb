@@ -8,4 +8,12 @@ class Order < ActiveRecord::Base
     parents("user", "placed_order").first || AnonymousUser.new
   end
 
+  def patron_name
+    name.blank?? patron.name : name
+  end
+
+  def patron_email
+    email.blank?? patron.email : email
+  end
+
 end

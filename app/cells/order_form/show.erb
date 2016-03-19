@@ -1,16 +1,14 @@
 <%= form_for @order_form, url: order_forms_path(@user), html: { class: "button-submit" } do |f| %>
-  <%= f.submit "Back to Index", id: "back" %>
+  <%= f.submit "Back to your order forms", id: "back" %>
 <% end %>
 <div class = "button-area float-left"></div>
-<%= form_for @order_form, url: update_order_form_path(@user, @order_form), method: :patch, html: { id: "formcreator_result", class: "button-submit" } do |f| %>
-  <%= f.text_field :title, placeholder: "Title for form (only you will see this)" %>
-  <%= f.submit "Save Form", id: "save" %>
+<%= form_for @order_form, url: update_order_form_path(@order_form), method: :patch, html: { id: "formcreator_result", class: "button-submit" } do |f| %>
+  <%= f.text_field :title, placeholder: "Title for form (only you will see this)", class: "title" %>
+  <%= f.submit "Save order form", id: "save" %>
 <% end %>
 <div class = "button-area float-right"></div>
 
-<br />
-
-<div class = "order-form" form = "formcreator_result">
+<div class = "order-form spaced" form = "formcreator_result">
 
   <% CONFIG[:order_form_icons].each do |key, value| %>
     <div id = "<%= key %>-template" class = "hide">

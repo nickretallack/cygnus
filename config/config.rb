@@ -82,7 +82,8 @@ CONFIG = {
     remove: "clear",
     minimize: "remove",
     handle: "drag_handle",
-    maximize: "add"
+    maximize: "add",
+    success: "check"
   },
 
   comment_icons: {
@@ -120,6 +121,8 @@ CONFIG = {
   ],
 
   artist_types: [
+    "lurker",
+    "commissioner",
     "visual - digital",
     "visual - paper",
     "visual - canvas",
@@ -133,20 +136,20 @@ CONFIG = {
     "visual - editing",
     "visual - cg",
     "visual - typesetting",
-    "visual - specify type",
+    "visual - other",
     "writing - prose",
     "writing - poetry",
     "writing - lyrics",
     "writing - script",
     "writing - translation - specify languages",
-    "writing - specify type",
+    "writing - other",
     "craft - costumes - fursuits",
     "craft - costumes - cosplay",
     "craft - armor - specify type",
     "craft - plushes - traditional",
     "craft - plushes - adult",
     "craft - body pillows",
-    "craft - specify type",
+    "craft - other",
     "coding - websites - php",
     "coding - websites - ruby",
     "coding - websites - javascript",
@@ -160,7 +163,6 @@ CONFIG = {
     "music - sampled",
     "music - remixes",
     "music - traditional",
-    "music - specify type",
-    "other - specify type"
+    "music - other"
   ]
 }

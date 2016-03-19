@@ -69,9 +69,9 @@ class MessagesController < ApplicationController
         if params["reply_#{Message.slug}"]
           @reply = Message.find(params["reply_#{Message.slug}"])
           @reply.update_attribute(:attachments, @reply.attachments << "comment-#{@comment.id}")
-          @submission.update_attribute(:attachments, @submission.attachments << "buried-comment-#{@comment.id}")
+          @submission.update_attribute(:attachments, @submission.attachments << "buried_comment-#{@comment.id}")
         else
-          @submission.update_attribute(:attachments, @submission.attachments << "buried-comment-#{@comment.id}" << "comment-#{@comment.id}")
+          @submission.update_attribute(:attachments, @submission.attachments << "buried_comment-#{@comment.id}" << "comment-#{@comment.id}")
         end
         format.html { back }
         format.js { render "comments/create" }
@@ -92,12 +92,12 @@ class MessagesController < ApplicationController
         if @message.save
           if params["reply_#{Message.slug}"]
             @reply = Message.find(params["reply_#{Message.slug}"])
-            @user.update_attribute(:attachments, @user.attachments << "pm-sent-#{@message.id}" )
+            @user.update_attribute(:attachments, @user.attachments << "pm_sent-#{@message.id}" )
             @reply.update_attribute(:attachments, @reply.attachments << "pm-#{@message.id}")
-            @reply.recipient.update_attribute(:attachments, @reply.recipient.attachments << "unread-pm-#{@message.id}") if @reply.recipient != @user
+            @reply.recipient.update_attribute(:attachments, @reply.recipient.attachments << "unread_pm-#{@message.id}") if @reply.recipient != @user
           else
-            @user.update_attribute(:attachments, @user.attachments << "pm-sent-#{@message.id}" << "pm-#{@message.id}")
-            @reply_to.update_attribute(:attachments, @reply_to.attachments << "pm-#{@message.id}" << "unread-pm-#{@message.id}")
+            @user.update_attribute(:attachments, @user.attachments << "pm_sent-#{@message.id}" << "pm-#{@message.id}")
+            @reply_to.update_attribute(:attachments, @reply_to.attachments << "pm-#{@message.id}" << "unread_pm-#{@message.id}")
           end
           format.html{
             flash[:success] = "pm sent #{"to #{@reply_to.name}" if @reply_to}"

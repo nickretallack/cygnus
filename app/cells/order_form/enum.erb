@@ -1,0 +1,3 @@
+<% enum_for @user.order_forms, word: "order forms" do |order_form| %>
+  <%= cell(:order_form, order_form).(:summary) %>
+<% end %>

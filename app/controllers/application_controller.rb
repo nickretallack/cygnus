@@ -4,8 +4,6 @@ class ApplicationController < ActionController::Base
   #require all helper modules
   Dir["#{File.dirname(__FILE__)}/../helpers/*.rb"].collect { |file| include File.basename(file).gsub(".rb", "").camelize.constantize }
 
-  before_filter :get_user
-
   before_filter only: [:create, :update, :destroy] do
     insist_on :referer
   end
@@ -15,6 +13,8 @@ class ApplicationController < ActionController::Base
       set_item(klass.find(params[klass.slug]))
     end
   end
+
+  before_filter :get_user
 
   before_filter only: [:show, :update, :destroy] do
     unless instance_of? UsersController or instance_of? ImagesController
@@ -113,17 +113,22 @@ class ApplicationController < ActionController::Base
   define_method :destroy do
     before_destroy
     item.destroy
-    respond_to do |format|
-      format.html{
-        flash[:success] = "#{cell_name} destroyed"
-        back
-      }
-      format.js
-    end
+    success_routes("#{cell_name} destroyed")
+  end
+
+  define_method :set_default do
+    @user.attachments.delete("#{cell_name}-#{params[klass.slug]}")
+    @user.attachments.unshift("#{cell_name}-#{params[klass.slug]}")
+    @user.save(validate: false)
+    success_routes("default #{cell_name} changed to #{title_for item}")
   end
 
   def klass
     controller_name.classify.constantize
+  end
+
+  def get_user
+    instance_variable_set("@user", User.find(params[User.slug]) || item.user) rescue nil
   end
 
   def user

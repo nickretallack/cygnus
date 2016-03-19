@@ -237,7 +237,7 @@ class UsersController < ApplicationController
 
   def destroy_attachment
     @user.attachments.delete(params[:attachment])
-    if /unread-message-/.match(params[:attachment])
+    if /unread_message-/.match(params[:attachment])
       @user.attachments = @user.attachments << "message-#{/(\d+)/.match(params[:attachment])[1]}"
       session[:toasts_seen] -= 1
     end

@@ -21,18 +21,20 @@
           <%= form_for @model, url: update_card_path(@user, @model), method: :patch, html: { class: "button-submit", attachment: "image-preview" } do |f| %>
             <%= f.submit "Attach Image", id: "attach" %>
           <% end %>
+          <%= cell(:order, @model.order).(:short_summary) if @model.order %>
           <div class = "button-area centered"></div>
         </div>
 
         <div class = "view-mode">
           <%= cell(:image, @model.image).(:bordered) if @model.image %>
-          <p class = "ic"><%= @model.description %></p>
+          <p class = "description"><%= @model.description %></p>
+          <%= cell(:order, @model.order).(:short_summary) if @model.order %>
         </div>
 
       <% else %>
 
         <%= cell(:image, @model.image).(:bordered) if @model.image %>
-        <p class = "ic"><%= @model.description %></p>
+        <span class = "inline"><%= @model.description %><span>
 
       <% end %>
 

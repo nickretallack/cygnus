@@ -5,9 +5,6 @@ class User < ActiveRecord::Base
   custom_slug :name, case_insensitive: true
   has_secure_password
   attr_accessor  :activation_token, :reset_token
-  has_one :card
-  has_many :order_forms
-  belongs_to :upload, foreign_key: :avatar 
 
   def User.lead_paths
     Rails.application.routes.routes.collect {|r| r.path.spec.to_s }.collect {|path| if (match = /^\/([^\/\(:]+)/.match(path)); match[1]; else; ""; end;}.compact.uniq.push("-1", "-2")
@@ -33,6 +30,10 @@ class User < ActiveRecord::Base
     pools.first
   end
 
+  def cards
+    children("card").first
+  end
+
   def card
     children("card").first
   end
@@ -50,7 +51,7 @@ class User < ActiveRecord::Base
   end
 
   def undecided_orders
-    orders.select{ |order| order.decided == false }
+    orders.where(decided: false)
   end
 
   def placed_orders
@@ -58,7 +59,7 @@ class User < ActiveRecord::Base
   end
 
   def unread_messages
-    children("message", "unread-message")
+    children("message", "unread_message")
   end
 
   def messages
@@ -66,7 +67,7 @@ class User < ActiveRecord::Base
   end
 
   def pms_sent
-    children("message", "pm-sent")
+    children("message", "pm_sent")
   end
 
   def pms
@@ -74,16 +75,11 @@ class User < ActiveRecord::Base
   end
 
   def unread_pms
-    children("message", "unread-pm")
+    children("message", "unread_pm")
   end
 
   def watched_by
     User.where("? = ANY (watching)", id)
-  end
-
-  def setting(key)
-    setting = settings.fetch(key.to_s, false)
-    setting == "1"? true : false
   end
 
   def announcements
@@ -92,6 +88,11 @@ class User < ActiveRecord::Base
 
   def announcement
     announcements.last
+  end
+
+  def setting(key)
+    setting = settings.fetch(key.to_s, false)
+    setting == "1"? true : false
   end
 
   def self.level_for(grade)

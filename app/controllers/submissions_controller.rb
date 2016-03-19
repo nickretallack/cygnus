@@ -77,6 +77,12 @@ class SubmissionsController < ApplicationController
     end
   end
 
+  def before_delete
+    @pool = @submission.pool
+    @pool.attachments.delete("submission-#{@submission.id}")
+    @pool.save(validate: false)
+  end
+
   def fav
     if faved? @submission
       current_user.update_attribute(:favs, current_user.favs.delete_if { |id| id == @submission.id })
