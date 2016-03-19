@@ -37,15 +37,6 @@ class Message < ActiveRecord::Base
     attachments.first
   end
 
-  def timestamp(type = :created)
-    case type
-    when :created
-      created_at.strftime("%A %B %e, %Y at %l:%M%P %Z").gsub("  ", " ")
-    when :modified
-      modified_at.strftime("%A %B %e, %Y at %l:%M%P %Z").gsub("  ", " ")
-    end
-  end
-
   def Message.on_change #sse
     Message.connection.execute "LISTEN messages"
     loop do

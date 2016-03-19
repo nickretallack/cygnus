@@ -7,7 +7,7 @@ class Pool < ActiveRecord::Base
   end
 
   def user
-    users.first
+    users.first || User.new
   end
 
   def submissions

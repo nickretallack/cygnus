@@ -56,7 +56,7 @@ Rails.application.routes.draw do
     get :index, path: ":#{User.slug}/orders(/page/:page)", as: :orders
     post :create, path: "orders/:#{OrderForm.slug}", as: :place_order
     get :new, path: "place_order/:#{OrderForm.slug}", as: :new_order
-    get :show, path: "order/:#{Order.slug}", as: :show_order
+    get :show, path: "order/:#{Order.slug}", as: :order
     patch :accept, path: ":#{User.slug}/order/:#{Order.slug}/accept", as: :accept_order
     patch :reject, path: ":#{User.slug}/order/:#{Order.slug}/reject", as: :reject_order
   end

@@ -67,7 +67,7 @@ module UsersHelper
   end
 
   def can_fav?(submission)
-    submission and not anon? and not current_user? submission.pool.user
+    submission and not anon? and not current_user? submission.user
   end
 
   def faved?(submission)

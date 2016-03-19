@@ -4,35 +4,52 @@ class ApplicationController < ActionController::Base
   #require all helper modules
   Dir["#{File.dirname(__FILE__)}/../helpers/*.rb"].collect { |file| include File.basename(file).gsub(".rb", "").camelize.constantize }
 
-  before_filter only: [:create, :update, :destroy] do
+  before_filter only: [:create, :update, :destroy, :set_default, :accept, :reject] do
     insist_on :referer
   end
 
-  before_filter only: [:new, :show, :update, :destroy, :set_default] do
+  before_filter only: [:new, :show, :update, :destroy, :set_default, :accept, :reject, :fav] do
     unless instance_of? UsersController or instance_of? ImagesController
       set_item(klass.find(params[klass.slug]))
     end
   end
 
-  before_filter :get_user
+  before_filter :set_user
 
-  before_filter only: [:show, :update, :destroy] do
+  before_filter only: [:show, :update, :destroy, :set_default, :accept, :reject, :fav] do
     unless instance_of? UsersController or instance_of? ImagesController
       unless item
         flash[:danger] = "#{cell_name} does not exist"
-        back
+        deny_access
       end
     end
   end
 
-  before_filter only: [:update, :destroy, :set_default] do
-    insist_on :permission, (user || item.user)
+  before_filter only: [:create] do
+    unless instance_of? UsersController or instance_of? OrdersController
+      insist_on :logged_in
+    end
+  end
+
+  before_filter only: [:create] do
+    unless instance_of? UsersController or instance_of? OrdersController
+      unless user and can_modify? user
+        instance_variable_set("@user", current_user)
+      end
+    end
+  end
+
+  before_filter only: [:update, :destroy, :set_default, :set_default, :accept, :reject] do
+    insist_on :permission, user
   end
 
   before_filter only: [:index, :create, :show] do
     if /_id/.match(params.keys.join(" "))
       parent = params.keys.collect{|key| /(.+)_id/.match(key)}.compact[0][1]
       instance_variable_set("@#{parent}", (parent.classify.constantize.find(params["#{parent}_id"]) rescue nil))
+      unless user
+        instance_variable_set("@user", (instance_variable_get("@#{parent}").user rescue nil))
+      end
     end
   end
 
@@ -127,7 +144,7 @@ class ApplicationController < ActionController::Base
     controller_name.classify.constantize
   end
 
-  def get_user
+  def set_user
     instance_variable_set("@user", User.find(params[User.slug]) || item.user) rescue nil
   end
 

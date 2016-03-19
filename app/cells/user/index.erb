@@ -1,0 +1,52 @@
+<% unless search_all %>
+  <%= form_for :terms, url: users_path do |f| %>
+    <%= f.fields_for :use_statuses do |use| %>
+      <%= use.hidden_field :commissions, value: "0" %>
+      <%= use.hidden_field :trades, value: "0" %>
+      <%= use.hidden_field :requests, value: "0" %>
+      <%= use.hidden_field :collaborations, value: "0" %>
+    <% end %>
+    <%= f.fields_for :statuses do |stat| %>
+      <%= stat.hidden_field :commissions, value: "all open statuses" %>
+      <%= stat.hidden_field :trades, value: "all open statuses" %>
+      <%= stat.hidden_field :requests, value: "all open statuses" %>
+      <%= stat.hidden_field :collaborations, value: "all open statuses" %>
+    <% end %>
+    <%= f.submit "List all users", class: "link" %>
+  <% end %>
+<% end %>
+
+<div class = "row">
+  <%= form_for :terms, url: users_path do |f| %>
+    <div class = "col s12 m10 block search">
+      <i class = "material-icons small">search</i>
+      <%= f.text_field :tags, placeholder: CONFIG[:search_placeholder], value: @query, id: "search-tags" %>
+      <%= f.submit "Search" %>
+      <%= hidable "Search by...", false, associated: "search-tags" do %>
+        <%= cell(:user, @users).(:status, :search) %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+<hr />
+
+<%= hidable "Recent Submissions", (params[:terms] == CONFIG[:default_search_terms] or not setting(:minimize_recent_submissions)) do %>
+  <div class = "row pool-index-field">
+    <div class = "col">
+        <% enum_for recent_submissions do |submission| %>
+          <%= link_to submission_path(nil, submission) do %>
+            <%= cell(:image, submission.image).(:bordered) %>
+          <% end %>
+        <% end %>
+    </div>
+  </div>
+<% end %>
+<hr />
+
+<%= page_nav :top %>
+
+<div id = "users">
+  <%= cell(:user).(:enum) %>
+</div>
+
+<%= page_nav :bottom %>

@@ -6,7 +6,6 @@ CopyToClipboard = (function(){
 
     self.link = element;
     self.text = element.attr("copy");
-    console.log(self.text);
 
     self.link.on("click.CopyToClipboard", function(){
       self.copy();

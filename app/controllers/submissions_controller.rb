@@ -84,16 +84,14 @@ class SubmissionsController < ApplicationController
   end
 
   def fav
+    user = current_user
     if faved? @submission
-      current_user.update_attribute(:favs, current_user.favs.delete_if { |id| id == @submission.id })
+      user.favs.delete(@submission.id)
     else
-      current_user.update_attribute(:favs, current_user.favs << @submission.id)
-      activity_message(:fav, @submission)
+      user.favs << @submission.id
     end
-    respond_to do |format|
-      format.html { back }
-      format.js
-    end
+    user.save(validate: false)
+    success_routes
   end
 
 end

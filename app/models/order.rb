@@ -1,5 +1,7 @@
 class Order < ActiveRecord::Base
 
+  each_page_show 20
+
   def user
     parents("user").first
   end

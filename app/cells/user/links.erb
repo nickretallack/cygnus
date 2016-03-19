@@ -1,11 +1,15 @@
 <div class = "col s6">
-  <%= cell(:user, @model).(:watch) %>
-  <% unless @model.pools.empty? %>
+  <div id = "watch">
+    <%= cell(:user, @model).(:watch) %>
+  </div>
+  <% if @model.pools.length > 1 %>
     <blockquote class = "inline link">
     <%= link_to "Gallery", gallery_path(@model) %>
      / 
     <%= link_to "Pools", pools_path(@model) %>
     </blockquote>
+  <% elsif current_user? @model %>
+    <blockquote class = "link"><%= link_to "Pools", pools_path(@model) %></blockquote>
   <% else %>
     <blockquote class = "inline danger link">No Pools</blockquote>
   <% end %>
@@ -17,7 +21,7 @@
   <% else %>
     <blockquote class = "inline link"><%= link_to "PM", pm_author_path(current_user.name, @model.name) %></blockquote>
   <% end %>
-  <% unless @model.order_forms.empty? %>
+  <% unless @model.order_forms.length < 1 or current_user? @model %>
     <blockquote class = "inline link"><%= link_to "Order", new_order_path(@model.order_form) %></blockquote>
   <% else %>
     <blockquote class = "inline link danger">Order</blockquote>

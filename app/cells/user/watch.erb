@@ -1,23 +1,21 @@
-<div id = "watch">
-  <% unless @model.at_least? :member %>
-    <blockquote class = "inline danger link"><span><%= readable @model.level %></span></blockquote>
-  <% else %>
-    <% if can_watch? @model %>
-      <% unless watching? @model %>
-        <blockquote class = "inline link">
-          <%= link_to "Watch", watch_user_path(@model), class: "remote" %>
-        </blockquote>
-      <% else %>
-        <blockquote class = "inline danger link">
-          <%= link_to "Unwatch", watch_user_path(@model), class: "remote" %>
-        </blockquote>
-      <% end %>
+<% unless @model.at_least? :member %>
+  <blockquote class = "inline danger link"><span><%= readable @model.level %></span></blockquote>
+<% else %>
+  <% if can_watch? @model %>
+    <% unless watching? @model %>
+      <blockquote class = "inline link">
+        <%= link_to "Watch", watch_user_path(@model), class: "remote" %>
+      </blockquote>
     <% else %>
-      <% if anon? %>
-        <blockquote class = "inline link"><%= link_to "Profile", user_path(@model) %></blockquote>
-      <% else %>
-        <blockquote class = "inline link"><%= link_to "Edit Profile", user_path(@model) %></blockquote>
-      <% end %>
+      <blockquote class = "inline danger link">
+        <%= link_to "Unwatch", watch_user_path(@model), class: "remote" %>
+      </blockquote>
+    <% end %>
+  <% else %>
+    <% if anon? %>
+      <blockquote class = "inline link"><%= link_to "Profile", user_path(@model) %></blockquote>
+    <% else %>
+      <blockquote class = "inline link"><%= link_to "Edit Profile", user_path(@model) %></blockquote>
     <% end %>
   <% end %>
-</div>
+<% end %>

@@ -34,7 +34,7 @@ class UserCell < HelpfulCell
     render "status/#{type}"
   end
 
-  ["navigation", "show", "edit", "summary", "attributes", "links", "watch", "request_reset", "reset"].each do |method|
+  ["navigation", "show", "edit", "index", "enum", "summary", "attributes", "links", "watch", "request_reset", "reset"].each do |method|
     define_method method do
       render method
     end

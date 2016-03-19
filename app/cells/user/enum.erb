@@ -1,0 +1,4 @@
+<% enum_for @users do |user| %>
+  <%= cell(:user, user).(:summary) %>
+  <hr />
+<% end %>

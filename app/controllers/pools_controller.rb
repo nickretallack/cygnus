@@ -20,20 +20,6 @@ class PoolsController < ApplicationController
     @pool.title = params[:pool][:title]
   end
 
-  def set_default
-    @user = @pool.user
-    @user.attachments.delete("pool-#{params[Pool.slug]}")
-    @user.attachments.unshift("pool-#{params[Pool.slug]}")
-    @user.save(validate: false)
-    respond_to do |format|
-      format.html{
-        flash[:success] = "Your default pool is now #{title_for @pool}"
-        back
-      }
-      format.js
-    end
-  end
-
   def before_destroy
     @pool.user.attachments.delete("pool-#{@pool.id}")
     @pool.user.save(validate: false)

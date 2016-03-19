@@ -1,5 +1,14 @@
 module ViewHelper
 
+  def timestamp(item, type = :created)
+    case type
+    when :created
+      item.created_at.strftime("%A %B %e, %Y at %l:%M%P %Z").gsub("  ", " ")
+    when :modified
+      item.modified_at.strftime("%A %B %e, %Y at %l:%M%P %Z").gsub("  ", " ")
+    end
+  end
+
   def readable(stringish)
     unless stringish.is_a? Symbol or stringish.is_a? String
       ""
@@ -27,10 +36,12 @@ module ViewHelper
   end
 
   def enum_for(collection, word: nil, reverse: false, index: false)
-    if word.nil?
-      concat "<span #{"class = 'nojs'" unless collection.length < 1} id = 'nothing'>Nothing here.</span>".html_safe
-    else
-      concat "<span #{"class = 'nojs'" unless collection.length < 1} id = 'nothing'>No #{word}.</span>".html_safe
+    if collection.length < 1
+      if word.nil?
+        concat "<span id = 'nothing'>Nothing here.</span>".html_safe
+      else
+        concat "<span id = 'nothing'>No #{word}.</span>".html_safe
+      end
     end
     unless reverse
       if index

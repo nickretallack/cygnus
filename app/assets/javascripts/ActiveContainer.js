@@ -113,6 +113,7 @@ ActiveContainer = (function(){
         self.container.animate({
           height: self.top.outerHeight()
         }, 1000, "easeOutExpo");
+        $(window).trigger("resize");
       }else{
         self.container.css({
           height: self.top.outerHeight()
@@ -140,6 +141,7 @@ ActiveContainer = (function(){
         self.container.animate({
           height: self.top.outerHeight() + (self["content"] === undefined? 0 : self.content.outerHeight(true))
         }, 1000, "easeOutExpo");
+        $(window).trigger("resize");
       }else{
         self.container.css({
           height: self.top.outerHeight() + (self["content"] === undefined? 0 : self.content.outerHeight(true))

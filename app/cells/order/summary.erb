@@ -1,0 +1,13 @@
+<tr id = "<%= @model.id %>">
+    <td><%= link_to "Order placed to #{@model.user} on #{timestamp @model, :created}", order_path(@model) %></td>
+    <td>
+      <% if @model.accepted %>
+        <p class = "success">Accepted!</p>
+      <% elsif @model.decided %>
+        <p class = "danger">Rejected</p>
+      <% else %>
+        <p>Not yet seen</p>
+    </td>
+  <% end %>
+  <td class = "danger"><%= "Default" if @model == @user.order_form %></td>
+</tr>

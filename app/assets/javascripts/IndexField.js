@@ -45,7 +45,7 @@ IndexField = (function(){
       if(direction === "right"){
         if(!self.end()) self.pool.children(":not(:hidden)").first().hide();
       }else if(direction === "left"){
-        self.pool.children(":hidden").last().show();
+        if(!self.start()) self.pool.children(":hidden").last().show();
       }
     },
 
@@ -65,6 +65,11 @@ IndexField = (function(){
     size: function(){
       var self = this;
       return Math.floor(self.pool.width() / (self.pool.children().eq(0).width() + 10));
+    },
+
+    start: function(){
+      var self = this;
+      return self.pool.children(":hidden").length < 1;
     },
 
     end: function(){

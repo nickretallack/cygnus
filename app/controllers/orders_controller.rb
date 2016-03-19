@@ -1,16 +1,8 @@
 class OrdersController < ApplicationController
 
-  before_filter only: [:accept, :reject] do
-    @order = Order.find(params[Order.slug])
-    unless @order
-      params[:danger] = "order does not exist"
-      deny_access
-    end
-  end
-
   before_filter only: [:new] do
     @order = OrderForm.find(params[OrderForm.slug])
-    unless @order.user
+    unless @order and @order.user
       flash[:danger] = "order form has been deleted. Please contact the artist for an updated link"
       shunt_to_root
     end
@@ -61,8 +53,19 @@ class OrdersController < ApplicationController
   end
 
   def after_save
-    @form.user.update_attribute(:attachments, @form.user.attachments << "order-#{@order.id}") if @form.user
-    current_user.update_attribute(:attachments, current_user.attachments << "placed_order-#{@order.id}") unless anon?
+    unless anon?
+      user = current_user
+      user.attachments << "placed_order-#{@order.id}"
+      user.save(validate: false)
+    end
+    user = @form.user
+    user.attachments << "order-#{@order.id}"
+    user.save(validate: false)
+  end
+
+  def index
+    paginate @user.placed_orders.reverse
+    render inline: cell(:order).(:index), layout: :default
   end
 
   def accept

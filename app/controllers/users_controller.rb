@@ -146,7 +146,11 @@ class UsersController < ApplicationController
     session[:page] = params[:page]
     session[:terms] = params[:terms] if params[:terms]
     paginate User.search(session[:terms])
-    redirect_to users_path(session[:page]) if params[:page] != session[:page]
+    if params[:page] != session[:page]
+      redirect_to users_path(session[:page])
+      return
+    end
+    render inline: cell(:user).(:index), layout: :default
   end
 
   def dashboard
@@ -223,16 +227,14 @@ class UsersController < ApplicationController
   end
 
   def watch
+    user = current_user
     if watching? @user
-      current_user.update_attribute(:watching, current_user.watching.delete_if { |id| id == @user.id })
+      user.watching.delete(@user.id)
     else
-      current_user.update_attribute(:watching, current_user.watching << @user.id)
-      activity_message(:watch, @user)
+      user.watching << @user.id
     end
-    respond_to do |format|
-      format.html { back }
-      format.js
-    end
+    user.save(validate: false)
+    success_routes("you are now watching #{@user.name}")
   end
 
   def destroy_attachment
