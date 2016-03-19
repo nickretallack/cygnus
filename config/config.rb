@@ -31,7 +31,7 @@ CONFIG = {
     }
   },
 
-  commission_icons: { #do not change the order of entries without updating everyone's records; db sees an array of statuses
+  commission_icons: { #do not change the order of entries without updating everyone's records; db sees an array of statuses, for now
     commissions: "local_atm",
     trades: "repeat",
     requests: "chat_bubble_outline",
