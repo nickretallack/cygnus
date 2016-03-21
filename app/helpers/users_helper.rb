@@ -23,7 +23,7 @@ module UsersHelper
   end
 
   def current_user
-    @current_user ||= session[:username].nil?? AnonymousUser.new : User.find(session[:username]) || AnonymousUser.new
+    session[:username].nil?? AnonymousUser.new : User.find(session[:username]) || AnonymousUser.new
   end
 
   def anon?
@@ -70,6 +70,10 @@ module UsersHelper
     submission and not anon? and not current_user? submission.user
   end
 
+  def can_order?(user)
+    user and not current_user? user and user.order_forms.length > 0 and CONFIG[:status_categories][:open].include? user.statuses[0].to_sym 
+  end
+
   def faved?(submission)
     submission and current_user.favs.include? submission.id
   end
@@ -101,10 +105,6 @@ module UsersHelper
       unless user
         flash[:danger] = "no such user"
         shunt_to_root
-      end
-    when :referer
-      unless request.referer and Regexp.new(Regexp.escape(CONFIG[:host])).match(URI.parse(request.referer).host)
-        render nothing: true
       end
     else
       unless Proc.new.call

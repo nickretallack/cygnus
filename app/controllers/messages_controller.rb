@@ -2,10 +2,6 @@ class MessagesController < ApplicationController
   
   #include ActionController::Live
 
-  before_filter only: [:new, :create_comment, :create_pm, :create_announcement] do
-    insist_on :referer
-  end
-
   before_filter only: [:create, :new, :create_comment, :create_announcement, :poller, :listener] do
     insist_on :logged_in
   end

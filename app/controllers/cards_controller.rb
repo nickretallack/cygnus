@@ -23,13 +23,13 @@ class CardsController < ApplicationController
   end
 
   def update
-    update_image_attachment("image")
+    update_image_attachment("image") unless @card.list == @user.card
     @card.title = params[:card][:title]
     @card.description = params[:card][:description]
     if @card.save
-      back
+      success_routes("updated")
     else
-      back_with_errors
+      danger_routes
     end
   end
 
@@ -40,10 +40,7 @@ class CardsController < ApplicationController
       card = Card.find(key.to_i)
       card.update_attribute(:attachments, value.map{ |value| "card-#{value}" })
     end
-    respond_to do |format|
-      format.html {back}
-      format.js
-    end
+    success_routes
   end
 
   def destroy
@@ -61,13 +58,7 @@ class CardsController < ApplicationController
       @card.list.update_attribute(:attachments, @card.list.attachments)
       @card.destroy
     end
-    respond_to do |format|
-      format.html{
-        flash[:success] = "#{@word} destroyed"
-        back
-      }
-      format.js
-    end
+    success_routes("#{@word} destroyed")
   end
 
 end

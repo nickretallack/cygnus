@@ -15,6 +15,13 @@ class OrdersController < ApplicationController
     end
   end
 
+  before_filter only: [:new] do
+    if current_user? @order.user
+      flash[:danger] = "can't order from yourself"
+      shunt_to_root
+    end
+  end
+
   before_filter only: [:create] do
     @form = OrderForm.find(params[OrderForm.slug])
   end
@@ -29,7 +36,7 @@ class OrdersController < ApplicationController
     end
   end
 
-  def before_save
+  def create
     @order.content = params[:content].map{ |key, content|
       name = /\d+-(.+)/.match(key)[1]
       if content["answer"] == nil
@@ -50,17 +57,23 @@ class OrdersController < ApplicationController
       @order.name = params[:order][:name].blank?? AnonymousUser.new.name : params[:order][:name] rescue AnonymousUser.new.name
       @order.email = params[:order][:email].blank?? AnonymousUser.new.email : params[:order][:email] rescue AnonymousUser.new.email
     end
-  end
-
-  def after_save
-    unless anon?
-      user = current_user
-      user.attachments << "placed_order-#{@order.id}"
+    if @order.save
+      unless anon?
+        user = current_user
+        user.attachments << "placed_order-#{@order.id}"
+        user.save(validate: false)
+      end
+      user = @form.user
+      user.attachments << "order-#{@order.id}"
       user.save(validate: false)
+      flash[:success] = "order placed with #{@form.user.name}"
+      respond_to do |format|
+        format.html { redirect_to :root }
+        format.js { root_js }
+      end
+    else
+      danger_routes
     end
-    user = @form.user
-    user.attachments << "order-#{@order.id}"
-    user.save(validate: false)
   end
 
   def index

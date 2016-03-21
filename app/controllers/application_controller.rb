@@ -4,10 +4,6 @@ class ApplicationController < ActionController::Base
   #require all helper modules
   Dir["#{File.dirname(__FILE__)}/../helpers/*.rb"].collect { |file| include File.basename(file).gsub(".rb", "").camelize.constantize }
 
-  before_filter only: [:create, :update, :destroy, :set_default, :accept, :reject] do
-    insist_on :referer
-  end
-
   before_filter only: [:new, :show, :update, :destroy, :set_default, :accept, :reject, :fav] do
     unless instance_of? UsersController or instance_of? ImagesController
       set_item(klass.find(params[klass.slug]))
@@ -80,15 +76,11 @@ class ApplicationController < ActionController::Base
 
   define_method :create do
     before_save
-    respond_to do |format|
-      if item.save
-        after_save
-        format.html { back }
-        format.js
-      else
-        format.html { back_with_errors }
-        format.js { back_with_errors_js }
-      end
+    if item.save
+      after_save
+      success_routes("#{cell_name} created successfully")
+    else
+      danger_routes
     end
   end
 
@@ -98,16 +90,12 @@ class ApplicationController < ActionController::Base
 
   define_method :update do
     before_update
-    respond_to do |format|
       if item.save
         after_update
-        format.html { back }
-        format.js
+        success_routes("#{cell_name} updated successfully")
       else
-        format.html { back_with_errors }
-        format.js { back_with_errors_js }
+        danger_routes
       end
-    end
   end
 
   define_method :update_image_attachment do |word|
@@ -185,8 +173,8 @@ class ApplicationController < ActionController::Base
   end
 
   def activate_session(user)
-    session[:username] = user.name
-    session[:toasts_seen] = current_user.unread_messages.length
+      session[:username] = user.name
+      session[:toasts_seen] = current_user.unread_messages.length
   end
 
   def deactivate_session

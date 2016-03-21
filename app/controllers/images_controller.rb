@@ -7,12 +7,7 @@ class ImagesController < ApplicationController
   end
 
   before_filter only: [:download] do
-    insist_on :referer
-  end
-
-  before_filter only: [:download] do
     if @image == Image.new
-      flash[:danger] = "file not found"
       render nothing: true
     end
   end

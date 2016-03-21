@@ -1,7 +1,7 @@
 CONFIG = {
   thumbnail_width: 150,
   thumbnail_height: 150,
-  email_required: true,
+  email_required: false,
   host: "localhost",
   name: "Bleatr",
   copyright: "&copy;2015 Lunar Gryphon",

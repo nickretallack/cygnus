@@ -21,7 +21,7 @@
   <% else %>
     <blockquote class = "inline link"><%= link_to "PM", pm_author_path(current_user.name, @model.name) %></blockquote>
   <% end %>
-  <% unless @model.order_forms.length < 1 or current_user? @model %>
+  <% if can_order? @model %>
     <blockquote class = "inline link"><%= link_to "Order", new_order_path(@model.order_form) %></blockquote>
   <% else %>
     <blockquote class = "inline link danger">Order</blockquote>

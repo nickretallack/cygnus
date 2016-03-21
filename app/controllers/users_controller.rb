@@ -1,9 +1,5 @@
 class UsersController < ApplicationController
 
-  before_filter only: [:log_in, :log_out, :send_activation, :request_reset, :send_reset, :update_password, :watch, :destroy_attachment] do
-    insist_on :referer
-  end
-
   before_filter only: [:show, :watch, :update, :activate, :reset, :update_password] do
     insist_on :existence, @user
   end

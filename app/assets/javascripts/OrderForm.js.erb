@@ -32,12 +32,10 @@ OrderForm = (function(){
       });
     });
 
-    self.workspace.find(".remove").on("click.OrderForm", function(){
-      self.remove($(this).parent());
-    });
     self.form.find(".question").remove();
     self.workspace.children("li").each(function(index, li){
       self.initializeHandle($(li));
+      self.initializeRemove($(li));
     });
     self.submit.one("click.OrderForm", function(event){
       pause(event);
@@ -56,6 +54,13 @@ OrderForm = (function(){
       });
     },
 
+    initializeRemove: function(li){
+      var self = this;
+      li.children(".remove").on("click.OrderForm", function(){
+        self.remove(li);
+      });
+    },
+
     add: function(name){
       var self = this, li;
       self.workspace.append((li = self.templates[name].clone()));
@@ -68,6 +73,7 @@ OrderForm = (function(){
         bleatr.push(addableField);
       }
       self.initializeHandle(li);
+      self.initializeRemove(li);
       $(window).trigger("resize.Nav");
     },
 
@@ -80,6 +86,10 @@ OrderForm = (function(){
     reorder: function(li){
       var self = this,
           ol = li.closest("ol");
+          question = li.find(".question");
+      question.css({
+        borderLeftColor: "antiquewhite"
+      });
       ol.find("*").addClass("no-select");
       ol.one("mousemove.OrderForm", function(){
         ol.children().on("mouseenter.OrderForm", function(event){
@@ -93,6 +103,9 @@ OrderForm = (function(){
         });
       });
       $(window).one("mouseup.OrderForm", function(event){
+        question.css({
+          borderLeftColor: "#9CCC65"
+        });
         ol.find("*").removeClass("no-select");
         ol.off("mousemove.OrderForm");
         ol.children().off("mouseenter.OrderForm");

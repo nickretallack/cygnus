@@ -31,21 +31,6 @@ Nav = (function(){
       $(window).trigger("scroll.Nav");
     });
 
-    $(window).on("resize.Nav", function(){
-      self.footer.css({
-        position: "static"
-      });
-      if(self.pageWrapper.height() < $(window).height()){
-        self.footer.css({
-          position: "absolute"
-        });
-      }
-    });
-
-    setTimeout(function(){
-      $(window).trigger("resize");
-    }, 300);
-
     $(window).keydown(function(event){
       if(Key.esc(event)) self.collapseButton.sideNav("hide");
     });
