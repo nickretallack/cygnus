@@ -1,7 +1,8 @@
 var container = $("#comments");
-var reply = container.find("#" + <%= params[:reply_id] || "" %>);
-var comment = $("<%=j cell(:comment, @comment).(:show, 0) %>");
-if(reply.exists()){
+var comment = $("<%=j cell(:comment, @message).(:show, 0) %>");
+var replyId = "<%= params[:reply_id] %>";
+if(replyId !== ""){
+  var reply = $("#comments").find("#" + replyId);
   var replyObject = reply.commentObject();
   replyObject.conversation().last().after(comment);
   initialize();

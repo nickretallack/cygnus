@@ -448,7 +448,7 @@ div.button-area
   .title
     cursor: default
   .button-table
-    line-height: 38px
+    line-height: 36px
 
 .pm.sent
   border-color: $message-sent-color
@@ -463,6 +463,9 @@ div.button-area
   font-size: 18px
   .title
     line-height: 36px
+
+.message.minimal:nth-of-type(even)
+  border-bottom-color: lightgreen
 
 .hidable.unread
   border-color: gold !important
@@ -538,11 +541,11 @@ i[class *= "comm-"]
     width: 100%
     font-size: 18px
     line-height: 26px
-    min-height: 28px
     +no-select
   .title
     float: left
     cursor: pointer
+    height: 28px
   .divider
     margin: 0
     margin-top: -5px
@@ -550,6 +553,7 @@ i[class *= "comm-"]
   .button-table
     float: right
     margin-top: -2px
+    height: 28px
     i
       position: relative
   .content

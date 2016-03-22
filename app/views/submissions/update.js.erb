@@ -1,2 +1,8 @@
-$("#submissions").find("#" + <%= @submission.id %>).replaceWith("<%=j cell(:submission, @submission).(:edit_summary) %>");
-initialize();
+var submissions = $("#submissions");
+if(submissions.exists()){
+  submissions.find("#" + <%= @submission.id %>).replaceWith("<%=j cell(:submission, @submission).(:edit_summary) %>");
+  initialize();
+}else{
+  $("#submission").replaceWith("<%=j cell(:submission, @submission).(:edit) %>");
+  initialize();
+}

@@ -1,0 +1,9 @@
+var profile = $("#profile"),
+    dashboard = $("#dashboard");
+if(profile.exists()){
+  profile.replaceWith("<%=j cell(:user).(:edit_profile) %>");
+}else{
+  dashboard.replaceWith("<%=j cell(:user).(:edit_dashboard) %>");
+}
+initialize();
+$(".button-area").find("i").replaceWithSuccess();

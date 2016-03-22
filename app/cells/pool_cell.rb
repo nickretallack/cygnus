@@ -1,6 +1,6 @@
 class PoolCell < HelpfulCell
 
-  ["new", "summary", "index", "pools", "show"].each do |method|
+  ["new", "summary", "index", "pools", "show", "enum", "head"].each do |method|
     define_method method do
       render method
     end

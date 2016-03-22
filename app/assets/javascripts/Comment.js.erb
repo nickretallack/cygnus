@@ -95,9 +95,10 @@ Comment = (function(){
 
     conversation: function(){
       var self = this;
-      return self.comment.nextUntil(self.comment.nextAll().filter(function(index, element){
+      var list = self.comment.nextUntil(self.comment.nextAll().filter(function(index, element){
         return self.indentOf($(element)) <= self.indentOf(self.comment);
       }));
+      return list.exists()? list : self.comment;
     },
 
     minimize: function(div){

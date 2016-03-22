@@ -10,29 +10,6 @@ class MessagesController < ApplicationController
     insist_on :permission, @user
   end
 
-  before_filter only: [:new, :create_comment] do
-    @submission = Submission.find(params[Submission.slug])
-    unless @submission
-      flash[:danger] = "submission #{params[Submission.slug]} not exist"
-      back
-    end
-  end
-
-  before_filter only: [:new, :create_comment] do
-    route = Rails.application.routes.recognize_path(request.referer)
-    unless route[:controller] == "submission" and route[:action] == "show" and route["submission_#{Submission.slug}"] == @submission.id
-      flash[:danger] = "can only comment on a submission from its own page"
-      back
-    end
-  end
-
-  before_filter only: [:create_pm] do
-    unless referer_is "messages", "index"
-      flash[:danger] = "can only send a pm from your conversations page"
-      back
-    end
-  end
-
   before_filter only: [:create_announcement] do
     insist_on do
       at_least :admin
@@ -43,10 +20,20 @@ class MessagesController < ApplicationController
     insist_on :logged_in
   end
 
-  before_filter only: [:index, :create] do
+  before_filter only: [:index, :create_pm] do
     if params[:reply_to_name]
       @reply_to = User.find(params[:reply_to_name])
       insist_on :existence, @reply_to
+    end
+  end
+
+  before_filter only: [:create_pm] do
+    if @user == @reply_to
+      flash[:danger] = "can't pm yourself"
+      respond_to do |format|
+        format.html{ back }
+        format.js{ back_js }
+      end
     end
   end
 
@@ -58,16 +45,16 @@ class MessagesController < ApplicationController
 
   def create_comment
     @submission = Submission.find(params[Submission.slug])
-    @comment = Message.new(content: params[:message][:content])
+    @message = Message.new(content: params[:message][:content])
     respond_to do |format|
-      if @comment.save
-        current_user.update_attribute(:attachments, current_user.attachments << "comment-#{@comment.id}")
+      if @message.save
+        current_user.update_attribute(:attachments, current_user.attachments << "comment-#{@message.id}")
         if params["reply_#{Message.slug}"]
           @reply = Message.find(params["reply_#{Message.slug}"])
-          @reply.update_attribute(:attachments, @reply.attachments << "comment-#{@comment.id}")
-          @submission.update_attribute(:attachments, @submission.attachments << "buried_comment-#{@comment.id}")
+          @reply.update_attribute(:attachments, @reply.attachments << "comment-#{@message.id}")
+          @submission.update_attribute(:attachments, @submission.attachments << "buried_comment-#{@message.id}")
         else
-          @submission.update_attribute(:attachments, @submission.attachments << "buried_comment-#{@comment.id}" << "comment-#{@comment.id}")
+          @submission.update_attribute(:attachments, @submission.attachments << "buried_comment-#{@message.id}" << "comment-#{@message.id}")
         end
         format.html { back }
         format.js { render "comments/create" }
@@ -79,31 +66,25 @@ class MessagesController < ApplicationController
   end
 
   def create_pm
-    if @user == @reply_to
-      flash[:danger] = "can't pm yourself"
-      back
-    else
-      @message = Message.new(subject: params[:message][:subject], content: params[:message][:content])
-      respond_to do |format|
-        if @message.save
-          if params["reply_#{Message.slug}"]
-            @reply = Message.find(params["reply_#{Message.slug}"])
-            @user.update_attribute(:attachments, @user.attachments << "pm_sent-#{@message.id}" )
-            @reply.update_attribute(:attachments, @reply.attachments << "pm-#{@message.id}")
-            @reply.recipient.update_attribute(:attachments, @reply.recipient.attachments << "unread_pm-#{@message.id}") if @reply.recipient != @user
-          else
-            @user.update_attribute(:attachments, @user.attachments << "pm_sent-#{@message.id}" << "pm-#{@message.id}")
-            @reply_to.update_attribute(:attachments, @reply_to.attachments << "pm-#{@message.id}" << "unread_pm-#{@message.id}")
-          end
-          format.html{
-            flash[:success] = "pm sent #{"to #{@reply_to.name}" if @reply_to}"
-            back
-          }
-          format.js{ render "pms/create" }
+    @message = Message.new(subject: params[:message][:subject], content: params[:message][:content])
+    respond_to do |format|
+      if @message.save
+        if params["reply_#{Message.slug}"]
+          @reply = Message.find(params["reply_#{Message.slug}"])
+          @user.update_attribute(:attachments, @user.attachments << "pm_sent-#{@message.id}" )
+          @reply.update_attribute(:attachments, @reply.attachments << "pm-#{@message.id}")
         else
-          format.html{ back_with_errors }
-          format.js { back_with_errors_js }
+          @user.update_attribute(:attachments, @user.attachments << "pm_sent-#{@message.id}" << "pm-#{@message.id}")
+          @reply_to.update_attribute(:attachments, @reply_to.attachments << "pm-#{@message.id}" << "unread_pm-#{@message.id}")
         end
+        format.html{
+          flash[:success] = "pm sent"
+          back
+        }
+        format.js{ render "pms/create" }
+      else
+        format.html{ back_with_errors }
+        format.js { back_with_errors_js }
       end
     end
   end
@@ -128,6 +109,11 @@ class MessagesController < ApplicationController
   end
 
   def index
+    @user.unread_pms.each do |pm|
+      @user.attachments.delete("unread_pm-#{pm.id}")
+      @user.attachments << "read_pm-#{pm.id}"
+    end
+    @user.save(validate: false)
     if @user == @reply_to
       flash[:danger] = "cannot pm yourself"
       render inline: cell(:pm).(:index), layout: :default

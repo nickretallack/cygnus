@@ -1,18 +1,9 @@
-<table id = "pools">
-  <% unless @model.length < 1 %>
-    <thead>
-      <tr>
-        <th></th>
-        <th>User</th>
-        <th>Title</th>
-        <th></th>
-      </tr>
-    </thead>
-  <% end %>
+<table>
+  <thead id = "pools-head">
+    <%= cell(:pool, @model).(:head) %>
+  </thead>
 
-  <tbody>
-    <% enum_for @model do |pool| %>
-      <%= cell(:pool, pool).(:summary) %>
-    <% end %>
+  <tbody id = "pools">
+    <%= cell(:pool, @model).(:enum) %>
   </tbody>
 </table>

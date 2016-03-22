@@ -1,0 +1,16 @@
+<%= form_for @model, url: update_submission_path(@model), method: :patch, html: { multipart: true, class: "remote button-submit" } do |f| %>
+  <%= f.text_field :title, placeholder: "Title for Submission", class: "title" %>
+  <div class = "row medium-height spaced">
+    <%= cell(:attachment, @model.image).(:new_image, type: :medium) %>
+  </div>
+  <%= f.text_area :description, placeholder: "Description for Submission", class: "big" %>
+  <%= f.submit "Save and Unhide", id: "unhide", area: 1 if @model.hidden %>
+  <%= f.submit "Save and Hide", id: "hide", area: 1 unless @model.hidden %>
+  <%= f.submit "Just Save", id: "save", area: 0 %>
+<% end %>
+<div class = "button-area float-right"></div>
+<div class = "button-area float-right second"></div>
+<%= form_for :back, url: submissions_path(@model.pool), html: { class: "button-submit" } do |f| %>
+  <%= f.submit "Back to pool", id: "back" %>
+<% end %>
+<div class = "button-area float-left"></div>

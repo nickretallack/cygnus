@@ -9,7 +9,8 @@ class PoolsController < ApplicationController
   end
 
   def after_save
-    current_user.update_attribute(:attachments, current_user.attachments << "pool-#{@pool.id}")
+    @user.attachments << "pool-#{@pool.id}"
+    @user.save(validate: false)
   end
 
   def gallery
@@ -21,8 +22,8 @@ class PoolsController < ApplicationController
   end
 
   def before_destroy
-    @pool.user.attachments.delete("pool-#{@pool.id}")
-    @pool.user.save(validate: false)
+    @user.attachments.delete("pool-#{@pool.id}")
+    @user.save(validate: false)
   end
 
 end

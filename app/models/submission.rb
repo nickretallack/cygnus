@@ -37,7 +37,7 @@ class Submission < ActiveRecord::Base
   end
 
   def all_comments
-    children("message", "buried-comment")
+    children("message", "buried_comment")
   end
 
 end

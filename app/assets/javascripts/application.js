@@ -18,10 +18,14 @@
 
 $(document).on("page:load", function(){
   initialize();
-  bleatr.push(new Poller());
+  if(bleatr.where(function(object){
+    return object["name"] === "poller";
+  }).length < 1) bleatr.push(new Poller());
 });
 
 $(window).on("load", function(){
   initialize();
-  bleatr.push(new Poller());
+  if(bleatr.where(function(object){
+    return object["name"] === "poller";
+  }).length < 1) bleatr.push(new Poller());
 });

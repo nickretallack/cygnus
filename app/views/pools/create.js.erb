@@ -1,3 +1,4 @@
-$("#pools").children("tbody").append("<%=j cell(:pool, @pool).(:summary) %>");
-$("#nothing").hide();
+$("#nothing").remove();
+$("#pools-head").html("<%=j cell(:pool, @user.pools).(:head) %>");
+$("#pools").html("<%=j cell(:pool, @user.pools).(:enum) %>");
 initialize();

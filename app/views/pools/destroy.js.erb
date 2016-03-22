@@ -1,2 +1,3 @@
-$("#pools").find("#" + <%= @pool.id %>).remove();
-if(!$("#pools").children("tbody").children().exists()) $("#nothing").show();
+$("#pools-head").html("<%=j cell(:pool, @user.pools).(:head) %>");
+$("#pools").html("<%=j cell(:pool, @user.pools).(:enum) %>");
+initialize();

@@ -26,7 +26,6 @@ class ActivityCell < HelpfulCell
     else
       recipients = []
     end
-    recipients.push current_user
     case type
     when :watch
       content = "<span class = 'inline name'>#{link_to current_user.name, user_path(current_user)}</span> watched <span class = 'inline name'>#{link_to recipient.name, user_path(recipient)}</span>."

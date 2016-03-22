@@ -1,5 +1,5 @@
 <div class = "new spaced">
-  <%= form_for Message.new, url: new_pm_path(@user, @model), html: { class: "button-submit" } do |f| %>
+  <%= form_for Message.new, url: reply_pm_path(@user, @model), html: { class: "button-submit" } do |f| %>
     <% if @model.instance_of? User %>
       <p class = "ic padded">Starting a new conversation with <%= @model.name %>:</p>
     <% end %>

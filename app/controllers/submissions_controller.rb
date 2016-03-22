@@ -54,7 +54,7 @@ class SubmissionsController < ApplicationController
     end
   end
 
-  def update
+  def before_update
     if /hide/.match params[:commit].downcase
       @submission.hidden = !@submission.hidden
     end
@@ -63,24 +63,17 @@ class SubmissionsController < ApplicationController
       @submission.title = params[:submission][:title]
       @submission.description = params[:submission][:description]
     end
-    respond_to do |format|
-      if @submission.save
-        format.html{
-          flash[:success] = "submission updated"
-          back
-        }
-        format.js
-      else
-        format.html { back_with_errors }
-        format.js { back_with_errors_js }
-      end
-    end
   end
 
   def before_delete
     @pool = @submission.pool
     @pool.attachments.delete("submission-#{@submission.id}")
     @pool.save(validate: false)
+    @submission.all_comments.each do |comment|
+      user = comment.comment_author
+      user.attachments.delete("comment-#{comment.id}")
+      user.save(validate: false)
+    end
   end
 
   def fav

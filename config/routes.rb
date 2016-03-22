@@ -13,7 +13,8 @@ Rails.application.routes.draw do
     post :create_comment, path: "submission/:#{Submission.slug}(/reply/:reply_#{Message.slug})/comments", as: :new_comment
     get :index, path: ":#{User.slug}/conversations(/page/:page)", as: :pms
     get :index, path: ":#{User.slug}/conversations/reply/:reply_to_#{User.slug}", as: :pm_author
-    post :create_pm, path: ":#{User.slug}/to/:reply_to_#{User.slug}(/reply/:reply_#{Message.slug})/conversations", as: :new_pm
+    post :create_pm, path: ":#{User.slug}/to/:reply_to_#{User.slug}/conversations", as: :new_pm
+    post :create_pm, path: ":#{User.slug}/reply/:reply_#{Message.slug}/conversations", as: :reply_pm
     get :activity, path: ":#{User.slug}/activity(/page/:page)", as: :messages
     #get "message_listener", to: "messages#listener", as: :listener
     get :poller, path: "message_poller", as: :poller

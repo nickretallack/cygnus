@@ -2,29 +2,36 @@
   <div id = "watch">
     <%= cell(:user, @model).(:watch) %>
   </div>
-  <% if @model.pools.length > 1 %>
-    <blockquote class = "inline link">
-    <%= link_to "Gallery", gallery_path(@model) %>
-     / 
-    <%= link_to "Pools", pools_path(@model) %>
-    </blockquote>
-  <% elsif current_user? @model %>
-    <blockquote class = "link"><%= link_to "Pools", pools_path(@model) %></blockquote>
+  <% if @model.pools.length < 1 %>
+    <blockquote class = "inline link danger">No Gallery</blockquote>
+    <% if current_user? @model %>
+      <blockquote class = "link"><%= link_to "Pools", pools_path(@model) %></blockquote>
+    <% else %>
+      <blockquote class = "inline danger link">No Pools</blockquote>
+    <% end %>
   <% else %>
-    <blockquote class = "inline danger link">No Pools</blockquote>
+    <blockquote class = "inline link"><%= link_to "Gallery", gallery_path(@model) %></blockquote>
+    <% if @model.pools.length == 1 %>
+      <blockquote class = "inline link danger">No more Pools</blockquote>
+    <% else %>
+      <blockquote class = "inline link"><%= link_to "More Pools...", pools_path(@model) %></blockquote>
+    <% end %>
   <% end %>
-  <blockquote class = "inline link"><%= link_to "Workboard", cards_path(@model.name) %></blockquote>
 </div>
 <div class = "col s6">
   <% if current_user? @model %>
-    <blockquote class = "inline link"><%= link_to "Conversations", pms_path(current_user.name) %></blockquote>
+    <blockquote class = "inline link"><%= link_to "Conversations", pms_path(current_user) %></blockquote>
   <% else %>
-    <blockquote class = "inline link"><%= link_to "PM", pm_author_path(current_user.name, @model.name) %></blockquote>
+    <blockquote class = "inline link"><%= link_to "Send PM", pm_author_path(current_user, @model) %></blockquote>
   <% end %>
   <% if can_order? @model %>
-    <blockquote class = "inline link"><%= link_to "Order", new_order_path(@model.order_form) %></blockquote>
+    <blockquote class = "inline link"><%= link_to "Place Order", new_order_path(@model.order_form) %></blockquote>
   <% else %>
-    <blockquote class = "inline link danger">Order</blockquote>
+    <blockquote class = "inline link danger">Place an Order</blockquote>
   <% end %>
-  <blockquote class = "inline link"><%= link_to "Activity", messages_path(@model) %></blockquote>
+  <% unless current_user? @model %>
+    <blockquote class = "inline link"><%= link_to "View Workboard", cards_path(@model) %></blockquote>
+  <% else %>
+    <blockquote class = "inline link"><%= link_to "Edit Workboard", cards_path(@model) %></blockquote>
+  <% end %>
 </div>

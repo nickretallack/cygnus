@@ -1,0 +1,9 @@
+if(parent.exists()){
+  pm.addClass("unread");
+  parent.after(pm);
+  initialize();
+}else{
+  summary.addClass("fade-in").addClass("unread").find(".pm").addClass("unread");
+  self.pms.append(summary);
+  initialize();
+}

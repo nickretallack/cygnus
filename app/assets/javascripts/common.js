@@ -80,5 +80,4 @@ function initialize(){
   });
   $(".dropdown-button").trigger("mouseout");
   if(window["lastClicked"] !== undefined) lastClicked.returnAreaFromSpinner();
-  $(window).trigger("resize");
 }

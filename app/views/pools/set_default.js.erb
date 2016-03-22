@@ -1,2 +1,2 @@
-$("#pools").replaceWith("<%=j cell(:pool, @pool.user.pools).(:pools) %>");
+$("#pools").html("<%=j cell(:pool, @user.pools).(:enum) %>");
 initialize();
