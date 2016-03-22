@@ -27,7 +27,7 @@
   <% if can_order? @model %>
     <blockquote class = "inline link"><%= link_to "Place Order", new_order_path(@model.order_form) %></blockquote>
   <% else %>
-    <blockquote class = "inline link danger">Place an Order</blockquote>
+    <blockquote class = "inline link danger">Place Order</blockquote>
   <% end %>
   <% unless current_user? @model %>
     <blockquote class = "inline link"><%= link_to "View Workboard", cards_path(@model) %></blockquote>

@@ -71,7 +71,7 @@ module UsersHelper
   end
 
   def can_order?(user)
-    user and not current_user? user and user.order_forms.length > 0 and CONFIG[:status_categories][:open].include? user.statuses[0].to_sym 
+    user and not current_user? user and user.order_forms.length > 0 and (CONFIG[:status_categories][:open].include? user.statuses[0].to_sym or user.settings(:non_open_orders))
   end
 
   def faved?(submission)

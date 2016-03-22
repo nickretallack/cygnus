@@ -22,6 +22,13 @@ class OrdersController < ApplicationController
     end
   end
 
+  before_filter only: [:new] do
+    unless can_order? @order.user
+      flash[:danger] = "#{@order.user.name} is not accepting commissions at this time"
+      shunt_to_root
+    end
+  end
+
   before_filter only: [:create] do
     @form = OrderForm.find(params[OrderForm.slug])
   end
@@ -85,6 +92,9 @@ class OrdersController < ApplicationController
     @order.accepted = true
     @order.decided = true
     @order.save(validate: false)
+    user = current_user
+    user.attachments.delete("order-#{@order.id}")
+    user.save(validate: false)
     @list = @user.card.cards.first
     @card = Card.new(title: "Order from #{@order.patron_name}")
     @card.attachments << "order-#{@order.id}"
@@ -97,6 +107,9 @@ class OrdersController < ApplicationController
   def reject
     @order.decided = true
     @order.save(validate: false)
+    user = current_user
+    user.attachments.delete("order-#{@order.id}")
+    user.save(validate: false)
     success_routes("order rejected")
   end
 

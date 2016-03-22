@@ -35,6 +35,7 @@
         <%= hidable "Commission Orders", open do %>
           <%= cell(:view, s).(:setting, :anonymous_orders, "Accept commission orders from anonymous users") %>
           <%= cell(:view, s).(:setting, :non_open_orders, "Accept commission orders even when you are not open for commissions") %>
+          <%= cell(:view, s).(:setting, :disabled_order_link, "Keep the \u201CPlace Order\u201D link in your profile and listing disabled regardless of commission status")
         <% end %>
         <%= hidable "Messages", open do %>
           <%= cell(:view, s).(:setting, :public_activity_feed, "Disable others from viewing your activity feed") %>
@@ -58,6 +59,7 @@
         <%= hidable "Miscellaneous", open do %>
           <%= cell(:view, s).(:setting, :minimize_dashboard, "Minimize all settings categories on this page by default") %>
           <%= cell(:view, s).(:setting, :minimize_search_by, "On the main page, don't open the \u201CSearch by...\u201D box automatically when typing tags") %>
+          <%= cell(:view, s).(:setting, :minimize_instructions, "Minimize all instructions by default") %>
         <% end %>
       </div>
     <% end %>
