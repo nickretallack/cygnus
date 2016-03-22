@@ -7,7 +7,6 @@ Workboard = (function(){
     self.topCard = element;
     self.modeRegex = /view|edit|reorder/;
     self.triggers = {};
-    self.divs = {};
     self.lists = self.topCard.find(".list-card:not(.new)");
     self.form = self.topCard.find(".reorder-mode").find("form");
     self.submit = self.form.children("[type = submit]");
@@ -23,9 +22,6 @@ Workboard = (function(){
       });
     });
 
-    $.each(self.triggers.keys(), function(index, key){
-      self.divs[key] = self.topCard.find("div." + key + "-mode");
-    });
     var start = self.triggers.values().where(function(element){
       return element.is("[start]");
     }).first().attr("name");
@@ -45,12 +41,10 @@ Workboard = (function(){
       var self = this;
       mode = self.modeRegex.exec(mode);
       if(mode === null || self[mode[0]] === undefined) return;
-      $.each(self.divs.values(), function(index, value){
-        value.hide();
-      });
+      $("#workboard").find("div[class *= -mode]").hide();
       $(".card.new").hide();
       self.lists.off("*.Workboard");
-      self.divs[mode[0]].show();
+      $("#workboard").find("div." + mode + "-mode").show();
       self.topCard.removeClass("move");
       self[mode[0]]();
     },

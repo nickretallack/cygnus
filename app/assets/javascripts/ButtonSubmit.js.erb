@@ -30,7 +30,7 @@ ButtonSubmit = (function(){
         })).append(
           (icon = $("<i />", {
             class: "material-icons " + size,
-            id: button.attr("value"),
+            id: button.attr("value").toLowerCase().dasherize(),
             text: icon,
             title: name.readable()
           })),
@@ -42,7 +42,7 @@ ButtonSubmit = (function(){
           })
         ).on("click.ButtonSubmit", function(event){
           pause(event);
-          lastClicked = self;
+          lastClicked = div;
           if(name === "delete" && button.is("[confirm]")){
             if(confirm(button.attr("confirm"))){
               icon.replaceWithSpinner();

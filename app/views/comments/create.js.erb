@@ -7,7 +7,7 @@ if(reply.exists()){
   initialize();
   comment.addClass(".fade-in");
   comment.commentObject().setIndent(replyObject.indent() + 1);
-  lastClicked.form.closest(".new").hide();
+  lastClicked.closest(".new").hide();
 }else{
   comment.addClass(".fade-in");
   container.append(comment);

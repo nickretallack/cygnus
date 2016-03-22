@@ -9,14 +9,14 @@
       <% if controller.can_modify? @user %>
 
         <div class = "edit-mode">
-          <%= form_for @model, url: update_card_path(@user, @model), method: :patch, html: { multipart: true, class: "button-submit" } do |f| %>
+          <%= form_for @model, url: update_card_path(@user, @model), method: :patch, html: { multipart: true, class: "remote button-submit" } do |f| %>
             <%= f.text_field :title, placeholder: "Title for this Item" %>
             <%= f.text_area :description, placeholder: "Description for this Item" %>
             <%= cell(:attachment, @model.image).(:new_image, type: :bordered) %>
             <%= f.submit "Save Item", id: "save" %>
           <% end %>
-          <%= form_for @model, url: destroy_card_path(@user, @model), method: :delete, html: { class: "button-submit" } do |f| %>
-            <%= f.submit "Delete Item", id: "delete" %>
+          <%= form_for @model, url: destroy_card_path(@user, @model), method: :delete, html: { class: "remote button-submit" } do |f| %>
+            <%= f.submit "Delete Item", id: "delete", data: { confirm: "Delete #{title_for @model}?" } %>
           <% end %>
           <%= form_for @model, url: update_card_path(@user, @model), method: :patch, html: { class: "button-submit", attachment: "image-preview" } do |f| %>
             <%= f.submit "Attach Image", id: "attach" %>

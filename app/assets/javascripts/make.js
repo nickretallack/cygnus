@@ -96,6 +96,10 @@ Make.extend(String.prototype, {
 
   toArray: function(){
     return this.replace(/]/g, "").split("[");
+  },
+
+  dasherize: function(){
+    return this.replace(/\s|_/g, "-");
   }
 
 });
@@ -405,7 +409,22 @@ Make.extend(Array.prototype, {
     returnAreaFromSpinner: function(){
       var spinner = this.find(".preloader-wrapper");
       if(!spinner.data("revert")) return this;
-      spinner.replaceWith(spinner.data("revert"));
+      spinner.replaceWithSuccess(spinner.data("revert"));
+    },
+
+    replaceWithSuccess: function(reversion){
+      if (reversion === undefined) reversion = this;
+      var success = $("<i />", {
+        class: "material-icons medium-small fade-out",
+        text: "check",
+        css: {
+          color: "green"
+        }
+      });
+      this.replaceWith(success);
+      setTimeout(function(){
+        success.replaceWith(reversion);
+      }, 2000);
     },
 
     hidableObject: function(){

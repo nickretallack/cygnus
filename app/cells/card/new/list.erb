@@ -1,7 +1,7 @@
 <div class = "card list-card new" >
   <div class = "card-content">
     <div class = "card-title">
-      <%= form_for @user.card, url: new_card_path(@user, @user.card), html: { class: " button-submit" } do |f| %>
+      <%= form_for @user.card, url: new_card_path(@user, @user.card), html: { class: "remote button-submit" } do |f| %>
         <%= f.submit "Create New List", id: "add" %>
       <% end %>
       <div class = "button-area centered"></div>

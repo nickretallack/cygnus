@@ -171,9 +171,12 @@ class MessagesController < ApplicationController
     if difference > 0
       pms = current_user.unread_pms.last(difference).map{ |pm| [cell(:pm, pm).(:summary), cell(:pm, pm).(:show), (pm.pm_parent.id rescue 0)] }
     end
-    messages = current_user.unread_messages.drop(session[:toasts_seen]).map{ |message| message.content }
-    session[:toasts_seen] += 1 if messages.any?
-    send_data ActiveSupport::JSON.encode({ activity: messages.first, comments: comments, pms: pms })
+    message = current_user.unread_messages.drop(session[:toasts_seen]).first
+    if message
+      message = cell(:activity, message).(:unread)
+      session[:toasts_seen] += 1
+    end
+    send_data ActiveSupport::JSON.encode({ activity: message, comments: comments, pms: pms })
   end
 
 end

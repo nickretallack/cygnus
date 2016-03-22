@@ -17,19 +17,19 @@ Message = (function(){
     self.container = new ActiveContainer(element);
     self.unreadList = $("#unread");
     self.readList = $("#read");
-    self.unreadHidable = self.unreadList.parents(".hidable");
-    self.readHidable = self.readList.parents(".hidable");
     self.unreadCounter = $("#unread-messages-count");
 
     self.message.find(".name").filter(function(index, element){
       return $(element).text() === currentUser;
     }).text("you");
 
-    self.container.buttonTable.append(self.container.closeButton);
+    if(self.message.hasClass("unread")){
+      self.container.buttonTable.append(self.container.closeButton);
 
-    self.container.closeButton.on("click.Destroyable", function(){
-      self.destroy();
-    });
+      self.container.closeButton.on("click.Destroyable", function(){
+        self.destroy();
+      });
+    }
 
   };
 
@@ -45,10 +45,7 @@ Message = (function(){
       self.container.destroy();
       self.message.prependTo(self.readList);
       self.container.buttonTable.remove();
-      self.hidableObject(self.unreadHidable).container.maximize(false);
-      if(self.readHidable.hasClass("max")){
-        self.hidableObject(self.readHidable).container.maximize(false);
-      }
+      $(window).trigger("resize.Hidable");
       self.unreadCounter.text(function(index, text){
         return parseInt(text) - 1;
       });

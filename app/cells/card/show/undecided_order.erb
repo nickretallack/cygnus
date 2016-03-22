@@ -6,7 +6,7 @@
       <%= cell(:order, @model).(:short_summary) %>
     </div>
     <div class = "card-action">
-      <%= form_for @model, url: accept_order_path(@user, @model), html: { class: "button-submit" } do |f| %>
+      <%= form_for @model, url: accept_order_path(@user, @model), html: { class: "remote button-submit" } do |f| %>
         <%= f.submit "Accept", id: "accept" %>
       <% end %>
       <%= form_for @model, url: reject_order_path(@user, @model), html: { class: "remote button-submit" } do |f| %>

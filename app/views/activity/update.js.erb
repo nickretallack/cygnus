@@ -1,0 +1,5 @@
+$("#unread-messages").html("<%=j cell(:activity).(:unread_messages) %>");
+$("#older-messages").html("<%=j cell(:activity).(:older_messages) %>");
+$("#unread-messages-count").text("<%= @user.unread_messages.length %>");
+initialize();
+$(window).trigger("resize.Hidable");

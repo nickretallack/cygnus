@@ -1,17 +1,19 @@
 class ActivityCell < HelpfulCell
 
-  def show
+  def format
     content = @model.content
     case @model.type.to_sym
     when :status_change
       content = content.gsub(/(#{CONFIG[:activity_icons].keys.join("|")})/){ |match| "<span class = 'inline comm-#{match}'>#{match.gsub("_", " ")}</span>" }
     end
     content = content.gsub("\n", "<br />")
-    "#{@model.timestamp(:created)}: #{content}"
+    "#{timestamp(@model, :created)}: #{content}"
   end
 
-  def index
-    render
+  ["index", "unread_messages", "older_messages", "unread"].each do |method|
+    define_method method do
+      render method
+    end
   end
 
   def new(type, options = {})
@@ -27,7 +29,7 @@ class ActivityCell < HelpfulCell
     recipients.push current_user
     case type
     when :watch
-      content = "<span class = 'inline name'>#{current_user.name}</span> watched <span class = 'inline name'>#{link_to recipient.name, user_path(recipient)}</span>."
+      content = "<span class = 'inline name'>#{link_to current_user.name, user_path(current_user)}</span> watched <span class = 'inline name'>#{link_to recipient.name, user_path(recipient)}</span>."
     when :fav
       content = "#{current_user.name} favorited #{object.pool.user.name}'s submission \u201C#{object.title}\u201D."
     when :new_submission
@@ -55,10 +57,9 @@ class ActivityCell < HelpfulCell
       return
     end
     message = Message.new(content: sanitize(content), attachments: [type])
-    #raise "break"
-    message.save!
+    message.save(validate: false)
     recipients.each do |user|
-      user.update_attribute(:attachments, user.attachments << "unread-message-#{message.id}")
+      user.update_attribute(:attachments, user.attachments << "unread_message-#{message.id}")
     end
   end
 

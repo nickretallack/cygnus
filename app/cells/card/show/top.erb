@@ -39,7 +39,7 @@
       <% if can_modify? @user %>
 
         <div class = "reorder-mode">
-          <%= form_for @user.card, url: reorder_cards_path(@user, @user.card), method: :patch, html: { class: "button-submit" } do |f| %>
+          <%= form_for @user.card, url: reorder_cards_path(@user, @user.card), method: :patch, html: { class: "remote button-submit" } do |f| %>
             <%= f.submit "Finalize Order", id: "save" %>
           <% end %>
           <div class = "button-area float-left"></div>

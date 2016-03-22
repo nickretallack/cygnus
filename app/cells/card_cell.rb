@@ -19,6 +19,10 @@ class CardCell < HelpfulCell
     end
   end
 
+  def show
+    render((@model.list == @user.card)? "show/list" : "show/card")
+  end
+
   def header(options)
     case options[:action]
     when :index

@@ -1,5 +1,6 @@
-var card = $("#"+'<%= @card.id %>');
+var card = $("#workboard").find("#<%= @card.id %>");
 card.addClass("fade-out");
+card.find(".button-area").eq(0).returnAreaFromSpinner();
 setTimeout(function(){
   card.remove();
 }, 1000);

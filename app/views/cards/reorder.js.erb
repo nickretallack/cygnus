@@ -1,0 +1,5 @@
+$("#workboard").replaceWith("<%=j cell(:card).(:index) %>");
+$("#workboard").find("[start]").removeAttr("start");
+$("#workboard").find("a[name = reorder]").attr("start", "");
+initialize();
+$("#finalize-order").replaceWithSuccess();

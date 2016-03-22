@@ -1,0 +1,5 @@
+var card = $("<%=j cell(:card, @card).(:show) %>");
+$("#workboard").find("#<%= @card.id %>").replaceWith(card);
+initialize();
+$("#workboard").find("[name = edit]").trigger("click.Workboard");
+card.find("i[id *= save]").eq(0).replaceWithSuccess();

@@ -22,15 +22,10 @@ class CardsController < ApplicationController
     card.update_attribute(:attachments, card.attachments << "card-#{@card.id}")
   end
 
-  def update
+  def before_update
     update_image_attachment("image") unless @card.list == @user.card
     @card.title = params[:card][:title]
     @card.description = params[:card][:description]
-    if @card.save
-      success_routes("updated")
-    else
-      danger_routes
-    end
   end
 
   def reorder

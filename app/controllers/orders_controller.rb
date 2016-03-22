@@ -86,10 +86,10 @@ class OrdersController < ApplicationController
     @order.decided = true
     @order.save(validate: false)
     @list = @user.card.cards.first
-    card = Card.new(title: "Order from #{@order.patron_name}", description: @order.patron_email)
-    card.attachments << "order-#{@order.id}"
-    card.save(validate: false)
-    @list.attachments << "card-#{card.id}"
+    @card = Card.new(title: "Order from #{@order.patron_name}")
+    @card.attachments << "order-#{@order.id}"
+    @card.save(validate: false)
+    @list.attachments << "card-#{@card.id}"
     @list.save(validate: false)
     success_routes("order accepted")
   end

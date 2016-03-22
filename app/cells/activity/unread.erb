@@ -1,0 +1,3 @@
+<div class = "item message minimal unread destroyable max" on-destroy = "unread_message-<%= @model.id %>">
+  <div class = "title"><%= cell(:activity, @model).(:format) %></div>
+</div>

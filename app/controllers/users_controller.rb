@@ -189,16 +189,34 @@ class UsersController < ApplicationController
   def update
     if /mark all/.match(params[:commit].downcase)
       @user.attachments.each do |attachment|
-        if /unread-message-/.match attachment
+        if /^unread_message-/.match attachment
           @user.attachments.delete(attachment)
           @user.attachments = @user.attachments << "message-#{/(\d+)/.match(attachment)[1]}"
           session[:toasts_seen] -= 1
         end
       end
+      @user.save(validate: false)
+      respond_to do |format|
+        format.html{
+          flash[:success] = "marked as read"
+          back
+        }
+        format.js{ render "activity/update" }
+      end
     elsif /older messages/.match(params[:commit].downcase)
       @user.attachments.delete_if{ |attachment| /^message-/.match attachment }
+      @user.save(validate: false)
+      respond_to do |format|
+        format.html{
+          flash[:success] = "messages deleted"
+          back
+        }
+        format.js{ render "activity/update" }
+      end
     elsif params[:user][:settings].is_a? Hash
       @user.settings = params[:user][:settings]
+      @user.save(validate: false)
+      success_routes("settings saved")
     else
       update_image_attachment("avatar")
       @user.statuses = params[:user][:statuses].values
@@ -207,11 +225,8 @@ class UsersController < ApplicationController
       @user.price = params[:user][:price]
       @user.tags = params[:user][:tags]
       @user.details = params[:user][:details]
-    end
-    if @user.save(validate: false)
-      back
-    else
-      back_with_errors
+      @user.save(validate: false)
+      success_routes("profile updated")
     end
   end
 
@@ -235,12 +250,15 @@ class UsersController < ApplicationController
 
   def destroy_attachment
     @user.attachments.delete(params[:attachment])
-    if /unread_message-/.match(params[:attachment])
-      @user.attachments = @user.attachments << "message-#{/(\d+)/.match(params[:attachment])[1]}"
+    if /^unread_message-/.match(params[:attachment])
+      @user.attachments << "message-#{/(\d+)/.match(params[:attachment])[1]}"
       session[:toasts_seen] -= 1
+      @user.save(validate: false)
+      render "activity/update.js"
+    else
+      @user.save(validate: false)
+      render nothing: true
     end
-    @user.update_attribute(:attachments, @user.attachments)
-    render nothing: true
   end
 
 end

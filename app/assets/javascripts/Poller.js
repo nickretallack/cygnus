@@ -15,8 +15,9 @@ Poller = (function(){
     self.pms = $("#pms");
     self.unreadCounter = $("#unread-messages-count");
     self.unreadPMCounter = $("#unread-pms-count");
+    self.unreadMessages = $("#unread-messages");
     self.displayTime = 4000;
-    self.pollingInterval = 30000;
+    self.pollingInterval = 2000;
     self.pollAgain = {
       min: 2000,
       max: 10000
@@ -45,12 +46,15 @@ Poller = (function(){
             self.unreadCounter.text(function(index, text){
               return parseInt(text) + 1;
             });
+            self.unreadMessages.find("#nothing").remove();
+            self.unreadMessages.prepend(data.activity);
+            initialize();
             if(self.disableToasting){
               setTimeout(function(){
                 self.poll();
               }, Math.rndint(self.pollAgain.min, self.pollAgain.max));
             }else{
-              Materialize.toast(data.activity, self.displayTime, "", function(){
+              Materialize.toast($(data.activity).find(".title").html(), self.displayTime, "", function(){
                 setTimeout(function(){
                   self.poll();
                 }, Math.rndint(self.pollAgain.min, self.pollAgain.max));

@@ -50,7 +50,7 @@ Init = {
     ExpandableImage: ".image.medium > img, .image.bordered > img",
     ImagePreview: ".image-preview",
     IndexField: "[class *= index-field]",
-    Message: "#unread .message",
+    Message: ".message",
     Nav: "header nav",
     OrderForm: ".order-form",
     Workboard: ".top-card",
@@ -79,5 +79,6 @@ function initialize(){
     });
   });
   $(".dropdown-button").trigger("mouseout");
-  if(window["lastClicked"] !== undefined && lastClicked["area"] !== undefined) lastClicked.area.returnAreaFromSpinner();
+  if(window["lastClicked"] !== undefined) lastClicked.returnAreaFromSpinner();
+  $(window).trigger("resize");
 }
