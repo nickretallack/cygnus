@@ -22,7 +22,7 @@
       <i class = "material-icons small">search</i>
       <%= f.text_field :tags, placeholder: CONFIG[:search_placeholder], value: @query, id: "search-tags" %>
       <%= f.submit "Search" %>
-      <%= hidable "Search by...", false, associated: "search-tags" do %>
+      <%= hidable "Search by...", false, associated: (current_user.setting(:always_minimize_search_by))? "" : "search-tags" do %>
         <%= cell(:user, @users).(:status, :search) %>
       <% end %>
     </div>
@@ -30,18 +30,20 @@
 </div>
 <hr />
 
-<%= hidable "Recent Submissions", (params[:terms] == CONFIG[:default_search_terms] or not setting(:minimize_recent_submissions)) do %>
-  <div class = "row pool-index-field">
-    <div class = "col">
-        <% enum_for recent_submissions do |submission| %>
-          <%= link_to submission_path(nil, submission) do %>
-            <%= cell(:image, submission.image).(:bordered) %>
+<% unless current_user.setting(:disable_recent_submissions) %>
+  <%= hidable "Recent Submissions", (params[:terms] == CONFIG[:default_search_terms] or not current_user.setting(:minimize_recent_submissions)) do %>
+    <div class = "row pool-index-field">
+      <div class = "col">
+          <% enum_for recent_submissions do |submission| %>
+            <%= link_to submission_path(nil, submission) do %>
+              <%= cell(:image, submission.image).(:bordered) %>
+            <% end %>
           <% end %>
-        <% end %>
+      </div>
     </div>
-  </div>
+  <% end %>
+  <hr />
 <% end %>
-<hr />
 
 <%= page_nav :top %>
 

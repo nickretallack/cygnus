@@ -1,8 +1,0 @@
-<div class = "attachment">
-  <%= cell(:image).(:show, type: :bordered, id: @model.child_id) %>
-  <div class = "buttons">
-    <%= form_for @model, url: attachment_path(@model.id), method: :delete do |f| %>
-      <%= f.submit "Delete Attachment", id: "delete" %>
-    <% end %>
-  </div>
-</div>

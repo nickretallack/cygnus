@@ -5,18 +5,20 @@
   <% end %>
   <div class = "button-area float-right"></div>
 <% end %>
-<%= form_for :back, url: pools_path(@user), html: { class: "button-submit" } do |f| %>
-  <%= f.submit "#{can_modify?(@user)? "Your" : "This user's"} pools", id: "back" %>
+<% if @user %>
+  <%= form_for :back, url: pools_path(@user), html: { class: "button-submit" } do |f| %>
+    <%= f.submit "#{can_modify?(@user)? "Your" : "This user's"} pools", id: "back" %>
+  <% end %>
 <% end %>
 <div class = "button-area float-left"></div>
-<%= cell(:view).(:page_nav) %>
+<%= page_nav :top %>
 <table class = "gallery" id = "submissions">
   <tr>
     <% if can_modify? @user %>
       <td class = "new"><%= cell(:submission).(:new) %></td>
     <% end %>
     <% enum_for @submissions, word: "submissions", reverse: true do |submission| %>
-      <% if can_modify? @user or can_modify? submission.user %>
+      <% if can_modify? @user %>
         <%= cell(:submission, submission).(:edit_summary) %>
       <% else %>
         <%= cell(:submission, submission).(:show_summary) %>
@@ -28,4 +30,4 @@
   <tr>
 </table>
 <hr />
-<%= cell(:view).(:page_nav) %>
+<%= page_nav :bottom %>

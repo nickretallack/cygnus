@@ -3,11 +3,7 @@
   <head>
     <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
     <title>
-      <% if cell_header? %>
-        <%= cell(controller_name.singularize).(:header, action: action_name.to_sym, sanitize: true) %>
-      <% else %>
-        <%= CONFIG[:name] %>
-      <% end %>
+        <%= cell(:view).(:header, sanitize: true) %>
     </title> 
     <meta name = "description" content = "<%= content_for?(:description)? yield(:description) : CONFIG[:name] %>">
     <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
@@ -18,14 +14,14 @@
     <h5 class = "nojs hc"><%= CONFIG[:name] %> relies heavily on javascript for everything from layout to form submission. Please enable javascript to browse this site.</h5>
     <div class = "js" id = "page-wrapper">
       <div class = "widthTester hide"></div>
-      <div class = "hide" disable-toasting = <%= current_user.setting(:disable_toasting) %>></div>
+      <div class = "hide" disable-toasting = <%= current_user.setting(:disable_toasting) or current_user.setting(:disable_activity_feed) %>></div>
       <header>
         <%= cell(:image).(:show, :banner) %>
         <%= cell(:user).(:navigation) %>
       </header>
       <main>
         <h2 class = "header full-small">
-          <%= cell(controller_name.singularize).(:header, action: action_name.to_sym) if cell_header? %>
+          <%= cell(:view).(:header) %>
         </h2>
         <%= cell(:announcement).(:index) %>
         <% if flash.any? %>

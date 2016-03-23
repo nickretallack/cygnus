@@ -7,7 +7,6 @@ Workboard = (function(){
     self.topCard = element;
     self.modeRegex = /view|edit|reorder/;
     self.triggers = {};
-    self.lists = self.topCard.find(".list-card:not(.new)");
     self.form = self.topCard.find(".reorder-mode").find("form");
     self.submit = self.form.children("[type = submit]");
 
@@ -37,13 +36,18 @@ Workboard = (function(){
 
   Make.extend(Workboard.prototype, {
 
+    lists: function(){
+      var self = this;
+      return self.topCard.find(".list-card:not(.new)");
+    },
+
     switchMode: function(mode){
       var self = this;
       mode = self.modeRegex.exec(mode);
       if(mode === null || self[mode[0]] === undefined) return;
       $("#workboard").find("div[class *= -mode]").hide();
       $(".card.new").hide();
-      self.lists.off("*.Workboard");
+      self.lists().off("*.Workboard");
       $("#workboard").find("div." + mode + "-mode").show();
       self.topCard.removeClass("move");
       self[mode[0]]();
@@ -62,7 +66,7 @@ Workboard = (function(){
       var self = this,
           affected;
       self.topCard.addClass("move");
-      self.lists.on("mousedown.Workboard", function(event){
+      self.lists().on("mousedown.Workboard", function(event){
         var card = $(event.target).closest(".card");
         affected = card.is(".list-card")? self.topCard.find(".list-card:not(.new)") : self.topCard.find(".card:not(.new)");
         affected.on("mouseenter.Workboard", function(event){

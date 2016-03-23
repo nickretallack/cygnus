@@ -35,30 +35,25 @@
         <%= hidable "Commission Orders", open do %>
           <%= cell(:view, s).(:setting, :anonymous_orders, "Accept commission orders from anonymous users") %>
           <%= cell(:view, s).(:setting, :non_open_orders, "Accept commission orders even when you are not open for commissions") %>
-          <%= cell(:view, s).(:setting, :disabled_order_link, "Keep the \u201CPlace Order\u201D link in your profile and listing disabled regardless of commission status")
+          <%= cell(:view, s).(:setting, :disabled_order_link, "Keep the \u201CPlace Order\u201D link in your profile and listing disabled regardless of commission status") %>
         <% end %>
         <%= hidable "Messages", open do %>
-          <%= cell(:view, s).(:setting, :public_activity_feed, "Disable others from viewing your activity feed") %>
-          <%= cell(:view, s).(:setting, :activity_feed, "Disable activity feed entirely") %>
           <%= cell(:view, s).(:setting, :disable_toasting, "Disable popup/toasted activity messages") %>
+          <%= cell(:view, s).(:setting, :disable_activity_feed, "Disable activity feed entirely") %>
         <% end %>
         <%= hidable "Indexing and Pagination", open do %>
           <%= cell(:view, s).(:setting, :pagination_at_top, "Show the page-index bar only above the index") %>
           <%= cell(:view, s).(:setting, :pagination_at_both, "Show page-index bar both above and below the index") %>
         <% end %>
         <%= hidable "Recent Submissions", open do %>
-          <%= cell(:view, s).(:setting, :recent_submissions, "Don't show recent submissions on the main page") %>
           <%= cell(:view, s).(:setting, :minimize_recent_submissions, "Minimize the recent submission list on the main page") %>
-          <%= cell(:view, s).(:setting, :private_personal_recent_submissions, "Show recent submissions by members you watch on your activity page, to you") %>
-          <%= cell(:view, s).(:setting, :protected_personal_recent_submissions, "Show recent submissions by members you watch on your activity page, to all members who aren't you") %>
-          <%= cell(:view, s).(:setting, :private_personal_favorite_submissions, "Show a list of your favorited submissions on your activity page, to you") %>
-          <%= cell(:view, s).(:setting, :protected_personal_favorite_submissions, "Show a list of your favorited submissions on your activity page, to all members who aren't you") %>
-          <%= cell(:view, s).(:setting, :hide_recent_submissions, "Hide recent submissions when you view another member's activity page") %>
-          <%= cell(:view, s).(:setting, :hide_favorite_submissions, "Hide favorited submissions when you view another member's activity page") %>
+          <%= cell(:view, s).(:setting, :disable_recent_submissions, "Don't show recent submissions on the main page") %>
+          <%= cell(:view, s).(:setting, :personal_recent_submissions, "Show recent submissions by members you watch on your activity page") %>
+          <%= cell(:view, s).(:setting, :personal_favorite_submissions, "Show a list of your favorited submissions on your activity page") %>
         <% end %>
         <%= hidable "Miscellaneous", open do %>
           <%= cell(:view, s).(:setting, :minimize_dashboard, "Minimize all settings categories on this page by default") %>
-          <%= cell(:view, s).(:setting, :minimize_search_by, "On the main page, don't open the \u201CSearch by...\u201D box automatically when typing tags") %>
+          <%= cell(:view, s).(:setting, :always_minimize_search_by, "On the main page, don't open the \u201CSearch by...\u201D box automatically when typing tags") %>
           <%= cell(:view, s).(:setting, :minimize_instructions, "Minimize all instructions by default") %>
         <% end %>
       </div>

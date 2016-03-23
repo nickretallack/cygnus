@@ -82,6 +82,14 @@ class User < ActiveRecord::Base
     User.where("? = ANY (watching)", id)
   end
 
+  def recent_submissions
+    Submission.where("array_to_string(attachments, ',') ~ 'image'").where(hidden: false).limit(5).order("id desc").select{ |submission| submission.user == self}
+  end
+
+  def recent_favorite_submissions
+    Submission.where("id = ANY('{#{favs.join(",")}}')")
+  end
+
   def announcements
     children("message", "announcement")
   end

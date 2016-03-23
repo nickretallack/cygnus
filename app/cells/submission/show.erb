@@ -20,7 +20,7 @@
 </div>
 <div class = "row">
   <% unless @model.description.blank? %>
-    <%= hidable "Description", current_user.setting(:minimize_descriptions) do %>
+    <%= hidable "Description", !current_user.setting(:minimize_descriptions) do %>
       <%= @model.description %>
     <% end %>
   <% end %>

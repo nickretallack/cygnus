@@ -24,10 +24,16 @@ CONFIG = {
   default_search_terms: {
     "tags" => "",
     "use_statuses" => {
-      "commissions" => "1"
+      "commissions" => "1",
+      "trades" => "0",
+      "requests" => "0",
+      "collaborations" => "0"
     },
     "statuses" => {
-      "commissions" => "all open statuses"
+      "commissions" => "all_open_statuses",
+      "trades" => "all_open_statuses",
+      "requests" => "all_open_statuses",
+      "collaborations" => "all_open_statuses"
     }
   },
 

@@ -183,6 +183,6 @@ class ApplicationController < ActionController::Base
   end
 
   def static
-    render inline: cell(:application).(params[:page_name]), layout: :default
+    render inline: cell(:view).(params[:page_name]), layout: :default
   end
 end

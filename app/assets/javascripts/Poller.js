@@ -18,7 +18,7 @@ Poller = (function(){
     self.unreadPMCounter = $("#unread-pms-count");
     self.unreadMessages = $("#unread-messages");
     self.displayTime = 4000;
-    self.pollingInterval = 2000;
+    self.pollingInterval = 30000;
     self.pollAgain = {
       min: 2000,
       max: 10000

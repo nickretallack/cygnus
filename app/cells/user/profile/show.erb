@@ -1,6 +1,6 @@
 <div class = "row limit-height">
   <div class = "col s6">
-    <%= cell(:image).(:limited, @user.avatar) %>
+    <%= cell(:image, @user.avatar).(:limited) %>
   </div>
   <div class = "col s6">
     <%= cell(:user, @user).(:status, :show) %>

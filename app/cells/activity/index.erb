@@ -1,3 +1,31 @@
+<% if @user.setting(:personal_recent_submissions) %>
+  <%= hidable "Recent submissions by members you watch", true do %>
+    <div class = "row pool-index-field">
+      <div class = "col">
+          <% enum_for recent_submissions_from_watched do |submission| %>
+            <%= link_to submission_path(nil, submission) do %>
+              <%= cell(:image, submission.image).(:bordered) %>
+            <% end %>
+          <% end %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+<% if @user.setting(:personal_favorite_submissions) %>
+  <%= hidable "Your recently favorited submissions", true do %>
+    <div class = "row pool-index-field">
+      <div class = "col">
+          <% enum_for current_user.recent_favorite_submissions do |submission| %>
+            <%= link_to submission_path(nil, submission) do %>
+              <%= cell(:image, submission.image).(:bordered) %>
+            <% end %>
+          <% end %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
 <%= hidable "Unread messages", true do %>
   <p class = "padded ic">Clicking the <i class = 'material-icons'>clear</i> on any message marks the message read.</p>
   <div class = "row list" id = "unread-messages">

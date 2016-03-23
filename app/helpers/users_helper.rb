@@ -3,7 +3,7 @@ module UsersHelper
   # current user
 
   def first_log_in(user)
-    pool = Pool.new(title: "Gallery")
+    pool = Pool.new(title: "gallery")
     pool.save
     list_one = Card.new(title: "To Do")
     list_one.save
@@ -71,7 +71,7 @@ module UsersHelper
   end
 
   def can_order?(user)
-    user and not current_user? user and user.order_forms.length > 0 and (CONFIG[:status_categories][:open].include? user.statuses[0].to_sym or user.settings(:non_open_orders))
+    user and not current_user? user and user.order_forms.length > 0 and (CONFIG[:status_categories][:open].include? user.statuses[0].to_sym or user.setting(:non_open_orders))
   end
 
   def faved?(submission)
@@ -112,6 +112,17 @@ module UsersHelper
         shunt_to_root
       end
     end
+  end
+
+  #other
+
+  def recent_submissions_from_watched
+    submissions = []
+    current_user.watching.each do |id|
+      user = User.find_by(id: id)
+      submissions = submissions | user.recent_submissions
+    end
+    submissions
   end
 
 end

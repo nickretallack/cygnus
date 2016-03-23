@@ -14,4 +14,11 @@ class PmCell < HelpfulCell
     end
   end
 
+  def header(options)
+    case options[:action]
+    when :index
+      "Your conversations"
+    end
+  end
+
 end

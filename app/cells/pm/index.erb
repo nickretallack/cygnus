@@ -1,5 +1,5 @@
 <div id = "pms">
-  <% enum_for @user.pms do |pm| %>
+  <% enum_for @user.pms, reverse: true do |pm| %>
     <%= cell(:pm, pm).(:summary) %>
   <% end %>
 </div>

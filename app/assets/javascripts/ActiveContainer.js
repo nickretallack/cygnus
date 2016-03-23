@@ -138,14 +138,14 @@ ActiveContainer = (function(){
       self.content.show();
       if(animate && !parentHidable.exists()){
         self.container.animate({
-          height: self.top.outerHeight() + (self["content"] === undefined? 0 : self.content.outerHeight(true)) + 10
+          height: self.top.outerHeight() + (self["content"] === undefined? 0 : self.content.outerHeight(true))
         }, 1000, "easeOutExpo");
         setTimeout(function(){
           $(window).trigger("resize.Hidable");
         }, 1100);
       }else{
         self.container.css({
-          height: self.top.outerHeight() + (self["content"] === undefined? 0 : self.content.outerHeight(true)) + 10
+          height: self.top.outerHeight() + (self["content"] === undefined? 0 : self.content.outerHeight(true))
         });
       }
       if(parentHidable.exists()){

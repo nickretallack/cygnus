@@ -28,19 +28,6 @@ class OrderFormCell < HelpfulCell
     html
   end
 
-  def header(options)
-    case options[:action]
-    when :index
-      unless options[:sanitize]
-        "#{link_to @user.name, user_path(@user)}'s order forms"
-      else
-        "#{@user.name}'s order forms"
-      end
-    when :show
-    when :edit
-    end
-  end
-
   def instructions(options)
     case options[:action]
     when :index

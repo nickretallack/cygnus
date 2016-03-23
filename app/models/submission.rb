@@ -13,11 +13,11 @@ class Submission < ActiveRecord::Base
   end
 
   def users
-    pool.users
+    pool.users if pool
   end
 
   def user
-    pool.user
+    pool.user if pool
   end
 
   def images

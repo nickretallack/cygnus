@@ -6,21 +6,6 @@ class PoolCell < HelpfulCell
     end
   end
 
-  def header(options)
-    case options[:action]
-    when :index
-      if @user
-        unless options[:sanitize]
-          "Pools: #{link_to @user.name, user_path(@user.name)}"
-        else
-          "#{@user.name}'s pools"
-        end
-      else
-        "All Pools"
-      end
-    end
-  end
-
   def instructions(options)
     case options[:action]
     when :index
