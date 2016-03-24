@@ -12,7 +12,7 @@ class MessagesController < ApplicationController
 
   before_filter only: [:create_announcement] do
     insist_on do
-      at_least :admin
+      at_least? :admin
     end
   end
 
