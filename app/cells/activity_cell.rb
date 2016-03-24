@@ -18,7 +18,7 @@ class ActivityCell < HelpfulCell
 
   def new(type, options = {})
     unless current_user.setting(:disable_activity_feed)
-      if @model.is_a? Array
+      if @model.is_a? Array or @model.is_a? ActiveRecord::Relation
         recipients = @model
         recipient = recipients.first
       elsif @model
@@ -29,30 +29,32 @@ class ActivityCell < HelpfulCell
       end
       case type
       when :watch
-        content = "<span class = 'inline name'>#{link_to current_user.name, user_path(current_user)}</span> watched <span class = 'inline name'>#{link_to recipient.name, user_path(recipient)}</span>."
+        content = "#{link_to current_user.name, user_path(current_user)} watched you"
       when :fav
-        content = "#{current_user.name} favorited #{object.pool.user.name}'s submission \u201C#{object.title}\u201D."
-      when :new_submission
-        content = "#{current_user.name} uploaded a new #{view_context.link_to "submission", submission_path(object)}."
-      when :work_request #not implemented
-        content = "#{current_user.name} ordered work from #{object.name}."
-      when :workboard_update #please do not use yet except for testing; workboards must be quantum updated at present,
-                             #and sending a message for each update will flood inboxes
-        content = "#{current_user.name} updated their workboard."
-      when :commission_finished #not implemented
-        content = "#{current_user.name} finished a commission for #{object.name}."
+        recipients << options[:submission].user
+        content = "#{link_to current_user.name, user_path(current_user)} favorited your submission \u201C#{link_to title_for(options[:submission]), submission_path(options[:submission].pool, options[:submission])}\u201D"
+      when :submission
+        content = "#{link_to current_user.name, user_path(current_user)} just created or updated their submission, \u201C#{link_to title_for(options[:submission]), submission_path(options[:submission].pool, options[:submission])}\u201D"
+      when :order
+        content = "#{options[:order].name || link_to(current_user.name, user_path(current_user))} placed a commission order with you"
+      when :accept_order
+        recipients << options[:order].patron
+        content = "#{link_to current_user.name, user_path(current_user)} accepted your #{link_to "commission order", order_path(options[:order])}"
+      when :reject_order
+        recipients << options[:order].patron
+        content = "#{link_to current_user.name, user_path(current_user)} rejected your #{link_to "commission order", order_path(options[:order])}"
+      when :workboard_update #not implemented
+        content = "#{link_to current_user.name, user_path(current_user)} updated the status of your commission order on their #{link_to "workboard", cards_path(current_user)}"
       when :print_order #not implemented
         content = "#{current_user.name} ordered a print of #{object.user.name}'s #{view_context.link_to "submission", submission_path(object)}."
       when :status_change
-        content = ""
-        object.each do |key, status|
-          content << "\n"
-          content << "#{current_user.name} has set their #{CONFIG[:commission_icons].keys[key.to_i]} status to #{status}."
-        end
+        content = "#{link_to current_user.name, user_path(current_user)} has updated their statuses to: "
+        content << current_user.statuses.map.with_index{ |status, index| "#{CONFIG[:commission_icons].keys[index]}: <span class = 'inline comm-#{status}'>#{status}</span>" }.join("; ")
       when :comment
-        content = "#{current_user.name} posted a comment on #{object.submission.pool.user.name}'s #{view_context.link_to "submission", submission_path(object.submission)}#{" in reply to " + other_user.name if other_user}."
-      when :pm
-        content = "#{current_user.name} sent #{pm_recipient.name} a PM."
+        recipients << options[:submission].user
+        content = "#{link_to current_user.name, user_path(current_user)} commented on your submission, \u201C#{link_to title_for(options[:submission]), submission_path(options[:submission].pool, options[:submission])}\u201D"
+      when :pm #not implemented
+        content = "you received a PM from #{link_to current_user.name, user_path(current_user)}"
       else
         return
       end
@@ -61,6 +63,7 @@ class ActivityCell < HelpfulCell
       recipients.each do |user|
         user.update_attribute(:attachments, user.attachments << "unread_message-#{message.id}")
       end
+      #raise "break"
     end
   end
 

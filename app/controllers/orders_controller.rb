@@ -73,6 +73,7 @@ class OrdersController < ApplicationController
       user = @form.user
       user.attachments << "order-#{@order.id}"
       user.save(validate: false)
+      message(:order, user, order: @order)
       flash[:success] = "order placed with #{@form.user.name}"
       respond_to do |format|
         format.html { redirect_to :root }
@@ -101,6 +102,7 @@ class OrdersController < ApplicationController
     @card.save(validate: false)
     @list.attachments << "card-#{@card.id}"
     @list.save(validate: false)
+    message(:accept_order, order: @order)
     success_routes("order accepted")
   end
 
@@ -110,6 +112,7 @@ class OrdersController < ApplicationController
     user = current_user
     user.attachments.delete("order-#{@order.id}")
     user.save(validate: false)
+    message(:reject_order, order: @order)
     success_routes("order rejected")
   end
 

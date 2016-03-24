@@ -24,7 +24,7 @@
   <% else %>
     <blockquote class = "inline link"><%= link_to "Send PM", pm_author_path(current_user, @model) %></blockquote>
   <% end %>
-  <% if can_order? @model and not @model.setting(:disabled_order_link) %>
+  <% if can_order? @model and !@model.setting(:disabled_order_link) %>
     <blockquote class = "inline link"><%= link_to "Place Order", new_order_path(@model.order_form) %></blockquote>
   <% else %>
     <blockquote class = "inline link danger">Not Accepting Orders</blockquote>

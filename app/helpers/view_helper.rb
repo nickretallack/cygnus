@@ -113,7 +113,7 @@ module ViewHelper
     cell(:view).(:hidable, title: title, content: capture(&block), open: open, associated: associated, on_destroy: on_destroy)
   end
 
-  def message(type, recipient, **args)
+  def message(type, recipient = nil, **args)
     cell(:activity, recipient).(:new, type, args)
   end
 

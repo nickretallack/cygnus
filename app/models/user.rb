@@ -10,7 +10,6 @@ class User < ActiveRecord::Base
     Rails.application.routes.routes.collect {|r| r.path.spec.to_s }.collect {|path| if (match = /^\/([^\/\(:]+)/.match(path)); match[1]; else; ""; end;}.compact.uniq.push("-1", "-2")
   end
 
-  before_save { self.email = email.downcase }
   validates :name, presence: true, length: { maximum: 50 }, uniqueness: { case_sensitive: false }, exclusion: { in: User.lead_paths }
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i

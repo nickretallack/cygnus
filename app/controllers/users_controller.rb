@@ -155,6 +155,7 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(params.require(:user).permit([:name, :email, :password, :password_confirmation]))
+    @user.email = @user.email.downcase
     @user.ip_address = request.remote_ip
     if CONFIG[:email_required]
       @user.level = :unactivated
@@ -219,6 +220,7 @@ class UsersController < ApplicationController
       success_routes("settings saved")
     else
       update_image_attachment("avatar")
+      message(:status_change, @user.watched_by) if @user.statuses != params[:user][:statuses].values
       @user.statuses = params[:user][:statuses].values
       @user.artist_types = params[:user][:artist_types].reject{ |key, type| type.blank? }.values
       @user.offsite_galleries = params[:user][:offsite_galleries].reject{ |key, gallery| gallery.blank? }.values
@@ -243,6 +245,7 @@ class UsersController < ApplicationController
       user.watching.delete(@user.id)
     else
       user.watching << @user.id
+      message(:watch, @user)
     end
     user.save(validate: false)
     success_routes("you are now watching #{@user.name}")

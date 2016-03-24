@@ -1,3 +1,3 @@
-<% enum_for @user.unread_messages.order("created_at DESC"), word: "new messages" do |message| %>
+<% enum_for @user.unread_messages, word: "new messages", reverse: true do |message| %>
   <%= cell(:activity, message).(:unread) %>
 <% end %>

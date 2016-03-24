@@ -56,6 +56,7 @@ class MessagesController < ApplicationController
         else
           @submission.update_attribute(:attachments, @submission.attachments << "buried_comment-#{@message.id}" << "comment-#{@message.id}")
         end
+        message(:comment, submission: @submission)
         format.html { back }
         format.js { render "comments/create" }
       else

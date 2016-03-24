@@ -65,6 +65,12 @@ class SubmissionsController < ApplicationController
     end
   end
 
+  def after_update
+    if /save/.match params[:commit].downcase and !@submission.hidden
+      message(:submission, @user.watched_by, submission: @submission)
+    end
+  end
+
   def before_delete
     @pool = @submission.pool
     @pool.attachments.delete("submission-#{@submission.id}")
@@ -82,6 +88,7 @@ class SubmissionsController < ApplicationController
       user.favs.delete(@submission.id)
     else
       user.favs << @submission.id
+      message(:fav, submission: @submission)
     end
     user.save(validate: false)
     success_routes
