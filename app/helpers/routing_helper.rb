@@ -79,7 +79,7 @@ module RoutingHelper
   end
 
   def paginate(results, limit = nil)
-    limit ||= controller_name.constantize.classify.results_per_page rescue 20
+    limit ||= controller_name.classify.constantize.results_per_page rescue 20
     instance_variable_set("@#{controller_name}", (results.offset(limit * (((params[:page] || "1").to_i) - 1)).limit(limit) rescue nil))
     instance_variable_set("@total_#{controller_name}", (results.count rescue nil))
   end

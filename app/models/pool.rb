@@ -1,6 +1,6 @@
 class Pool < ActiveRecord::Base
 
-  each_page_show 15
+  each_page_show 5
   
   def users
     parents("user")

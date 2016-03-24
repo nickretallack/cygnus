@@ -18,10 +18,13 @@ class ViewCell < HelpfulCell
   def page_nav
     @path = Proc.new{ |page|
       parent = params.keys.collect{|key| /(.+)_id/.match(key)}.compact[0][1] rescue nil
+      user = params[User.slug] rescue nil
       if parent
         self.send("#{controller.controller_name}_path", controller.instance_variable_get("@#{parent}"), page)
-      else
+      elsif controller.instance_of? UsersController
         self.send("#{controller.controller_name}_path", page)
+      else
+        self.send("#{controller.controller_name}_path", user, page)
       end
     }
     @page = (params[:page] || "1").to_i
