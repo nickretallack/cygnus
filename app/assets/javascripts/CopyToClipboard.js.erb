@@ -47,7 +47,7 @@ CopyToClipboard = (function(){
       input.remove();
     },
 
-    manualCopy(){
+    manualCopy: function(){
       var self = this;
       window.prompt("Send this link to commissioners:", self.text);
     }
