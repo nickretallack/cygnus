@@ -23,6 +23,9 @@ class ImagesController < ApplicationController
       file = @image.file.limited.url
     when :medium
       file = @image.file.medium.url
+      unless File.exist?(file)
+        file = @image.file.url
+      end
     when :full
       file = @image.file.url
     else

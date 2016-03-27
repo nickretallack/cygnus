@@ -17,8 +17,12 @@ class Message < ActiveRecord::Base
     parents("message", "pm").first
   end
 
-  def recipient
-    parents("user", "unread_pm").first || parents("user", "read_pm").first
+  def top
+    if pm_parent
+      pm_parent.top
+    else
+      self
+    end
   end
 
   def comment_author

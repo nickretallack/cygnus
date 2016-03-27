@@ -125,4 +125,8 @@ module UsersHelper
     submissions
   end
 
+  def pm_partner(message)
+    message.parents("user", "pm").select{ |user| user != current_user }.first
+  end
+
 end

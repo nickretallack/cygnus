@@ -1,3 +1,3 @@
-<%= hidable "Conversation with #{@model.pm_author == @user? @model.recipient.name : @model.pm_author.name}#{": #{@model.subject}" unless @model.subject.blank?}", false do %>
+<%= hidable "Conversation with #{pm_partner(@model).name}#{": #{@model.subject}" unless @model.subject.blank?}", false do %>
   <%= cell(:pm, @model).(:show) %>
 <% end %>

@@ -74,6 +74,8 @@ class MessagesController < ApplicationController
           @reply = Message.find(params["reply_#{Message.slug}"])
           @user.update_attribute(:attachments, @user.attachments << "pm_sent-#{@message.id}" )
           @reply.update_attribute(:attachments, @reply.attachments << "pm-#{@message.id}")
+          user = pm_partner(@reply.top)
+          user.update_attribute(:attachments, user.attachments << "unread_pm-#{@message.id}")
         else
           @user.update_attribute(:attachments, @user.attachments << "pm_sent-#{@message.id}" << "pm-#{@message.id}")
           @reply_to.update_attribute(:attachments, @reply_to.attachments << "pm-#{@message.id}" << "unread_pm-#{@message.id}")

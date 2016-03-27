@@ -2,9 +2,11 @@ class ActivityCell < HelpfulCell
 
   def format
     content = @model.content
-    case @model.type.to_sym
+    case (@model.type.to_sym rescue "")
     when :status_change
       content = content.gsub(/(#{CONFIG[:activity_icons].keys.join("|")})/){ |match| "<span class = 'inline comm-#{match}'>#{match.gsub("_", " ")}</span>" }
+    else
+      content = @model.content
     end
     content = content.gsub("\n", "<br />")
     "#{timestamp(@model, :created)}: #{content}"
