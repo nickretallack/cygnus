@@ -28,8 +28,11 @@ ViewAnyway = (function(){
       });
     });
 
+    self.image.on("load", function(){
+      
+    });
+
     self.container.append(self.cover);
-    self.cover.hide();
 
     $(window).trigger("resize.ViewAnyway");
 
@@ -39,12 +42,31 @@ ViewAnyway = (function(){
 
     self.container.on("mouseleave.ViewAnyway", function(){
       self.cover.hide();
-    })
+    });
+
+    self.cover.on("mouseleave.ViewAnyway", function(){
+      self.cover.hide();
+    });
+
+    $("body").on("mouseleave.ViewAnyway", function(){
+      self.cover.hide();
+    });
 
     self.cover.on("click.ViewAnyway", function(event){
       pause(event);
-      self.image.attr("src", "/image/" + self.type + "/" + self.id);
+      var div = $("<div />", {
+                  html: Make.progress.clone(),
+                  css: {
+                    position: "relative",
+                    top: "40%"
+                  }
+                });
+      self.image.replaceWith(div)
       self.cover.remove();
+      self.image.attr("src", "/image/" + self.type + "/" + self.id);
+      self.image.on("load", function(){
+        div.replaceWith(self.image);
+      });
     });
 
   };

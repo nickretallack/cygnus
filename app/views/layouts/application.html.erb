@@ -11,8 +11,8 @@
     <%= csrf_meta_tags %>
   </head>
   <body>
-    <h5 class = "nojs hc"><%= CONFIG[:name] %> relies heavily on javascript for everything from layout to form submission. Please enable javascript to browse this site.</h5>
-    <div class = "js" id = "page-wrapper">
+    <h5 class = "nojs hc"><%= CONFIG[:name] %> relies heavily on javascript for everything from layout to form submission. Please enable javascript to browse this site.</h5><br class = "nojs" /><br class = "nojs" /><h5 class = "nojs hc">If you do have javascript enabled, you are only seeing this message because the site is still loading. Please wait a bit = )</h5>
+    <div id = "page-wrapper">
       <div class = "widthTester hide"></div>
       <div class = "hide" disable-toasting = <%= current_user.setting(:disable_toasting) or current_user.setting(:disable_activity_feed) %>></div>
       <header>
@@ -52,7 +52,7 @@
             <%= CONFIG[:copyright].html_safe %>
           </div>
         </div>
-        <%#= console %>
+        <%= console %>
       </footer>
     </div>
   </body>

@@ -19,7 +19,6 @@ CONFIG = {
   banner: "banner.png", 
   image_shelf_life: 5.hours,
   password_reset_shelf_life: 2.hours,
-  search_placeholder: "Artists who do...",
 
   default_search_terms: {
     "tags" => "",

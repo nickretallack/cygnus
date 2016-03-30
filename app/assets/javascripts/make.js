@@ -21,6 +21,10 @@
     });
   };
 
+  Make.spinner = $('<div class="preloader-wrapper big active"><div class="spinner-layer spinner-blue-only"><div class="circle-clipper left"><div class="circle"></div></div><div class="gap-patch"><div class="circle"></div></div><div class="circle-clipper right"><div class="circle"></div></div></div></div>'); //from materialize
+
+  Make.progress = $('<div class="progress"><div class="indeterminate"></div></div>'); //from materialize
+
   window.Make = Make;
 })();
 
@@ -401,7 +405,7 @@ Make.extend(Array.prototype, {
     },
 
     replaceWithSpinner: function(){
-      var spinner = $('<div class="preloader-wrapper big active"><div class="spinner-layer spinner-blue-only"><div class="circle-clipper left"><div class="circle"></div></div><div class="gap-patch"><div class="circle"></div></div><div class="circle-clipper right"><div class="circle"></div></div></div></div>'); //from materialize
+      var spinner = Make.spinner.clone()
       spinner.data("revert", this);
       this.replaceWith(spinner);
     },

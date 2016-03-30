@@ -21,6 +21,9 @@ class ImagesController < ApplicationController
       suffix = "_thumb"
     when :limited
       file = @image.file.limited.url
+      unless File.exist?(file)
+        file = @image.file.url
+      end
     when :medium
       file = @image.file.medium.url
       unless File.exist?(file)
@@ -34,6 +37,10 @@ class ImagesController < ApplicationController
       rescue
         file = nil
       end
+    end
+
+    unless file.nil? or File.exist?(file)
+      file = nil
     end
 
     send_file file || File.join(CONFIG[:image_path], CONFIG["image_not_found#{suffix}".to_sym]), disposition: :inline, filename: @image.original_filename if stale? etag: @image, last_modified: @image.updated_at

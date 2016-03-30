@@ -1,4 +1,4 @@
-<ul class = "right hide-on-med-and-down js">
+<ul class = "right">
   <li class = "circular-button teal lighten-2" title = "New Orders">
     <%= link_to cards_path(current_user) do %>
       <div id = "new-orders-count"><%= current_user.orders.length %></div>
@@ -14,7 +14,7 @@
       <div id = "unread-messages-count"><%= current_user.unread_messages.length %></div>
     <% end %>
   </li>
-  <li>
+  <li class = "hide-on-med-and-down">
     <a class = "dropdown-button" data-activates = "menu">
       <div>
         <span class = "inline" id = "current-user"><%= current_user.name %></span>
@@ -23,9 +23,6 @@
     </a>
   </li>
 </ul>
-<div class = "right hide-on-med-and-down nojs">
-  <%= render "member/menu" %>
-</div>
 <a data-activates="mobile-menu" class="button-collapse">
   <i class="material-icons">menu</i>
 </a>

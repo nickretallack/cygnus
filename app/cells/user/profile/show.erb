@@ -2,12 +2,14 @@
   <div class = "col s6">
     <%= cell(:image, @user.avatar).(:limited) %>
   </div>
-  <div class = "col s6">
+  <div class = "col s6 top-padded">
     <%= cell(:user, @user).(:status, :show) %>
     <%= cell(:user, @user).(:links) %>
   </div>
 </div>
 <div class = "row">
-  <%= cell(:user, @user).(:attributes) %>
-  <blockquote class = "inline"><%= render_markdown @model.details %></blockquote>
+  <div class = "col s12">
+    <%= cell(:user, @user).(:attributes) %>
+    <blockquote class = "inline"><%= render_markdown @model.details %></blockquote>
+  </div>
 </div>
