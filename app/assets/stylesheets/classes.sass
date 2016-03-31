@@ -337,7 +337,7 @@ div.button-area
   position: fixed
   bottom: 5px
   background-color: $background-color
-  z-index: 1
+  z-index: 2
   border-radius: 14px
   width: auto
   border: 1px solid black
@@ -501,10 +501,11 @@ i[class *= "comm-"]
     height: 60px
     i
       font-size: 4rem
+      padding: 0
     a
       +vertical-center
       span
-        padding: 15px 20px
+        padding: 15px 0
   li.active
     background-color: transparent
     border-bottom: 2px dotted $danger-color
