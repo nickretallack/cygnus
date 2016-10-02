@@ -1,2 +1,2 @@
-$("#favorite").html("<%=j cell(:submission, @submission).(:favorite) %>");
+$("#favorite").html("<%=j render "favorite", model: @submission %>");
 initialize();

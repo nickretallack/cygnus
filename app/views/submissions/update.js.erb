@@ -1,8 +1,8 @@
 var submissions = $("#submissions");
 if(submissions.exists()){
-  submissions.find("#" + <%= @submission.id %>).replaceWith("<%=j cell(:submission, @submission).(:edit_summary) %>");
+  submissions.find("#" + <%= @submission.id %>).replaceWith("<%=j render "submissions/summary/edit", model: @submission %>");
   initialize();
 }else{
-  $("#submission").replaceWith("<%=j cell(:submission, @submission).(:edit) %>");
+  $("#submission").replaceWith("<%=j render "form" %>");
   initialize();
 }

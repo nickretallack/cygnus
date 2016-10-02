@@ -1,0 +1,19 @@
+<div class = "card list-card">
+  <div class = "card-content">
+    <div class = "card-title">
+      <h5 title = "<%= model.patron_name %>">From: <%= model.patron_name %></h5>
+      <h5 title = "<%= model.patron_email %>">Email: <%= model.patron_email %></h5>
+      <%= render("orders/short_summary", model: model) %>
+
+    </div>
+    <div class = "card-action">
+      <%= form_for model, url: accept_order_path(@user, model), html: { class: "remote button-submit" } do |f| %>
+        <%= f.submit "Accept", id: "accept" %>
+      <% end %>
+      <%= form_for model, url: reject_order_path(@user, model), html: { class: "remote button-submit" } do |f| %>
+        <%= f.submit "Reject", id: "reject" %>
+      <% end %>
+      <div class = "button-area centered"></div>
+    </div>
+  </div>
+</div>

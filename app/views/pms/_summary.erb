@@ -1,0 +1,3 @@
+<%= hidable "Conversation #{"with #{pm_partner(model).name}" if pm_partner(model)}#{": #{model.subject}" unless model.subject.blank?}", false do %>
+  <%= render "pms/show", model: model %>
+<% end %>

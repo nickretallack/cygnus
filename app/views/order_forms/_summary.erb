@@ -1,0 +1,18 @@
+<tr id = "<%= model.id %>">
+  <% if can_modify? @user %>
+    <td>
+      <%= form_for model, url: destroy_order_form_path(model), method: :delete, html: { class: "remote button-submit" } do |f| %>
+        <%= f.submit "Delete", id: "delete", confirm: "Delete #{title_for model}?" %>
+      <% end %>
+      <% unless model == @user.order_form %>
+        <%= form_for model, url: default_order_form_path(model), html: { class: "remote button-submit" } do |f| %>
+          <%= f.submit "Set Default", id: "default" %>
+        <% end %>
+      <% end %>
+      <div class = "button-area centered-medium"></div>
+    </td>
+    <td><%= link_to title_for(model), order_form_path(model) %></td>
+    <td><a class = "copy-to-clipboard" copy = <%= "#{CONFIG[:host]}/#{new_order_path(model)}" %>>Copy link</a></td>
+  <% end %>
+  <td class = "danger"><%= "Default" if model == @user.order_form %></td>
+</tr>

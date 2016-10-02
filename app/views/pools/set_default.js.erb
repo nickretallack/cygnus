@@ -1,2 +1,2 @@
-$("#pools").html("<%=j cell(:pool, @user.pools).(:enum) %>");
+$("#pools").html("<%=j render "enum", {model: @user.pools} %>");
 initialize();

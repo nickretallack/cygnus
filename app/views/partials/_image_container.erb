@@ -1,0 +1,4 @@
+<% image = image || Image.new(id:-1) %>
+<%= div_for(image, class:"#{type} #{image.explicit?? 'danger' : 'success'} #{"adult" if image.explicit? && !current_user.setting(:view_adult)} #{"fit" if current_user.setting(:always_fit_to_width)}") do %>
+  <%= image_tag(image_path(type, id: image))%>
+<% end %>

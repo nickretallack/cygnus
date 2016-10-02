@@ -7,13 +7,11 @@ header
   img
     position: relative
     width: 100%
+    max-width: 185px
     z-index: 1
   a
     text-shadow: 0px 2px 0 $text-shadow-color
     z-index: 2
-  a:hover
-    cursor: pointer
-    font-size: 1rem
   .side-nav
     max-width: 80%
   form
@@ -65,8 +63,7 @@ header
       font-size: 150%
       color: $menu-text-color
   .separator
-    height: 50px
-    background: linear-gradient(to bottom, rgba(156, 204, 101, 0.7), rgba(156, 204, 101, 0))
+    height: 145px
     pointer-events: none
     position: relative
     top: -15px
@@ -90,13 +87,9 @@ header
       img
         width: $logo-width
     ul>li
-      +vertical-center
-      height: 100%
       z-index: 20
       a
         height: 100%
-        div
-          +vertical-center
     .dropdown-button
       i
         margin-left: 0

@@ -1,0 +1,16 @@
+<% model.statuses.each_with_index do |status, index| %>
+  <div class = "row list">
+    <div class = "col s6 item">
+      <label>
+        <i class = "material-icons medium-small comm-status"><%= CONFIG[:commission_icons].values[index] %></i>
+        <%= CONFIG[:commission_icons].keys[index].to_s.humanize.titleize %>:
+      </label>
+    </div>
+    <div class = "col s6 item">
+      <label>
+        <i class = "material-icons medium-small comm-<%= status %>"><%= CONFIG[:activity_icons][status.to_sym] %></i>
+        <%= status.humanize.titleize %>
+      </label>
+    </div>
+  </div>
+<% end %>

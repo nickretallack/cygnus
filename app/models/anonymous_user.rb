@@ -2,7 +2,11 @@ class AnonymousUser
   def id
     0
   end
-
+  
+  def anon?
+    true #permissions control
+  end
+  
   def level
     :unactivated
   end

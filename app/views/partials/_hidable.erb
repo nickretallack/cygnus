@@ -1,0 +1,9 @@
+<div class = "hidable <%= open ? "max" : "min" %>" <%= "data-associated-field = #{associated}" if associated %> <%= "data-on-destroy = #{on_destroy}" if on_destroy %>>
+  <span class = "title"><%= title %></span>
+  <div class = "content">
+    <% if on_destroy %>
+      <p class = "padded ic">Clicking the <i class = 'material-icons'>clear</i> removes this notice permanently!</p>
+    <% end %>
+    <%= content %>
+  </div>
+</div>

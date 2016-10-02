@@ -1,8 +1,0 @@
-<div class = "row gallery" id = "submissions">
-  <% enum_for @model.submissions, word: "submissions", reverse: true do |submission| %>
-    <%= cell(:submission, submission).(:summary) %>
-  <% end %>
-  <% 11.times do %>
-    <div class = "thumbnail-block spacer"></div>
-  <% end %>
-</div>

@@ -1,3 +1,3 @@
-$("#workboard").replaceWith("<%=j cell(:card).(:index) %>");
+$("#workboard").replaceWith("<%=j render "cards/show/index" %>");
 initialize();
 $("#workboard").find("#<%= @card.id %>").addClass("fade-in");

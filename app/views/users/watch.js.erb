@@ -1,2 +1,2 @@
-$("#users").find("#" + <%= @user.id %>).find("#watch").html("<%=j cell(:user, @user).(:watch) %>");
+$("#users").find("#" + <%= @user.id %>).find("#watch").html("<%=j render "users/watch", {model: @user} %>");
 initialize();

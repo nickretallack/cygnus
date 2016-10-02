@@ -31,7 +31,6 @@ class SubmissionsController < ApplicationController
     else
       paginate Submission.where(hidden: false)
     end
-    render inline: cell(:submission).(:index), layout: :default
   end
 
   def after_save
@@ -39,18 +38,8 @@ class SubmissionsController < ApplicationController
   end
 
   def show
-    if @pool
-      if can_modify? @pool.user
-        render inline: cell(:submission, @submission).(:edit), layout: :default
-      else
-        render inline: cell(:submission, @submission).(:show), layout: :default
-      end
-    else
-      if can_modify? @submission.pool.user
-        render inline: cell(:submission, @submission).(:edit), layout: :default
-      else
-        render inline: cell(:submission, @submission).(:show), layout: :default
-      end
+    if (@pool && can_modify?(@pool.user)) || can_modify?(@submission.pool.user)
+      render "edit"
     end
   end
 
@@ -67,7 +56,7 @@ class SubmissionsController < ApplicationController
 
   def after_update
     if /save/.match params[:commit].downcase and !@submission.hidden
-      message(:submission, @user.watched_by, submission: @submission)
+      Message.submission(@user.watched_by, @submission)
     end
   end
 
@@ -88,7 +77,7 @@ class SubmissionsController < ApplicationController
       user.favs.delete(@submission.id)
     else
       user.favs << @submission.id
-      message(:fav, submission: @submission)
+      Message.favorite(user, @submission)
     end
     user.save(validate: false)
     success_routes

@@ -1,0 +1,39 @@
+<%= hidable "Markdown Cheatsheet", false do %>
+	<table>
+	  <thead>
+	    <tr>
+	      <th></th>
+	      <th>Input</th>
+	      <th>Output</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr>
+	      <td>Bold</td>
+	      <td>**The quick brown fox**</td>
+	      <td><%= render_markdown "**The quick brown fox**" %></td>
+	    </tr>
+	    <tr>
+	      <td>Italic</td>
+	      <td>*The quick brown fox*</td>
+	      <td><%= render_markdown "*The quick brown fox*" %></td>
+	    </tr>
+	    <tr>
+	      <td>Link</td>
+	      <td>[The quick brown fox](mozilla.org)</td>
+	      <td><%= render_markdown "[The quick brown fox](mozilla.org)" %></td>
+	    </tr>
+	    <tr>
+	      <td>Code</td>
+	      <td>`The nil brown fox`</td>
+	      <td><%= render_markdown "`The nil brown fox`" %></td>
+	    </tr>
+	    <tr>
+	      <td>Header</td>
+	      <td>#The quick brown fox</td>
+	      <td><%= render_markdown "#The quick brown fox" %></td>
+	    </tr>
+	  </tbody>
+	</table>
+	<%= link_to "More...", "https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet", target: "_blank" %>
+<% end %>

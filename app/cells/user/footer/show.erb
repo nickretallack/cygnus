@@ -1,6 +1,0 @@
-<div class = "row padded">
-  Member Since: <%= Date.parse(@user.created_at.to_s).to_formatted_s(:long_ordinal) %><br />
-  <% if can_modify? @user %>
-    Last Login: <%=Date.parse(@user.created_at.to_s).to_formatted_s(:long_ordinal) %><br />
-  <% end %>
-</div>

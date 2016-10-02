@@ -1,0 +1,21 @@
+<div class = "row block" id = <%= model.id %>>
+  <div class = "row">
+    <div class = "col s12 m6 mt">
+      <div class = "fl col s6 m12 l5 fh full-small">
+        <%= render "partials/image_container", {image: model.avatar, type: :bordered}%>
+      </div>
+      <div class = "col s6 m12 l6 full-small">
+        <div class = "row">
+          <h5 class = "truncate hc"><%= link_to model.name, user_path(model) %></h5>
+          <%= render "/users/status/condensed", {model:model} %>
+        </div>
+      </div>
+    </div>
+    <div class = "col s12 m6 l6">
+      <%= render "/users/links", {model: model} %>
+    </div>
+    <div class = "col s12 m6 l12">
+      <%= render "/users/attributes", {model: model} %>
+    </div>
+  </div>
+</div>

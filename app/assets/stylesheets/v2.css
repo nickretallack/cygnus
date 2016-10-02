@@ -1,0 +1,338 @@
+/*------------------------------*/
+/* Resolution-Dependent Styling */
+/*------------------------------*/
+.material-icons {
+    font-family: 'Material Icons';
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "liga" 1;
+    font-style: normal;
+    text-transform: none;
+    line-height: 1;
+    font-size: 24px;
+    display: inline-block;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.button-collapse {
+	z-index: 2 !important;
+}
+#page-wrapper {
+	width:100%;
+}
+/* Tiny Screen Sizes (Mainly for older mobile screens and crazy old computers) */
+@media (max-width: 640px) { /* If someone accesses the site on a REALLY old display, this CSS re-arranges such content accordingly (navbar is fine, but content mostly goes here...) */
+    /* REALLY small screen sizes info goes here */
+}
+
+/* Smaller Screen Sizes (Mainly for mobile and older desktop screen sizes.) */
+@media (max-width: 1024px) { /* Generalizations (for most modern devices this should be adequate.... more size-specific styles will follow as needed) */
+    body {
+        min-width: 480px;
+    }
+    #nav-upper {
+        background-image: url('/image/banner.png');
+        background-position: top center;
+        background-size: cover;
+        height: 80px;
+        width: 100%;
+    }
+    #user {
+        padding: 10px 10px 0 0;
+        text-align: right;
+    }
+    .avatar {  /* 60x60px avatar, size is dimensions+border size. */
+        background-size: contain;
+        border: 2px solid #202020;
+        border-radius: 4px;
+        float: right;
+        height: 56px;
+        text-align: right;
+        width: 56px;
+        overflow:hidden;
+    }
+    .avatar img {
+    	width:auto;
+        overflow:hidden;
+        top: 50% !important;
+    	left: 50% !important;
+    	-webkit-transform: translateX(-50%) translateY(-50%) !important;
+    	transform: translateX(-50%) translateY(-50%) !important;
+    }
+    .userinfo {
+        height: 60px;
+        float: right;
+        padding: 0 5px 0 0;
+    }
+    .logged-out {
+        font-size: 24px;
+        line-height: 30px;
+    }
+  #navbarlinks {
+    color: #99deb0;
+    float: right;
+    font-size: 24px;
+    margin: 0;
+  }
+    #navbarlinks input {
+      width: 100px;
+    }
+    #navbarlinks li {
+      display: inline-block;
+      height: 50px;
+      margin: 0 0 0 10px;
+      padding-top: 8px;
+      text-align: right;
+    }
+    #navbarlinks li a {
+      color: #99deb0;
+      text-align: right;
+      text-decoration: none;
+      vertical-align: middle;
+    }
+      #navbarlinks li a:hover {
+        color: #c6f8d6;
+        text-align: right;
+        text-decoration: none;
+      }
+  #logo {
+    bottom: 58px;
+    float: left;
+    padding-left: 10px;
+    position: relative;
+  }
+  #notification-box {
+    background-size: 20px;
+    border-radius: 4px;
+    display: inline-block;
+    height: 30px;
+    margin: 0 0 0 10px;
+    padding: 0 10px 0 0;
+    width: 70px;
+  }
+  
+  #box {
+    font-size: 12px;
+    min-width: 368px;
+    margin: 10px 50px;
+    padding: 5px;
+  }
+  #box p {
+    line-height: 120%;
+  }
+  #box h1{
+    border-bottom: 2px solid black;
+    font-family: "Steelfish", sans-serif;
+    font-size: 32px;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+  }
+  #box strong{
+    font-weight:800;
+  }
+}
+
+/* Larger Screen Sizes (Mainly for Desktops) */
+@media (min-width: 1025px) { /* For any larger screen devices.  This should be adequate for large tablets, large screen phones and desktops/laptops... */
+    body {
+        min-width: 1100px;
+    }
+    #nav-upper {
+        background-image: url('/image/banner.png');
+        background-position: top center;
+        background-size: cover;
+        height: 100px;
+        width: 100%;
+    }
+    #user {
+        padding: 10px 50px 0 0;
+        text-align: right;
+    }
+    .avatar {  /* 75x75px avatar, size is dimensions+border size. */
+        background-size: contain;
+        border: 2px solid #202020;
+        border-radius: 4px;
+        float: right;
+        height: 71px;
+        text-align: right;
+        width: 71px;
+        overflow:hidden;
+    }
+  
+    .avatar img {
+    	width:auto;
+        overflow:hidden;
+        top: 50% !important;
+    	left: 50% !important;
+    	-webkit-transform: translateX(-50%) translateY(-50%) !important;
+    	transform: translateX(-50%) translateY(-50%) !important;
+    }
+    .userinfo {
+        height: 75px;
+        float: right;
+        padding: 0 10px 0 0;
+    }
+    .logged-out {
+        font-size: 30px;
+        line-height: 36px;
+    }
+  #navbarlinks {
+    color: #99deb0;
+    float: right;
+    font-size: 30px;
+    margin: 0;
+  }
+    #navbarlinks input {
+      width: 200px;
+    }
+    #navbarlinks li {
+      display: inline-block;
+      height: 50px;
+      margin: 0 0 0 50px;
+      padding-top: 2px;
+      text-align: right;
+    }
+    #navbarlinks li a {
+      color: #99deb0;
+      text-align: right;
+      text-decoration: none;
+      vertical-align: middle;
+    }
+      #navbarlinks li a:hover {
+        color: #c6f8d6;
+        text-align: right;
+        text-decoration: none;
+      }
+  #logo {
+    bottom: 58px;
+    float: left;
+    padding-left: 50px;
+    position: relative;
+  }
+  #notification-box {
+    border-radius: 4px;
+    display: inline-block;
+    height: 40px;
+    margin: 0 0 0 10px;
+    padding: 0 10px 0 0;
+    width: 90px;
+  }
+  
+  #box {
+    font-size: 14px;
+    min-width: 378px;
+    margin: 25px 100px;
+    padding: 20px;
+  }
+  #box p {
+    line-height: 140%;
+  }
+  #box h1{
+    border-bottom: 2px solid black;
+    font-family: "Steelfish", sans-serif;
+    font-size: 48px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+  }
+  #box strong{
+    font-weight:800;
+  }
+}
+
+
+
+
+
+/*--------------------------------*/
+/* Resolution-Independent Styling */
+/*--------------------------------*/
+
+.user-link {
+    color: #7a5494;
+    text-decoration: none;
+}
+     .user-link:hover {
+        color: #d282d7;
+    }
+
+#navbar-container {
+    font-family: 'Steelfish', 'BenchNine', sans-serif;
+    width: 100%;
+}
+
+.userinfo {
+    text-shadow: 0 1px .5px #a0a0a0,
+                 0 -1px .5px #a0a0a0,
+                 1px 0 .5px #a0a0a0,
+                 -1px 0 .5px #a0a0a0;
+}
+
+#nav-lower {
+  background-color: #3b544c;
+  height: 50px;
+  width: 100%;
+}
+
+#content {
+  position: absolute;
+  width: 100%;
+  min-height: 200px;
+  font-family: Verdana, sans-serif;
+}
+
+.sales {
+  background-color: #3b544c;
+  background-image: url("img/sales.png");
+  background-repeat: no-repeat;
+  background-position: 10px 50%;
+  color: #c6f8d6;
+  text-shadow: none;
+}
+.notes {
+  background-color: #24203f;
+  background-image: url("img/notes.png");
+  background-repeat: no-repeat;
+  background-position: 10px 50%;
+  color: #f7baf8;
+  text-shadow: none;
+}
+.comments {
+  background-color: #7f250c;
+  background-image: url("img/comments.png");
+  background-repeat: no-repeat;
+  background-position: 10px 50%;
+  color: #ffca92;
+  text-shadow: none;
+}
+
+.about ul{
+  line-height: 140%;
+  list-style-type: disc;
+  list-style-position: inside;
+}.about ul li{
+  padding-left: 20px;
+}.about {
+  background-color: #fcca94;
+  border: 2px solid #7b240c;
+  border-radius: 4px;
+}
+#footer {
+  height: 50px;
+  min-width: 480px;
+  width: 100%;
+  text-align: center;
+  font-family: "Steelfish", sans-serif;
+  font-size: 24px;
+}
+
+.artist {
+  background-color: #f0f0f0;
+  border: 2px solid #7b240c;
+  border-radius: 4px;
+  width: 250px;
+}
+
+#artist-box {
+  font-size: 14px;
+  margin: 10px 100px;
+}

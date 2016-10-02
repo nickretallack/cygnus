@@ -1,3 +1,0 @@
-<%= hidable "Conversation #{"with #{pm_partner(@model).name}" if pm_partner(@model)}#{": #{@model.subject}" unless @model.subject.blank?}", false do %>
-  <%= cell(:pm, @model).(:show) %>
-<% end %>

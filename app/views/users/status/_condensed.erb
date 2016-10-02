@@ -1,0 +1,12 @@
+<div class = "row">
+  <% CONFIG[:commission_icons].each_with_index do |(key, icon), index| %>
+    <div class = "col s3">
+      <i class = "material-icons medium-small comm-status" title = <%= key.capitalize %>>
+        <%= icon %>
+      </i>
+      <i class = "material-icons medium-small comm-<%= model.statuses[index] %>" title = "<%= model.statuses[index].humanize.titleize %>">
+        <%= CONFIG[:activity_icons][model.statuses[index].to_sym] %>
+      </i>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,31 @@
+<div class = "row options">
+  <div class = "col centered">
+    <%= link_to submissions_path(@pool || @submission.pool), title: "Back to Pool" do %>
+      <i class = "material-icons medium-small"><%= CONFIG[:submission_icons][:pool] %></i>
+    <% end %>
+    <% if @submission.image %>
+      <%= link_to download_image_path(@submission.image.id), title: "Download" do %>
+        <i class = "material-icons medium-small"><%= CONFIG[:submission_icons][:download] %></i>
+      <% end %>
+      <% if can_fav? @submission %>
+        <div id = "favorite">
+          <%= render "favorite", model: @submission%>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+<div class = "row spaced">
+	<%= render "partials/image_container", {image: @submission.image, type: :full}%>
+</div>
+<div class = "row">
+  <% unless @submission.description.blank? %>
+    <%= hidable "Description", !current_user.setting(:minimize_descriptions) do %>
+      <%= @submission.description %>
+    <% end %>
+  <% end %>
+</div>
+<%= render "comments/index"%>
+<% unless anon? %>
+  	<%= render "comments/new", indent: 0, model: nil%>
+<% end %>

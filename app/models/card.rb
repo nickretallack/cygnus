@@ -1,5 +1,4 @@
 class Card < ActiveRecord::Base
-
     def list
       parents("card").first
     end
@@ -15,5 +14,4 @@ class Card < ActiveRecord::Base
     def order
       children("order").first
     end
-
 end

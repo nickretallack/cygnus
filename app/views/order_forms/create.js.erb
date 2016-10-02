@@ -1,4 +1,4 @@
 $("#nothing").remove();
-$("#order-forms-head").html("<%=j cell(:order_form).(:head) %>");
-$("#order-forms").html("<%=j cell(:order_form).(:enum) %>");
+$("#order-forms-head").html("<%=j render "head" %>");
+$("#order-forms").html("<%=j render "enum" %>");
 initialize();

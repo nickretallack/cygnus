@@ -1,7 +1,5 @@
 class MessagesController < ApplicationController
   
-  #include ActionController::Live
-
   before_filter only: [:create, :new, :create_comment, :create_announcement, :poller, :listener] do
     insist_on :logged_in
   end
@@ -40,7 +38,7 @@ class MessagesController < ApplicationController
   def new
     @submission = Submission.find(params[:submission])
     @reply_to = Message.find(params[:reply])
-    send_data cell(:comment, @reply_to).(:new, params[:indent].to_i + 1)
+    send_data render "comment/_new", model: @reply_to, indent: params[:indent].to_i + 1
   end
 
   def create_comment
@@ -56,7 +54,7 @@ class MessagesController < ApplicationController
         else
           @submission.update_attribute(:attachments, @submission.attachments << "buried_comment-#{@message.id}" << "comment-#{@message.id}")
         end
-        message(:comment, submission: @submission)
+        Message.comment current_user, @submission
         format.html { back }
         format.js { render "comments/create" }
       else
@@ -96,6 +94,7 @@ class MessagesController < ApplicationController
     @message = Message.new(subject: params[:message][:subject], content: params[:message][:content])
     respond_to do |format|
       if @message.save
+        #Todo, make this not be a blackhole of database calls
         User.all.each do |user|
           user.update_attribute(:attachments, user.attachments << "announcement-#{@message.id}")
         end
@@ -119,17 +118,13 @@ class MessagesController < ApplicationController
     @user.save(validate: false)
     if @user == @reply_to
       flash[:danger] = "cannot pm yourself"
-      render inline: cell(:pm).(:index), layout: :default
-    elsif @reply_to
-      render inline: cell(:pm, @reply_to).(:new) + cell(:pm).(:index), layout: :default
-    else
-      render inline: cell(:pm).(:index), layout: :default
     end
+    render "pms/index"
   end
 
   def activity
     session[:toasts_seen] = current_user.unread_messages.length
-    render inline: cell(:activity).(:index), layout: :default
+    render "activity/index"
   end
 
   def listener #sse
@@ -137,7 +132,7 @@ class MessagesController < ApplicationController
     sse = SSE.new(response.stream)
     begin
       Message.on_change do |id|
-        sse.write(cell(:message, Message.find(id)).(:show))
+        sse.write(view_context.render("comments/_show", model: Message.find(id), indent: 0))
       end
     rescue IOError
     ensure
@@ -152,17 +147,17 @@ class MessagesController < ApplicationController
       submission = Submission.find(params[:submission_id])
       difference = submission.all_comments.count - params[:comments].to_i
       if difference > 0
-        comments = submission.all_comments.last(difference).map{ |comment| [cell(:comment, comment).(:show, 0), (comment.comment_parent.id rescue 0)] }
+        comments = submission.all_comments.last(difference).map{ |comment| [view_context.render("comments/_show", model: comment, indent: 0), (comment.comment_parent.id rescue 0)] }
       end
     end
     pms = []
     difference = current_user.unread_pms.count - params[:pms].to_i
     if difference > 0
-      pms = current_user.unread_pms.last(difference).map{ |pm| [cell(:pm, pm).(:summary), cell(:pm, pm).(:show), (pm.pm_parent.id rescue 0)] }
+      pms = current_user.unread_pms.last(difference).map{ |pm| [view_context.render("pms/pm_message", model: pm), (pm.pm_parent.id rescue 0)] }
     end
     message = current_user.unread_messages.drop(session[:toasts_seen]).first
     if message
-      message = cell(:activity, message).(:unread)
+      message = view_context.render "activity/unread", {model: message }
       session[:toasts_seen] += 1
     end
     send_data ActiveSupport::JSON.encode({ activity: message, comments: comments, pms: pms })

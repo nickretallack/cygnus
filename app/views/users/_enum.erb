@@ -1,0 +1,4 @@
+<% enum_for @users do |user| %>
+  <%= render "/users/summary", {model: user}%>
+  <hr />
+<% end %>

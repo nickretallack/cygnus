@@ -1,0 +1,15 @@
+<div class = "row limit-height">
+  <div class = "col s6">
+  	<%= render "partials/image_container", {image: @user.avatar, type: :limited}%>
+  </div>
+  <div class = "col s6 top-padded">
+    <%= render "users/status/show", {model: @user}%>
+    <%= render "users/links", {model: @user}%>
+  </div>
+</div>
+<div class = "row">
+  <div class = "col s12">
+  	<%= render "users/attributes", {model: @user}%>
+    <blockquote class = "inline"><%= render_markdown @user.details %></blockquote>
+  </div>
+</div>

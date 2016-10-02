@@ -105,7 +105,6 @@ class UsersController < ApplicationController
   end
 
   def request_reset
-    render inline: cell(:user).(:request_reset), layout: :default
   end
 
   def send_reset
@@ -115,7 +114,6 @@ class UsersController < ApplicationController
   end
 
   def reset
-    render inline: cell(:user, @user).(:reset), layout: :default
   end
 
   def update_password
@@ -146,11 +144,10 @@ class UsersController < ApplicationController
       redirect_to users_path(session[:page])
       return
     end
-    render inline: cell(:user).(:index), layout: :default
   end
 
   def dashboard
-    render inline: cell(:user).(:edit_dashboard), layout: :default
+    render "users/dashboard/_edit"
   end
 
   def create
@@ -181,9 +178,9 @@ class UsersController < ApplicationController
 
   def show
     if can_modify? @user
-      render inline: cell(:user, @user).(:edit_profile), layout: :default
+      render "users/profile/_edit"
     else
-      render inline: cell(:user, @user).(:show_profile), layout: :default
+      render "users/profile/_show"
     end
   end
 
@@ -220,7 +217,7 @@ class UsersController < ApplicationController
       success_routes("settings saved")
     else
       update_image_attachment("avatar")
-      message(:status_change, @user.watched_by) if @user.statuses != params[:user][:statuses].values
+      Message.status_change(@user) if @user.statuses != params[:user][:statuses].values
       @user.statuses = params[:user][:statuses].values
       @user.artist_types = params[:user][:artist_types].reject{ |key, type| type.blank? }.values
       @user.offsite_galleries = params[:user][:offsite_galleries].reject{ |key, gallery| gallery.blank? }.values
@@ -245,7 +242,7 @@ class UsersController < ApplicationController
       user.watching.delete(@user.id)
     else
       user.watching << @user.id
-      message(:watch, @user)
+      Message.watch(current_user, @user)
     end
     user.save(validate: false)
     success_routes("you are now watching #{@user.name}")

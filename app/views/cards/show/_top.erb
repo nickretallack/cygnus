@@ -1,0 +1,51 @@
+<% unless @user.undecided_orders.empty? %>
+  <div class = "card fw" id = "undecided-card">
+    <span><h5>You have new orders!</h5></span>
+    <div class = "card-content">
+      <div class = "card-title">
+        <div id = "undecided-orders">
+          <% @user.undecided_orders.each do |order| %>
+            <%= render "cards/show/undecided_order", {model: order} %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<div class = "card top-card" id = <%= @user.card.id %> >
+  <input type = "hidden" name = "can_modify" value = "<%= can_modify? @user %>">
+  <div class = "row hc js" id = "triggers">
+    <span>
+      <a name = "view" <%= "start" unless can_modify? @user %>>View Mode</a>
+      <div class = "vdiv"></div>
+      <a name = "edit" <%= "start" if can_modify? @user %>>Edit Mode</a>
+      <div class = "vdiv"></div>
+      <a name = "reorder">Reorder Mode</a>
+    </span>
+  </div>
+  <div class = "card-content">
+    <div class = "card-title">
+
+      <div id = "lists">
+        <% @user.card.cards.each do |list| %>
+          <%= render "cards/show/list", {model: list} %>
+        <% end %>
+        <% if can_modify? @user %>
+          <%= render "cards/new/list" %>
+        <% end %>
+      </div>
+
+      <% if can_modify? @user %>
+
+        <div class = "reorder-mode">
+          <%= form_for @user.card, url: reorder_cards_path(@user, @user.card), method: :patch, html: { class: "remote button-submit" } do |f| %>
+            <%= f.submit "Finalize Order", id: "save" %>
+          <% end %>
+          <div class = "button-area float-left"></div>
+        </div>
+
+      <% end %>
+    </div>
+  </div>
+</div>

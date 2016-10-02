@@ -1,0 +1,13 @@
+<% if can_modify? @user %>
+  <%= render "new"%>
+<% end %>
+
+<table>
+  <thead id = "order-forms-head">
+    <%= render "head" %>
+  </thead>
+
+  <tbody id = "order-forms">
+    <%= render "enum" %>
+  </tbody>
+</table>

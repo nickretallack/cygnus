@@ -1,4 +1,4 @@
-$("#"+'<%=j params[:id] %>').replaceWith('<%=j cell(:card, @card).(:show, user: @user) %>');
+$("#"+'<%=j params[:id] %>').replaceWith('<%=j render "cards/show/card", {model: @card} %>');
 var card = $("#"+'<%= @card.id %>');
 card.find(".button-submit").each(function(index, element){ new ButtonSubmit($(element)); });
 card.find(".attachment-area").each(function(index, element){ new AddableAttachment($(element)); });

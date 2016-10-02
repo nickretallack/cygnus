@@ -1,0 +1,8 @@
+
+<%if content.reject{ |answer| answer.blank? }.present?%>
+	<% content.each do |link| %>
+	  <blockquote class = "link"><%= auto_link link %></blockquote>
+	<% end %>
+<% else %>
+	(No Response)
+<% end %>

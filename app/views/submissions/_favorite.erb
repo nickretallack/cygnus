@@ -1,0 +1,9 @@
+<% unless faved? model %>
+  <%= link_to fav_submission_path(model), title: "Click to Favorite Submission", remote: true do %>
+    <i class = "material-icons medium-small"><%= CONFIG[:submission_icons][:unfaved] %></i>
+  <% end %>
+<% else %>
+  <%= link_to fav_submission_path(model), class: "danger", title: "Click to Unfavorite Submission", remote: true do %>
+    <i class = "material-icons medium-small"><%= CONFIG[:submission_icons][:faved] %></i>
+  <% end %>
+<% end %>

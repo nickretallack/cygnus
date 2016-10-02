@@ -1,0 +1,22 @@
+<ol class = "addable-field orderable">
+  <li class = "option">
+    <i class = "handle material-icons small"><%= CONFIG[:other_icons][:handle] %></i>
+    <%= fields_for "content[#{index}-#{name}][answer][0]" do |i| %>
+      <div class = "file-field hidden">
+        <div class = "submit">
+          <span>Image</span>
+          <%= i.file_field :image %>
+        </div>
+      </div>
+      <div class = "image-preview">
+        <%= i.check_box :explicit %><%= i.label :explicit, class: "padded" %>
+        <div class = "click-area">
+          <%= render "partials/image_container", {image: nil, type: :limited}%>
+          <label>Click preview image to change</label>
+          <label>(any size image, will be expandable to viewer)</label>
+        </div>
+      </div>
+    <% end %>
+  </li>
+</ol>
+<div class = "addable-area"></div>

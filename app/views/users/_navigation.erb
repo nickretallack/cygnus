@@ -1,0 +1,13 @@
+<nav>
+  <div class = "nav-wrapper">
+
+    <%= render "/users/#{anon? ? "anon" : "member"}/nav" %>
+  </div>
+  <div class = "separator"></div>
+</nav>
+<ul class = "js dropdown-content <%= "wide" unless anon? %>" id = "menu">
+  <%= render "/users/#{anon? ? "anon" : "member"}/menu" %>
+</ul>
+<ul class = "side-nav <%= "wide" unless anon? %>" id = "mobile-menu">
+  <%= render "/users/#{anon? ? "anon" : "member"}/menu" %>
+</ul>

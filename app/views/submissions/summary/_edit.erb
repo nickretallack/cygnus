@@ -1,0 +1,14 @@
+<td <%= "class = 'hidden'" if model.hidden %> id = <%= model.id %>>
+  <%= form_for model, url: update_submission_path(model), method: :patch, html: { class: "remote button-submit" } do |f| %>
+    <%= link_to submission_path(@pool, model) do %>
+      <%= "#{title_for model}#{" (Hidden)" if model.hidden}" %>
+      <%= render "partials/image_container", {image: model.image, type: :bordered}%>
+    <% end %>
+    <%= f.submit "Unhide", id: "unhide" if model.hidden %>
+    <%= f.submit "Hide", id: "hide" unless model.hidden %>
+  <% end %>
+  <%= form_for model, url: destroy_submission_path(model), method: :delete, html: { class: "remote button-submit" } do |f| %>
+    <%= f.submit "Delete", id: "delete", data: { confirm: "Delete #{title_for model}?"} %>
+  <% end %>
+  <div class = "button-area centered"></div>
+</td>

@@ -1,0 +1,17 @@
+<%= form_for Order.new, url: place_order_path(@order), html: { multipart: true, class: "button-submit" } do |f| %>
+  <% if anon? %>
+    <div class = "row">
+      <div class = "col s12 m6 centered">
+        <%= f.text_field :name, placeholder: "Your name" %>
+        <%= f.email_field :email, placeholder: "Your email" %>
+      </div>
+    </div>
+  <% end %>
+  <ol class = "order">
+  	<% @order.content.each_with_index do |object, index| %>
+    	<%= render "orders/new/template", object: object, index: index %>
+  	<% end %>
+  </ol>
+  <%= f.submit "Place Order", id: "send" %>
+<% end %>
+<div class = "button-area float-right"></div>

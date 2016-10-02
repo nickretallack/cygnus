@@ -1,3 +1,3 @@
-$("#submissions").find(".new").after("<%=j cell(:submission, @submission).(:edit_summary) %>");
+$("#submissions").find(".new").after("<%= j render "submissions/summary/edit", model: @submission %>");
 $("#nothing").hide();
 initialize();

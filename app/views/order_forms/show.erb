@@ -1,0 +1,33 @@
+<%= form_for @order_form, url: order_forms_path(@user), html: { class: "button-submit" } do |f| %>
+  <%= f.submit "Back to your order forms", id: "back" %>
+<% end %>
+<div class = "button-area float-left"></div>
+<%= form_for @order_form, url: update_order_form_path(@order_form), method: :patch, html: { id: "formcreator_result", class: "remote button-submit" } do |f| %>
+  <%= f.text_field :title, placeholder: "Title for form (only you will see this)", class: "title" %>
+  <%= f.submit "Save order form", id: "save" %>
+<% end %>
+<div class = "button-area float-right"></div>
+
+<div class = "order-form spaced" form = "formcreator_result">
+
+  <% CONFIG[:order_form_icons].each do |key, value| %>
+    <div id = "<%= key %>-template" class = "hide">
+      <%= render "template", name: key.to_s, question: "", options: [] %>
+    </div>
+  <% end %>
+
+  <fieldset>
+    <legend align = "center">Add Question to Form:</legend>
+    <div id = "button-area"></div>
+  </fieldset>
+
+  <!-- must not contain whitespace -->
+  <ol id="workspace">
+  	<%= @order_form.content.each do |object| %>
+  	  <%name, details = object.first %>
+  	  <%question, options = details.first %>
+      <%= render "template", name: name, question: question, options: options %>
+    <% end %>
+  </ol>
+
+</div>

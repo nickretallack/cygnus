@@ -1,5 +1,5 @@
 environment ENV['RAILS_ENV'] || 'development'
-daemonize
+#daemonize
 
 port 3000
 

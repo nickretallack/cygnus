@@ -1,4 +1,4 @@
-var card = $("<%=j cell(:card, @card).(:show) %>");
+var card = $("<%=j render "cards/show/card", {model: @card} %>");
 $("#workboard").find("#<%= @card.id %>").replaceWith(card);
 initialize();
 $("#workboard").find("[name = edit]").trigger("click.Workboard");

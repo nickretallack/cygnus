@@ -1,0 +1,8 @@
+<%name, content = object.first%>
+<%question, options = content.first%>
+<li>
+  <fieldset class = "question" name = "<%= name.dasherize %>">
+    <legend align = "center">. <%= question %></legend>
+    <div class = "answer <%= name.dasherize %>"><%= render "orders/new/#{name}", options: options, index: index, name: name%></div>
+  </fieldset>
+</li>

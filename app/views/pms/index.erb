@@ -1,0 +1,6 @@
+<%= render "pms/new", model:@reply_to if @reply_to%>
+<div id = "pms">
+  <% enum_for @user.pms, reverse: true do |pm| %>
+  	<%= render "pms/summary", model: pm%>
+  <% end %>
+</div>

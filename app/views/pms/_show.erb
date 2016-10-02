@@ -1,0 +1,16 @@
+<table class = "pm <%= model.pm_author == @user? "sent" : "received" %>" id = <%= model.id %>>
+  <tbody>
+    <tr>
+      <td><%= render "partials/image_container", {image: model.pm_author.avatar, type: :bordered}%></td>
+      <td>
+        <h5><%= model.pm_author.name %></h5>
+        <blockquote><%= render_markdown model.content %></blockquote>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<% if model.pm %>
+  <%= render "pms/show", model: model.pm %>
+<% else %>
+  <%= render "pms/reply", model: model %>
+<% end %>

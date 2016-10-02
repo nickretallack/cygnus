@@ -110,16 +110,26 @@ module ViewHelper
   end
 
   def hidable(title = nil, open = false, associated: nil, on_destroy: nil, &block)
-    cell(:view).(:hidable, title: title, content: capture(&block), open: open, associated: associated, on_destroy: on_destroy)
-  end
-
-  def message(type, recipient = nil, **args)
-    cell(:activity, recipient).(:new, type, args)
+    render("partials/hidable", title: title, content: capture(&block), open: open, associated: associated, on_destroy: on_destroy)
   end
 
   def page_nav(position)
+    path = Proc.new{ |page|
+      parent = params.keys.collect{|key| /(.+)_id/.match(key)}.compact[0][1] rescue nil
+      user = params[User.slug] rescue nil
+      if parent
+        self.send("#{controller.controller_name}_path", controller.instance_variable_get("@#{parent}"), page)
+      elsif controller.instance_of? UsersController
+        self.send("#{controller.controller_name}_path", page)
+      else
+        self.send("#{controller.controller_name}_path", user, page)
+      end
+    }
+    page = (params[:page] || "1").to_i
+    total = controller.instance_variable_get("@total_#{controller.controller_name}")
+    results_per_page = controller.controller_name.classify.constantize.results_per_page
     if (position == :top and (setting(:pagination_at_top) or setting(:pagination_at_both))) or (position == :bottom and (not setting(:pagination_at_top) or setting(:pagination_at_both)))
-      cell(:view).(:page_nav)
+      render partial: "partials/pagination", locals: {path: path, page: page, total: total, results_per_page: results_per_page} unless total <= results_per_page
     else
       nil
     end

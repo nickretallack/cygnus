@@ -1,0 +1,5 @@
+<%if content.first.reject{ |answer| answer.blank? }.present?%>
+	<%= render_markdown content.join(", ") %>
+<% else %>
+	(No Response)
+<% end %>

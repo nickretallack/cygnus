@@ -1,0 +1,14 @@
+<%= render "new" if can_modify? @user %>
+
+<%= form_for :back, url: root_path, html: { class: "button-submit" } do |f| %>
+  <%= f.submit "Back to main page/search", id: "back" %>
+<% end %>
+<div class = "button-area float-left"></div>
+
+<hr />
+<%= page_nav :top %>
+
+<%= render "pools", {model: @pools} %>
+
+<hr/>
+<%= page_nav :bottom %>

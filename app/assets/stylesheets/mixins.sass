@@ -48,11 +48,13 @@
 =vertical-center
   position: relative !important
   top: 50% !important
+  -webkit-transform: translateY(-50%) !important
   transform: translateY(-50%) !important
 
 =horizontal-center
   position: relative !important
   left: 50% !important
+  -webkit-transform: translateX(-50%) !important
   transform: translateX(-50%) !important
 
 =inline-block-centered
@@ -64,6 +66,7 @@
   position: relative !important
   top: 50% !important
   left: 50% !important
+  -webkit-transform: translateX(-50%) translateY(-50%) !important
   transform: translateX(-50%) translateY(-50%) !important
 
 =no-select
@@ -130,6 +133,7 @@
   &
     +vertical-center
     transform: scale(1.1) translateY(-45%)
+    -webkit-transform: scale(1.1) translateY(-45%)
     height: 65% !important
     border-radius: 50%
     border: 2px dashed $placeholder-text-shadow-color
@@ -142,6 +146,7 @@
       font-size: 100% !important
   &:hover
     cursor: pointer
+    -webkit-transform: scale(1.3) translateY(-38%)
     transform: scale(1.3) translateY(-38%)
 
 =card1

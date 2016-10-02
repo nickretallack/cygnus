@@ -1,0 +1,24 @@
+<tr id = <%= model.id %>>
+  <% if can_modify? model.user %>
+    <td>
+      <% if @user %>
+        <%= form_for model, url: destroy_pool_path(model), method: :delete, html: { class: "remote button-submit" } do |f| %>
+          <%= f.submit "Delete", id: "delete", data: { confirm: "Delete #{title_for @model}?" } %>
+        <% end %>
+        <% if model != model.user.gallery %>
+          <%= form_for model, url: default_pool_path(model), html: { class: "remote button-submit" } do |f| %>
+            <%= f.submit "Make this your main gallery", id: "default" %>
+          <% end %>
+        <% end %>
+        <div class = "button-area centered-medium"></div>
+      <% end %>
+    </td>
+  <% else %>
+    <td></td>
+  <% end %>
+  <% unless @user %>
+    <td><%= link_to model.user.name, model.user %></td>
+  <% end %>
+  <td><%= link_to title_for(model), submissions_path(model) %></td>
+  <td class = "danger"><%= "Main Gallery" if model == model.user.gallery %></td>
+</tr>

@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   root controller: :users, action: :index
 
-  controller :application do
+  controller :pages do
     get :static, path: "pages/:page_name"
   end
 
@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   end
 
   controller :images do
-    get :show, path: "image/:type(/:#{Image.slug})", as: :image
+    get :show, path: "image/:type(/:#{Image.slug}(/:adult))", as: :image
     get :download, path: "download/:#{Image.slug}", as: :download_image
   end
 

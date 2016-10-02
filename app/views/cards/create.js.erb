@@ -1,4 +1,4 @@
-var card = $("<%=j cell(:card, @card).(:show) %>");
+var card = $("<%=j render "cards/show/card", {model: @card} %>");
 var newArea = lastClicked.closest(".new");
 newArea.before(card);
 card.addClass("fade-in");

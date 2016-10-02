@@ -1,0 +1,3 @@
+<%= hidable "Instructions", !current_user.setting(:minimize_instructions) do %>
+  <%= instructions.html_safe %>
+<% end if instructions.present?  %>

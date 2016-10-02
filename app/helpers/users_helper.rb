@@ -1,6 +1,10 @@
 module UsersHelper
 
   # current user
+  
+  def recent_submissions
+    Submission.where("array_to_string(attachments, ',') ~ 'image'").where(hidden: false).order("id desc").limit(20).reverse
+  end
 
   def first_log_in(user)
     pool = Pool.new(title: "gallery")
@@ -20,10 +24,6 @@ module UsersHelper
     activate_session user
     flash[:success] = "welcome to #{CONFIG[:name]}"
     session.delete(:email)
-  end
-
-  def current_user
-    session[:username].nil?? AnonymousUser.new : User.find(session[:username]) || AnonymousUser.new
   end
 
   def anon?

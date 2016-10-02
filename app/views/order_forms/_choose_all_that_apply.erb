@@ -1,0 +1,13 @@
+<%= text_area_tag "question", question, placeholder: "Question" %>
+<div class = "fake-answer choose-all-that-apply">
+  <p class = "ic padded">Add, remove, or reorder choices:</p>
+  <ol class = "js addable-field orderable">
+    <% options.each do |option| %>
+      <li class = "padded option">
+        <i class = "handle material-icons small"><%= CONFIG[:other_icons][:handle] %></i>
+        <%= text_field_tag "option", option, placeholder: "Choice" %>
+      </li>
+    <% end %>
+  </ol>
+  <div class ="addable-area"></div>
+</div>

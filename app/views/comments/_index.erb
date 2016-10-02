@@ -1,0 +1,5 @@
+<div class = "row spaced" id = "comments">
+  <% @submission.comments.each do |comment| %>
+    <%= render "comments/show", model: comment, indent: 0 %>
+  <% end %>
+</div>

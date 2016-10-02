@@ -1,4 +1,4 @@
 $("#nothing").remove();
-$("#pools-head").html("<%=j cell(:pool, @user.pools).(:head) %>");
-$("#pools").html("<%=j cell(:pool, @user.pools).(:enum) %>");
+$("#pools-head").html("<%=j render "head", {model: @user.pools} %>");
+$("#pools").html("<%=j render "enum", {model: @user.pools} %>");
 initialize();

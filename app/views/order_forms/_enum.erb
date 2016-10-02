@@ -1,0 +1,3 @@
+<% enum_for @user.order_forms, word: "order forms" do |order_form| %>
+  <%= render "summary", model: order_form %>
+<% end %>

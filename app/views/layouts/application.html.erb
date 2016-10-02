@@ -3,7 +3,7 @@
   <head>
     <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
     <title>
-        <%= cell(:view).(:header, sanitize: true) %>
+    	<%= CONFIG[:name] %> - <%= @title %>
     </title> 
     <meta name = "description" content = "<%= content_for?(:description)? yield(:description) : CONFIG[:name] %>">
     <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
@@ -12,18 +12,48 @@
   </head>
   <body>
     <h5 class = "nojs hc"><%= CONFIG[:name] %> relies heavily on javascript for everything from layout to form submission. Please enable javascript to browse this site.</h5><br class = "nojs" /><br class = "nojs" /><h5 class = "nojs hc">If you do have javascript enabled, you are only seeing this message because the site is still loading. Please wait a bit = )</h5>
+            
     <div id = "page-wrapper">
       <div class = "widthTester hide"></div>
       <div class = "hide" disable-toasting = <%= current_user.setting(:disable_toasting) or current_user.setting(:disable_activity_feed) %>></div>
-      <header>
-        <%= cell(:image).(:show, :banner) %>
-        <%= cell(:user).(:navigation) %>
+      <header >
+      	<nav id="navbar-container">
+            <div id="nav-upper">
+   				<%= render "/users/#{anon? ? "anon" : "member"}/nav" %>
+            </div>
+			<div id="nav-lower">
+				<div id="logo">
+				  <%= link_to root_path do %>
+     				 <%= image_tag(image_path(:logo_thumb, id: nil))%>
+    			  <% end %>
+				</div>
+				<ul id="navbarlinks">
+					<li><a href="about.html">ABOUT</a></li>
+					<li><a href="#">ARTISTS</a></li>
+					<li><a href="#">BROWSE</a></li>
+					<li><input type="text" name="search"></li>
+				</ul>
+			</div>
+		</nav>
+		<div class = "separator"></div>
+        <%# render "/users/navigation" %>
+        <ul class = "js dropdown-content <%= "wide" unless anon? %>" id = "menu">
+		  <%= render "/users/#{anon? ? "anon" : "member"}/menu" %>
+		</ul>
+		<ul class = "side-nav <%= "wide" unless anon? %>" id = "mobile-menu">
+		  <%= render "/users/#{anon? ? "anon" : "member"}/menu" %>
+		</ul>
       </header>
       <main>
         <h2 class = "header full-small">
-          <%= cell(:view).(:header) %>
+        	<%= @title %>
         </h2>
-        <%= cell(:announcement).(:index) %>
+       
+        <% current_user.announcements.each do |announcement| %>
+  			<%= hidable "Announcement#{": #{@model.subject}" unless @model.subject.blank?}", true, on_destroy: "announcement-#{@model.id}" do %>
+  				<%= render_markdown announcement.content %>
+			<% end %>
+		<% end %>
         <% if flash.any? %>
           <% flash.each do |type, message| %>
             <% if message.is_a? String %>
@@ -40,15 +70,14 @@
             <% end %>
           </div>
         <% end %>
-        <%= cell(controller_name.singularize).(:instructions, action: action_name.to_sym) if cell_instructions? %>
+        <%= render "partials/instructions" %>
         <%= yield %>
       </main>
       <footer>
         <div class = "row">
           <hr />
           <div class = "col centered">
-            <%= cell(controller_name.singularize).(:footer, action: action_name.to_sym) if cell_footer? %>
-            <%= cell(:view).(:footer) %>
+            <%= render "partials/footer" %>
             <%= CONFIG[:copyright].html_safe %>
           </div>
         </div>

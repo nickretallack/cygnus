@@ -1,0 +1,5 @@
+<% enum_for @user.messages, word: "activity", reverse: true do |message| %>
+  <div class = "item message minimal" id = <%= message.id %>>
+    <%= message.format %>
+  </div>
+<% end %>

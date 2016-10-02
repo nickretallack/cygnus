@@ -1,0 +1,40 @@
+<div class = "card list-card" id = <%= model.id %> >
+  <div class = "card-content">
+    <div class = "card-title">
+      <div class = "hc view-mode reorder-mode">
+        <h4 id = "title"><%= title_for model %></h4>
+        <hr />
+      </div>
+
+      <% if can_modify? @user %>
+        <div class = "edit-mode">
+          <%= form_for model, url: update_card_path(@user, model), method: :patch, html: { class: "remote button-submit" } do |f| %>
+            <%= f.text_field :title, placeholder: "Title for this List" %>
+            <%= f.submit "Save List", id: "save" %>
+          <% end %>
+          <%= form_for model, url: destroy_card_path(@user, model), method: :delete, html: { class: "remote button-submit" } do |f| %>
+            <%= f.submit "Delete List", id: "delete", data: { confirm: "Delete #{title_for model}?" } %>
+          <% end %>
+          <div class = "button-area centered"></div>
+        </div>
+
+        <div id = "cards">
+          <% model.cards.each do |card| %>
+            <%= render "cards/show/card", {model: card} %>
+          <% end %>
+          
+          <%= render "cards/new/card", {model: model} %>
+        </div>
+
+      <% else %>
+
+        <div id = "cards">
+          <% model.cards.each do |card| %>
+            <%= render "cards/show/card", {model: card} %>
+          <% end %>
+        </div>
+
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -2,8 +2,5 @@
 
 require ::File.expand_path('../config/environment', __FILE__)
 require 'rack'
-require 'rack/contrib'
-
-use Rack::Deflect
 
 run Rails.application

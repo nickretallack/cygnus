@@ -96,7 +96,7 @@ ActiveContainer = (function(){
     self.container.prepend(self.top);
     self.top.append(self.title, self.buttonTable);
     
-    if(self.container.is("[associated-field]")) self.initializeAssociatedField();
+    if(self.container.is("[data-associated-field]")) self.initializeAssociatedField();
 
   };
 
@@ -157,7 +157,7 @@ ActiveContainer = (function(){
 
     destroy: function(){
       var self = this;
-      if(self.container.is("[on-destroy]")) self.destroyAttachment();
+      if(self.container.is("data-[on-destroy]")) self.destroyAttachment();
       self.container.remove();
     },
 
@@ -197,7 +197,7 @@ ActiveContainer = (function(){
 
     initializeAssociatedField: function(){
       var self = this;
-      $("#"+self.container.attr("associated-field")).on("keyup.ActiveContainer", function(event){
+      $("#"+self.container.attr("data-associated-field")).on("keyup.ActiveContainer", function(event){
         pause(event);
         if(!Key.ret(event) && self.container.hasClass("min")){
           self.maximize();
@@ -210,7 +210,7 @@ ActiveContainer = (function(){
       $.ajax({
         method: "DELETE",
         data: {
-          attachment: self.container.attr("on-destroy")
+          attachment: self.container.attr("data-on-destroy")
         },
         url: "/" + currentUser + "/attachment"
       });

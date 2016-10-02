@@ -1,0 +1,10 @@
+<td id = <%= model.id %>>
+  <%= link_to submission_path(@pool, model) do %>
+    <%= title_for model %>
+    <%= render "partials/image_container", {image: model.image, type: :bordered}%>
+    <% unless @user %>
+      <%= link_to model.user.name, user_path(model.user) %>
+      <%= link_to "More from this pool", submissions_path(model.pool) %>
+    <% end %>
+  <% end %>
+</td>

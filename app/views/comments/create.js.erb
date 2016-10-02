@@ -1,5 +1,5 @@
 var container = $("#comments");
-var comment = $("<%=j cell(:comment, @message).(:show, 0) %>");
+var comment = $("<%=j render "comments/show", model: @message, indent: 0 %>");
 var replyId = "<%= params[:reply_id] %>";
 if(replyId !== ""){
   var reply = $("#comments").find("#" + replyId);

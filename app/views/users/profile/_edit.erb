@@ -1,0 +1,47 @@
+<div id = "profile">
+  <%= form_for @user, url: update_user_path(@user), method: :patch, html: { multipart: true, class: "remote button-submit" } do |f| %>
+    <div class = "row limit-height">
+      <div class = "col s6">
+      	<%= render "partials/image", {model: @user.avatar, options: {}}%>
+      </div>
+      <div class = "col s6 top-padded">
+      	<%= render "users/status/edit", {model: @user}%>
+      </div>
+    </div>
+    <div class = "row">
+      <hr />
+      <%= f.fields_for :artist_types do |t| %>
+        <div class = "addable-field">
+          <% unless @user.artist_types.length < 1 %>
+            <% @user.artist_types.each_with_index do |type, index| %>
+              <%= t.select "#{index}", options_for_select(CONFIG[:artist_types], type), { include_blank: "Artist Type" }, { class: "btn button-with-icon" } %>
+            <% end %>
+          <% else %>
+            <%= t.select "0", options_for_select(CONFIG[:artist_types]), { include_blank: "Artist Type" }, { class: "btn button-with-icon" } %>
+          <% end %>
+        </div>
+      <% end %>
+      <div class ="addable-area"></div>
+      <hr />
+      <%= f.fields_for :offsite_galleries do |g| %>
+        <div class = "addable-field">
+          <% unless @user.offsite_galleries.length < 1 %>
+            <% @user.offsite_galleries.each_with_index do |gallery, index| %>
+              <%= g.text_field "#{index}", placeholder: "Offsite gallery", value: gallery %>
+            <% end %>
+          <% else %>
+            <%= g.text_field "0", placeholder: "Offsite gallery", value: "" %>
+          <% end %>
+        </div>
+      <% end %>
+      <div class = "addable-area"></div>
+      <hr />
+      <%= f.text_area :price, placeholder: "Commission rates" %>
+      <%= f.text_area :tags, placeholder: "Tags (comma-separated list)" %>
+      <%= f.text_area :details, placeholder: "Profile Text" %>
+      <%= render "partials/markdown_cheatsheet" %>
+      <%= f.submit "Update Profile", class: "float", id: "save" %>
+    </div>
+  <% end %>
+  <div class = "button-area float-right"></div>
+</div>

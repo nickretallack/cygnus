@@ -1,0 +1,33 @@
+<div id="nav-upper">
+	<div id="user">
+		<div class="avatar">
+			  <%= image_tag(image_path(:thumb, id: current_user.avatar)) if current_user.avatar%>
+		</div>
+		<div class="userinfo logged-out">
+			<p class = "hide-on-med-and-down">
+				<a class = "dropdown-button" data-activates = "menu">
+				  <span class = "inline" id = "current-user"><%= current_user.name %></span>
+				  <i class = "material-icons right">arrow_drop_down</i>
+				</a>
+			</p>
+
+			<%= link_to cards_path(current_user) do %>
+			<div id="notification-box" class="sales">
+				<%= current_user.orders.length %>
+			</div>
+			<% end %>
+			<%= link_to pms_path(current_user) do %>
+			<div id="notification-box" class="notes">
+				<%= current_user.unread_pms.length %>
+
+			</div>
+			<% end %>
+			<%= link_to messages_path(current_user) do %>
+			<div id="notification-box" class="comments">
+				<%= current_user.unread_messages.length %>
+			</div>
+			<% end %>
+		</div>
+	</div>
+</div>
+<a data-activates="mobile-menu" class="button-collapse"> <i class="material-icons">menu</i> </a>

@@ -1,0 +1,3 @@
+<% enum_for @user.unread_messages, word: "new messages", reverse: true do |message| %>
+  <%= render "activity/unread", model: message %>
+<% end %>
