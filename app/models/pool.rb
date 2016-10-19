@@ -9,7 +9,12 @@ class Pool < ActiveRecord::Base
   def user
     users.first || User.new
   end
-
+  def destroy
+    children("submission").each do |child|
+      child.destroy
+    end
+    super
+  end
   def submissions
     children("submission")
   end

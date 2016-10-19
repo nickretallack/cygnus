@@ -24,6 +24,7 @@ $(document).on("page:load", function(){
 });
 
 $(window).on("load", function(){
+  $(".datepicker").pickadate();
   initialize();
   if(bleatr.where(function(object){
     return object["name"] === "poller";

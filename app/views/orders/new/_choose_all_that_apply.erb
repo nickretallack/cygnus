@@ -1,6 +1,6 @@
-<% options.each_with_index do |option, index| %>
+<% options.each_with_index do |option, indexa| %>
   <div class = "padded">
-    <%= check_box "content[#{index}-#{name}][answer]", index, {}, option, "" %>
-    <%= label "content[#{index}-#{name}][answer]", index, option %>
+    <%= check_box "content[#{index}-#{name}][answer]", indexa, {}, option, "" %>
+    <%= label "content[#{index}-#{name}][answer]", indexa, option %>
   </div>
 <% end %>

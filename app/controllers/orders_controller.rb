@@ -16,6 +16,7 @@ class OrdersController < ApplicationController
   end
 
   before_filter only: [:new] do
+    @title = "New order"
     if current_user? @order.user
       flash[:danger] = "can't order from yourself"
       shunt_to_root
@@ -85,6 +86,7 @@ class OrdersController < ApplicationController
   end
 
   def index
+    @title = "Your waiting orders"
     paginate @user.placed_orders.reverse
   end
 

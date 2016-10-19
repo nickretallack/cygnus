@@ -35,7 +35,7 @@ Poller = (function(){
     poll: function(){
       var self = this;
       $.ajax({
-        url: "/message_poller",
+        url: "/s/message_poller",
         data: {
           submission_id: self.submissionId,
           comments: $(".comment").length,

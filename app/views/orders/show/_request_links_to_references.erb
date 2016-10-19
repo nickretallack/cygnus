@@ -1,5 +1,5 @@
-
-<%if content.reject{ |answer| answer.blank? }.present?%>
+<% content = Array(content).reject{ |a| a.blank? } %>
+<%if content.present?%>
 	<% content.each do |link| %>
 	  <blockquote class = "link"><%= auto_link link %></blockquote>
 	<% end %>

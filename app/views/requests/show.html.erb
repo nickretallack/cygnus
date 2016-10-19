@@ -1,0 +1,26 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Body:</strong>
+  <%= @request.body %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @request.user.name %>
+</p>
+
+<p>
+  <strong>Type:</strong>
+  <%= @request.breed %>
+</p>
+<p>
+  <strong>Maximum Price:</strong>
+  <%= number_to_currency @request.max_price %>
+</p>
+<p>
+  <strong>Ends At:</strong>
+  <%= @request.end_date %>
+</p>
+
+<%= link_to 'Back', requests_path %>

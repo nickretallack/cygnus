@@ -63,7 +63,7 @@ ViewAnyway = (function(){
                 });
       self.image.replaceWith(div)
       self.cover.remove();
-      self.image.attr("src", "/image/" + self.type + "/" + self.id + "/view");
+      self.image.attr("src", "/s/image/" + self.type + "/" + self.id + "/view");
       self.image.on("load", function(){
         div.replaceWith(self.image);
       });

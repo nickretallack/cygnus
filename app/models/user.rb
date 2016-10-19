@@ -6,19 +6,25 @@ class User < ActiveRecord::Base
   has_secure_password
   attr_accessor  :activation_token, :reset_token
 
-  def User.lead_paths
-    Rails.application.routes.routes.collect {|r| r.path.spec.to_s }.collect {|path| if (match = /^\/([^\/\(:]+)/.match(path)); match[1]; else; ""; end;}.compact.uniq.push("-1", "-2")
-  end
-
-  validates :name, presence: true, length: { maximum: 50 }, uniqueness: { case_sensitive: false }, exclusion: { in: User.lead_paths }
+  validates :name, presence: true, length: { maximum: 50 }, 
+    format: {with:/\A[-a-zA-Z0-9]\z/, 
+    message: "can only contain alphanumeric characters and dashes"}, 
+    uniqueness: { case_sensitive: false }, exclusion: { in: ["s", "assets"] }
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-  validates :email, presence: true, length: { maximum: 255 }, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
+  validates :email, presence: true, length: { maximum: 255 }, 
+    format: { with: VALID_EMAIL_REGEX, message: "must be a valid email" }, 
+    uniqueness: { case_sensitive: false }
   
   validates :password, length: { minimum: 6, maximum: 72 }
   def anon?
     false #needed for permissions control
   end
+  
+  def user?
+    true
+  end
+  
   def avatar
     children("image", "avatar").first
   end
@@ -84,7 +90,9 @@ class User < ActiveRecord::Base
   end
 
   def recent_submissions
-    Submission.where("array_to_string(attachments, ',') ~ 'image'").where(hidden: false).limit(5).order("id desc").select{ |submission| submission.user == self}
+    Submission.where("array_to_string(attachments, ',') ~ 'image'")
+      .where(hidden: false).limit(5).order("id desc")
+      .select{ |submission| submission.user == self}
   end
 
   def recent_favorite_submissions
@@ -120,9 +128,11 @@ class User < ActiveRecord::Base
     begin
       terms["tags"] ||= ""
       tags = terms["tags"].split(",").map{ |tag| tag.strip }
-      names = tags.select{ |tag| /^username:.+/i.match(tag) }.collect{ |tag| /^username:(.+)/i.match(tag)[1] }
+      names = tags.select{ |tag| /^username:.+/i.match(tag) }
+        .collect{ |tag| /^username:(.+)/i.match(tag)[1] }
       tags = tags.join("&").gsub(/\s+/, "&")
-      statuses = terms["statuses"].reject { |key, value| terms["use_statuses"][key] == "0" }.map { |key, value| [terms["statuses"].keys.index(key) + 1, value] }
+      statuses = terms["statuses"].reject { |key, value| terms["use_statuses"][key] == "0" }
+        .map { |key, value| [terms["statuses"].keys.index(key) + 1, value] }
       unless names.empty?
         result = User.where("name ~* ANY('{#{names.join(",")}}')")
       else

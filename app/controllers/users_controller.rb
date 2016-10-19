@@ -147,6 +147,7 @@ class UsersController < ApplicationController
   end
 
   def dashboard
+    @title = "Site Settings"
     render "users/dashboard/_edit"
   end
 
@@ -178,8 +179,10 @@ class UsersController < ApplicationController
 
   def show
     if can_modify? @user
+      @title = "Editing #{@user.name}"
       render "users/profile/_edit"
     else
+      @title = "#{@user.name}'s Profile"
       render "users/profile/_show"
     end
   end

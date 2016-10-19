@@ -1,5 +1,5 @@
 <%= hidden_field_tag "content[#{index}-#{name}][answer]", [] %>
-<% options.each_with_index do |option, index| %>
+<% options.each_with_index do |option, indexa| %>
   <div class = "spaced">
     <%= radio_button_tag "content[#{index}-#{name}][answer]", option %>
     <%= label "content[#{index}-#{name}][answer]", option.tr(' ', '_'), option %>

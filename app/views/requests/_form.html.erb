@@ -1,0 +1,39 @@
+<%= form_for(@request) do |f| %>
+  <% if @request.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@request.errors.count, "error") %> prohibited this request from being saved:</h2>
+
+      <ul>
+      <% @request.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="field">
+    <%= f.label :title %><br>
+    <%= f.text_field :title %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :body %><br>
+    <%= f.text_area :body %>
+  </div>
+  <div class="field">
+    <%= f.label :breed %><br>
+    <%= f.text_field :breed %>
+  </div>
+  <div class="field">
+  	<%= f.label :max_price %><br>
+    <%= f.number_field :max_price, min: 5, step: 0.01 %>
+  </div>
+  <div class="field">
+  	<%= f.label :auction_length %><br>
+    <%= f.select :auction_length do %>
+    	<%= options_for_select [1,3,5,7,15,30].map{ |i| ["#{i} days", i] }, selected: 5%>
+    <% end %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

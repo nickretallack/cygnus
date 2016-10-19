@@ -23,12 +23,15 @@ class SubmissionsController < ApplicationController
 
   def index
     if @pool
+      @title = "#{@pool.user.name}'s #{@pool.title}"
       if can_modify? @pool.user
         paginate @pool.submissions
       else
+        
         paginate @pool.submissions.where(hidden: false)
       end
     else
+      @title = "Submissions"
       paginate Submission.where(hidden: false)
     end
   end
@@ -39,6 +42,7 @@ class SubmissionsController < ApplicationController
 
   def show
     if (@pool && can_modify?(@pool.user)) || can_modify?(@submission.pool.user)
+      @title = "editing #{@pool.title}"
       render "edit"
     end
   end

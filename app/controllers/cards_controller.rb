@@ -9,6 +9,7 @@ class CardsController < ApplicationController
   end
 
   before_filter only: [:index] do
+    @title = "#{@user.name}'s work log"
     unless @user.card
       card = Card.new
       card.save(validate: false)

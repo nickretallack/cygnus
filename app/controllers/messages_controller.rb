@@ -111,6 +111,7 @@ class MessagesController < ApplicationController
   end
 
   def index
+    @title = "Conversations"
     @user.unread_pms.each do |pm|
       @user.attachments.delete("unread_pm-#{pm.id}")
       @user.attachments << "read_pm-#{pm.id}"
@@ -123,6 +124,7 @@ class MessagesController < ApplicationController
   end
 
   def activity
+    @title = "Recent Activity"
     session[:toasts_seen] = current_user.unread_messages.length
     render "activity/index"
   end

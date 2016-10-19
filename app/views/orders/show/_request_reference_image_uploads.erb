@@ -1,7 +1,7 @@
 <table class = "gallery">
   <% content.reject{ |answer| answer.blank? }.each do |image| %>
     <% if /image-(\d+)/.match(image) %>
-      <td><%= render "partials/image_container", {image: Image.find(RegExp.last_match[1]), type: :bordered}%></td>
+      <td><%= render "partials/image_container", {image: Image.find(Regexp.last_match[1]), type: :bordered}%></td>
     <% else %>
       No images given.
     <% end %>

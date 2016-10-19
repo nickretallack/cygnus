@@ -139,7 +139,7 @@ AddableField = (function(){
           if(element.is("[name]")){
             var nameArray = element.attr("name").toArray(),
                 option = element.parents("li.option");
-            nameArray[nameArray.length - element.find("input[type = file]").exists()? 2 : 1] = 0 + option.exists()? option.index() : index;
+            nameArray[3] = 0 + option.exists()? option.index() : index;
             element.attr("name", nameArray.parse());
           }
           if(element.is("[id]")){

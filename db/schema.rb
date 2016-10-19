@@ -11,10 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160324190858) do
+ActiveRecord::Schema.define(version: 20161016021154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "bids", force: :cascade do |t|
+    t.integer  "slot_id"
+    t.integer  "user_id"
+    t.string   "body"
+    t.decimal  "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "bids", ["slot_id"], name: "index_bids_on_slot_id", using: :btree
+  add_index "bids", ["user_id"], name: "index_bids_on_user_id", using: :btree
 
   create_table "cards", force: :cascade do |t|
     t.string   "title"
@@ -45,9 +57,10 @@ ActiveRecord::Schema.define(version: 20160324190858) do
   create_table "messages", force: :cascade do |t|
     t.string   "subject"
     t.text     "content"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-    t.string   "attachments", default: [],              array: true
+    t.integer  "recipient_id"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.string   "attachments",  default: [],              array: true
   end
 
   create_table "order_forms", force: :cascade do |t|
@@ -73,6 +86,30 @@ ActiveRecord::Schema.define(version: 20160324190858) do
     t.datetime "updated_at",               null: false
     t.string   "attachments", default: [],              array: true
   end
+
+  create_table "requests", force: :cascade do |t|
+    t.string   "title"
+    t.text     "body"
+    t.integer  "user_id"
+    t.string   "breed",          null: false
+    t.decimal  "max_price"
+    t.integer  "auction_length", null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  add_index "requests", ["user_id"], name: "index_requests_on_user_id", using: :btree
+
+  create_table "slots", force: :cascade do |t|
+    t.integer  "request_id"
+    t.text     "body"
+    t.decimal  "min_bid"
+    t.decimal  "auto_buy"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "slots", ["request_id"], name: "index_slots_on_request_id", using: :btree
 
   create_table "submissions", force: :cascade do |t|
     t.string   "title"
@@ -109,4 +146,8 @@ ActiveRecord::Schema.define(version: 20160324190858) do
 
   add_index "users", ["tags_tsvector"], name: "index_users_on_tags_tsvector", using: :gin
 
+  add_foreign_key "bids", "slots"
+  add_foreign_key "bids", "users"
+  add_foreign_key "requests", "users"
+  add_foreign_key "slots", "requests"
 end

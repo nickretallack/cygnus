@@ -1,0 +1,5 @@
+<%= @order_form.content.each do |object| %>
+  <%name, details = object.first %>
+  <%question, options = details.first %>
+  <%= render "template", name: name, question: question, options: options %>
+<% end %>
