@@ -279,28 +279,77 @@
   min-height: 200px;
   font-family: Verdana, sans-serif;
 }
-
+.sales:before {
+    display: inline-block;
+    vertical-align: middle;
+    height: 1.5em;
+    line-height: 1.3;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "liga" 1;
+    content: "$";
+    font-size: 75%;
+    padding: 0px 8px;
+    border-radius: 1em;
+    font-weight: bold;
+    border: 3px solid #c6f8d6;
+    position: relative;
+    float: left;
+    top: 3px;
+    left: 3px;
+    transform: rotate(-15deg);
+}
 .sales {
   background-color: #3b544c;
-  background-image: url("img/sales.png");
-  background-repeat: no-repeat;
-  background-position: 10px 50%;
   color: #c6f8d6;
   text-shadow: none;
 }
+.notes:before {
+    display: inline-block;
+    vertical-align: middle;
+    height: 1.5em;
+    line-height:1.16;
+    content: "mail";
+    font-family: 'Material Icons';
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "liga" 1;
+    font-size: 78%;
+	padding: 1px 2px 5px 2px;
+	border-radius: 1em;
+	font-weight: bold;
+	border: 3px solid #f7baf8;
+	position: relative;
+    float: left;
+    top: 3px;
+    left: 3px;
+	transform: rotate(-15deg);
+}
 .notes {
   background-color: #24203f;
-  background-image: url("img/notes.png");
-  background-repeat: no-repeat;
-  background-position: 10px 50%;
   color: #f7baf8;
   text-shadow: none;
 }
+.comments:before {
+	display: inline-block;
+    vertical-align: middle;
+    height: 1.5em;
+    line-height:1.2;
+    content: "speaker_notes";
+    font-family: 'Material Icons';
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "liga" 1;
+    font-size: 78%;
+	padding: 1px 3px 5px 3px;
+	border-radius: 1em;
+	font-weight: bold;
+	border: 3px solid #ffca92;
+	position: relative;
+    float: left;
+    top: 3px;
+    left: 3px;
+	transform: scaleX(-1) rotate(15deg);
+}
 .comments {
   background-color: #7f250c;
-  background-image: url("img/comments.png");
-  background-repeat: no-repeat;
-  background-position: 10px 50%;
   color: #ffca92;
   text-shadow: none;
 }

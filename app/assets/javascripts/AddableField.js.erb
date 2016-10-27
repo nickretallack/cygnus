@@ -133,13 +133,14 @@ AddableField = (function(){
 
     renumber: function(){
       var self = this,
-          fields = self.field.find("select, input, label");
+          fields = self.field.find("select, textarea, input, label");
       fields.each(function(index, element){
         element = $(element);
           if(element.is("[name]")){
             var nameArray = element.attr("name").toArray(),
-                option = element.parents("li.option");
-            nameArray[3] = 0 + option.exists()? option.index() : index;
+                option = element.parents("li.option"),
+                nameindex = element.parents().hasClass('fallback') ? 2 : 3;
+            nameArray[nameindex] = 0 + option.exists()? option.index() : index;
             element.attr("name", nameArray.parse());
           }
           if(element.is("[id]")){

@@ -24,6 +24,7 @@ class RequestsController < ApplicationController
   def create
     @request = Request.new(request_params)
     @request.user = current_user
+    
     respond_to do |format|
       if current_user.user? && @request.save
         format.html { redirect_to @request, notice: 'Request was successfully created.' }
@@ -39,6 +40,7 @@ class RequestsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def request_params
-      params.require(:request).permit(:body, :max_price, :breed, :auction_length, :title)
+      params.require(:request).permit(:body, :max_price, :breed, :auction_length, :title,
+                                      slots_attributes: [:title, :body, :min_bid, :auto_buy])
     end
 end

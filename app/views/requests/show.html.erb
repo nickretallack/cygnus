@@ -22,5 +22,9 @@
   <strong>Ends At:</strong>
   <%= @request.end_date %>
 </p>
-
+<div class="slots row">
+	<%@request.slots.each do |slot| %>
+		<%=render 'slot', slot: slot %>
+	<% end %>
+</div>
 <%= link_to 'Back', requests_path %>
