@@ -90,6 +90,7 @@ ActiveRecord::Schema.define(version: 20161016021154) do
   create_table "requests", force: :cascade do |t|
     t.string   "title"
     t.text     "body"
+    t.integer  "upload_id"
     t.integer  "user_id"
     t.string   "breed",          null: false
     t.decimal  "max_price"
@@ -101,6 +102,7 @@ ActiveRecord::Schema.define(version: 20161016021154) do
   add_index "requests", ["user_id"], name: "index_requests_on_user_id", using: :btree
 
   create_table "slots", force: :cascade do |t|
+    t.string   "title"
     t.integer  "request_id"
     t.text     "body"
     t.decimal  "min_bid"
