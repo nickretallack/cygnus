@@ -1,27 +1,34 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Body:</strong>
-  <%= @request.body %>
-</p>
-
-<p>
-  <strong>User:</strong>
-  <%= @request.user.name %>
-</p>
-
-<p>
-  <strong>Type:</strong>
-  <%= @request.breed %>
-</p>
-<p>
-  <strong>Maximum Price:</strong>
-  <%= number_to_currency @request.max_price %>
-</p>
-<p>
-  <strong>Ends At:</strong>
-  <%= @request.end_date %>
-</p>
+<div class="row">
+	<div class="col s12 l8 right">
+	 <%= render "partials/image_container", {image: @request.image, type: :full} if @request.image %>
+	</div>
+    <div class="col s12 l4">
+	  <%= render_markdown @request.body %>
+	</div>
+</div>
+<div class="row">
+	<div class="col s12 m4">
+	  <p>By: 
+	      <%= link_to user_path(@request.user) do %><%= @request.user.name %><% end %>		
+      </p>
+      <div>
+  		<%= render "partials/image_container", {image: @request.user.avatar, type: :bordered}%>
+  	  </div>
+	</div>
+	<% if @request.breed == 'request' %>
+	<p class="col s12 m4">
+	  <strong>Looking around:</strong>
+	  <%= number_to_currency @request.max_price %>
+	</p>
+	<% end %>
+	<p class="col s12 m4">
+	  <strong>Ends At:</strong>
+	  <%= @request.end_date %>
+	</p>
+</div>
+<hr>
 <div class="slots row">
 	<%@request.slots.each do |slot| %>
 		<%=render 'slot', slot: slot %>

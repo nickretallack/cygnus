@@ -1,16 +1,25 @@
 <div class="slot col m6">
 	<h3><%= slot.title %></h3>
-	<div class="row">
-		<div class="current_bid col s12">Current Bid: <span class="bid_<%= slot.id %>">No Bid</div>
-		<%if slot.auto_buy%>
-		  <div class="col m6">Auto-Buy: <%= slot.auto_buy%></div>
-		<% end %>
-		  <div class="col m6">Starting Bid: <%= slot.min_bid%></div>
-	</div>
+	<% if @request.breed == "request"%>
+  	<div class="row">
+  		<div class="current_bid col s12">
+  		  Current Bid: <span class="bid_<%= slot.id %>"><%=number_to_currency slot.current_bid%></span>
+  		</div>
+  		<%if slot.auto_buy%>
+  		  <div class="col s12 m6">Auto-Buy: <%= number_to_currency slot.auto_buy%></div>
+  		<% end %>
+  		  <div class="col s12 m6">Starting Bid: <%= number_to_currency slot.min_bid%></div>
+  	</div>
+  <% end %>
 	<div class="row">
 	  <%= render_markdown slot.body %>
 	</div>
-	<div class="bids">
-	
+	<hr>
+	<div class="bids row spaced ">
+	  <h6>Responses:</h6>
+		<% slot.bids.last(5).each do |bid| %>
+			<%= render "bid", model: bid %>
+		<% end %>
+		<%= render "bid_form", model: slot.bids.new unless slot.request.expired? %>
 	</div>
 </div>

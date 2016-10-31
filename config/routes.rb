@@ -68,12 +68,12 @@ Rails.application.routes.draw do
   end
   
   controller :requests do
-    get :index, path: "s/request", as: :requests
-    get :new, path: "s/request/new", as: :new_request
-    post :create, path: "s/request", as: :create_request
-    post :bid, path: "s/request/:#{Request.slug}/bid", as: :create_bid
+    get :new, path: "s/request/new(/:breed)", as: :new_request, defaults: { breed: 'request' }
+    post :create, path: "s/requests", as: :create_request
+    post :bid, path: "s/request/:#{Request.slug}/bid", as: :bids_path
     delete :destroy, path: "s/request/:#{Request.slug}", as: :destroy_request
     get :show, path: "s/request/:#{Request.slug}", as: :request
+    get :index, path: "s/requests(/:breed)", as: :requests, defaults: { breed: 'request' }
   end
 
   controller :users do

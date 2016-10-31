@@ -3,15 +3,15 @@ class RequestsController < ApplicationController
   # GET /requests
   # GET /requests.json
   def index
-    @title = "Open Requests"
-    @requests = Request.all
+    @title = "Open #{params[:breed].titleize}s"
+    @requests = Request.all.where(breed: params[:breed])
   end
 
 
   # GET /requests/new
   def new
-    @title = "New Commission Request"
-    @request = Request.new
+    @title = "New Commission #{params[:breed].titleize}"
+    @request = Request.new(breed: params[:breed])
   end
 
 
@@ -21,9 +21,25 @@ class RequestsController < ApplicationController
 
   # POST /requests
   # POST /requests.json
+  def bid
+    @bid = Bid.new(bid_params)
+    
+    @bid.user = current_user
+    respond_to do |format|
+      if current_user.user? && !Request.find(params[:id]).expired? && @bid.save
+        format.html { redirect_to :back,  notice: 'bid added successfully' }
+        format.json { render  json: @bid }
+      else
+        format.html { redirect_to :back, error: "An Error has occurred, try again"}
+        format.json { render json: @bid.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
   def create
     @request = Request.new(request_params)
     @request.user = current_user
+    @request.image_id = Image.render(params[:image][:image], params[:image][:explicit]) if params[:image][:image]
     
     respond_to do |format|
       if current_user.user? && @request.save
@@ -42,5 +58,8 @@ class RequestsController < ApplicationController
     def request_params
       params.require(:request).permit(:body, :max_price, :breed, :auction_length, :title,
                                       slots_attributes: [:title, :body, :min_bid, :auto_buy])
+    end
+    def bid_params
+      params.require(:bid).permit(:body, :amount, :slot_id)
     end
 end

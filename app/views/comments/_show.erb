@@ -10,7 +10,9 @@
         </h5>
         <blockquote><%= render_markdown model.content %></blockquote>
       </td>
-      <td class = "button-area"></td>
+      <% unless anon? %>
+        <td class = "button-area"></td>
+      <% end %>
     </tr>
   </tbody>
 </table>

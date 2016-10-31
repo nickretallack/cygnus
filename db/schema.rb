@@ -90,7 +90,7 @@ ActiveRecord::Schema.define(version: 20161016021154) do
   create_table "requests", force: :cascade do |t|
     t.string   "title"
     t.text     "body"
-    t.integer  "upload_id"
+    t.integer  "image_id"
     t.integer  "user_id"
     t.string   "breed",          null: false
     t.decimal  "max_price"

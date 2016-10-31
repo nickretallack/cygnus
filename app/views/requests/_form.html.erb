@@ -1,4 +1,4 @@
-<%= form_for @request, html: {class: "row"} do |f| %>
+<%= form_for @request, html: {multipart: true} do |f| %>
   <% if @request.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@request.errors.count, "error") %> prohibited this request from being saved:</h2>
@@ -10,50 +10,61 @@
       </ul>
     </div>
   <% end %>
-  <div class="field col s12">
-    <%= f.label :title %><br>
-    <%= f.text_field :title %>
-  </div>
-  
-  <div class="field col s12">
-    <%= f.label :body %><br>
-    <%= f.text_area :body %>
-  </div>
-  <div class="field">
-    <%= f.label :breed %><br>
-    <%= f.text_field :breed %>
-  </div>
-  <div class="field col m6">
-  	<%= f.label :max_price %><br>
-    <%= f.number_field :max_price, min: 5, step: 0.01 %>
-  </div>
-  <div class="field col m6">
-  	<%= f.label :auction_length %><br>
-    <%= f.select :auction_length do %>
-    	<%= options_for_select [1,3,5,7,15,30].map{ |i| ["#{i} days", i] }, selected: 5%>
+  <%= f.hidden_field :breed %>
+    <div class="row">
+    <div class="field col s12 m6">
+      <%= f.label :title %><br>
+      <%= f.text_field :title, required: true %>
+    </div>
+    <div class="field col s12 m6 right">
+      <p>Image Featured (If Needed)</p>
+      <%= render "partials/image", {model: @request.image, options: {type: :medium}}%>
+    </div>
+      
+    <div class="field col s12 m6">
+      <%= f.label :body, "Description" %><br>
+      <%= f.text_area :body, required: true, style: "height: 240px;" %>
+    </div>
+      
+    <%if @request.breed == "request"%>
+      <div class="field col s12 m6">
+        <%= f.label :max_price, "Your Desired Price" %><br>
+        <%= f.number_field :max_price, min: 5, step: 0.01, required: true %>
+      </div>
     <% end %>
+    <div class="field col s12 m6">
+      <%= f.label :auction_length %><br>
+      <%= f.select :auction_length do %>
+        <%= options_for_select [1,3,5,7,15,30].map{ |i| ["#{i} days", i] }, selected: 5, required: true%>
+      <% end %>
+    </div>
   </div>
+  <hr>
+  <h3>Slots</h3>
+  <p>For Multiple slot pieces, minimum one slot</p>
   <ol class = "js addable-field orderable">
     <li class="padded option js addable-field row fallback">
-    	<%= f.fields_for :slots, [@request.slots.build], class: 'fallback' do |g| %>
-    	    <i class = "handle material-icons small"><%= CONFIG[:other_icons][:handle] %></i><br />
-    	    <div class="field col s12">
-	    	  <%= g.label :title %><br>
-	    	  <%= g.text_field :title %>
-	    	</div>
-	    	<div class="field col s12">
-	    	  <%= g.label :body %><br>
-	    	  <%= g.text_area :body %>
-	    	</div>
-		   	<div class="field col m6">
-		  		<%= g.label :min_bid %><br>
-		    	<%= g.number_field :min_bid, min: 5, step: 0.01 %>
-		 	</div>
-		    <div class="field col m6">
-		  		<%= g.label :auto_buy %><br>
-		    	<%= g.number_field :auto_buy, min: 5, step: 0.01 %>
-		  </div>
-	    <% end %>
+      <%= f.fields_for :slots, [@request.slots.build], class: 'fallback' do |g| %>
+        <i class = "handle material-icons small"><%= CONFIG[:other_icons][:handle] %></i><br />
+        <div class="field col s12">
+          <%= g.label :title %><br>
+          <%= g.text_field :title, required: true %>
+        </div>
+        <div class="field col s12">
+          <%= g.label :body %><br>
+          <%= g.text_area :body %>
+        </div>
+        <% unless @request.breed == "request"%>
+          <div class="field col s12 m6">
+            <%= g.label :min_bid, "Starting Bid" %><br>
+            <%= g.number_field :min_bid, min: 5, step: 0.01, required: true %>
+          </div>
+          <div class="field col s12 m6">
+            <%= g.label :auto_buy %><br>
+            <%= g.number_field :auto_buy, min: 5, step: 0.01 %>
+          </div>
+        <% end %>
+      <% end %>
     </li>
   </ol>
   <div class ="addable-area"></div>
