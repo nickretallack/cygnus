@@ -47,7 +47,7 @@ class RequestsController < ApplicationController
     
     respond_to do |format|
       if current_user.user? && @request.save
-        Message.time_over(@request)
+        MessageMailer.time_over(@request).deliver_later(wait: @request.auction_length.days)
         format.html { redirect_to @request, notice: 'Request was successfully created.' }
         format.json { render :show, status: :created, location: @request }
       else
