@@ -26,7 +26,7 @@ module ActiveRecordExtensions
       self.instance_variable_get("@case_insensitive") || false
     end
 
-    def find(record, raise_error: false)
+    def find_slug(record, raise_error: false)
       if case_insensitive_slug
         thing = where("lower(#{slug}) = ?", record.nil?? nil : record.downcase).first
       else

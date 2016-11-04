@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   attr_accessor  :activation_token, :reset_token
 
   validates :name, presence: true, length: { maximum: 50 }, 
-    format: {with:/\A[-a-zA-Z0-9]\z/, 
+    format: {with: /\A[-a-zA-Z0-9]*\z/, 
     message: "can only contain alphanumeric characters and dashes"}, 
     uniqueness: { case_sensitive: false }, exclusion: { in: ["s", "assets"] }
 
@@ -164,6 +164,7 @@ class User < ActiveRecord::Base
     self.activation_token = SecureRandom.urlsafe_base64
     self.activation_digest = User.digest(self.activation_token)
     self.save
+    puts self.to_global_id
     UserMailer.activation(self).deliver_now
   end
 
@@ -172,6 +173,7 @@ class User < ActiveRecord::Base
     self.activation_digest = User.digest(self.reset_token)
     self.reset_sent_at = Time.zone.now
     self.save
+    puts self.to_global_id
     UserMailer.reset(self).deliver_now
   end
 

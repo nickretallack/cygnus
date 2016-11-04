@@ -1,0 +1,8 @@
+Hello! <%= @message.user.name %> Your <%= @message.breed.titleize %> is over!
+
+Next steps:
+Visit your <%= @message.breed.titleize %> and then choose the winners!
+url <%= request_url(@message) %>
+After that, a request will appear in the appropriate profile to be turned into a workboard commission for payment and completion!
+
+Thank you for choosing <%= CONFIG[:name] %>

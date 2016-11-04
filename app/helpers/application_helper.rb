@@ -3,7 +3,7 @@ module ApplicationHelper
   include ViewHelper
   
   def current_user
-    session[:username].nil?? AnonymousUser.new : User.find(session[:username]) || AnonymousUser.new
+    session[:username].nil?? AnonymousUser.new : User.find_slug(session[:username]) || AnonymousUser.new
   end
 
   def anon?
@@ -56,6 +56,26 @@ module ApplicationHelper
 
   def faved?(submission)
     submission and current_user.favs.include? submission.id
+  end
+  
+  def first_log_in(user)
+    pool = Pool.new(title: "gallery")
+    pool.save
+    list_one = Card.new(title: "To Do")
+    list_one.save
+    list_two = Card.new(title: "Doing")
+    list_two.save
+    list_three = Card.new(title: "Done")
+    list_three.save
+    card = Card.new(attachments: ["card-#{list_one.id}", "card-#{list_two.id}", "card-#{list_three.id}"])
+    card.save
+    user.level = :member
+    user.activated_at = Time.zone.now
+    user.attachments = user.attachments << "pool-#{pool.id}" << "card-#{card.id}"
+    user.save(validate: false)
+    activate_session user
+    flash[:success] = "welcome to #{CONFIG[:name]}"
+    session.delete(:email)
   end
 
   #insist_on must be used inside a separate method like a before_filter to avoid calling redirect twice in the same action

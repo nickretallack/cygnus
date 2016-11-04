@@ -23,10 +23,14 @@ class RequestsController < ApplicationController
   # POST /requests.json
   def bid
     @bid = Bid.new(bid_params)
-    
+    request = Request.find(params[:id])
     @bid.user = current_user
+    
     respond_to do |format|
-      if current_user.user? && !Request.find(params[:id]).expired? && @bid.save
+      if current_user.user? && !request.expired? && @bid.slot.valid_bid?(request, @bid) && @bid.save
+        puts @bid.slot.bid_flag
+
+        Message.outbid(@bid) if @bid.slot.bid_flag
         format.html { redirect_to :back,  notice: 'bid added successfully' }
         format.json { render  json: @bid }
       else
@@ -43,6 +47,7 @@ class RequestsController < ApplicationController
     
     respond_to do |format|
       if current_user.user? && @request.save
+        Message.time_over(@request)
         format.html { redirect_to @request, notice: 'Request was successfully created.' }
         format.json { render :show, status: :created, location: @request }
       else

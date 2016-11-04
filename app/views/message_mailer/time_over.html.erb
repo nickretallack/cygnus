@@ -1,0 +1,14 @@
+<div style = "width: 100%;">
+  <%= image_tag attachments["logo.png"].url, style: "display: block; margin: 0 auto;" %>
+    <h3 style = "text-align: center;">
+      Hello! <%=@message.user.name %> Your <%= @message.breed.titleize %> is over!
+    </h3>
+  <center><p>
+    Next steps: <br>
+    Visit your <%= link_to @message.breed.titleize, request_url(@message) %>, and then choose the winners! <br>
+    After that, a request will appear in the appropriate profile to be turned into a workboard commission for payment and completion!
+    <br>
+    <br>    
+    Thank you for choosing <%= CONFIG[:name] %>
+  </p></center>
+</div>

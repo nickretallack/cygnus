@@ -20,7 +20,7 @@ class MessagesController < ApplicationController
 
   before_filter only: [:index, :create_pm] do
     if params[:reply_to_name]
-      @reply_to = User.find(params[:reply_to_name])
+      @reply_to = User.find_slug(params[:reply_to_name])
       insist_on :existence, @reply_to
     end
   end

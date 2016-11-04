@@ -1,6 +1,6 @@
 <div class="slot col m6">
 	<h3><%= slot.title %></h3>
-	<% if @request.breed == "request"%>
+	<% unless @request.breed == "request"%>
   	<div class="row">
   		<div class="current_bid col s12">
   		  Current Bid: <span class="bid_<%= slot.id %>"><%=number_to_currency slot.current_bid%></span>

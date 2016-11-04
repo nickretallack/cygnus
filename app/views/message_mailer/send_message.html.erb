@@ -1,0 +1,10 @@
+<div style = "width: 100%;">
+  <%= image_tag attachments["logo.png"].url, style: "display: block; margin: 0 auto;" %>
+    <h3 style = "text-align: center;">
+      Hello! <%=@user.name %> You have a <%= link_to 'new message', messages_url(@user)%>
+    </h3>
+  <center><p>
+    Message: <br>
+    <%= @message.content.html_safe %>
+  </p></center>
+</div>

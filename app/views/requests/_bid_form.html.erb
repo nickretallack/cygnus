@@ -7,7 +7,11 @@
 	    </div>
 	    <div class="field col s12 m3">
 	    	<%= f.label :amount, "Your Bid" %>
-	    	<%= f.number_field :amount, min: model.slot.next_bid, step: 0.01, required: true %>
+	    	<% if @request.breed == 'request' %>
+	    	  <%= f.number_field :amount, min: 5, step: 0.01, required: true %>
+	    	<% else %>
+	    	  <%= f.number_field :amount, min: model.slot.next_bid, step: 0.01, required: true %>
+	    	<% end %>
 	    </div>
 	    <div class="actions col s12">
 	      <%= f.submit %>

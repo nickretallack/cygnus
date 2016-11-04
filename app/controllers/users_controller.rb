@@ -28,7 +28,7 @@ class UsersController < ApplicationController
   end
 
   before_filter only: [:log_in] do
-    @user = User.find params[:session][:name]
+    @user = User.find_slug params[:session][:name]
     insist_on :existence, @user
   end
 
@@ -38,12 +38,12 @@ class UsersController < ApplicationController
   end
 
   before_filter only: [:send_reset] do
-    @user = User.find(params[:reset][User.slug]) || User.find_by(email: params[:reset][:email])
+    @user = User.find_slug(params[:reset][User.slug]) || User.find_by(email: params[:reset][:email])
     insist_on :existence, @user
   end
 
   before_filter only: [:reset] do
-    @user = User.find params[User.slug]
+    @user = User.find_slug params[User.slug]
     unless @user and @user.at_least? :member
       flash[:danger] = "password reset not allowed on your account"
       redirect_to :root

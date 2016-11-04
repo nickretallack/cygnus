@@ -1,6 +1,6 @@
 class Message < ActiveRecord::Base
   belongs_to :submission
-  belongs_to :user
+  belongs_to :recipient, :class_name => 'User', :foreign_key => 'recipient_id'
   
   #based on the BLIP service
   #after_create :notify_added
@@ -74,64 +74,79 @@ class Message < ActiveRecord::Base
   
   def self.watch current_user, user
     return if current_user.setting(:disable_activity_feed)
-    message = Message.create(content: "#{link_to current_user.name, url.user_path(current_user)} watched you", attachments: ["watch"])
+    message = Message.create(recipient: user, content: "#{link_to current_user.name, url.user_url(current_user)} watched you", attachments: ["watch"])
     user.update_attribute(:attachments, user.attachments << "unread_message-#{message.id}")
   end
   
   def self.favorite current_user, submission
     return if current_user.setting(:disable_activity_feed)
-    message = Message.create(content: "#{link_to current_user.name, url.user_path(current_user)} favorited your submission #{link_to submission.title, url.submission_path(submission.pool, submission)}'", attachments: ["fav"])
+    message = Message.create(recipient: submission.user, content: "#{link_to current_user.name, url.user_url(current_user)} favorited your submission #{link_to submission.title, url.submission_url(submission.pool, submission)}'", attachments: ["fav"])
     submission.user.update_attribute(:attachments, submission.user.attachments << "unread_message-#{message.id}")    
   end
   
   def self.accept_order current_user, order
     return if current_user.setting(:disable_activity_feed) || order.patron.nil?      
-    message= Message.create(content: "#{link_to current_user.name, url.user_path(current_user)} accepted your #{link_to "commission order", url.order_path(order)}", attachments: ["accept_order"])
-    order.patron.update_attribute(:attachments, order.patron.attachments << "unread_message-#{message.id}")     
+    message= Message.create(recipient: order.patron, content: "#{link_to current_user.name, url.user_url(current_user)} accepted your #{link_to "commission order", url.order_path(order)}", attachments: ["accepted_order"])
+    order.patron.update_attribute(:attachments, order.patron.attachments << "unread_message-#{message.id}")
+    MessageMailer.send_message(message).deliver_later    
   end
   
   def self.reject_order current_user, order
     return if current_user.setting(:disable_activity_feed) || order.patron.nil?      
-    message = Message.create(content: "#{link_to current_user.name, url.user_path(current_user)} rejected your #{link_to "commission order", url.order_path(order)}", attachments: ["reject_order"])
-    order.patron.update_attribute(:attachments, order.patron.attachments << "unread_message-#{message.id}")       
+    message = Message.create(recipient: order.patron, content: "#{link_to current_user.name, url.user_url(current_user)} rejected your #{link_to "commission order", url.order_path(order)}", attachments: ["rejected_order"])
+    order.patron.update_attribute(:attachments, order.patron.attachments << "unread_message-#{message.id}")    
+    MessageMailer.send_message(message).deliver_later   
   end
   
   def self.order user, order
     return if user.setting(:disable_activity_feed)
-    message = Message.create(content: "#{order.name || link_to(user.name, url.user_path(user))} placed a commission order with you", attachments: ["order"])
-    order.user.update_attribute(:attachments, order.user.attachments << "unread_message-#{message.id}")   
+    message = Message.create(recipient: order.user, content: "#{order.name || link_to(user.name, url.user_url(user))} placed a commission order with you", attachments: ["order"])
+    order.user.update_attribute(:attachments, order.user.attachments << "unread_message-#{message.id}")
+    MessageMailer.send_message(message).deliver_later   
+  end
+  
+  def self.outbid bid
+    return if bid.user.setting(:disable_activity_feed)
+    message = Message.create(recipient: bid.user, content: "You have been outbid on #{bid.slot.title}! There is " \
+        "still a chance! #{link_to "Click to raise your bid", url.request_url(bid.slot.request)}", attachments: ["outbid!"])
+    bid.user.update_attribute(:attachments, bid.user.attachments << "unread_message-#{message.id}")
+    MessageMailer.send_message(message).deliver_later   
   end
   
   def self.submission watchers, submission
     watchers.each do |user|
       return if user.setting(:disable_activity_feed)
-      message = Message.create(content: "#{link_to submission.user.name, url.user_path(submission.user)} just created or updated their submission, #{link_to submission.title, url.submission_path(submission.pool, submission)}", attachments: ["submission"])
-      user.update_attribute(:attachments, user.attachments << "unread_message-#{message.id}")   
+      message = Message.create(recipient: user, content: "#{link_to submission.user.name, url.user_url(submission.user)} just created or updated their submission, #{link_to submission.title, url.submission_url(submission.pool, submission)}", attachments: ["submission"])
+      user.update_attribute(:attachments, user.attachments << "unread_message-#{message.id}")
+      MessageMailer.send_message(message).deliver_later   
     end
   end
+  
   def self.status_change current_user
     current_user.watched_by.each do |user|
       return if user.setting(:disable_activity_feed)
-      content = "#{link_to current_user.name, url.user_path(current_user)} has updated their statuses to: "
+      content = "#{link_to current_user.name, url.user_url(current_user)} has updated their statuses to: "
       content << current_user.statuses.map.with_index{ |status, index| "#{CONFIG[:commission_icons].keys[index]}: <span class = \"inline comm-#{status}\">#{status}</span>" }.join("; ")
-      message = Message.create(content: content, attachments: ["status_change"])
-      user.update_attribute(:attachments, user.attachments << "unread_message-#{message.id}")   
+      message = Message.create(recipient: user, content: content, attachments: ["status_change"])
+      user.update_attribute(:attachments, user.attachments << "unread_message-#{message.id}")
+      MessageMailer.send_message(message).deliver_later
     end
   end
     
   def self.comment current_user, submission
     return if current_user.setting(:disable_activity_feed)
-    message = Message.create(content: "#{link_to current_user.name, url.user_path(current_user)} commented on your submission, \u201C#{link_to submission.title, url.submission_path(submission.pool, submission)}\u201D", attachments: ["watch"])
+    message = Message.create(recipient: submission.user, content: "#{link_to current_user.name, url.user_url(current_user)} commented on your submission, \u201C#{link_to submission.title, url.submission_url(submission.pool, submission)}\u201D", attachments: ["comment"])
     submission.user.update_attribute(:attachments, submission.user.attachments << "unread_message-#{message.id}")
+    MessageMailer.send_message(message).deliver_now
   end
   
   private
-
+  
   def notify_added #sse
     Message.connection.execute "NOTIFY messages, '#{self.id}'"
   end
   
-    def new(type, options = {})
+  def new(type, options = {})
     unless current_user.setting(:disable_activity_feed)
       if @model.is_a? Array or @model.is_a? ActiveRecord::Relation
         recipients = @model

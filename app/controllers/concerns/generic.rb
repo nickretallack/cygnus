@@ -3,7 +3,7 @@ module Generic
   included do
     before_filter only: [:new, :show, :update, :destroy, :set_default, :accept, :reject, :fav] do
       unless instance_of? UsersController or instance_of? ImagesController
-        set_item(klass.find(params[klass.slug]))
+        set_item(klass.find_slug(params[klass.slug]))
       end
     end
 
@@ -39,7 +39,7 @@ module Generic
     before_filter only: [:index, :create, :show] do
       if /_id/.match(params.keys.join(" "))
         parent = params.keys.collect{|key| /(.+)_id/.match(key)}.compact[0][1]
-        instance_variable_set("@#{parent}", (parent.classify.constantize.find(params["#{parent}_id"]) rescue nil))
+        instance_variable_set("@#{parent}", (parent.classify.constantize.find_slug(params["#{parent}_id"]) rescue nil))
         unless user
           instance_variable_set("@user", (instance_variable_get("@#{parent}").user rescue nil))
         end
@@ -128,7 +128,7 @@ module Generic
   end
 
   def set_user
-    instance_variable_set("@user", User.find(params[User.slug]) || item.user) rescue nil
+    instance_variable_set("@user", User.find_slug(params[User.slug]) || item.user) rescue nil
   end
 
   def user

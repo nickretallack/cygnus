@@ -1,7 +1,7 @@
 class ImagesController < ApplicationController
 
   before_filter do
-    @image ||= Image.find(params[Image.slug]) || Image.new
+    @image ||= Image.find_slug(params[Image.slug]) || Image.new
     expires_in CONFIG[:image_shelf_life], public: true
   end
 
