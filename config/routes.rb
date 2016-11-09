@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   default_url_options host: CONFIG[:host]
 
   root controller: :users, action: :index
+    
+  require 'sidekiq/web'
+  mount Sidekiq::Web => 's/jobs', constraints: AdminConstraint.new
 
   controller :messages do
     get :new, path: "reply", as: :reply_template
@@ -102,7 +105,5 @@ Rails.application.routes.draw do
   controller :users do
     get :show, path: ":#{User.slug}", as: :user
   end
-  
-
 
 end
