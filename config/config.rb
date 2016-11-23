@@ -59,8 +59,9 @@ CONFIG = {
   },
 
   button_icons: {
-    save: "save",
+    saves: "savse",
     delete: "delete",
+    history: 'history',
     edit: "edit",
     add: "add_circle",
     default: "low_priority",

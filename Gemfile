@@ -22,10 +22,11 @@ gem "rails_autolink"
 
 group :development, :test do
   gem "byebug"
-  gem "web-console", "~> 2.0"
+  gem 'rspec-rails', '~> 3.5'
 end
 
 group :development do
+  gem "web-console", "~> 2.0"
   gem "better_errors"
   gem "quiet_assets"
   gem "rails_layout"

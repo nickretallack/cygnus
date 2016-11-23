@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161016021154) do
+ActiveRecord::Schema.define(version: 20161123014655) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,17 @@ ActiveRecord::Schema.define(version: 20161016021154) do
 
   add_index "bids", ["slot_id"], name: "index_bids_on_slot_id", using: :btree
   add_index "bids", ["user_id"], name: "index_bids_on_user_id", using: :btree
+
+  create_table "card_histories", force: :cascade do |t|
+    t.integer  "card_id"
+    t.string   "title"
+    t.string   "description"
+    t.string   "attachments", default: [],              array: true
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  add_index "card_histories", ["card_id"], name: "index_card_histories_on_card_id", using: :btree
 
   create_table "cards", force: :cascade do |t|
     t.string   "title"
@@ -150,6 +161,7 @@ ActiveRecord::Schema.define(version: 20161016021154) do
 
   add_foreign_key "bids", "slots"
   add_foreign_key "bids", "users"
+  add_foreign_key "card_histories", "cards"
   add_foreign_key "requests", "users"
   add_foreign_key "slots", "requests"
 end
