@@ -1,0 +1,23 @@
+<table>
+        <thead>
+          <tr>
+              <th data-field="id">Title</th>
+              <th data-field="name">Description</th>
+              <th data-field="order">Order</th>
+              <th data-field="image">Image</th>
+              <th data-field="updated">Updated At</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @histories.each do |card| %>
+          <tr>
+            <td><%= card.title %></td>
+            <td><%= card.description%></td>
+            <td><%= link_to "View order", order_path(card.order) if card.order%></td>
+            <td><%= render "partials/image_container", {image: card.image, type: :bordered} if card.image%></td>
+            <td><%=card.updated_at%></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>

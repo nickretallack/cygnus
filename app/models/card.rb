@@ -1,4 +1,6 @@
 class Card < ActiveRecord::Base
+    has_many :card_histories, :dependent => :delete_all
+
     def list
       parents("card").first
     end
@@ -13,5 +15,11 @@ class Card < ActiveRecord::Base
 
     def order
       children("order").first
+    end
+    
+    after_save do
+      hist = CardHistory.new(self.attributes)
+      hist.assign_attributes(id:nil,card:self)
+      hist.save
     end
 end

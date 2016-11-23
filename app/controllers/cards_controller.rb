@@ -17,6 +17,10 @@ class CardsController < ApplicationController
       @user.save(validate: false)
     end
   end
+  
+  def history
+    @histories = CardHistory.all.where(card_id: params[Card.slug]).order(id: :desc)
+  end
 
   def after_save
     card = Card.find(params[Card.slug])

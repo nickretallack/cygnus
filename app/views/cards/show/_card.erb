@@ -2,7 +2,7 @@
   <div class = "card-content">
     <div class = "card-title">
       <div class = "hc view-mode reorder-mode">
-        <h5 id = "title"><%= title_for model %></h5>
+        <h5 id = "title"><%= link_to title_for(model), history_card_path(@user, model) %></h5>
         <hr />
       </div>
 
@@ -22,8 +22,16 @@
           <%= form_for model, url: update_card_path(@user, model), method: :patch, html: { class: "button-submit", attachment: "image-preview" } do |f| %>
             <%= f.submit "Attach Image", id: "attach" %>
           <% end %>
+          <%= form_for model, url: history_card_path(@user, model), method: :get, html: { class: "button-submit" } do |f| %>
+            <%= f.submit "History", id: "history" %>
+          <% end %>
           <%= render("orders/short_summary", model: model.order) if model.order%>
-          <div class = "button-area centered"></div>
+
+          <div class = "button-area centered">
+            <%= link_to history_card_path(@user, model) do %>
+
+            <% end %>
+          </div>
         </div>
 
         <div class = "view-mode">
