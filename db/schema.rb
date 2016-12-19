@@ -68,10 +68,13 @@ ActiveRecord::Schema.define(version: 20161123014655) do
   create_table "messages", force: :cascade do |t|
     t.string   "subject"
     t.text     "content"
+    t.integer  "user_id"
     t.integer  "recipient_id"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-    t.string   "attachments",  default: [],              array: true
+    t.integer  "message_id"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.integer  "submission_id"
+    t.string   "attachments",   default: [],              array: true
   end
 
   create_table "order_forms", force: :cascade do |t|
