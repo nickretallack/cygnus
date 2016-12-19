@@ -1,21 +1,21 @@
 <% unless model.at_least? :member %>
-  <blockquote class = "inline danger link"><%= readable model.level %></blockquote>
+  <span class = "inline danger link"><%= readable model.level %></span>
 <% else %>
   <% if can_watch? model %>
     <% unless watching? model %>
-      <blockquote class = "inline link">
+      <span class = "inline link">
         <%= link_to "Watch", watch_user_path(model), class: "remote" %>
-      </blockquote>
+      </span>
     <% else %>
-      <blockquote class = "inline danger link">
+      <span class = "inline danger link">
         <%= link_to "Unwatch", watch_user_path(model), class: "remote" %>
-      </blockquote>
+      </span>
     <% end %>
   <% else %>
     <% if anon? %>
-      <blockquote class = "inline link"><%= link_to "View Profile", user_path(model) %></blockquote>
+      <span class = "inline link"><%= link_to "View Profile", user_path(model) %></span>
     <% else %>
-      <blockquote class = "inline link"><%= link_to "Edit Profile", user_path(model) %></blockquote>
+      <span class = "inline link"><%= link_to "Edit Profile", user_path(model) %></span>
     <% end %>
   <% end %>
 <% end %>

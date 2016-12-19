@@ -1,37 +1,33 @@
-<div class = "col s6">
-  <div id = "watch">
-  	<%= render "/users/watch", {model: model} %>
-  </div>
-  <% if model.pools.length < 1 %>
-    <blockquote class = "inline link danger">No Gallery</blockquote>
-    <% if current_user? model %>
-      <blockquote class = "link"><%= link_to "Pools", pools_path(model) %></blockquote>
-    <% else %>
-      <blockquote class = "inline danger link">No Pools</blockquote>
-    <% end %>
-  <% else %>
-    <blockquote class = "inline link"><%= link_to "Gallery", gallery_path(model) %></blockquote>
-    <% if model.pools.length == 1 %>
-      <blockquote class = "inline link danger">No more Pools</blockquote>
-    <% else %>
-      <blockquote class = "inline link"><%= link_to "More Pools...", pools_path(model) %></blockquote>
-    <% end %>
-  <% end %>
-</div>
-<div class = "col s6">
+<span id = "watch">
+	<%= render "/users/watch", {model: model} %>
+</span>
+<% if model.pools.length < 1 %>
+  <span class = "inline link danger">No Gallery</span>
   <% if current_user? model %>
-    <blockquote class = "inline link"><%= link_to "Conversations", pms_path(current_user) %></blockquote>
+    <span class = "link"><%= link_to "Pools", pools_path(model) %></span>
   <% else %>
-    <blockquote class = "inline link"><%= link_to "Send PM", pm_author_path(current_user, model) %></blockquote>
+    <span class = "inline danger link">No Pools</span>
   <% end %>
-  <% if can_order? model and !model.setting(:disabled_order_link) %>
-    <blockquote class = "inline link"><%= link_to "Place Order", new_order_path(model.order_form) %></blockquote>
+<% else %>
+  <span class = "inline link"><%= link_to "Gallery", gallery_path(model) %></span>
+  <% if model.pools.length == 1 %>
+    <span class = "inline link danger">No more Pools</span>
   <% else %>
-    <blockquote class = "inline link danger">Not Accepting Orders</blockquote>
+    <span class = "inline link"><%= link_to "More Pools...", pools_path(model) %></span>
   <% end %>
-  <% unless current_user? model %>
-    <blockquote class = "inline link"><%= link_to "View Workboard", cards_path(model) %></blockquote>
-  <% else %>
-    <blockquote class = "inline link"><%= link_to "Edit Workboard", cards_path(model) %></blockquote>
-  <% end %>
-</div>
+<% end %>
+<% if current_user? model %>
+  <span class = "inline link"><%= link_to "Conversations", pms_path(current_user) %></span>
+<% else %>
+  <span class = "inline link"><%= link_to "Send PM", pm_author_path(current_user, model) %></span>
+<% end %>
+<% if can_order? model and !model.setting(:disabled_order_link) %>
+  <span class = "inline link"><%= link_to "Place Order", new_order_path(model.order_form) %></span>
+<% else %>
+  <span class = "inline link danger">Not Accepting Orders</span>
+<% end %>
+<% unless current_user? model %>
+  <span class = "inline link"><%= link_to "View Workboard", cards_path(model) %></span>
+<% else %>
+  <span class = "inline link"><%= link_to "Edit Workboard", cards_path(model) %></span>
+<% end %>

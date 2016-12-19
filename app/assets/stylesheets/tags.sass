@@ -74,18 +74,6 @@ table
   a:hover
     font-size: 100%
 
-span:not(.inline)
-  margin: 0 auto
-  display: table
-  *
-    +float-left
-  a
-    font-size: 130%
-  a:hover
-    font-size: 130%
-  h1, h2, h3, h4, h5, h6
-    @extend .truncate
-
 blockquote
   @extend .flow-text
   font-size: 90%
@@ -166,15 +154,6 @@ td, th
 i
   text-align: center
   cursor: pointer !important
-
-div:not(.button-table):not(.addable-area):hover > i, div:not(.button-table):not(.addable-area):hover > i + label
-  color: $icon-hover-color
-
-i:hover
-  color: $icon-hover-color
-
-i + label:hover
-  color: $icon-hover-color
 
 label
   color: inherit

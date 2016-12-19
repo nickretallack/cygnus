@@ -1,0 +1,5 @@
+<% CONFIG[:commission_icons].each_with_index do |(key, icon), index| %>
+    <i class="material-icons small comm-<%= model.statuses[index] %>" title="<%= key.capitalize %>">
+      <%= icon %>
+    </i>
+<% end %>

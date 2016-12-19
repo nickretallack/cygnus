@@ -1,21 +1,18 @@
-<div class = "row block" id = <%= model.id %>>
-  <div class = "row">
-    <div class = "col s12 m6 mt">
-      <div class = "fl col s6 m12 l5 fh full-small">
-        <%= render "partials/image_container", {image: model.avatar, type: :bordered}%>
+<div class="row">
+  <div class="col s12 m3">
+    <div class="card" id="<%= model.id %>">
+      <div class="card-image">
+        <%= render "partials/image_container", {image: model.avatar, type: :limited}%>
       </div>
-      <div class = "col s6 m12 l6 full-small">
-        <div class = "row">
-          <h5 class = "truncate hc"><%= link_to model.name, user_path(model) %></h5>
-          <%= render "/users/status/condensed", {model:model} %>
-        </div>
+      <div class="card-content">
+        <span class="card-title">
+          <%= link_to model.name, user_path(model) %>
+          <%= render "/users/status/tiny", {model:model} %>
+        </span>
       </div>
-    </div>
-    <div class = "col s12 m6 l6">
-      <%= render "/users/links", {model: model} %>
-    </div>
-    <div class = "col s12 m6 l12">
-      <%= render "/users/attributes", {model: model} %>
+      <div class="card-action">
+        <%= render "/users/links", {model: model} %>
+      </div>
     </div>
   </div>
 </div>
