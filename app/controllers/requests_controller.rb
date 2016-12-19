@@ -4,7 +4,7 @@ class RequestsController < ApplicationController
   # GET /requests.json
   def index
     @title = "Open #{params[:breed].titleize}s"
-    @requests = Request.all.where(breed: params[:breed])
+    @requests = Request.all.where(breed: params[:breed]).reject(&:expired?)
   end
 
 
@@ -14,9 +14,41 @@ class RequestsController < ApplicationController
     @request = Request.new(breed: params[:breed])
   end
 
+  before_filter only: [:accept] do
+    unless current_user.card.cards.first
+      card = Card.new(title: "To Do")
+      card.save(validate: false)
+      top_card = current_user.card
+      top_card.attachments << "card-#{card.id}"
+      top_card.save(validate: false)
+    end
+  end
 
   def show
     @title = @request.title
+  end
+  
+  def request_bid
+    @bid = Bid.find(params[:bid])
+    redirect_to request_path @bid.slot.request, anchor: "bid-#{@bid.id}"
+  end
+  
+  def accept
+    @bid = Bid.find(params[:bid])
+    if  @user == current_user
+      @list = @user.card.cards.first
+      @card = Card.new(title: "Order From #{@bid.user.name}")
+      @card.attachments << "bid-#{@bid.id}"
+      @card.save(validate: false)
+      @list.attachments << "card-#{@card.id}"
+      @list.save(validate: false)
+      Message.accept_bid @user, @bid
+      flash[:success] = "Bid added to your workboard for final confirmation"
+      back
+    else
+      flash[:errors] = "Access Denied"
+      back
+    end
   end
 
   # POST /requests

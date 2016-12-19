@@ -1,0 +1,7 @@
+<div style = "width: 100%;">
+  <%= image_tag attachments["logo.png"].url, style: "display: block; margin: 0 auto;" %>
+    <h3 style = "text-align: center;">
+      Hello! <%=@recipient[:name] %>, <%= @sender[:name] %> has sent you a comment on your workboard commission: <%= link_to @card.title, history_card_url(@user, @card)%>
+    </h3>
+
+</div>

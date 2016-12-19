@@ -86,14 +86,22 @@ class Message < ActiveRecord::Base
   
   def self.accept_order current_user, order
     return if current_user.setting(:disable_activity_feed) || order.patron.nil?      
-    message= Message.create(recipient: order.patron, content: "#{link_to current_user.name, url.user_url(current_user)} accepted your #{link_to "commission order", url.order_path(order)}", attachments: ["accepted_order"])
+    message= Message.create(recipient: order.patron, content: "#{link_to current_user.name, url.user_url(current_user)} accepted your #{link_to "commission order", url.order_url(order)}", attachments: ["accepted_order"])
     order.patron.update_attribute(:attachments, order.patron.attachments << "unread_message-#{message.id}")
     MessageMailer.send_message(message).deliver_later    
   end
   
+  def self.accept_bid current_user, bid
+    return if current_user.setting(:disable_activity_feed) || bid.user.nil?      
+    message= Message.create(recipient: bid.user, content: "Congratulations! #{link_to current_user.name, url.user_url(current_user)} accepted " \
+    "your #{link_to "Bid on '#{bid.slot.title}'", url.request_bid_url(bid)}", attachments: ["accepted_order"])
+    bid.user.update_attribute(:attachments, bid.user.attachments << "unread_message-#{message.id}")
+    MessageMailer.send_message(message).deliver_later    
+  end 
+  
   def self.reject_order current_user, order
     return if current_user.setting(:disable_activity_feed) || order.patron.nil?      
-    message = Message.create(recipient: order.patron, content: "#{link_to current_user.name, url.user_url(current_user)} rejected your #{link_to "commission order", url.order_path(order)}", attachments: ["rejected_order"])
+    message = Message.create(recipient: order.patron, content: "#{link_to current_user.name, url.user_url(current_user)} rejected your #{link_to "commission order", url.order_url(order)}", attachments: ["rejected_order"])
     order.patron.update_attribute(:attachments, order.patron.attachments << "unread_message-#{message.id}")    
     MessageMailer.send_message(message).deliver_later   
   end
@@ -138,6 +146,15 @@ class Message < ActiveRecord::Base
     message = Message.create(recipient: submission.user, content: "#{link_to current_user.name, url.user_url(current_user)} commented on your submission, \u201C#{link_to submission.title, url.submission_url(submission.pool, submission)}\u201D", attachments: ["comment"])
     submission.user.update_attribute(:attachments, submission.user.attachments << "unread_message-#{message.id}")
     MessageMailer.send_message(message).deliver_now
+  end
+  
+  def self.comment_card card, user, data
+    unless data[:recipient][:ignore]
+      message = Message.create(recipient: data[:recipient][:user], content: "#{data[:sender][:name]} commented on your workboard commission, \u201C#{link_to card.title, url.history_card_path(user, card)}\u201D", attachments: ["comment"])
+      data[:recipient][:user].update_attribute(:attachments, data[:recipient][:user].attachments << "unread_message-#{message.id}")
+    end
+      
+    MessageMailer.send_comment(card, user, data).deliver_now
   end
   
   private

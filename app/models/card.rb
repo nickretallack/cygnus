@@ -12,14 +12,26 @@ class Card < ActiveRecord::Base
     def image
       children("image").first
     end
-
+    
+    def comments
+      children("message")
+    end
+    
     def order
       children("order").first
     end
     
+    def bid
+      children("bid").first
+    end
+    
     after_save do
-      hist = CardHistory.new(self.attributes)
-      hist.assign_attributes(id:nil,card:self)
-      hist.save
+      ch = self.attachments_change
+      ch = ch.last - ch.first if ch
+      unless ch.blank? && ch.first.starts_with?("message")
+        hist = CardHistory.new(self.attributes)
+        hist.assign_attributes(id:nil,card:self)
+        hist.save
+      end
     end
 end

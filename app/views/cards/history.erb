@@ -1,23 +1,28 @@
+<%  if current_user == @user %>
+  <h3>Email Commissioner</h3>
+  <%= render('cards/show/comment', model: @card) %>
+<% end %>
 <table>
-        <thead>
-          <tr>
-              <th data-field="id">Title</th>
-              <th data-field="name">Description</th>
-              <th data-field="order">Order</th>
-              <th data-field="image">Image</th>
-              <th data-field="updated">Updated At</th>
-          </tr>
-        </thead>
-
         <tbody>
           <% @histories.each do |card| %>
-          <tr>
-            <td><%= card.title %></td>
-            <td><%= card.description%></td>
-            <td><%= link_to "View order", order_path(card.order) if card.order%></td>
-            <td><%= render "partials/image_container", {image: card.image, type: :bordered} if card.image%></td>
-            <td><%=card.updated_at%></td>
-          </tr>
+            <% if card.instance_of? CardHistory%>
+              <tr>
+                <td><%= card.title %></td>
+                <td><%= card.description%></td>
+                <td><%= link_to "View order", order_path(card.order) if card.order%></td>
+                <td><%= render "partials/image_container", {image: card.image, type: :bordered} if card.image%></td>
+                <td><%=card.updated_at%></td>
+              </tr>
+            <% elsif card.instance_of? Message %>
+              <tr>
+                <td><%= render "partials/image_container", {image: card.comment_author.avatar, type: :bordered}%></td>
+                <td colspan=3>
+                  <h5><%= card.comment_author.name %></h5>
+                  <blockquote><%= render_markdown card.content %></blockquote>
+                </td>
+                <td><%=card.updated_at%></td>
+              </tr>
+            <% end %>
           <% end %>
         </tbody>
       </table>

@@ -1,0 +1,4 @@
+Hello! <%=@recipient[:name] %> You have a new message
+
+Message: 
+  <%= @sender[:name] %> has sent you a comment on your workboard commission at the following url <%=history_card_url(@user, @card)%>
