@@ -19,6 +19,7 @@ gem "cells"
 gem "cells-erb"
 gem "hooks"
 gem "rails_autolink"
+gem 'materialize-sass'
 
 group :development, :test do
   gem "byebug"
