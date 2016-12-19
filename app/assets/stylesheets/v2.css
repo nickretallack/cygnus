@@ -95,12 +95,6 @@
         text-align: right;
         text-decoration: none;
       }
-  #logo {
-    bottom: 58px;
-    float: left;
-    padding-left: 10px;
-    position: relative;
-  }
   #notification-box {
     background-size: 20px;
     border-radius: 4px;
@@ -203,12 +197,6 @@
         text-align: right;
         text-decoration: none;
       }
-  #logo {
-    bottom: 58px;
-    float: left;
-    padding-left: 50px;
-    position: relative;
-  }
   #notification-box {
     border-radius: 4px;
     display: inline-block;
@@ -265,12 +253,6 @@
                  0 -1px .5px #a0a0a0,
                  1px 0 .5px #a0a0a0,
                  -1px 0 .5px #a0a0a0;
-}
-
-#nav-lower {
-  background-color: #3b544c;
-  height: 50px;
-  width: 100%;
 }
 
 #content {
