@@ -64,6 +64,7 @@ Rails.application.routes.draw do
 
   controller :cards do
     get :index, path: ":#{User.slug}/workboard", as: :cards
+    post :comment, path: ":#{User.slug}/workboard/:#{Card.slug}", as: :comment_card
     patch :create, path: ":#{User.slug}/workboard/:#{Card.slug}", as: :new_card
     patch :update, path: ":#{User.slug}/workboard/:#{Card.slug}/update", as: :update_card
     delete :destroy, path: ":#{User.slug}/workboard/:#{Card.slug}/destroy", as: :destroy_card
@@ -74,6 +75,8 @@ Rails.application.routes.draw do
   
   controller :requests do
     get :new, path: "s/request/new(/:breed)", as: :new_request, defaults: { breed: 'request' }
+    get :request_bid, path: "s/request/bid/:bid", as: :request_bid
+    get :accept, path: "s/request/:#{Request.slug}/accept/:bid", as: :accept_bid
     post :create, path: "s/requests", as: :create_request
     post :bid, path: "s/request/:#{Request.slug}/bid", as: :bids_path
     delete :destroy, path: "s/request/:#{Request.slug}", as: :destroy_request

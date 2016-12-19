@@ -1,0 +1,10 @@
+<div class = "new spaced">
+  <%= render "partials/markdown_cheatsheet" %>
+  <%= form_for Message.new, url: comment_card_path(@user, model), html: { class: "button-submit" } do |f| %>
+    <%= f.text_field :subject, placeholder: "Subject" if model.instance_of? User %>
+    <%= f.text_area :content, placeholder: "Your message here" %>
+    <blockquote></blockquote>
+    <%= f.submit "Send", id: "pm" %>
+  <% end %>
+  <div class = "button-area centered-small padded"></div>
+</div>

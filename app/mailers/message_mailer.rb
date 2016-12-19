@@ -7,6 +7,16 @@ class MessageMailer < ApplicationMailer
          subject: "#{CONFIG[:name]}: You have a new message (#{message.attachments.first.titleize})"
   end
 
+  def send_comment(card, user, data)
+    @card = card
+    @user = user
+    @recipient = data[:recipient]
+    @sender = data[:sender]
+    attachments.inline["logo.png"] = File.read(File.join(CONFIG[:image_path], CONFIG[:logo_email]))
+    mail to: @recipient[:email], 
+         subject: "#{CONFIG[:name]}: You have a comment on a workboard submission!)"
+  end
+
   def time_over(request)
     @message = request
     attachments.inline["logo.png"] = File.read(File.join(CONFIG[:image_path], CONFIG[:logo_email]))

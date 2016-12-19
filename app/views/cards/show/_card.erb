@@ -26,7 +26,11 @@
             <%= f.submit "History", id: "history" %>
           <% end %>
           <%= render("orders/short_summary", model: model.order) if model.order%>
-
+          <% if model.bid %>
+            <hr />
+              <span><h6><%= link_to "View Bid", request_bid_path(model.bid) %></h6></span>
+            <hr />
+          <% end %>
           <div class = "button-area centered">
             <%= link_to history_card_path(@user, model) do %>
 
@@ -43,9 +47,8 @@
       <% else %>
         <%= render "partials/image_container", {image: model.image, type: :bordered} if model.image%>
         <span class = "inline"><%= model.description %><span>
-
+        <%= render('cards/show/comment', model: model)  if model.order %>
       <% end %>
-
       <div class = "card-action">
       </div>
     </div>

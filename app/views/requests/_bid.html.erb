@@ -1,4 +1,4 @@
-<div class = "comment indent-0 <%= "special" if current_user == model.user and current_user.setting(:border_comments) %>" id = <%= model.id %>>
+<div class = "comment indent-0 <%= "special" if current_user == model.user and current_user.setting(:border_comments) %> bid" id = bid-<%= model.id %>>
     <div class="row">
       <div class="col s12 l6"><%= render "partials/image_container", {image: model.user.avatar, type: :bordered}%></div>
       <div class="col s12 l6">
@@ -11,6 +11,11 @@
         <div>
           <%= render_markdown model.body %>
         </div>
+        <%if current_user == @user %>
+          <%= link_to accept_bid_path(@request, model) do %>
+            <button>Accept Order and Add to list</button>
+          <% end %>
+        <% end %>
       </div>
     </div>
 </div>
